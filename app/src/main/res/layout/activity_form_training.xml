@@ -7,14 +7,15 @@
     tools:context=".formTraining">
 
     <!-- Nome do Treinamento -->
+
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="180dp"
         android:text="@string/training_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,15 +23,15 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="@string/training_name_hint"
         android:text="@string/default_training_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nameTextView" />
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp" />
 
     <!-- Descrição do Treinamento -->
     <TextView
@@ -39,10 +40,10 @@
         android:layout_height="wrap_content"
         android:text="@string/description"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/name" />
+        app:layout_constraintTop_toBottomOf="@id/name"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp" />
 
     <EditText
         android:id="@+id/description"
@@ -51,41 +52,51 @@
         android:ems="10"
         android:hint="@string/description_hint"
         android:inputType="text"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/descriptionTextView" />
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp" />
 
     <Button
         android:id="@+id/save"
-        android:layout_width="274dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="80dp"
-        android:text="@string/save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#fefd02"
+        android:text="@string/save"
         android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/description"
+        app:iconTint="#000000"
+        app:icon="@drawable/ic_fluent_save_24_regular"
+        app:iconSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/removeTraining"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/removeTraining"
-        android:layout_width="274dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="80dp"
-        android:text="@string/remove"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#fefd02"
+        android:text="@string/remove"
         android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/save"
+        app:iconTint="#000000"
+        app:icon="@drawable/ic_fluent_delete_24_regular"
+        app:iconSize="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5" />
+        app:layout_constraintStart_toEndOf="@id/save"
+        app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
-import android.widget.Toast
 import com.example.anarcomarombismo.Adapters.TrainingAdapter
 import com.example.anarcomarombismo.Controller.Cache
+import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 
 class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
@@ -69,6 +69,7 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
                 println("Treino fora de Cache: ${training.trainingID} - ${training.name} - ${training.description}")
             }
             cache!!.setCache(this,"Treinos", jsonUtil.toJson(trainingArray))
+            dumpExercise()
         }
 
         val jsonUtil = JSON()
@@ -76,5 +77,50 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
         println("Training Array em JSON: $trainingArrayJson")
         val adapter = TrainingAdapter(this, trainingArray, this)
         listView.adapter = adapter
+    }
+
+    private fun insertExercisesForTraining(trainingId: Long, exercises: Array<Exercise>) {
+        val cache = Cache()
+        val jsonUtil = JSON()
+        // Adicionar os exercícios do treinamento atual ao cache
+        cache.setCache(this, "Exercicios_$trainingId", jsonUtil.toJson(exercises))
+    }
+
+    private fun dumpExercise() {
+
+        val trainingExercisesMap = mapOf<Long, Array<Exercise>>(
+            1L to arrayOf(
+                Exercise(1, 1, "Supino Reto", 4, 8, 100.0),
+                Exercise(1, 2, "Supino Inclinado", 3, 10, 90.0),
+                Exercise(1, 3, "Crucifixo com Halteres", 3, 12, 20.0),
+                Exercise(1, 4, "Tríceps Pulley", 4, 10, 50.0),
+                Exercise(1, 5, "Tríceps Testa", 3, 12, 30.0)
+            ),
+            2L to arrayOf(
+                Exercise(2, 1, "Barra Fixa", 4, 6, 0.0),
+                Exercise(2, 2, "Remada Curvada", 3, 8, 0.0),
+                Exercise(2, 3, "Pulldown na Polia", 3, 10, 0.0),
+                Exercise(2, 4, "Rosca Direta", 4, 10, 0.0),
+                Exercise(2, 5, "Rosca Alternada com Halteres", 3, 12, 0.0)
+            ),
+            3L to arrayOf(
+                Exercise(3, 1, "Desenvolvimento Militar", 4, 8, 0.0),
+                Exercise(3, 2, "Elevação Lateral", 3, 10, 0.0),
+                Exercise(3, 3, "Elevação Frontal com Halteres", 3, 12, 0.0),
+                Exercise(3, 4, "Encolhimento de Ombros com Barra", 4, 10, 0.0),
+                Exercise(3, 5, "Encolhimento de Ombros com Halteres", 3, 12, 0.0)
+            ),
+            4L to arrayOf(
+                Exercise(4, 1, "Agachamento Livre", 4, 10, 0.0),
+                Exercise(4, 2, "Leg Press", 3, 12, 0.0),
+                Exercise(4, 3, "Extensão de Pernas", 3, 12, 0.0),
+                Exercise(4, 4, "Flexão Plantar em Pé", 4, 15, 0.0),
+                Exercise(4, 5, "Flexão Plantar Sentado", 3, 12, 0.0)
+            )
+        )
+
+        for ((trainingId, exercises) in trainingExercisesMap) {
+            insertExercisesForTraining(trainingId, exercises)
+        }
     }
 }
