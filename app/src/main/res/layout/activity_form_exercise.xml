@@ -10,170 +10,174 @@
         android:id="@+id/textViewExerciseName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
         android:text="@string/exercise_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"/>
 
     <EditText
         android:id="@+id/editTextExerciseName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="@string/exercise_hint"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textViewExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewExerciseName" />
-
-    <!-- Adicionando campos para Séries, Repetições, Carga, Repouso e Cadência -->
-
-    <TextView
-        android:id="@+id/textViewSets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/sets"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextExerciseName" />
-
-    <EditText
-        android:id="@+id/editTextSets"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewExerciseName"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/sets_hint"
-        android:inputType="number"
-        android:text="@string/default_sets"
-        app:layout_constraintEnd_toEndOf="@+id/editTextExerciseName"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewSets" />
+        android:layout_marginEnd="16dp"/>
 
     <TextView
         android:id="@+id/textViewRepetitions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/reps"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextSets" />
+        app:layout_constraintStart_toStartOf="@+id/textViewExerciseName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextExerciseName"
+        android:layout_marginTop="16dp"/>
 
     <EditText
         android:id="@+id/editTextRepetitions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/reps_hint"
-        android:inputType="number"
+        android:inputType="text"
         android:text="@string/default_reps"
-        app:layout_constraintEnd_toEndOf="@+id/editTextExerciseName"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRepetitions" />
+        app:layout_constraintStart_toStartOf="@+id/textViewRepetitions"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRepetitions"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/textViewSets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sets"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintStart_toStartOf="@+id/textViewRepetitions"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRepetitions"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/editTextSets"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/sets_hint"
+        android:inputType="number"
+        android:text="@string/default_sets"
+        app:layout_constraintStart_toStartOf="@+id/textViewSets"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSets"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"/>
 
     <TextView
         android:id="@+id/textViewLoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/load"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRepetitions" />
+        app:layout_constraintStart_toStartOf="@+id/textViewSets"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSets"
+        android:layout_marginTop="16dp"/>
 
     <EditText
         android:id="@+id/editTextLoad"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/load_hint"
         android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="@+id/editTextExerciseName"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLoad" />
+        app:layout_constraintStart_toStartOf="@+id/textViewLoad"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLoad"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"/>
 
     <TextView
         android:id="@+id/textViewRest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/rest"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLoad" />
+        app:layout_constraintStart_toStartOf="@+id/textViewLoad"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLoad"
+        android:layout_marginTop="16dp"/>
 
     <EditText
         android:id="@+id/editTextRest"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/seconds_hint"
         android:inputType="number"
         android:text="@string/default_rest"
-        app:layout_constraintEnd_toEndOf="@+id/editTextExerciseName"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewRest" />
+        app:layout_constraintStart_toStartOf="@+id/textViewRest"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRest"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"/>
 
     <TextView
         android:id="@+id/textViewCadence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/cadence"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRest" />
+        app:layout_constraintStart_toStartOf="@+id/textViewRest"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRest"
+        android:layout_marginTop="16dp"/>
 
     <EditText
         android:id="@+id/editTextCadence"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/cadence_hint"
         android:inputType="text"
         android:text="@string/default_cadence"
-        app:layout_constraintEnd_toEndOf="@+id/editTextExerciseName"
-        app:layout_constraintStart_toStartOf="@+id/editTextExerciseName"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCadence" />
-
-    <!-- Fim dos campos para Repouso e Cadência -->
+        app:layout_constraintStart_toStartOf="@+id/textViewCadence"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCadence"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"/>
 
     <Button
         android:id="@+id/addExerciseButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="#fefd02"
-        android:textColor="#000000"
         android:text="@string/add_exercise"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/editTextCadence"
-        app:layout_constraintStart_toStartOf="@+id/editTextCadence"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCadence"
-        app:layout_constraintVertical_bias="0.032" />
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCadence" />
 
     <Button
         android:id="@+id/editTrainingButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:backgroundTint="#fefd02"
-        android:textColor="#000000"
         android:text="@string/remove_exercise"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/addExerciseButton"
-        app:layout_constraintStart_toStartOf="@+id/addExerciseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addExerciseButton"
-        app:layout_constraintVertical_bias="0.099" />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

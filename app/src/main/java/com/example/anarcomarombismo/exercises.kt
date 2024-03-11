@@ -95,7 +95,7 @@ class exercises : AppCompatActivity() {
             }
         } else {
             val exerciseArray = arrayOf(
-                Exercise(trainingID,System.currentTimeMillis()+1,"Exercicio", 0, 0, 0.0),
+                Exercise(trainingID,System.currentTimeMillis()+1,"Exercicio", 3, "10,10,10", 0.0),
             )
             for (exercise in exerciseArray) {
                 println("Exercício fora de Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")

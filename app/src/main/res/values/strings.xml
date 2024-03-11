@@ -17,7 +17,7 @@
     <string name="load_hint">Digite a carga em quilogramas</string>
     <string name="load">Carga (kg)</string>
     <string name="reps_hint">Digite o número de repetições</string>
-    <string name="default_reps">10</string>
+    <string name="default_reps">10,10,10</string>
     <string name="reps">Repetições</string>
     <string name="default_sets">3</string>
     <string name="sets">Séries</string>

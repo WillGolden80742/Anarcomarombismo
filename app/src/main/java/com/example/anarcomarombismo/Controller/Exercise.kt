@@ -8,7 +8,7 @@ class Exercise(
     var exerciseID: Long,
     var name: String = "Exercício",
     var sets: Int = 3,
-    var repetitions: Int = 10,
+    var repetitions: String = "10,10,10",
     var load: Double = 20.0, // Carga padrão em kg
     var rest: Int = 60, // Tempo de repouso padrão em segundos
     var cadence: String = "3-1-3" // Cadência padrão

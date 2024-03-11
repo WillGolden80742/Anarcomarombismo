@@ -17,7 +17,7 @@
     <string name="load_hint">Enter the load in kilograms</string>
     <string name="load">Load (kg)</string>
     <string name="reps_hint">Enter the number of repetitions</string>
-    <string name="default_reps">10</string>
+    <string name="default_reps">10,10,10</string>
     <string name="reps">Repetitions</string>
     <string name="default_sets">3</string>
     <string name="sets">Sets</string>

@@ -7,8 +7,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class formExercise : AppCompatActivity() {
 
@@ -36,6 +40,25 @@ class formExercise : AppCompatActivity() {
         }
         removeExerciseButton.setOnClickListener {
             removeExercise()
+        }
+        // listener change text editTextRepetitions
+        editTextRepetitions.addTextChangedListener {
+            formatRepetitionsAndCountSets(it)
+        }
+
+    }
+
+    fun formatRepetitionsAndCountSets(it: CharSequence?) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val text = it.toString()
+            val newText = text.replace(Regex("[^0-9,]|,{2,}"), "")
+            val numbers = newText.split(",").filter { it.isNotEmpty() }
+            val count = numbers.size
+            editTextSets.setText(count.toString())
+            if (newText != text) {
+                editTextRepetitions.setText(newText)
+                editTextRepetitions.setSelection(newText.length)
+            }
         }
     }
 
@@ -97,7 +120,7 @@ class formExercise : AppCompatActivity() {
             exerciseID,
             editTextExerciseName.text.toString().takeIf { it.isNotEmpty() } ?: exerciseHint,
             editTextSets.text.toString().toIntOrNull() ?: defaultSets.toInt(),
-            editTextRepetitions.text.toString().toIntOrNull() ?: defaultReps.toInt(),
+            editTextRepetitions.text.toString() ?: defaultReps,
             editTextLoad.text.toString().toDoubleOrNull() ?: 0.0,
             editTextRest.text.toString().toIntOrNull() ?: defaultRest.toInt(),
             editTextCadence.text.toString().takeIf { it.isNotEmpty() } ?: defaultCadence
