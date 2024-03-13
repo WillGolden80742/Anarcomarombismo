@@ -4,7 +4,7 @@
     <string name="update_exercise">Update Exercício</string>
     <string name="update_training">Atualizar Treino</string>
     <string name="update_training_successful">Treino atualizado com sucesso!</string>
-    <string name="update_exercise_successful">Exercise updated successfully!</string>
+    <string name="update_exercise_successful">Exercício atualizado com sucesso!</string>
     <string name="save_exercise_successful">Exercício salvo com sucesso!</string>
     <string name="save_training_successful">Treino salvo com sucesso!</string>
     <string name="remove_training_successful">Treino removido com sucesso!</string>

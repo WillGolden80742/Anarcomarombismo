@@ -7,8 +7,8 @@
     <string name="update_exercise_successful">Exercise updated successfully!</string>
     <string name="save_exercise_successful">Exercise saved successfully!</string>
     <string name="save_training_successful">Training saved successfully!</string>
-    <string name="remove_training_successful">Treino removido com sucesso!</string>
-    <string name="remove_exercise_successful">Exercício removido com sucesso!</string>
+    <string name="remove_training_successful">Training removed successfully!</string>
+    <string name="remove_exercise_successful">Exercise removed successfully!</string>
     <string name="remove_exercise">Remove Exercise</string>
     <string name="add_exercise">Add Exercise</string>
     <string name="cadence">Cadence</string>
