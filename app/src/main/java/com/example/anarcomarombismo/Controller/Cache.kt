@@ -14,6 +14,7 @@ class Cache {
         private const val CACHE_DIRECTORY = "Cache/"
     }
 
+
     private var fileName: String? = null
     private var file: File? = null
 
@@ -58,6 +59,12 @@ class Cache {
         } else {
             "NOT_FOUND"
         }
+    }
+
+    // directory is \res\json
+    fun getCacheByRes(context: Context, fileName: String): String {
+        val resourceId = context.resources.getIdentifier(fileName, "raw", context.packageName)
+        return context.resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
     }
 
     fun hasCache(context: Context,nomeArquivo: String): Boolean {

@@ -9,7 +9,9 @@ import android.widget.ListView
 import com.example.anarcomarombismo.Adapters.TrainingAdapter
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
+import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Training
+import java.io.File
 
 class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
 
@@ -23,11 +25,28 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_training)
-        addTrainingButton = findViewById(R.id.addTrainingButton)
+        addTrainingButton = findViewById(R.id.revenuesTrainingButton)
         trainingList = findViewById(R.id.trainingList)
         loadTraining()
         addTrainingButton.setOnClickListener {
             callTraining()
+        }
+        printFood()
+    }
+
+    private fun printFood () {
+        try {
+            // Lê o conteúdo do arquivo JSON
+            //R.raw.nutritional_table
+            val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
+            // Converte o JSON para uma lista de objetos Food
+            val foodNutritionList: List<Food> = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
+            // Imprime os resultados
+            for (food in foodNutritionList) {
+                println(food.toString())
+            }
+        } catch (e: Exception) {
+            println(RuntimeException("Erro ao ler o arquivo JSON: $e"))
         }
     }
 

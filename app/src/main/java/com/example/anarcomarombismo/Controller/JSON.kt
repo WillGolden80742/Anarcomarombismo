@@ -28,4 +28,12 @@ class JSON {
         // Usa o método toJson do Gson para converter o objeto para JSON
         return gson.toJson(obj)
     }
+
+    // Método para pesquisar um objeto JSON em um array pelo seu atributo e valor
+    inline fun <reified T> searchJsonInArray(jsonArray: List<T>, attribute: String, value: String): List<T> {
+        return jsonArray.filter {
+            val json = Gson().toJson(it)
+            json.contains("\"$attribute\":\"*$value*\"", ignoreCase = true)
+        }
+    }
 }

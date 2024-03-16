@@ -26,24 +26,39 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/addTrainingButton"
+        app:layout_constraintBottom_toTopOf="@+id/revenuesTrainingButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/addTrainingButton"
+        android:id="@+id/revenuesTrainingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:backgroundTint="#fefd02"
         app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-        app:iconTint="#000000"
         app:iconSize="42dp"
+        app:iconTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/trainingList" />
+
+    <Button
+        android:id="@+id/revenuesTrainingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#fefd02"
+        app:icon="@drawable/ic_fluent_food_24_regular"
+        app:iconSize="42dp"
+        app:iconTint="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintStart_toEndOf="@+id/revenuesTrainingButton"
         app:layout_constraintTop_toBottomOf="@+id/trainingList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,9 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.anarcomarombismo.Controller.Cache
+import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Training
+import java.io.File
 
 class formTraining : AppCompatActivity() {
 
@@ -43,7 +45,9 @@ class formTraining : AppCompatActivity() {
         }
 
         loadTrainingIfExistInCache()
+
     }
+
 
     private fun loadTrainingIfExistInCache() {
         val cache = Cache()
