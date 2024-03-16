@@ -11,7 +11,6 @@ import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Training
-import java.io.File
 
 class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
 
