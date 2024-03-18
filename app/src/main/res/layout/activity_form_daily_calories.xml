@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/searchEditText"
-        android:layout_width="258dp"
+        android:layout_width="0dp"
         android:layout_height="47dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/searchButton"
-        android:layout_width="78dp"
+        android:layout_width="75dp"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -44,8 +44,8 @@
 
     <ListView
         android:id="@+id/listFoodsView"
-        android:layout_width="351dp"
-        android:layout_height="325dp"
+        android:layout_width="0dp"
+        android:layout_height="324dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="10dp"
@@ -58,7 +58,7 @@
         android:id="@+id/nameFoodLabel"
         android:layout_width="0dp"
         android:layout_height="32dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:textSize="22dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,9 +68,10 @@
 
     <TextView
         android:id="@+id/editTextDate"
-        android:layout_width="349dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="#000000"
         android:ems="10"
         android:inputType="date"
@@ -83,13 +84,16 @@
 
     <Button
         android:id="@+id/addFoodButton"
-        android:layout_width="82dp"
+        android:layout_width="0dp"
         android:layout_height="46dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="#fefd02"
         android:enabled="false"
         android:textColor="#000000"
         app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
+        app:iconGravity="textStart"
         app:iconSize="32dp"
         app:iconTint="#000000"
         app:layout_constraintBottom_toTopOf="@+id/saveCaloriesButton"
@@ -100,9 +104,9 @@
 
     <EditText
         android:id="@+id/gramsEditText"
-        android:layout_width="204dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:ems="10"
         android:inputType="number"
@@ -117,7 +121,7 @@
         android:id="@+id/totalCaloriesLabel"
         android:layout_width="0dp"
         android:layout_height="38dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:text="Total: 0000"
         android:textSize="32dp"
@@ -131,8 +135,8 @@
         android:id="@+id/saveCaloriesButton"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="108dp"
         android:backgroundTint="#fefd02"
         android:text="salvar"
@@ -152,9 +156,9 @@
         android:id="@+id/seeFoodsButton"
         android:layout_width="0dp"
         android:layout_height="45dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="#fefd02"
         android:text="Ver"
         android:textColor="#000000"
@@ -173,7 +177,7 @@
 
     <TextView
         android:id="@+id/gramsTextView"
-        android:layout_width="33dp"
+        android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginBottom="10dp"
         android:text="g"
@@ -189,9 +193,10 @@
     <Button
         android:id="@+id/removeDailyCaloriesButton"
         :src="@drawable/ic_fluent_delete_24_regular"
-        android:layout_width="329dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="#fefd02"
         android:text="apagar"
         android:textColor="#000000"

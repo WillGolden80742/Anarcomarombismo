@@ -11,18 +11,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="11dp"
         android:text="Calorias Diárias"
         android:textSize="32sp"
+        app:layout_constraintBottom_toTopOf="@+id/caloriesFoodList"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/caloriesFoodList"
-        android:layout_width="369dp"
+        android:layout_width="0dp"
         android:layout_height="512dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toTopOf="@+id/addCaloriesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,15 +34,21 @@
 
     <Button
         android:id="@+id/addCaloriesButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="156dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="80dp"
         android:backgroundTint="#fefd02"
         app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
+        app:iconGravity="textStart"
         app:iconSize="42dp"
         app:iconTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList"
+        app:layout_constraintVertical_bias="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
