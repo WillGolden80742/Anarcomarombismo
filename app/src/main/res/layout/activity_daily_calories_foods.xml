@@ -48,6 +48,7 @@
         android:backgroundTint="#fefd02"
         android:text="salvar"
         android:textColor="#000000"
+        app:iconTint="#000000"
         app:icon="@drawable/ic_fluent_save_24_regular"
         app:iconGravity="textStart"
         app:iconSize="24dp"
@@ -55,8 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/removeFoodButton"
-        app:layout_constraintVertical_bias="0.0"
-        tools:iconTint="#000000" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/foodSelectedTextView"
