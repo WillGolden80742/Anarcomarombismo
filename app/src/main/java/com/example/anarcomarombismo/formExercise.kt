@@ -1,6 +1,6 @@
 package com.example.anarcomarombismo
 
-import JSON
+import com.example.anarcomarombismo.Controller.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -119,7 +119,7 @@ class formExercise : AppCompatActivity() {
         editTextLoad = findViewById(R.id.editTextLoad)
         editTextRest = findViewById(R.id.editTextRest) // Inicialização do novo campo para repouso
         editTextCadence = findViewById(R.id.editTextCadence) // Inicialização do novo campo para cadência
-        addExerciseButton = findViewById(R.id.addExerciseButton)
+        addExerciseButton = findViewById(R.id.addCaloriesButton)
         removeExerciseButton = findViewById(R.id.editTrainingButton)
     }
 

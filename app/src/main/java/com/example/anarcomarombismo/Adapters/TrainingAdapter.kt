@@ -1,6 +1,5 @@
 package com.example.anarcomarombismo.Adapters
 
-import JSON
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater

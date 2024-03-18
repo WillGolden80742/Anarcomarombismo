@@ -1,6 +1,6 @@
 package com.example.anarcomarombismo
 
-import JSON
+import com.example.anarcomarombismo.Controller.JSON
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

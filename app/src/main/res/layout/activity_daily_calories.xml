@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:text="trainingName"
+        android:text="Calorias Diárias"
         android:textSize="32sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,44 +32,13 @@
         android:id="@+id/addCaloriesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginStart="156dp"
+        android:layout_marginBottom="28dp"
         android:backgroundTint="#fefd02"
         app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-        app:iconTint="#000000"
         app:iconSize="42dp"
+        app:iconTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editTrainingButton"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/editTrainingButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:backgroundTint="#fefd02"
-        app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
-        app:iconTint="#000000"
-        app:iconSize="42dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addCaloriesButton"
-        app:layout_constraintTop_toTopOf="@+id/addCaloriesButton" />
-
-    <TextView
-        android:id="@+id/descriptionTrainingLabel"
-        android:layout_width="355dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="6dp"
-        android:text="TextView"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/caloriesFoodList"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyCaloriesTitle"
-        app:layout_constraintVertical_bias="0.571" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package com.example.anarcomarombismo
 
 import com.example.anarcomarombismo.Adapters.ExerciseAdapter
-import JSON
+import com.example.anarcomarombismo.Controller.JSON
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,13 +26,13 @@ class exercises : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
-        addExerciseButton = findViewById(R.id.addExerciseButton)
-        exerciseList = findViewById(R.id.exerciseList)
+        addExerciseButton = findViewById(R.id.addCaloriesButton)
+        exerciseList = findViewById(R.id.caloriesFoodList)
         editTraining = findViewById(R.id.editTrainingButton)
         descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
         // Obtém o ID do treinamento passado como extra
         trainingID = intent.getLongExtra("trainingID", 0)
-        trainingName = findViewById(R.id.trainingName)
+        trainingName = findViewById(R.id.dailyCaloriesTitle)
 
         println("ID do treinamento: $trainingID")
         // Carrega os exercícios com base no ID do treinamento

@@ -1,3 +1,5 @@
+package com.example.anarcomarombismo.Controller
+
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -29,11 +31,19 @@ class JSON {
         return gson.toJson(obj)
     }
 
-    // Método para pesquisar um objeto JSON em um array pelo seu atributo e valor
-    inline fun <reified T> searchJsonInArray(jsonArray: List<T>, attribute: String, value: String): List<T> {
-        return jsonArray.filter {
-            val json = Gson().toJson(it)
-            json.contains("\"$attribute\":\"*$value*\"", ignoreCase = true)
+    // Método para pesquisar dentro de um JSON
+    inline fun <reified T> searchJson(json: String, attribute: String, value: String): T {
+        // Cria uma instância do Gson
+        val gson = Gson()
+        // Usa o método fromJson do Gson para converter o JSON para o objeto desejado
+        val list = gson.fromJson(json, Array<T>::class.java)
+        // Pesquisa o objeto desejado na lista
+        for (item in list) {
+            val json = gson.toJson(item)
+            if (json.contains("\"$attribute\":\"$value\"")) {
+                return item
+            }
         }
+        throw RuntimeException("Item não encontrado")
     }
 }

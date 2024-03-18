@@ -1,6 +1,7 @@
 package com.example.anarcomarombismo
 
-import JSON
+import com.example.anarcomarombismo.Controller.JSON
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,21 +17,35 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
 
     private lateinit var addTrainingButton: Button
     private lateinit var trainingList: ListView
+    private lateinit var dailyCaloriesButton: Button
     private var trainingArray = arrayOf<Training>()
     private var jsonUtil = JSON()
     private var cache: Cache? = null
     private val listView: ListView by lazy { findViewById(R.id.trainingList) }
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_training)
-        addTrainingButton = findViewById(R.id.revenuesTrainingButton)
+        addTrainingButton = findViewById(R.id.addTrainingButton)
+        dailyCaloriesButton = findViewById(R.id.dailyCaloriesButton)
         trainingList = findViewById(R.id.trainingList)
         loadTraining()
         addTrainingButton.setOnClickListener {
             callTraining()
         }
-        printFood()
+        dailyCaloriesButton.setOnClickListener {
+            callDailyCalories()
+        }
+        //printFood()
+    }
+
+    fun callDailyCalories() {
+        try {
+            startActivity(Intent(this, dailyCalories::class.java))
+        } catch (e: Exception) {
+            println("Erro ao chamar a tela de calorias diárias: $e")
+        }
     }
 
     private fun printFood () {

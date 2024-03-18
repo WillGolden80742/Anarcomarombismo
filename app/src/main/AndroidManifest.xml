@@ -17,6 +17,15 @@
         android:theme="@style/Theme.Anarcomarombismo"
         tools:targetApi="31">
         <activity
+            android:name=".dailyCaloriesFoods"
+            android:exported="false" />
+        <activity
+            android:name=".formDailyCalories"
+            android:exported="false" />
+        <activity
+            android:name=".dailyCalories"
+            android:exported="false" />
+        <activity
             android:name=".formExercise"
             android:exported="false" />
         <activity
@@ -30,7 +39,7 @@
         <activity
             android:name=".training_main"
             android:exported="true"
-            android:theme="@style/Theme.Anarcomarombismo" >
+            android:theme="@style/Theme.Anarcomarombismo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

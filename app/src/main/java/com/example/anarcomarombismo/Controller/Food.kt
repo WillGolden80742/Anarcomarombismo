@@ -1,34 +1,37 @@
 package com.example.anarcomarombismo.Controller
 
+import kotlin.reflect.KMutableProperty1
+
 class Food (
-    val foodNumber: String,
-    val foodDescription: String,
-    val moisture: String,
-    val energyKcal: String,
-    val energyKj: String,
-    val protein: String,
-    val lipids: String,
-    val cholesterol: String,
-    val carbohydrate: String,
-    val dietaryFiber: String,
-    val ash: String,
-    val calcium: String,
-    val magnesium: String,
-    val manganese: String,
-    val phosphorus: String,
-    val iron: String,
-    val sodium: String,
-    val potassium: String,
-    val copper: String,
-    val zinc: String,
-    val retinol: String,
-    val re: String,
-    val rae: String,
-    val thiamine: String,
-    val riboflavin: String,
-    val pyridoxine: String,
-    val niacin: String,
-    val vitaminC: String
+    var foodNumber: String,
+    var grams: Double = 100.0,
+    var foodDescription: String,
+    var moisture: String,
+    var energyKcal: String,
+    var energyKj: String,
+    var protein: String,
+    var lipids: String,
+    var cholesterol: String,
+    var carbohydrate: String,
+    var dietaryFiber: String,
+    var ash: String,
+    var calcium: String,
+    var magnesium: String,
+    var manganese: String,
+    var phosphorus: String,
+    var iron: String,
+    var sodium: String,
+    var potassium: String,
+    var copper: String,
+    var zinc: String,
+    var retinol: String,
+    var re: String,
+    var rae: String,
+    var thiamine: String,
+    var riboflavin: String,
+    var pyridoxine: String,
+    var niacin: String,
+    var vitaminC: String
 ) {
     override fun toString(): String {
         return """
@@ -64,5 +67,9 @@ class Food (
             Vitamin C (mg): $vitaminC\n
             ---------------------------------------
         """.trimIndent()
+    }
+
+    fun toStringInLine(): String {
+        return "$foodNumber - $foodDescription - $energyKcal kcal - $protein g - $carbohydrate g - $lipids g - $dietaryFiber g - $sodium mg"
     }
 }
