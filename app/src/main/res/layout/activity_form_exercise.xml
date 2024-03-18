@@ -201,11 +201,16 @@
         android:backgroundTint="#fefd02"
         android:text="@string/add_exercise"
         android:textColor="#000000"
+        app:icon="@drawable/ic_fluent_save_24_regular"
+        app:iconGravity="textStart"
+        app:iconSize="32dp"
+        app:iconTint="#000000"
         app:layout_constraintBottom_toTopOf="@+id/editTrainingButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextCadence" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextCadence"
+        tools:iconSize="32dp" />
 
     <Button
         android:id="@+id/editTrainingButton"
@@ -216,6 +221,10 @@
         android:backgroundTint="#fefd02"
         android:text="@string/remove_exercise"
         android:textColor="#000000"
+        app:icon="@drawable/ic_fluent_delete_24_regular"
+        app:iconGravity="textStart"
+        app:iconSize="32dp"
+        app:iconTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

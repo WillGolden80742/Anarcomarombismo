@@ -58,7 +58,7 @@ class dailyCaloriesFoods : AppCompatActivity() {
             // update the list view
             val adapter = FoodAdapter(this, foodList)
             listView.adapter = adapter
-            foodSelectedTextView.text = ""
+            foodSelectedTextView.text = "selecione alimento"
         }
 
         // Set onClickListener for saveFoodButton (if needed)
