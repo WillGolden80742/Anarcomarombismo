@@ -203,10 +203,19 @@ class formDailyCalories : AppCompatActivity() {
     }
     fun setFoodToFoodList() {
         GlobalScope.launch(Dispatchers.IO) {
-            var jsonUtil = JSON()
+            val jsonUtil = JSON()
+            val cache = Cache()
             try {
-                val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-                val foodNutritionList: List<Food> = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
+                val foodNutritionList: List<Food>
+                if (cache.hasCache(this@formDailyCalories,"Alimentos")) {
+                    foodNutritionList = jsonUtil.fromJson(cache.getCache(this@formDailyCalories,"Alimentos"), Array<Food>::class.java).toList()
+                    println("Lido de cache")
+                } else {
+                    val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader()
+                            .use { it.readText() }
+                    foodNutritionList = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
+                    cache.setCache(this@formDailyCalories,"Alimentos",jsonContent)
+                }
                 withContext(Dispatchers.Main) {
                     val adapter = FoodAdapter(this@formDailyCalories, foodNutritionList)
                     listFoodsView.adapter = adapter

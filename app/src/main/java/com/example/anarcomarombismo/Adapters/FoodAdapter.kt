@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Food
+import java.text.DecimalFormat
 
 class FoodAdapter(context: Context, foodList: List<Food>) :
     ArrayAdapter<Food>(context, 0, foodList) {
@@ -23,7 +24,8 @@ class FoodAdapter(context: Context, foodList: List<Food>) :
         val text2 = convertViewVar.findViewById<TextView>(android.R.id.text2)
 
         text1.text = currentItem?.foodDescription
-        text2.text = """ Moisture (%): ${currentItem?.moisture} - Energy (kcal): ${currentItem?.energyKcal} - Energy (kJ): ${currentItem?.energyKj} - Protein (g): ${currentItem?.protein} - Lipids (g): ${currentItem?.lipids} - Cholesterol (mg): ${currentItem?.cholesterol} - Carbohydrate (g): ${currentItem?.carbohydrate} - Dietary Fiber (g): ${currentItem?.dietaryFiber} - Sodium (mg) : ${currentItem?.sodium} """.trimIndent()
+
+        text2.text = currentItem?.toString()
 
         return convertViewVar
     }

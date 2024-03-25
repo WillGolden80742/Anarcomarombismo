@@ -1,5 +1,6 @@
 package com.example.anarcomarombismo.Controller
 
+import java.text.DecimalFormat
 import kotlin.reflect.KMutableProperty1
 
 class Food (
@@ -33,43 +34,37 @@ class Food (
     var niacin: String,
     var vitaminC: String
 ) {
-    override fun toString(): String {
-        return """
-            Nutritional Information:
-            ---------------------------------------
-            Food Number: $foodNumber\n
-            Food Description: $foodDescription\n
-            Moisture (%): $moisture\n
-            Energy (kcal): $energyKcal\n
-            Energy (kJ): $energyKj\n
-            Protein (g): $protein\n
-            Lipids (g): $lipids\n
-            Cholesterol (mg): $cholesterol\n
-            Carbohydrate (g): $carbohydrate\n
-            Dietary Fiber (g): $dietaryFiber\n
-            Ash (g): $ash\n
-            Calcium (mg): $calcium\n
-            Magnesium (mg): $magnesium\n
-            Manganese (mg): $manganese\n
-            Phosphorus (mg): $phosphorus\n
-            Iron (mg): $iron\n
-            Sodium (mg): $sodium\n
-            Potassium (mg): $potassium\n
-            Copper (mg): $copper\n
-            Zinc (mg): $zinc\n
-            Retinol (mcg): $retinol\n
-            RE (mcg): $re\n
-            RAE (mcg): $rae\n
-            Thiamine (mg): $thiamine\n
-            Riboflavin (mg): $riboflavin\n
-            Pyridoxine (mg): $pyridoxine\n
-            Niacin (mg): $niacin\n
-            Vitamin C (mg): $vitaminC\n
-            ---------------------------------------
-        """.trimIndent()
+    init {
+        if (grams == null) {
+            grams = 100.00
+        }
     }
-
-    fun toStringInLine(): String {
-        return "$foodNumber - $foodDescription - $energyKcal kcal - $protein g - $carbohydrate g - $lipids g - $dietaryFiber g - $sodium mg"
+    override fun toString(): String {
+        var text:String
+        val decimalFormat = DecimalFormat("#.##")
+        if (grams > 0.0) {
+            text =
+                """ Moisture (%): ${decimalFormat.format((moisture!!.toDouble() * grams) / 100)},
+            | Energy (kcal): ${decimalFormat.format((energyKcal!!.toDouble() * grams) / 100)},
+            | Energy (kJ): ${decimalFormat.format((energyKj!!.toDouble() * grams) / 100)},
+            | Protein (g): ${decimalFormat.format((protein!!.toDouble() * grams) / 100)},
+            | Lipids (g): ${decimalFormat.format((lipids!!.toDouble() * grams) / 100)},
+            | Cholesterol (mg): ${decimalFormat.format((cholesterol!!.toDouble() * grams) / 100)},
+            | Carbohydrate (g): ${decimalFormat.format((carbohydrate!!.toDouble() * grams) / 100)},
+            | Dietary Fiber (g): ${decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100)},
+            | Sodium (mg) : ${decimalFormat.format((sodium!!.toDouble() * grams) / 100)} """.trimMargin()
+        } else {
+            text =
+                """ Moisture (%): ${decimalFormat.format(moisture!!.toDouble())},
+            | Energy (kcal): ${decimalFormat.format(energyKcal!!.toDouble())},
+            | Energy (kJ): ${decimalFormat.format(energyKj!!.toDouble())},
+            | Protein (g): ${decimalFormat.format(protein!!.toDouble())},
+            | Lipids (g): ${decimalFormat.format(lipids!!.toDouble())},
+            | Cholesterol (mg): ${decimalFormat.format(cholesterol!!.toDouble())},
+            | Carbohydrate (g): ${decimalFormat.format(carbohydrate!!.toDouble())},
+            | Dietary Fiber (g): ${decimalFormat.format(dietaryFiber!!.toDouble())},
+            | Sodium (mg) : ${decimalFormat.format(sodium!!.toDouble())} """.trimMargin()
+        }
+        return text
     }
 }

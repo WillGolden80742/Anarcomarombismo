@@ -1,5 +1,6 @@
 package com.example.anarcomarombismo.Controller
 
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -25,13 +26,17 @@ class DailyCalories {
     }
 
     override fun toString(): String {
-        val formattedProtein = String.format("%.1f", protein)
-        val formattedCarbohydrate = String.format("%.1f", carbohydrate)
-        val formattedLipids = String.format("%.1f", lipids)
-        val formattedDietaryFiber = String.format("%.1f", dietaryFiber)
-        val formattedSodium = String.format("%.1f", sodium)
-        return "$calorieskcal kcal, $calorieskj kj\n$formattedProtein g protein, $formattedCarbohydrate g carbohydrate, $formattedLipids g lipids, $formattedDietaryFiber g dietary fiber, $formattedSodium mg sodium"
+        val decimalFormat = DecimalFormat("#.##")
+        val formattedProtein = decimalFormat.format(protein.toDouble())
+        val formattedCarbohydrate = decimalFormat.format(carbohydrate.toDouble())
+        val formattedLipids = decimalFormat.format(lipids.toDouble())
+        val formattedDietaryFiber = decimalFormat.format(dietaryFiber.toDouble())
+        val formattedSodium = decimalFormat.format(sodium.toDouble())
+        val formattedCaloriesKcal = decimalFormat.format(calorieskcal.toDouble())
+        val formattedCaloriesKj = decimalFormat.format(calorieskj.toDouble())
+        return "$formattedCaloriesKcal kcal, $formattedCaloriesKj kj\n$formattedProtein g protein, $formattedCarbohydrate g carbohydrate, $formattedLipids g lipids, $formattedDietaryFiber g dietary fiber, $formattedSodium mg sodium"
     }
+
     fun addFood(food: Food) {
         foodsList = foodsList.plus(food)
         calculateCalories(food, "add")
