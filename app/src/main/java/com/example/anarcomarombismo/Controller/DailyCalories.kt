@@ -27,13 +27,13 @@ class DailyCalories {
 
     override fun toString(): String {
         val decimalFormat = DecimalFormat("#.##")
-        val formattedProtein = decimalFormat.format(protein.toDouble())
-        val formattedCarbohydrate = decimalFormat.format(carbohydrate.toDouble())
-        val formattedLipids = decimalFormat.format(lipids.toDouble())
-        val formattedDietaryFiber = decimalFormat.format(dietaryFiber.toDouble())
-        val formattedSodium = decimalFormat.format(sodium.toDouble())
-        val formattedCaloriesKcal = decimalFormat.format(calorieskcal.toDouble())
-        val formattedCaloriesKj = decimalFormat.format(calorieskj.toDouble())
+        val formattedProtein = decimalFormat.format(protein)
+        val formattedCarbohydrate = decimalFormat.format(carbohydrate)
+        val formattedLipids = decimalFormat.format(lipids)
+        val formattedDietaryFiber = decimalFormat.format(dietaryFiber)
+        val formattedSodium = decimalFormat.format(sodium)
+        val formattedCaloriesKcal = decimalFormat.format(calorieskcal)
+        val formattedCaloriesKj = decimalFormat.format(calorieskj)
         return "$formattedCaloriesKcal kcal, $formattedCaloriesKj kj\n$formattedProtein g protein, $formattedCarbohydrate g carbohydrate, $formattedLipids g lipids, $formattedDietaryFiber g dietary fiber, $formattedSodium mg sodium"
     }
 
