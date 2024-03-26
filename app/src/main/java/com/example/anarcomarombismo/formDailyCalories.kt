@@ -250,10 +250,19 @@ class formDailyCalories : AppCompatActivity() {
     }
     fun searchFood(value:String) {
         var jsonUtil = JSON()
+        val cache = Cache()
         try {
-            val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-            val foodNutritionList: List<Food> = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
-            val adapter = FoodAdapter(this, foodNutritionList.filter { it.foodDescription.contains(value, ignoreCase = true) })
+            val foodNutritionList: List<Food>
+            if (cache.hasCache(this,"Alimentos")) {
+                foodNutritionList = jsonUtil.fromJson(cache.getCache(this,"Alimentos"), Array<Food>::class.java).toList()
+            } else {
+                val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader()
+                        .use { it.readText() }
+                foodNutritionList = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
+                cache.setCache(this,"Alimentos",jsonContent)
+            }
+            val foodNutritionListFiltered = foodNutritionList.filter { it.foodDescription.contains(value, ignoreCase = true) }
+            val adapter = FoodAdapter(this, foodNutritionListFiltered)
             listFoodsView.adapter = adapter
         } catch (e: Exception) {
             println(RuntimeException("Erro ao ler o arquivo JSON: $e"))
