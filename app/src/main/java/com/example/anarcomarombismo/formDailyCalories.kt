@@ -248,24 +248,28 @@ class formDailyCalories : AppCompatActivity() {
             println(RuntimeException("Error handling food click: $e"))
         }
     }
-    fun searchFood(value:String) {
-        var jsonUtil = JSON()
-        val cache = Cache()
-        try {
-            val foodNutritionList: List<Food>
-            if (cache.hasCache(this,"Alimentos")) {
-                foodNutritionList = jsonUtil.fromJson(cache.getCache(this,"Alimentos"), Array<Food>::class.java).toList()
-            } else {
-                val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader()
-                        .use { it.readText() }
-                foodNutritionList = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
-                cache.setCache(this,"Alimentos",jsonContent)
+    fun searchFood(value: String) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val jsonUtil = JSON()
+            val cache = Cache()
+            try {
+                val foodNutritionList: List<Food>
+                if (cache.hasCache(this@formDailyCalories, "Alimentos")) {
+                    foodNutritionList = jsonUtil.fromJson(cache.getCache(this@formDailyCalories, "Alimentos"), Array<Food>::class.java).toList()
+                } else {
+                    val jsonContent = withContext(Dispatchers.IO) {
+                        resources.openRawResource(R.raw.nutritional_table).bufferedReader()
+                            .use { it.readText() }
+                    }
+                    foodNutritionList = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
+                    cache.setCache(this@formDailyCalories, "Alimentos", jsonContent)
+                }
+                val foodNutritionListFiltered = foodNutritionList.filter { it.foodDescription.contains(value, ignoreCase = true) }
+                val adapter = FoodAdapter(this@formDailyCalories, foodNutritionListFiltered)
+                listFoodsView.adapter = adapter
+            } catch (e: Exception) {
+                println(RuntimeException("Erro ao ler o arquivo JSON: $e"))
             }
-            val foodNutritionListFiltered = foodNutritionList.filter { it.foodDescription.contains(value, ignoreCase = true) }
-            val adapter = FoodAdapter(this, foodNutritionListFiltered)
-            listFoodsView.adapter = adapter
-        } catch (e: Exception) {
-            println(RuntimeException("Erro ao ler o arquivo JSON: $e"))
         }
     }
     fun addFoodToDailyList() {
