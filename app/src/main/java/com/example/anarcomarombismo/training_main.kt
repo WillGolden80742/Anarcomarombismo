@@ -93,10 +93,10 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
             }
         } else {
             trainingArray = arrayOf(
-                Training(1,"Treino A", "Peito e Tríceps"),
-                Training(2,"Treino B", "Costas e Bíceps"),
-                Training(3,"Treino C", "Ombro e Trapézio"),
-                Training(4,"Treino D", "Pernas e Panturrilha"),
+                Training(1, getString(R.string.treino_a), getString(R.string.peito_e_tr_ceps)),
+                Training(2, getString(R.string.treino_b), getString(R.string.costas_e_b_ceps)),
+                Training(3, getString(R.string.treino_c), getString(R.string.ombro_e_trap_zio)),
+                Training(4, getString(R.string.treino_d), getString(R.string.pernas_e_panturrilha)),
             )
             for (training in trainingArray) {
                 println("Treino fora de Cache: ${training.trainingID} - ${training.name} - ${training.description}")
@@ -123,32 +123,32 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
 
         val trainingExercisesMap = mapOf<Long, Array<Exercise>>(
             1L to arrayOf(
-                Exercise(1, 1, "Supino Reto", 4, "8,8,8,8", 100.0),
-                Exercise(1, 2, "Supino Inclinado", 3, "10,10,10", 90.0),
-                Exercise(1, 3, "Crucifixo com Halteres", 3, "12,12,12", 20.0),
-                Exercise(1, 4, "Tríceps Pulley", 4, "10,10,10,10", 50.0),
-                Exercise(1, 5, "Tríceps Testa", 3, "12,12,12", 30.0)
+                Exercise(1, 1, getString(R.string.supino_reto), 4, "8,8,8,8", 100.0),
+                Exercise(1, 2, getString(R.string.supino_inclinado), 3, "10,10,10", 90.0),
+                Exercise(1, 3, getString(R.string.crucifixo_com_halteres), 3, "12,12,12", 20.0),
+                Exercise(1, 4, getString(R.string.tr_ceps_pulley), 4, "10,10,10,10", 50.0),
+                Exercise(1, 5, getString(R.string.tr_ceps_testa), 3, "12,12,12", 30.0)
             ),
             2L to arrayOf(
-                Exercise(2, 1, "Barra Fixa", 4, "6,6,6,6", 0.0),
-                Exercise(2, 2, "Remada Curvada", 3, "8,8,8", 0.0),
-                Exercise(2, 3, "Pulldown na Polia", 3, "10,10,10", 0.0),
-                Exercise(2, 4, "Rosca Direta", 4, "10,10,10,10", 0.0),
-                Exercise(2, 5, "Rosca Alternada com Halteres", 3, "12,12,12", 0.0)
+                Exercise(2, 1, getString(R.string.barra_fixa), 4, "6,6,6,6", 0.0),
+                Exercise(2, 2, getString(R.string.remada_curvada), 3, "8,8,8", 0.0),
+                Exercise(2, 3, getString(R.string.pulldown_na_polia), 3, "10,10,10", 0.0),
+                Exercise(2, 4, getString(R.string.rosca_direta), 4, "10,10,10,10", 0.0),
+                Exercise(2, 5, getString(R.string.rosca_alternada_com_halteres), 3, "12,12,12", 0.0)
             ),
             3L to arrayOf(
-                Exercise(3, 1, "Desenvolvimento Militar", 4, "8,8,8,8", 0.0),
-                Exercise(3, 2, "Elevação Lateral", 3, "10,10,10", 0.0),
-                Exercise(3, 3, "Elevação Frontal com Halteres", 3, "12,12,12", 0.0),
-                Exercise(3, 4, "Encolhimento de Ombros com Barra", 4, "10,10,10,10", 0.0),
-                Exercise(3, 5, "Encolhimento de Ombros com Halteres", 3, "12,12,12", 0.0)
+                Exercise(3, 1, getString(R.string.desenvolvimento_militar), 4, "8,8,8,8", 0.0),
+                Exercise(3, 2, getString(R.string.eleva_o_lateral), 3, "10,10,10", 0.0),
+                Exercise(3, 3, getString(R.string.eleva_o_frontal_com_halteres), 3, "12,12,12", 0.0),
+                Exercise(3, 4, getString(R.string.encolhimento_de_ombros_com_barra), 4, "10,10,10,10", 0.0),
+                Exercise(3, 5, getString(R.string.encolhimento_de_ombros_com_halteres), 3, "12,12,12", 0.0)
             ),
             4L to arrayOf(
-                Exercise(4, 1, "Agachamento Livre", 4, "10,10,10,10", 0.0),
-                Exercise(4, 2, "Leg Press", 3, "12,12,12", 0.0),
-                Exercise(4, 3, "Extensão de Pernas", 3, "12,12,12", 0.0),
-                Exercise(4, 4, "Flexão Plantar em Pé", 4, "15,15,15,15", 0.0),
-                Exercise(4, 5, "Flexão Plantar Sentado", 3, "15,15,15,15", 0.0)
+                Exercise(4, 1, getString(R.string.agachamento_livre), 4, "10,10,10,10", 0.0),
+                Exercise(4, 2, getString(R.string.leg_press), 3, "12,12,12", 0.0),
+                Exercise(4, 3, getString(R.string.extens_o_de_pernas), 3, "12,12,12", 0.0),
+                Exercise(4, 4, getString(R.string.flex_o_plantar_em_p), 4, "15,15,15,15", 0.0),
+                Exercise(4, 5, getString(R.string.flex_o_plantar_sentado), 3, "15,15,15,15", 0.0)
             )
         )
 

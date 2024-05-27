@@ -28,6 +28,7 @@ class formFoods : AppCompatActivity() {
     private lateinit var currentFood: Food
     private var jsonUtil = JSON()
     private var cache = Cache()
+    private var foodCache: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_foods)
@@ -50,20 +51,25 @@ class formFoods : AppCompatActivity() {
             val foodID = intent.getStringExtra("foodID")
             addFoodFormButton.text = getString(R.string.update_nutrition_info)
             try {
-                val json = cache.getCache(this, "Alimentos")
-                if (json != "NOT_FOUND") {
-                    foodNutritionList = jsonUtil.fromJson(json, Array<Food>::class.java).toList()
-                    currentFood = foodNutritionList.find { it.foodNumber == foodID.toString() }!!
-                    editTextName.setText(currentFood.foodDescription)
-                    editTextGrams.setText(currentFood.grams.toString())
-                    editTextProtein.setText(currentFood.protein)
-                    editTextCarbohydrate.setText(currentFood.carbohydrate)
-                    editTextLipids.setText(currentFood.lipids)
-                    editTextCholesterol.setText(currentFood.cholesterol)
-                    editTextDietaryFiber.setText(currentFood.dietaryFiber)
-                    editTextSodium.setText(currentFood.sodium)
-                    editTextCaloriesKcal.setText(currentFood.energyKcal)
+                foodCache = cache.getCache(this, "Alimentos")
+                if (foodCache != "NOT_FOUND") {
+                    foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
+                } else {
+                    // get R.raw.nutritional_table and add to cache
+                    foodCache = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
+                    cache.setCache(this, "Alimentos", foodCache)
+                    foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
                 }
+                currentFood = foodNutritionList.find { it.foodNumber == foodID.toString() }!!
+                editTextName.setText(currentFood.foodDescription)
+                editTextGrams.setText(currentFood.grams.toString())
+                editTextProtein.setText(currentFood.protein)
+                editTextCarbohydrate.setText(currentFood.carbohydrate)
+                editTextLipids.setText(currentFood.lipids)
+                editTextCholesterol.setText(currentFood.cholesterol)
+                editTextDietaryFiber.setText(currentFood.dietaryFiber)
+                editTextSodium.setText(currentFood.sodium)
+                editTextCaloriesKcal.setText(currentFood.energyKcal)
             } catch (e: Exception) {
                 // Toast para indicar que não foi possível carregar o alimento
                 Toast.makeText(this, "Não foi possível carregar o alimento", Toast.LENGTH_SHORT).show()
@@ -72,11 +78,11 @@ class formFoods : AppCompatActivity() {
         } else {
             removeFoodFormButton.isVisible = false
             //if hash no cache create a cache to
-            val json = cache.getCache(this, "Alimentos")
-            if (json == "NOT_FOUND") {
+            foodCache = cache.getCache(this, "Alimentos")
+            if (foodCache == "NOT_FOUND") {
                 // get R.raw.nutritional_table and add to cache
-                val nutritionalTable = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-                cache.setCache(this, "Alimentos", nutritionalTable)
+                foodCache = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
+                cache.setCache(this, "Alimentos", foodCache)
             }
         }
         // Listener para o botão de adicionar food
@@ -110,9 +116,8 @@ class formFoods : AppCompatActivity() {
         val calorieskcal = editTextCaloriesKcal.text.toString()
 
         // Verificar se todos os campos estão preenchidos
-        if (protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
-            dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()
-        ) {
+        if (foodDescription.isEmpty() || grams == 0.0 || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
+            dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()) {
             // Mostrar mensagem de erro indicando qual campo está vazio
             Toast.makeText(this, "Todos os campos são obrigatórios", Toast.LENGTH_SHORT).show()
             return // Impede a execução do código restante se algum campo estiver vazio
@@ -141,30 +146,20 @@ class formFoods : AppCompatActivity() {
         }
 
         // Adicionar alimento à lista e salvar no cache
-        val json = cache.getCache(this, "Alimentos")
-        foodNutritionList = if (json == "NOT_FOUND") {
-            listOf(food)
-        } else {
-            jsonUtil.fromJson(json, Array<Food>::class.java).toList() + food
-        }
+        foodNutritionList =  jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
         cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
 
         // Concluir e enviar a lista de alimentos para a próxima atividade
         val intent = Intent(this, dailyCalories::class.java)
         startActivity(intent)
-        Toast.makeText(this, "Comida salva com sucesso", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.alimento_salvo_com_sucesso), Toast.LENGTH_SHORT).show()
     }
 
     fun removeFood() {
-        val json = cache.getCache(this, "Alimentos")
-        foodNutritionList = if (json == "NOT_FOUND") {
-            emptyList()
-        } else {
-            jsonUtil.fromJson(json, Array<Food>::class.java).toList().filter { it.foodNumber != currentFood.foodNumber }
-        }
+        foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().filter { it.foodNumber != currentFood.foodNumber }
         cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
         finish()
-        Toast.makeText(this, "Comida removida com sucesso", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.alimento_removido_com_sucesso), Toast.LENGTH_SHORT).show()
     }
 
     // edit food
@@ -179,12 +174,12 @@ class formFoods : AppCompatActivity() {
         val sodium = editTextSodium.text.toString()
         val calorieskcal = editTextCaloriesKcal.text.toString()
 
-        // Verificar se todos os campos estão preenchidos
-        if (protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
+        // Verificar se todos os campos estão preenchidos val foodDescription = editTextName.text.toString() var grams = editTextGrams.text.toString().toDouble() val protein = editTextProtein.text.toString() val carbohydrate = editTextCarbohydrate.text.toString() val lipids = editTextLipids.text.toString() val cholesterol = editTextCholesterol.text.toString() val dietaryFiber = editTextDietaryFiber.text.toString() val sodium = editTextSodium.text.toString() val calorieskcal = editTextCaloriesKcal.text.toString()
+        if (foodDescription.isEmpty() || grams == 0.0 || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
             dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()
-        ) {
+            ) {
             // Mostrar mensagem de erro indicando qual campo está vazio
-            Toast.makeText(this, "Todos os campos são obrigatórios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.todos_os_campos_s_o_obrigat_rios), Toast.LENGTH_SHORT).show()
             return // Impede a execução do código restante se algum campo estiver vazio
         }
 
@@ -211,21 +206,17 @@ class formFoods : AppCompatActivity() {
         }
 
         // Adicionar alimento à lista e salvar no cache
-        val json = cache.getCache(this, "Alimentos")
-        foodNutritionList = if (json == "NOT_FOUND") {
-            listOf(food)
-        } else {
-            jsonUtil.fromJson(json, Array<Food>::class.java).toList().map {
+        foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().map {
                 if (it.foodNumber == currentFood.foodNumber) {
                     food
                 } else {
                     it
                 }
-            }
         }
+
         cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
         finish()
-        Toast.makeText(this, "Comidas atualizadas com sucesso", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.update_nutrition_sucessful), Toast.LENGTH_SHORT).show()
     }
 
 }

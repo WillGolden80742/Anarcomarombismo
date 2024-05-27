@@ -10,6 +10,7 @@ class DailyCalories {
     var protein: Double = 0.0
     var carbohydrate: Double = 0.0
     var lipids: Double = 0.0
+    var cholesterol: Double = 0.0
     var dietaryFiber: Double = 0.0
     var sodium: Double = 0.0
     var calorieskcal: Double = 0.0
@@ -30,11 +31,12 @@ class DailyCalories {
         val formattedProtein = decimalFormat.format(protein)
         val formattedCarbohydrate = decimalFormat.format(carbohydrate)
         val formattedLipids = decimalFormat.format(lipids)
+        val formattedCholesterol = decimalFormat.format(cholesterol)
         val formattedDietaryFiber = decimalFormat.format(dietaryFiber)
         val formattedSodium = decimalFormat.format(sodium)
         val formattedCaloriesKcal = decimalFormat.format(calorieskcal)
         val formattedCaloriesKj = decimalFormat.format(calorieskj)
-        return "$formattedCaloriesKcal kcal, $formattedCaloriesKj kj\n$formattedProtein g protein, $formattedCarbohydrate g carbohydrate, $formattedLipids g lipids, $formattedDietaryFiber g dietary fiber, $formattedSodium mg sodium"
+        return "$formattedCaloriesKcal kcal, $formattedCaloriesKj kj\n$formattedProtein g protein, $formattedCarbohydrate g carbohydrate, $formattedLipids g lipids, $formattedCholesterol mg cholesterol, $formattedDietaryFiber g dietary fiber, $formattedSodium mg sodium"
     }
 
     fun addFood(food: Food) {
@@ -66,6 +68,7 @@ class DailyCalories {
         val proteinFormatted = food.protein.replace(Regex("(?i)[natr*]"), "0")
         val carbohydrateFormatted = food.carbohydrate.replace(Regex("(?i)[natr*]"), "0")
         val lipidsFormatted = food.lipids.replace(Regex("(?i)[natr*]"), "0")
+        val cholesterolFormatted = food.cholesterol.replace(Regex("(?i)[natr*]"), "0")
         val dietaryFiberFormatted = food.dietaryFiber.replace(Regex("(?i)[natr*]"), "0")
         val sodiumFormatted = food.sodium.replace(Regex("(?i)[natr*]"), "0")
 
@@ -76,6 +79,7 @@ class DailyCalories {
                 protein += ((proteinFormatted.toDouble() / 100) * food.grams)
                 carbohydrate += ((carbohydrateFormatted.toDouble() / 100) * food.grams)
                 lipids += ((lipidsFormatted.toDouble() / 100) * food.grams)
+                cholesterol += ((cholesterolFormatted.toDouble() / 100) * food.grams)
                 dietaryFiber += ((dietaryFiberFormatted.toDouble() / 100) * food.grams)
                 sodium += ((sodiumFormatted.toDouble() / 100) * food.grams)
             }
@@ -85,6 +89,7 @@ class DailyCalories {
                 protein -= ((proteinFormatted.toDouble() / 100) * food.grams)
                 carbohydrate -= ((carbohydrateFormatted.toDouble() / 100) * food.grams)
                 lipids -= ((lipidsFormatted.toDouble() / 100) * food.grams)
+                cholesterol -= ((cholesterolFormatted.toDouble() / 100) * food.grams)
                 dietaryFiber -= ((dietaryFiberFormatted.toDouble() / 100) * food.grams)
                 sodium -= ((sodiumFormatted.toDouble() / 100) * food.grams)
             }

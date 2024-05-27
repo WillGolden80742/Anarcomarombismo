@@ -238,8 +238,9 @@ class formDailyCalories : AppCompatActivity() {
                     foodNutritionList = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
                     cache.setCache(this@formDailyCalories,"Alimentos",jsonContent)
                 }
+                // ordenar a lista de alimentos by foodDescription
                 withContext(Dispatchers.Main) {
-                    val adapter = FoodAdapter(this@formDailyCalories, foodNutritionList)
+                    val adapter = FoodAdapter(this@formDailyCalories, foodNutritionList.sortedBy { it.foodDescription })
                     listFoodsView.adapter = adapter
                 }
             } catch (e: Exception) {
@@ -334,7 +335,8 @@ class formDailyCalories : AppCompatActivity() {
             dailyCaloriesList = dailyCaloriesList.minus(dailyCaloriesListFiltered)
             dailyCaloriesList = dailyCaloriesList.plus(dailyCalories)
             cache.setCache(this, "dailyCalories", jsonUtil.toJson(dailyCaloriesList))
-            Toast.makeText(this, "Daily calories saved successfully", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,
+                getString(R.string.daily_calories_saved_successfully), Toast.LENGTH_SHORT).show()
             finish()
         } catch (e: Exception) {
             println(RuntimeException("Error saving daily calories: $e"))
