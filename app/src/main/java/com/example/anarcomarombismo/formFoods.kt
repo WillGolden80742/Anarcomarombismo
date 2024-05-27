@@ -120,7 +120,11 @@ class formFoods : AppCompatActivity() {
 
         val food = Food().apply {
             foodNumber = (System.currentTimeMillis()).toString()
-            this.foodDescription = foodDescription
+            if (foodDescription.isEmpty()) {
+                this.foodDescription = getString(R.string.nome_de_comida)
+            } else {
+                this.foodDescription = foodDescription
+            }
             if (grams == 0.0) {
                 grams = 100.0
             }
@@ -186,7 +190,11 @@ class formFoods : AppCompatActivity() {
 
         val food = Food().apply {
             foodNumber = currentFood.foodNumber
-            this.foodDescription = foodDescription
+            if (foodDescription.isEmpty()) {
+                this.foodDescription = getString(R.string.nome_de_comida)
+            } else {
+                this.foodDescription = foodDescription
+            }
             if (grams == 0.0) {
                 grams = 100.0
             }

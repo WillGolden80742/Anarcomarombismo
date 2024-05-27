@@ -17,6 +17,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -86,12 +87,9 @@ class formDailyCalories : AppCompatActivity() {
         }
 
         listFoodsView.setOnItemClickListener { parent, view, position, id ->
-            selectedFood(parent.getItemAtPosition(position) as Food)
-            val currentTime = SystemClock.elapsedRealtime()
-            if (currentTime - lastClickTime < 300) {  // Duplo clique detectado
-                onDoubleClick(parent.getItemAtPosition(position) as Food)
-            }
-            lastClickTime = currentTime
+            val food = parent.getItemAtPosition(position) as Food
+            selectedFood(food)
+            click(food)
         }
 
         searchEditText.setOnEditorActionListener { _, _, _ ->
@@ -162,14 +160,21 @@ class formDailyCalories : AppCompatActivity() {
         setFoodToFoodList()
     }
 
-    private fun onDoubleClick(food: Food?) {
-        // Ação a ser executada no duplo clique
-        // Exemplo: abrir uma nova activity
-        val intent = Intent(this, formFoods::class.java)
-        intent.putExtra("foodID", food?.foodNumber)
-        this.startActivity(intent)
-        Toast.makeText(this, "Opening food details", Toast.LENGTH_SHORT).show()
+    private fun click(food: Food) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val currentTime = SystemClock.elapsedRealtime()
+            if (currentTime - lastClickTime < 300) {
+                // Duplo clique detectado
+                val intent = Intent(this@formDailyCalories, formFoods::class.java).apply {
+                    putExtra("foodID", food.foodNumber)
+                }
+                startActivity(intent)
+                Toast.makeText(this@formDailyCalories, "Opening food details", Toast.LENGTH_SHORT).show()
+            }
+            lastClickTime = currentTime
+        }
     }
+
     fun getDailyCaloriesByDate(selectedDate: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val cache = Cache()

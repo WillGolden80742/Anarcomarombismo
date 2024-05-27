@@ -21,7 +21,6 @@
           android:layout_marginStart="20dp"
           android:layout_marginTop="8dp"
           android:layout_marginEnd="20dp"
-          android:text="@string/descri_o_de_comida"
           android:textAppearance="?android:attr/textAppearanceMedium"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"

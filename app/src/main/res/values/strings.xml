@@ -56,4 +56,5 @@
     <string name="enter_cholesterol">Insira o colesterol</string>
     <string name="gramas">Gramas</string>
     <string name="insira_gramas">Insira Gramas</string>
+    <string name="nome_de_comida">Nome de comida</string>
 </resources>
