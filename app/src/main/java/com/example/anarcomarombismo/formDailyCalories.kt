@@ -29,6 +29,7 @@ import java.util.Locale
 
 class formDailyCalories : AppCompatActivity() {
     private var lastClickTime: Long = 0
+    private var clickCount = true
     private lateinit var searchEditText: EditText
     private lateinit var searchButton: Button
     private lateinit var listFoodsView: ListView
@@ -163,6 +164,10 @@ class formDailyCalories : AppCompatActivity() {
     private fun click(food: Food) {
         CoroutineScope(Dispatchers.Main).launch {
             val currentTime = SystemClock.elapsedRealtime()
+            if (clickCount) {
+                Toast.makeText(this@formDailyCalories, "Double click to open food details", Toast.LENGTH_SHORT).show()
+                clickCount = false
+            }
             if (currentTime - lastClickTime < 300) {
                 // Duplo clique detectado
                 val intent = Intent(this@formDailyCalories, formFoods::class.java).apply {
@@ -174,7 +179,6 @@ class formDailyCalories : AppCompatActivity() {
             lastClickTime = currentTime
         }
     }
-
     fun getDailyCaloriesByDate(selectedDate: String) {
         GlobalScope.launch(Dispatchers.IO) {
             val cache = Cache()
