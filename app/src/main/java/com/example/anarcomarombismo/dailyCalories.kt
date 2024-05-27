@@ -16,11 +16,13 @@ import kotlinx.coroutines.launch
 class dailyCalories : AppCompatActivity() {
     private lateinit var caloriesFoodList: ListView
     private lateinit var addCaloriesButton: Button
+    private lateinit var addNewFoodButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_calories)
         caloriesFoodList = findViewById(R.id.caloriesFoodList)
-        addCaloriesButton = findViewById(R.id.addCaloriesButton)
+        addCaloriesButton = findViewById(R.id.addFoodFormButton)
+        addNewFoodButton = findViewById(R.id.addNewFoodButton)
         setDailyCaloriesList()
         addCaloriesButton.setOnClickListener {
             callFormDailyCalories()
@@ -36,6 +38,9 @@ class dailyCalories : AppCompatActivity() {
                 println("Erro ao chamar a tela de calorias diárias: $e")
             }
         }
+        addNewFoodButton.setOnClickListener {
+            callFoodForm()
+        }
     }
     // onResume
     override fun onResume() {
@@ -48,6 +53,14 @@ class dailyCalories : AppCompatActivity() {
             startActivity(Intent(this, formDailyCalories::class.java))
         } catch (e: Exception) {
             println("Erro ao chamar a tela de calorias diárias: $e")
+        }
+    }
+
+    fun callFoodForm() {
+        try {
+            startActivity(Intent(this, formFoods::class.java))
+        } catch (e: Exception) {
+            println("Erro ao chamar a tela de alimentos: $e")
         }
     }
 

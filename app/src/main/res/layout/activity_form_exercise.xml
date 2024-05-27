@@ -191,13 +191,13 @@
         android:hint="@string/cadence_hint"
         android:inputType="text"
         android:text="@string/default_cadence"
-        app:layout_constraintBottom_toTopOf="@+id/addCaloriesButton"
+        app:layout_constraintBottom_toTopOf="@+id/addFoodFormButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCadence" />
 
     <Button
-        android:id="@+id/addCaloriesButton"
+        android:id="@+id/addFoodFormButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -210,7 +210,7 @@
         app:iconGravity="textStart"
         app:iconSize="32dp"
         app:iconTint="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/editTrainingButton"
+        app:layout_constraintBottom_toTopOf="@+id/removeFoodFormButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -218,7 +218,7 @@
         tools:iconSize="32dp" />
 
     <Button
-        android:id="@+id/editTrainingButton"
+        android:id="@+id/removeFoodFormButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -234,7 +234,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addCaloriesButton"
+        app:layout_constraintTop_toBottomOf="@+id/addFoodFormButton"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

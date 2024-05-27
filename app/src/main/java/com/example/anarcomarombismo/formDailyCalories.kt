@@ -7,6 +7,7 @@ import com.example.anarcomarombismo.Adapters.FoodAdapter
 import com.example.anarcomarombismo.Controller.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
@@ -26,6 +27,7 @@ import java.util.Date
 import java.util.Locale
 
 class formDailyCalories : AppCompatActivity() {
+    private var lastClickTime: Long = 0
     private lateinit var searchEditText: EditText
     private lateinit var searchButton: Button
     private lateinit var listFoodsView: ListView
@@ -85,6 +87,11 @@ class formDailyCalories : AppCompatActivity() {
 
         listFoodsView.setOnItemClickListener { parent, view, position, id ->
             selectedFood(parent.getItemAtPosition(position) as Food)
+            val currentTime = SystemClock.elapsedRealtime()
+            if (currentTime - lastClickTime < 300) {  // Duplo clique detectado
+                onDoubleClick(parent.getItemAtPosition(position) as Food)
+            }
+            lastClickTime = currentTime
         }
 
         searchEditText.setOnEditorActionListener { _, _, _ ->
@@ -152,6 +159,16 @@ class formDailyCalories : AppCompatActivity() {
             dailyCalories.recalculateCalories()
             totalCaloriesLabel.text = "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
         }
+        setFoodToFoodList()
+    }
+
+    private fun onDoubleClick(food: Food?) {
+        // Ação a ser executada no duplo clique
+        // Exemplo: abrir uma nova activity
+        val intent = Intent(this, formFoods::class.java)
+        intent.putExtra("foodID", food?.foodNumber)
+        this.startActivity(intent)
+        Toast.makeText(this, "Opening food details", Toast.LENGTH_SHORT).show()
     }
     fun getDailyCaloriesByDate(selectedDate: String) {
         GlobalScope.launch(Dispatchers.IO) {

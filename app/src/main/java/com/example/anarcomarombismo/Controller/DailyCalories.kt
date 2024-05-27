@@ -69,7 +69,7 @@ class DailyCalories {
         val dietaryFiberFormatted = food.dietaryFiber.replace(Regex("(?i)[natr*]"), "0")
         val sodiumFormatted = food.sodium.replace(Regex("(?i)[natr*]"), "0")
 
-        when (operation.toLowerCase()) {
+        when (operation.lowercase()) {
             "add" -> {
                 calorieskcal += ((energyKcalFormatted.toDouble() / 100) * food.grams)
                 calorieskj += ((energyKjFormatted.toDouble() / 100) * food.grams)

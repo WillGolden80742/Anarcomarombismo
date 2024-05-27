@@ -119,8 +119,8 @@ class formExercise : AppCompatActivity() {
         editTextLoad = findViewById(R.id.editTextLoad)
         editTextRest = findViewById(R.id.editTextRest) // Inicialização do novo campo para repouso
         editTextCadence = findViewById(R.id.editTextCadence) // Inicialização do novo campo para cadência
-        addExerciseButton = findViewById(R.id.addCaloriesButton)
-        removeExerciseButton = findViewById(R.id.editTrainingButton)
+        addExerciseButton = findViewById(R.id.addFoodFormButton)
+        removeExerciseButton = findViewById(R.id.removeFoodFormButton)
     }
 
     private fun loadExerciseIfExistInCache() {

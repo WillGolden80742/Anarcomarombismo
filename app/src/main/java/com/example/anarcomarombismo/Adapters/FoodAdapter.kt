@@ -1,13 +1,16 @@
 package com.example.anarcomarombismo.Adapters
 
 import android.content.Context
+import android.content.Intent
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Food
-import java.text.DecimalFormat
+import com.example.anarcomarombismo.formFoods
 
 class FoodAdapter(context: Context, foodList: List<Food>) :
     ArrayAdapter<Food>(context, 0, foodList) {
@@ -24,9 +27,9 @@ class FoodAdapter(context: Context, foodList: List<Food>) :
         val text2 = convertViewVar.findViewById<TextView>(android.R.id.text2)
 
         text1.text = currentItem?.foodDescription
-
         text2.text = currentItem?.toString()
 
         return convertViewVar
     }
+
 }

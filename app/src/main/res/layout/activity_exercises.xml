@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dailyCaloriesTitle" />
 
     <Button
-        android:id="@+id/addCaloriesButton"
+        android:id="@+id/addFoodFormButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -46,14 +46,14 @@
         app:iconSize="42dp"
         app:iconTint="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editTrainingButton"
+        app:layout_constraintEnd_toStartOf="@+id/removeFoodFormButton"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList"
         app:layout_constraintVertical_bias="1" />
 
     <Button
-        android:id="@+id/editTrainingButton"
+        android:id="@+id/removeFoodFormButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toEndOf="@+id/addCaloriesButton"
+        app:layout_constraintStart_toEndOf="@+id/addFoodFormButton"
         app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList"
         app:layout_constraintVertical_bias="1" />
 

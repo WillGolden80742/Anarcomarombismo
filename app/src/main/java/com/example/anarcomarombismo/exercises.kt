@@ -26,9 +26,9 @@ class exercises : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
-        addExerciseButton = findViewById(R.id.addCaloriesButton)
+        addExerciseButton = findViewById(R.id.addFoodFormButton)
         exerciseList = findViewById(R.id.caloriesFoodList)
-        editTraining = findViewById(R.id.editTrainingButton)
+        editTraining = findViewById(R.id.removeFoodFormButton)
         descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
         // Obtém o ID do treinamento passado como extra
         trainingID = intent.getLongExtra("trainingID", 0)

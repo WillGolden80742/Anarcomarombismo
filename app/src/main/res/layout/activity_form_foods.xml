@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".formFoods">
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+      <TextView
+          android:id="@+id/textViewName"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:text="@string/descri_o_de_comida"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <EditText
+          android:id="@+id/editTextName"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/insira_a_descri_o_da_comida"
+          android:inputType="textPersonName"
+          app:layout_constraintBottom_toTopOf="@+id/textViewGrams"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+      <TextView
+          android:id="@+id/textViewGrams"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/gramas"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextGrams"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
+      <EditText
+          android:id="@+id/editTextGrams"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/insira_gramas"
+          android:inputType="numberDecimal"
+          android:text="100.0"
+          app:layout_constraintBottom_toTopOf="@+id/textViewProtein"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewGrams" />
+
+      <TextView
+          android:id="@+id/textViewProtein"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/protein"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextProtein"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextGrams" />
+
+      <EditText
+          android:id="@+id/editTextProtein"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/enter_protein"
+          android:inputType="numberDecimal"
+          android:text="0.0"
+          app:layout_constraintBottom_toTopOf="@+id/textViewCarbohydrate"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewProtein" />
+
+      <TextView
+          android:id="@+id/textViewCarbohydrate"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/carbohydrate"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextCarbohydrate"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextProtein" />
+
+      <EditText
+          android:id="@+id/editTextCarbohydrate"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/enter_carbohydrate"
+          android:inputType="numberDecimal"
+          android:text="0.0"
+          app:layout_constraintBottom_toTopOf="@+id/textViewLipids"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewCarbohydrate" />
+
+      <TextView
+          android:id="@+id/textViewLipids"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/lipids"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextLipids"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextCarbohydrate" />
+
+      <EditText
+          android:id="@+id/editTextLipids"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/enter_lipids"
+          android:inputType="numberDecimal"
+          android:text="0.0"
+          app:layout_constraintBottom_toTopOf="@+id/textViewCholesterol"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewLipids" />
+
+      <TextView
+          android:id="@+id/textViewCholesterol"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/cholesterol"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextCholesterol"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextLipids" />
+
+      <EditText
+          android:id="@+id/editTextCholesterol"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/enter_cholesterol"
+          android:inputType="numberDecimal"
+          android:text="0.0"
+          app:layout_constraintBottom_toTopOf="@+id/textViewDietaryFiber"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewCholesterol" />
+
+      <TextView
+          android:id="@+id/textViewDietaryFiber"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/dietary_fiber"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextDietaryFiber"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextCholesterol" />
+
+      <EditText
+          android:id="@+id/editTextDietaryFiber"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/enter_dietary_fiber"
+          android:inputType="numberDecimal"
+          android:text="0.0"
+          app:layout_constraintBottom_toTopOf="@+id/textViewSodium"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewDietaryFiber" />
+
+      <TextView
+          android:id="@+id/textViewSodium"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/sodium"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextSodium"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextDietaryFiber" />
+
+      <EditText
+          android:id="@+id/editTextSodium"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/enter_sodium"
+          android:inputType="numberDecimal"
+          android:text="0.0"
+          app:layout_constraintBottom_toTopOf="@+id/textViewCaloriesKcal"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewSodium" />
+
+      <TextView
+          android:id="@+id/textViewCaloriesKcal"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:text="@string/calories_kcal"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          app:layout_constraintBottom_toTopOf="@+id/editTextCaloriesKcal"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextSodium" />
+
+      <EditText
+          android:id="@+id/editTextCaloriesKcal"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginEnd="20dp"
+          android:layout_marginBottom="8dp"
+          android:ems="10"
+          android:hint="@string/enter_calories_kcal"
+          android:inputType="numberDecimal"
+          android:text="100.0"
+          app:layout_constraintBottom_toTopOf="@+id/addFoodFormButton"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/textViewCaloriesKcal" />
+
+      <Button
+          android:id="@+id/addFoodFormButton"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="20dp"
+          android:layout_marginEnd="20dp"
+          android:backgroundTint="#fefd02"
+          android:text="@string/add_nutrition_info"
+          android:textColor="#000000"
+          app:icon="@drawable/ic_fluent_save_24_regular"
+          app:iconGravity="textStart"
+          app:iconSize="32dp"
+          app:iconTint="#000000"
+          app:layout_constraintBottom_toTopOf="@+id/removeFoodFormButton"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/editTextCaloriesKcal"
+          tools:iconSize="32dp" />
+
+      <Button
+          android:id="@+id/removeFoodFormButton"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginEnd="20dp"
+          android:backgroundTint="#fefd02"
+          android:text="@string/remove_nutrition_info"
+          android:textColor="#000000"
+          app:icon="@drawable/ic_fluent_delete_24_regular"
+          app:iconGravity="textStart"
+          app:iconSize="32dp"
+          app:iconTint="#000000"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="1.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@+id/addFoodFormButton"
+          app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
