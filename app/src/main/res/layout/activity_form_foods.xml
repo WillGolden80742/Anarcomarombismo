@@ -37,7 +37,6 @@
           android:layout_marginBottom="8dp"
           android:ems="10"
           android:hint="@string/insira_a_descri_o_da_comida"
-          android:text="@string/nome_de_comida"
           android:inputType="textPersonName"
           app:layout_constraintBottom_toTopOf="@+id/textViewGrams"
           app:layout_constraintEnd_toEndOf="parent"
