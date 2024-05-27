@@ -49,8 +49,8 @@
     <string name="update_nutrition_info">Actualizar Información Nutricional</string>
     <string name="update_nutrition_sucessful">¡Información Nutricional actualizada con éxito!</string>
     <string name="remove_nutrition_info">Eliminar Información Nutricional</string>
-    <string name="adicionar_calorias">Agregar Calorías</string>
-    <string name="add_comida">Agregar Alimento</string>
+    <string name="adicionar_calorias">Calorías</string>
+    <string name="add_comida">Alimento</string>
     <string name="descri_o_de_comida">Descripción de comida</string>
     <string name="insira_a_descri_o_da_comida">Ingrese la descripción de la comida</string>
     <string name="cholesterol">Colesterol (mg)</string>
