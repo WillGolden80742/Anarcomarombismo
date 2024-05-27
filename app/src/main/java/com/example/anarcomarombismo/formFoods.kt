@@ -119,7 +119,7 @@ class formFoods : AppCompatActivity() {
         if (foodDescription.isEmpty() || grams == 0.0 || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
             dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()) {
             // Mostrar mensagem de erro indicando qual campo está vazio
-            Toast.makeText(this, "Todos os campos são obrigatórios", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.todos_os_campos_s_o_obrigat_rios), Toast.LENGTH_SHORT).show()
             return // Impede a execução do código restante se algum campo estiver vazio
         }
 
