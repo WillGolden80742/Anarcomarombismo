@@ -15,6 +15,7 @@ class formFoods : AppCompatActivity() {
 
     private lateinit var editTextName: EditText
     private lateinit var editTextGrams: EditText
+    private lateinit var editTextHumidity: EditText
     private lateinit var editTextProtein: EditText
     private lateinit var editTextCarbohydrate: EditText
     private lateinit var editTextLipids: EditText
@@ -36,6 +37,7 @@ class formFoods : AppCompatActivity() {
         // Inicializando os componentes
         editTextName = findViewById(R.id.editTextName)
         editTextGrams = findViewById(R.id.editTextGrams)
+        editTextHumidity = findViewById(R.id.editTextHumidity)
         editTextProtein = findViewById(R.id.editTextProtein)
         editTextCarbohydrate = findViewById(R.id.editTextCarbohydrate)
         editTextLipids = findViewById(R.id.editTextLipids)
@@ -63,6 +65,7 @@ class formFoods : AppCompatActivity() {
                 currentFood = foodNutritionList.find { it.foodNumber == foodID.toString() }!!
                 editTextName.setText(currentFood.foodDescription)
                 editTextGrams.setText(currentFood.grams.toString())
+                editTextHumidity.setText(currentFood.moisture)
                 editTextProtein.setText(currentFood.protein)
                 editTextCarbohydrate.setText(currentFood.carbohydrate)
                 editTextLipids.setText(currentFood.lipids)
@@ -107,6 +110,7 @@ class formFoods : AppCompatActivity() {
     fun createFood() {
         val foodDescription = editTextName.text.toString()
         var grams = editTextGrams.text.toString().toDouble()
+        var moisture = editTextHumidity.text.toString()
         val protein = editTextProtein.text.toString()
         val carbohydrate = editTextCarbohydrate.text.toString()
         val lipids = editTextLipids.text.toString()
@@ -116,7 +120,7 @@ class formFoods : AppCompatActivity() {
         val calorieskcal = editTextCaloriesKcal.text.toString()
 
         // Verificar se todos os campos estão preenchidos
-        if (foodDescription.isEmpty() || grams == 0.0 || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
+        if (foodDescription.isEmpty() || grams == 0.0 || moisture.isEmpty() || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
             dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()) {
             // Mostrar mensagem de erro indicando qual campo está vazio
             Toast.makeText(this, getString(R.string.todos_os_campos_s_o_obrigat_rios), Toast.LENGTH_SHORT).show()
@@ -134,6 +138,7 @@ class formFoods : AppCompatActivity() {
                 grams = 100.0
             }
             this.grams = 100.0
+            this.moisture = moisture
             this.protein = (protein.toDouble() / grams * 100).toString()
             this.carbohydrate = (carbohydrate.toDouble() / grams * 100).toString()
             this.lipids = (lipids.toDouble() / grams * 100).toString()
@@ -166,6 +171,7 @@ class formFoods : AppCompatActivity() {
     fun updateFood() {
         val foodDescription = editTextName.text.toString()
         var grams = editTextGrams.text.toString().toDouble()
+        val moisture = editTextHumidity.text.toString()
         val protein = editTextProtein.text.toString()
         val carbohydrate = editTextCarbohydrate.text.toString()
         val lipids = editTextLipids.text.toString()
@@ -175,9 +181,8 @@ class formFoods : AppCompatActivity() {
         val calorieskcal = editTextCaloriesKcal.text.toString()
 
         // Verificar se todos os campos estão preenchidos val foodDescription = editTextName.text.toString() var grams = editTextGrams.text.toString().toDouble() val protein = editTextProtein.text.toString() val carbohydrate = editTextCarbohydrate.text.toString() val lipids = editTextLipids.text.toString() val cholesterol = editTextCholesterol.text.toString() val dietaryFiber = editTextDietaryFiber.text.toString() val sodium = editTextSodium.text.toString() val calorieskcal = editTextCaloriesKcal.text.toString()
-        if (foodDescription.isEmpty() || grams == 0.0 || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
-            dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()
-            ) {
+        if (foodDescription.isEmpty() || grams == 0.0 || moisture.isEmpty() || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
+            dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()) {
             // Mostrar mensagem de erro indicando qual campo está vazio
             Toast.makeText(this, getString(R.string.todos_os_campos_s_o_obrigat_rios), Toast.LENGTH_SHORT).show()
             return // Impede a execução do código restante se algum campo estiver vazio
@@ -194,6 +199,7 @@ class formFoods : AppCompatActivity() {
                 grams = 100.0
             }
             this.grams = 100.0
+            this.moisture = moisture
             this.protein = (protein.toDouble() / grams * 100).toString()
             this.carbohydrate = (carbohydrate.toDouble() / grams * 100).toString()
             this.lipids = (lipids.toDouble() / grams * 100).toString()

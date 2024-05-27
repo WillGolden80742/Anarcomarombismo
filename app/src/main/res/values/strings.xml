@@ -37,6 +37,7 @@
     <string name="enter_carbohydrate">Insira o carboidrato</string>
     <string name="enter_cholesterol">Insira o colesterol</string>
     <string name="enter_dietary_fiber">Insira a fibra dietética</string>
+    <string name="enter_humidity">Insira a umidade</string>
     <string name="enter_lipids">Insira os lipídios</string>
     <string name="enter_protein">Insira a proteína</string>
     <string name="enter_sodium">Insira o sódio</string>
@@ -46,6 +47,7 @@
     <string name="flex_o_plantar_em_p">Flexão Plantar em Pé</string>
     <string name="flex_o_plantar_sentado">Flexão Plantar Sentado</string>
     <string name="gramas">Gramas</string>
+    <string name="humidity">Umidade (%)</string>
     <string name="insira_a_descri_o_da_comida">Insira a descrição da comida</string>
     <string name="insira_gramas">Insira Gramas</string>
     <string name="leg_press">Leg Press</string>

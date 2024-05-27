@@ -37,6 +37,7 @@
     <string name="enter_carbohydrate">Enter carbohydrate</string>
     <string name="enter_cholesterol">Enter cholesterol</string>
     <string name="enter_dietary_fiber">Enter dietary fiber</string>
+    <string name="enter_humidity">Enter humidity</string>
     <string name="enter_lipids">Enter lipids</string>
     <string name="enter_protein">Enter protein</string>
     <string name="enter_sodium">Enter sodium</string>
@@ -46,6 +47,7 @@
     <string name="flex_o_plantar_em_p">Standing Calf Raise</string>
     <string name="flex_o_plantar_sentado">Seated Calf Raise</string>
     <string name="gramas">Grams</string>
+    <string name="humidity">Humidity (%)</string>
     <string name="insira_a_descri_o_da_comida">Enter the food description</string>
     <string name="insira_gramas">Enter Grams</string>
     <string name="leg_press">Leg Press</string>

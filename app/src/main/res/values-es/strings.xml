@@ -29,6 +29,7 @@
     <string name="description_hint">Ingrese la descripción</string>
     <string name="desenvolvimento_militar">Press Militar</string>
     <string name="dietary_fiber">Fibra Dietética (g)</string>
+    <string name="enter_humidity">Ingrese la humedad</string>
     <string name="eleva_o_frontal_com_halteres">Elevación Frontal con Mancuernas</string>
     <string name="eleva_o_lateral">Elevación Lateral</string>
     <string name="encolhimento_de_ombros_com_barra">Encogimiento de Hombros con Barra</string>
@@ -46,6 +47,7 @@
     <string name="flex_o_plantar_em_p">Flexión Plantar de Pie</string>
     <string name="flex_o_plantar_sentado">Flexión Plantar Sentado</string>
     <string name="gramas">Gramos</string>
+    <string name="humidity">Humedad (%)</string>
     <string name="insira_a_descri_o_da_comida">Ingrese la descripción de la comida</string>
     <string name="insira_gramas">Ingrese Gramos</string>
     <string name="leg_press">Prensa de Piernas</string>
