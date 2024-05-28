@@ -268,7 +268,9 @@ class formExercise : AppCompatActivity() {
          if (!modifiedText.contains("youtu.be") && !modifiedText.contains("youtube")) {
              return ""
          }
-
+         if (modifiedText.contains("https://www.youtube.com/embed/")) {
+             return modifiedText
+         }
         // Remove "&feature=youtu.be" and "?si=..."
         modifiedText = modifiedText.replace(Regex("[&?]feature=youtu\\.be|si=.*"), "")
 
