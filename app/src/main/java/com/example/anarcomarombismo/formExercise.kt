@@ -3,6 +3,9 @@ package com.example.anarcomarombismo
 import com.example.anarcomarombismo.Controller.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -18,6 +21,8 @@ import kotlinx.coroutines.withContext
 
 class formExercise : AppCompatActivity() {
 
+    private lateinit var webView: WebView
+    private lateinit var editTextVideoLink: EditText
     private lateinit var editTextExerciseName: EditText
     private lateinit var editTextSets: EditText
     private lateinit var editTextRepetitions: EditText
@@ -47,7 +52,19 @@ class formExercise : AppCompatActivity() {
         editTextRepetitions.addTextChangedListener {
             formatRepetitionsAndCountSets(it)
         }
-
+        // listener change editTextVideoLink focus lost
+        editTextVideoLink.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                try {
+                    val formattedLink = generateYouTubeEmbedLink(editTextVideoLink.text.toString())
+                    editTextVideoLink.setText(formattedLink)
+                    embedVideo(formattedLink)
+                } catch (e: Exception) {
+                    editTextVideoLink.setText("")
+                    System.out.println("Erro ao formatar o link do vídeo: " + e.message)
+                }
+            }
+        }
     }
 
     fun formatRepetitionsAndCountSets(it: CharSequence?) {
@@ -113,35 +130,64 @@ class formExercise : AppCompatActivity() {
         }
     }
     private fun instantiateFields() {
+        webView = findViewById(R.id.webView)
+        val webSettings: WebSettings = webView.settings
+        webSettings.javaScriptEnabled = true
+        webView.webViewClient = WebViewClient()
+        // get value from raw.vector_banner.txt and load it into the webView
+        webView.setBackgroundColor(0x00000000)
+        editTextVideoLink = findViewById(R.id.editTextVideoLink)
         editTextExerciseName = findViewById(R.id.editTextExerciseName)
         editTextSets = findViewById(R.id.editTextSets)
         editTextRepetitions = findViewById(R.id.editTextRepetitions)
         editTextLoad = findViewById(R.id.editTextLoad)
         editTextRest = findViewById(R.id.editTextRest) // Inicialização do novo campo para repouso
         editTextCadence = findViewById(R.id.editTextCadence) // Inicialização do novo campo para cadência
-        addExerciseButton = findViewById(R.id.addFoodFormButton)
-        removeExerciseButton = findViewById(R.id.removeFoodFormButton)
+        addExerciseButton = findViewById(R.id.addExerciseFormButton)
+        removeExerciseButton = findViewById(R.id.removeExerciseFormButton)
     }
 
     private fun loadExerciseIfExistInCache() {
         val cache = Cache()
         val jsonUtil = JSON()
-        if (exerciseID > 0) {
-            val exerciseArray = jsonUtil.fromJson(cache.getCache(this, "Exercicios_$trainingID"), Array<Exercise>::class.java)
 
-            for (exercise in exerciseArray) {
-                if (exercise.exerciseID == exerciseID) {
-                    editTextExerciseName.setText(exercise.name)
-                    editTextSets.setText(exercise.sets.toString())
-                    editTextRepetitions.setText(exercise.repetitions.toString())
-                    editTextLoad.setText(exercise.load.toString())
-                    editTextRest.setText(exercise.rest.toString()) // Definir o valor do campo de repouso
-                    editTextCadence.setText(exercise.cadence) // Definir o valor do campo de cadência
-                    addExerciseButton.text = "Atualizar Exercício"
+        CoroutineScope(Dispatchers.Main).launch {
+            if (exerciseID > 0) {
+                val exerciseArray = withContext(Dispatchers.IO) {
+                    jsonUtil.fromJson(cache.getCache(this@formExercise, "Exercicios_$trainingID"), Array<Exercise>::class.java)
                 }
+
+                for (exercise in exerciseArray) {
+                    if (exercise.exerciseID == exerciseID) {
+                        val formattedLink = generateYouTubeEmbedLink(exercise.LinkVideo)
+                        editTextVideoLink.setText(formattedLink)
+                        embedVideo(formattedLink)
+                        editTextExerciseName.setText(exercise.name)
+                        editTextSets.setText(exercise.sets.toString())
+                        editTextRepetitions.setText(exercise.repetitions.toString())
+                        editTextLoad.setText(exercise.load.toString())
+                        editTextRest.setText(exercise.rest.toString())
+                        editTextCadence.setText(exercise.cadence)
+                        addExerciseButton.text = "Atualizar Exercício"
+                    }
+                }
+            } else {
+                removeExerciseButton.isVisible = false
             }
-        } else {
-            removeExerciseButton.isVisible = false
+        }
+    }
+
+    fun embedVideo(formattedLink: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            if (formattedLink.isNotEmpty()) {
+                webView.loadUrl(formattedLink)
+            } else {
+                val text = withContext(Dispatchers.IO) {
+                    val inputStream = resources.openRawResource(R.raw.vector_banner)
+                    inputStream.bufferedReader().use { it.readText() }
+                }
+                webView.loadUrl("data:image/svg+xml;base64," + text)
+            }
         }
     }
 
@@ -167,6 +213,7 @@ class formExercise : AppCompatActivity() {
 
         var exercise = Exercise(
             trainingID,
+            editTextVideoLink.text.toString(),
             exerciseID,
             editTextExerciseName.text.toString().takeIf { it.isNotEmpty() } ?: exerciseHint,
             editTextSets.text.toString().toIntOrNull() ?: defaultSets.toInt(),
@@ -214,4 +261,71 @@ class formExercise : AppCompatActivity() {
         Toast.makeText(this, getString(R.string.remove_exercise_successful), Toast.LENGTH_SHORT).show()
         finish()
     }
+
+     fun generateYouTubeEmbedLink(text: String): String {
+        var modifiedText = text
+
+         if (!modifiedText.contains("youtu.be") && !modifiedText.contains("youtube")) {
+             return ""
+         }
+
+        // Remove "&feature=youtu.be" and "?si=..."
+        modifiedText = modifiedText.replace(Regex("[&?]feature=youtu\\.be|si=.*"), "")
+
+        // Separate "&t=" if present
+        var timeParameter = ""
+        if (modifiedText.contains("&t=")) {
+            val parts = modifiedText.split("&t=", limit = 2)
+            modifiedText = parts[0]
+            timeParameter = "&t=" + parts[1]
+        }
+
+        // Extract video ID from the link
+        var id = ""
+        when {
+            modifiedText.contains("/live/") -> {
+                // Handle live link
+                id = modifiedText.split("/live/")[1]
+            }
+            modifiedText.contains("/shorts/") || modifiedText.contains("/shorts?") -> {
+                // Handle shorts link
+                id = modifiedText.split("/shorts/")[1].split("?")[0]
+            }
+            modifiedText.contains("&") -> {
+                // Handle regular YouTube link with parameters
+                val query = modifiedText.split("?", limit = 2)[1]
+                val queryParams = query.split("&")
+                for (param in queryParams) {
+                    if (param.startsWith("v=")) {
+                        id = param.split("=")[1]
+                        break
+                    }
+                }
+            }
+            modifiedText.contains("youtube.com/") -> {
+                // Handle regular YouTube link without parameters
+                id = modifiedText
+                if (modifiedText.contains("watch?v=")) {
+                    id = modifiedText.split("watch?v=")[1]
+                }
+            }
+            modifiedText.contains("youtu.be/") -> {
+                // Handle youtu.be link
+                id = modifiedText.split("youtu.be/")[1]
+            }
+        }
+
+        id = id.replace(Regex("[?\r\n]"), "").split("&")[0]
+
+        // Generate embed link
+        var embedLink = "https://www.youtube.com/embed/$id"
+
+        // Reconcatenate "&t=" parameter
+        if (timeParameter.isNotEmpty()) {
+            embedLink += "?" + timeParameter.trimStart('&')
+        }
+
+        return embedLink
+    }
+
 }

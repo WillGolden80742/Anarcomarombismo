@@ -99,4 +99,6 @@
     <string name="update_training">Update</string>
     <string name="update_training_successful">Training updated successfully!</string>
     <string name="ver">View</string>
+    <string name="video_link">Video Link (youtube)</string>
+    <string name="video_link_hint">Enter the video link (Youtube only)</string>
 </resources>

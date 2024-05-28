@@ -5,6 +5,7 @@ import com.example.anarcomarombismo.R
 
 class Exercise(
     var trainingID: Long,
+    var LinkVideo: String ,
     var exerciseID: Long,
     var name: String = "Exercício",
     var sets: Int = 3,
