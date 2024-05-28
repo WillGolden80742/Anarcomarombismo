@@ -269,7 +269,7 @@ class formExercise : AppCompatActivity() {
              return ""
          }
          if (modifiedText.contains("https://www.youtube.com/embed/")) {
-             return modifiedText+"?autoplay=1"
+             return modifiedText
          }
         // Remove "&feature=youtu.be" and "?si=..."
         modifiedText = modifiedText.replace(Regex("[&?]feature=youtu\\.be|si=.*"), "")
@@ -326,7 +326,6 @@ class formExercise : AppCompatActivity() {
         if (timeParameter.isNotEmpty()) {
             embedLink += "?" + timeParameter.trimStart('&')
         }
-        embedLink += "?autoplay=1"
         return embedLink
     }
 
