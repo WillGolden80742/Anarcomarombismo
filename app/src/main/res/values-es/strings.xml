@@ -101,4 +101,7 @@
     <string name="ver">Ver</string>
     <string name="video_link">Enlace de Video (youtube)</string>
     <string name="video_link_hint">Ingrese el enlace del video (Solo Youtube)</string>
+    <string name="opening_food_details">Abriendo detalles de comida</string>
+    <string name="double_click_to_open_food_details">Doble click para abrir detalles de comida</string>
+    <string name="daily_calories_removed_successfully">Calorías diarias eliminadas con éxito</string>
 </resources>

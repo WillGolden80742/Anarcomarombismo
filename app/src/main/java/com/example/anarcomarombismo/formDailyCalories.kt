@@ -142,7 +142,8 @@ class formDailyCalories : AppCompatActivity() {
                 if (dailyCaloriesListFiltered.isNotEmpty()) {
                     dailyCaloriesList = dailyCaloriesList.minus(dailyCaloriesListFiltered)
                     cache.setCache(this, "dailyCalories", jsonUtil.toJson(dailyCaloriesList))
-                    Toast.makeText(this, "Daily calories removed successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,
+                        getString(R.string.daily_calories_removed_successfully), Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -165,7 +166,8 @@ class formDailyCalories : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             val currentTime = SystemClock.elapsedRealtime()
             if (clickCount) {
-                Toast.makeText(this@formDailyCalories, "Double click to open food details", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@formDailyCalories,
+                    getString(R.string.double_click_to_open_food_details), Toast.LENGTH_SHORT).show()
                 clickCount = false
             }
             if (currentTime - lastClickTime < 300) {
@@ -174,7 +176,8 @@ class formDailyCalories : AppCompatActivity() {
                     putExtra("foodID", food.foodNumber)
                 }
                 startActivity(intent)
-                Toast.makeText(this@formDailyCalories, "Opening food details", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@formDailyCalories,
+                    getString(R.string.opening_food_details), Toast.LENGTH_SHORT).show()
             }
             lastClickTime = currentTime
         }

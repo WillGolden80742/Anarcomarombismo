@@ -41,6 +41,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewGrams"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
       <TextView
@@ -73,6 +75,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewHumidity"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewGrams" />
 
       <TextView
@@ -105,6 +109,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewProtein"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewHumidity" />
 
       <TextView
@@ -138,6 +144,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewCarbohydrate"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewProtein" />
 
       <TextView
@@ -170,6 +178,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewLipids"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewCarbohydrate" />
 
       <TextView
@@ -202,6 +212,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewCholesterol"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewLipids" />
 
       <TextView
@@ -234,6 +246,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewDietaryFiber"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewCholesterol" />
 
       <TextView
@@ -265,6 +279,8 @@
           android:text="0.0"
           app:layout_constraintBottom_toTopOf="@+id/textViewSodium"
           app:layout_constraintEnd_toEndOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/textViewDietaryFiber" />
 
@@ -298,6 +314,8 @@
           app:layout_constraintBottom_toTopOf="@+id/textViewCaloriesKcal"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewSodium" />
 
       <TextView
@@ -330,6 +348,8 @@
           app:layout_constraintBottom_toTopOf="@+id/addFoodFormButton"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
+          android:background="@drawable/edittext_background"
+          android:padding="12dp"
           app:layout_constraintTop_toBottomOf="@+id/textViewCaloriesKcal" />
 
       <Button
@@ -339,13 +359,13 @@
           android:layout_marginStart="20dp"
           android:layout_marginTop="20dp"
           android:layout_marginEnd="20dp"
-          android:backgroundTint="#fefd02"
+          android:backgroundTint="@color/button_color"
           android:text="@string/add_nutrition_info"
-          android:textColor="#000000"
+          android:textColor="@color/yellow"
           app:icon="@drawable/ic_fluent_save_24_regular"
           app:iconGravity="textStart"
           app:iconSize="32dp"
-          app:iconTint="#000000"
+          app:iconTint="@color/yellow"
           app:layout_constraintBottom_toTopOf="@+id/removeFoodFormButton"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="0.0"
@@ -359,13 +379,13 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="20dp"
           android:layout_marginEnd="20dp"
-          android:backgroundTint="#fefd02"
+          android:backgroundTint="@color/button_color"
           android:text="@string/remove_nutrition_info"
-          android:textColor="#000000"
+          android:textColor="@color/yellow"
           app:icon="@drawable/ic_fluent_delete_24_regular"
           app:iconGravity="textStart"
           app:iconSize="32dp"
-          app:iconTint="#000000"
+          app:iconTint="@color/yellow"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintHorizontal_bias="1.0"
