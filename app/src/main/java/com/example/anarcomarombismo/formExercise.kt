@@ -134,7 +134,7 @@ class formExercise : AppCompatActivity() {
         val webSettings: WebSettings = webView.settings
         webSettings.javaScriptEnabled = true
         webView.webViewClient = WebViewClient()
-        // get value from raw.vector_banner.txt and load it into the webView
+        embedVideo("")
         webView.setBackgroundColor(0x00000000)
         editTextVideoLink = findViewById(R.id.editTextVideoLink)
         editTextExerciseName = findViewById(R.id.editTextExerciseName)
