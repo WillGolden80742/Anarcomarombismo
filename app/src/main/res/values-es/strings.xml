@@ -105,4 +105,5 @@
     <string name="double_click_to_open_food_details">Doble click para abrir detalles de comida</string>
     <string name="daily_calories_removed_successfully">Calorías diarias eliminadas con éxito</string>
     <string name="treino">Treino</string>
+    <string name="fill_all_fields">Rellene todos los campos</string>
 </resources>

@@ -205,6 +205,12 @@ class formExercise : AppCompatActivity() {
         val defaultSets = getString(R.string.default_sets)
         val exerciseHint = getString(R.string.exercise_hint)
 
+        // Verificar se todos os campos estão preenchidos
+        if (editTextVideoLink.text.toString().isEmpty() || editTextExerciseName.text.toString().isEmpty() || editTextSets.text.toString().isEmpty() || editTextRepetitions.text.toString().isEmpty() || editTextLoad.text.toString().isEmpty()) {
+            Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val exerciseArray = if (cache.hasCache(this, "Exercicios_$trainingID")) {
             jsonUtil.fromJson(cache.getCache(this, "Exercicios_$trainingID"), Array<Exercise>::class.java)
         } else {
