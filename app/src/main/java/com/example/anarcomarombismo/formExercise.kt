@@ -268,71 +268,50 @@ class formExercise : AppCompatActivity() {
         finish()
     }
 
-     fun generateYouTubeEmbedLink(text: String): String {
-        var modifiedText = text
+    fun generateYouTubeEmbedLink(text: String): String {
+        var modifiedText = text.trim()
 
-         if (!modifiedText.contains("youtu.be") && !modifiedText.contains("youtube")) {
-             return ""
-         }
-         if (modifiedText.contains("https://www.youtube.com/embed/")) {
-             return modifiedText
-         }
-        // Remove "&feature=youtu.be" and "?si=..."
-        modifiedText = modifiedText.replace(Regex("[&?]feature=youtu\\.be|si=.*"), "")
-
-        // Separate "&t=" if present
-        var timeParameter = ""
-        if (modifiedText.contains("&t=")) {
-            val parts = modifiedText.split("&t=", limit = 2)
-            modifiedText = parts[0]
-            timeParameter = "&t=" + parts[1]
+        // Return empty string if the input doesn't contain YouTube or youtu.be links
+        if (!modifiedText.contains("youtu.be") && !modifiedText.contains("youtube")) {
+            return ""
         }
 
-        // Extract video ID from the link
-        var id = ""
-        when {
-            modifiedText.contains("/live/") -> {
-                // Handle live link
-                id = modifiedText.split("/live/")[1]
-            }
-            modifiedText.contains("/shorts/") || modifiedText.contains("/shorts?") -> {
-                // Handle shorts link
-                id = modifiedText.split("/shorts/")[1].split("?")[0]
-            }
-            modifiedText.contains("&") -> {
-                // Handle regular YouTube link with parameters
-                val query = modifiedText.split("?", limit = 2)[1]
-                val queryParams = query.split("&")
-                for (param in queryParams) {
-                    if (param.startsWith("v=")) {
-                        id = param.split("=")[1]
-                        break
-                    }
-                }
-            }
+        // Return the link if it's already in embed format
+        if (modifiedText.contains("https://www.youtube.com/embed/")) {
+            return modifiedText
+        }
+
+        // Remove unnecessary parameters
+        modifiedText = modifiedText.replace(Regex("[&?](feature=youtu\\.be|si=.*)"), "")
+
+        // Extract the time parameter if it exists
+        val timeParameter = modifiedText.substringAfter("&t=", "").let {
+            if (it.isNotEmpty()) "?t=$it" else ""
+        }
+        modifiedText = modifiedText.substringBefore("&t=")
+
+        // Extract video ID based on different URL patterns
+        val videoId = when {
+            modifiedText.contains("/live/") -> modifiedText.substringAfter("/live/").substringBefore("?")
+            modifiedText.contains("/shorts/") -> modifiedText.substringAfter("/shorts/").substringBefore("?")
             modifiedText.contains("youtube.com/") -> {
-                // Handle regular YouTube link without parameters
-                id = modifiedText
                 if (modifiedText.contains("watch?v=")) {
-                    id = modifiedText.split("watch?v=")[1]
-                }
+                    modifiedText.substringAfter("watch?v=").substringBefore("&")
+                } else ""
             }
-            modifiedText.contains("youtu.be/") -> {
-                // Handle youtu.be link
-                id = modifiedText.split("youtu.be/")[1]
-            }
+            modifiedText.contains("youtu.be/") -> modifiedText.substringAfter("youtu.be/").substringBefore("?")
+            else -> ""
         }
 
-        id = id.replace(Regex("[?\r\n]"), "").split("&")[0]
-
-        // Generate embed link
-        var embedLink = "https://www.youtube.com/embed/$id"
-
-        // Reconcatenate "&t=" parameter
-        if (timeParameter.isNotEmpty()) {
-            embedLink += "?" + timeParameter.trimStart('&')
+        // Return empty string if no valid video ID is found
+        if (videoId.isEmpty()) {
+            return ""
         }
+
+        // Generate the embed link
+        val embedLink = "https://www.youtube.com/embed/$videoId$timeParameter"
         return embedLink
     }
+
 
 }

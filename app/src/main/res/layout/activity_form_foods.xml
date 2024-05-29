@@ -363,7 +363,6 @@
           android:hint="@string/enter_calories_kcal"
           android:inputType="numberDecimal"
           android:text="100.0"
-          app:layout_constraintBottom_toTopOf="@id/addFoodFormButton"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           android:background="@drawable/edittext_background"
