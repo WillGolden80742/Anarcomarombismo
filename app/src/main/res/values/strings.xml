@@ -18,6 +18,7 @@
     <string name="cholesterol">Colesterol (mg)</string>
     <string name="costas_e_b_ceps">Costas e Bíceps</string>
     <string name="crucifixo_com_halteres">Crucifixo com Halteres</string>
+    <string name="daily_calories_removed_successfully">Calorias Diárias removidas com sucesso</string>
     <string name="daily_calories_saved_successfully">Daily calories saved successfully</string>
     <string name="default_cadence">3-1-3</string>
     <string name="default_reps">10,10,10</string>
@@ -29,10 +30,13 @@
     <string name="description_hint">Insira a descrição</string>
     <string name="desenvolvimento_militar">Desenvolvimento Militar</string>
     <string name="dietary_fiber">Fibra Dietética (g)</string>
+    <string name="double_click_to_open_food_details">Duplo clique para abrir detalhes do alimento</string>
     <string name="eleva_o_frontal_com_halteres">Elevação Frontal com Halteres</string>
     <string name="eleva_o_lateral">Elevação Lateral</string>
     <string name="encolhimento_de_ombros_com_barra">Encolhimento de Ombros com Barra</string>
     <string name="encolhimento_de_ombros_com_halteres">Encolhimento de Ombros com Halteres</string>
+    <string name="energy_kcal">Calorias (kcal)</string>
+    <string name="energy_kj">Calorias (kj)</string>
     <string name="enter_calories_kcal">Insira as calorias (kcal)</string>
     <string name="enter_carbohydrate">Insira o carboidrato</string>
     <string name="enter_cholesterol">Insira o colesterol</string>
@@ -44,18 +48,22 @@
     <string name="exercise_hint">Insira o nome do exercício</string>
     <string name="exercise_name">Nome do Exercício</string>
     <string name="extens_o_de_pernas">Extensão de Pernas</string>
+    <string name="fill_all_fields">Preencha todos os campos</string>
     <string name="flex_o_plantar_em_p">Flexão Plantar em Pé</string>
     <string name="flex_o_plantar_sentado">Flexão Plantar Sentado</string>
     <string name="gramas">Gramas</string>
     <string name="humidity">Umidade (%)</string>
+    <string name="informa_es_nutricionais">Informações Nutricionais</string>
     <string name="insira_a_descri_o_da_comida">Insira a descrição da comida</string>
     <string name="insira_gramas">Insira Gramas</string>
     <string name="leg_press">Leg Press</string>
     <string name="lipids">Lipídios (g)</string>
     <string name="load">Carga (kg)</string>
     <string name="load_hint">Insira a carga em quilogramas</string>
+    <string name="moisture">Umidade (%)</string>
     <string name="nome_de_comida">Nome de comida</string>
     <string name="ombro_e_trap_zio">Ombro e Trapézio</string>
+    <string name="opening_food_details">Abrindo Detalhes do Alimento</string>
     <string name="peito_e_tr_ceps">Peito e Tríceps</string>
     <string name="pernas_e_panturrilha">Pernas e Panturrilha</string>
     <string name="protein">Proteína (g)</string>
@@ -73,7 +81,6 @@
     <string name="rosca_alternada_com_halteres">Rosca Alternada com Halteres</string>
     <string name="rosca_direta">Rosca Direta</string>
     <string name="salvar">salvar</string>
-    <string name="save">Salvar</string>
     <string name="save_exercise_successful">Exercício salvo com sucesso!</string>
     <string name="save_training_successful">Treino salvo com sucesso!</string>
     <string name="seconds_hint">Insira o tempo de descanso em segundos</string>
@@ -88,6 +95,7 @@
     <string name="tr_ceps_testa">Tríceps Testa</string>
     <string name="training_name">Nome</string>
     <string name="training_name_hint">Insira o nome</string>
+    <string name="treino">Treino</string>
     <string name="treino_a">Treino A</string>
     <string name="treino_b">Treino B</string>
     <string name="treino_c">Treino C</string>
@@ -101,9 +109,4 @@
     <string name="ver">Ver</string>
     <string name="video_link">Link de Vídeo (youtube)</string>
     <string name="video_link_hint">Insira o link de video (Youtube apenas)</string>
-    <string name="opening_food_details">Abrindo Detalhes do Alimento</string>
-    <string name="double_click_to_open_food_details">Duplo clique para abrir detalhes do alimento</string>
-    <string name="daily_calories_removed_successfully">Calorias Diárias removidas com sucesso</string>
-    <string name="treino">Treino</string>
-    <string name="fill_all_fields">Preencha todos os campos</string>
 </resources>

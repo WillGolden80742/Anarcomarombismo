@@ -25,7 +25,7 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
         nameTextView.text = currentExercise.name
 
         val descriptionTextView = listItemView.findViewById<TextView>(R.id.textViewItem)
-        descriptionTextView.text = currentExercise.toString()
+        descriptionTextView.text = currentExercise.toString(context)
 
         // Define um clique no item para iniciar a atividade addExercise
         listItemView.setOnClickListener {

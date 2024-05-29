@@ -231,29 +231,7 @@ class formDailyCalories : AppCompatActivity() {
         }
     }
     fun setFoodToFoodList() {
-        GlobalScope.launch(Dispatchers.IO) {
-            val jsonUtil = JSON()
-            val cache = Cache()
-            try {
-                val foodNutritionList: List<Food>
-                if (cache.hasCache(this@formDailyCalories,"Alimentos")) {
-                    foodNutritionList = jsonUtil.fromJson(cache.getCache(this@formDailyCalories,"Alimentos"), Array<Food>::class.java).toList()
-                    println("Lido de cache")
-                } else {
-                    val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader()
-                            .use { it.readText() }
-                    foodNutritionList = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
-                    cache.setCache(this@formDailyCalories,"Alimentos",jsonContent)
-                }
-                // ordenar a lista de alimentos by foodDescription
-                withContext(Dispatchers.Main) {
-                    val adapter = FoodAdapter(this@formDailyCalories, foodNutritionList.sortedBy { it.foodDescription })
-                    listFoodsView.adapter = adapter
-                }
-            } catch (e: Exception) {
-                println(RuntimeException("Erro ao ler o arquivo JSON: $e"))
-            }
-        }
+        searchFood("")
     }
     fun calculeTotalCalories(it: CharSequence?) {
         try {

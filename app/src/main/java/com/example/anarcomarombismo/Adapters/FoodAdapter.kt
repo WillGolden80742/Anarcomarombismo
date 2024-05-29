@@ -24,7 +24,7 @@ class FoodAdapter(context: Context, foodList: List<Food>) :
         val detailsTextView = listItemView.findViewById<TextView>(R.id.textViewItem)
 
         descriptionTextView.text = currentItem?.foodDescription
-        detailsTextView.text = currentItem?.toString()
+        detailsTextView.text = currentItem?.toString(context)
 
         return listItemView
     }

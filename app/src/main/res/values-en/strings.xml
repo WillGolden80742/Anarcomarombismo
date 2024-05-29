@@ -18,6 +18,7 @@
     <string name="cholesterol">Cholesterol (mg)</string>
     <string name="costas_e_b_ceps">Back and Biceps</string>
     <string name="crucifixo_com_halteres">dumbbell flyes</string>
+    <string name="daily_calories_removed_successfully">Daily calories removed successfully</string>
     <string name="daily_calories_saved_successfully">Daily calories saved successfully</string>
     <string name="default_cadence">3-1-3</string>
     <string name="default_reps">10,10,10</string>
@@ -29,10 +30,13 @@
     <string name="description_hint">Enter the description</string>
     <string name="desenvolvimento_militar">military press</string>
     <string name="dietary_fiber">Dietary Fiber (g)</string>
+    <string name="double_click_to_open_food_details">Double click to open food details</string>
     <string name="eleva_o_frontal_com_halteres">front raise</string>
     <string name="eleva_o_lateral">lateral raise</string>
     <string name="encolhimento_de_ombros_com_barra">shrugs</string>
     <string name="encolhimento_de_ombros_com_halteres">dumbbell shrugs</string>
+    <string name="energy_kcal">Calories (kcal)</string>
+    <string name="energy_kj">Calories (kj)</string>
     <string name="enter_calories_kcal">Enter calories (kcal)</string>
     <string name="enter_carbohydrate">Enter carbohydrate</string>
     <string name="enter_cholesterol">Enter cholesterol</string>
@@ -44,18 +48,22 @@
     <string name="exercise_hint">Enter the exercise name</string>
     <string name="exercise_name">Exercise Name</string>
     <string name="extens_o_de_pernas">Leg Extension</string>
+    <string name="fill_all_fields">Fill all fields</string>
     <string name="flex_o_plantar_em_p">Standing Calf Raise</string>
     <string name="flex_o_plantar_sentado">Seated Calf Raise</string>
     <string name="gramas">Grams</string>
     <string name="humidity">Humidity (%)</string>
+    <string name="informa_es_nutricionais">Nutritional Information</string>
     <string name="insira_a_descri_o_da_comida">Enter the food description</string>
     <string name="insira_gramas">Enter Grams</string>
     <string name="leg_press">Leg Press</string>
     <string name="lipids">Lipids (g)</string>
     <string name="load">Load (kg)</string>
     <string name="load_hint">Enter the load in kilograms</string>
+    <string name="moisture">Moisture (%)</string>
     <string name="nome_de_comida">Food Name</string>
     <string name="ombro_e_trap_zio">Shoulder and Trapezius</string>
+    <string name="opening_food_details">Opening food details</string>
     <string name="peito_e_tr_ceps">Chest and Triceps</string>
     <string name="pernas_e_panturrilha">Legs and Calves</string>
     <string name="protein">Protein (g)</string>
@@ -73,7 +81,6 @@
     <string name="rosca_alternada_com_halteres">dumbbell curl</string>
     <string name="rosca_direta">barbell curl</string>
     <string name="salvar">save</string>
-    <string name="save">Save</string>
     <string name="save_exercise_successful">Exercise saved successfully!</string>
     <string name="save_training_successful">Training saved successfully!</string>
     <string name="seconds_hint">Enter the rest time in seconds</string>
@@ -88,6 +95,7 @@
     <string name="tr_ceps_testa">skull crushers</string>
     <string name="training_name">Name</string>
     <string name="training_name_hint">Enter the name</string>
+    <string name="treino">Training</string>
     <string name="treino_a">Training A</string>
     <string name="treino_b">Training B</string>
     <string name="treino_c">Training C</string>
@@ -101,9 +109,4 @@
     <string name="ver">View</string>
     <string name="video_link">Video Link (youtube)</string>
     <string name="video_link_hint">Enter the video link (Youtube only)</string>
-    <string name="opening_food_details">Opening food details</string>
-    <string name="double_click_to_open_food_details">Double click to open food details</string>
-    <string name="daily_calories_removed_successfully">Daily calories removed successfully</string>
-    <string name="treino">Training</string>
-    <string name="fill_all_fields">Fill all fields</string>
 </resources>

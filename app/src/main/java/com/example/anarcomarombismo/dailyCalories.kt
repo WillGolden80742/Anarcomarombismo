@@ -82,7 +82,7 @@ class dailyCalories : AppCompatActivity() {
                     dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
                 }
                 // Ordenar a lista por data (ano -> mês -> dia)
-                dailyCaloriesList = dailyCaloriesList.sortedBy { dailyCalories ->
+                dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
                     val dateParts = dailyCalories.date.split("/")
                     // Converter a data para o formato YYYYMMDD para ordenação correta
                     "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt()
