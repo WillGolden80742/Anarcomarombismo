@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="#000000">
+
+    <TextView
+        android:id="@+id/trainingTitleTextViewItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:paddingBottom="4dp" />
+
+    <TextView
+        android:id="@+id/trainingTextViewItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#CCCCCC"
+        android:textSize="18sp"
+        android:paddingTop="4dp"
+        android:layout_below="@id/trainingTitleTextViewItem" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:clickable="false"
+        app:backgroundTint="@color/button_color"
+        app:srcCompat="@drawable/ic_fluent_play_24_regular"
+        app:tint="@color/yellow" />
+
+</RelativeLayout>

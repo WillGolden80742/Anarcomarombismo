@@ -25,7 +25,8 @@
           android:textAppearance="?android:attr/textAppearanceMedium"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+          app:layout_constraintTop_toTopOf="parent"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextName"
@@ -58,7 +59,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextGrams"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextName"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextGrams"
@@ -92,7 +94,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextHumidity"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextGrams" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextGrams"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextHumidity"
@@ -126,7 +129,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextProtein"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextHumidity" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextHumidity"
+          android:textSize="24dp" />
 
       <!-- The rest of your code remains the same -->
       <EditText
@@ -161,7 +165,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextCarbohydrate"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextProtein" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextProtein"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextCarbohydrate"
@@ -195,7 +200,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextLipids"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextCarbohydrate" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextCarbohydrate"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextLipids"
@@ -229,7 +235,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextCholesterol"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextLipids" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextLipids"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextCholesterol"
@@ -263,7 +270,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextDietaryFiber"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextCholesterol" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextCholesterol"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextDietaryFiber"
@@ -297,7 +305,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextSodium"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextDietaryFiber" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextDietaryFiber"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextSodium"
@@ -331,7 +340,8 @@
           app:layout_constraintBottom_toTopOf="@+id/editTextCaloriesKcal"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextSodium" />
+          app:layout_constraintTop_toBottomOf="@+id/editTextSodium"
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextCaloriesKcal"

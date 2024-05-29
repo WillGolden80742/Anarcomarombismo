@@ -17,6 +17,7 @@
         android:layout_marginTop="120dp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:divider="@drawable/list_divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

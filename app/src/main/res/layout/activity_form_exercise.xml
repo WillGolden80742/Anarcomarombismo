@@ -39,7 +39,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/video_link"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/editTextVideoLink"
@@ -60,7 +61,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/exercise_name"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/editTextExerciseName"
@@ -82,7 +84,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/reps"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/editTextRepetitions"
@@ -105,7 +108,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/sets"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/editTextSets"
@@ -128,7 +132,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/load"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/editTextLoad"
@@ -150,7 +155,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/rest"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/editTextRest"
@@ -173,7 +179,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/cadence"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
 
             <EditText
                 android:id="@+id/editTextCadence"

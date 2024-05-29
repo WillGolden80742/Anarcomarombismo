@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Training
+import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.exercises
 
 class TrainingAdapter(context: Context, private val trainingList: Array<Training>, private val listener: OnTrainingItemClickListener) : ArrayAdapter<Training>(context, 0, trainingList) {
@@ -19,20 +20,20 @@ class TrainingAdapter(context: Context, private val trainingList: Array<Training
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView
         if (listItemView == null) {
-            listItemView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, parent, false)
+            listItemView = LayoutInflater.from(context).inflate(R.layout.training_list_item, parent, false)
         }
 
         val currentTraining = trainingList[position]
 
-        val nameTextView = listItemView!!.findViewById<TextView>(android.R.id.text1)
-        nameTextView.text = currentTraining.name
+        val titleTextView = listItemView!!.findViewById<TextView>(R.id.trainingTitleTextViewItem)
+        titleTextView.text = currentTraining.name
 
-        val descriptionTextView = listItemView.findViewById<TextView>(android.R.id.text2)
+        val descriptionTextView = listItemView.findViewById<TextView>(R.id.trainingTextViewItem)
         descriptionTextView.text = currentTraining.description
 
         listItemView.setOnClickListener {
             listener.onItemClick(currentTraining)
-            var intent = Intent(context, exercises::class.java)
+            val intent = Intent(context, exercises::class.java)
             intent.putExtra("trainingID", currentTraining.trainingID)
             context.startActivity(intent)
         }
