@@ -16,7 +16,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="19dp"
         android:text="@string/anarcomarombismo"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/yellow"
         android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@+id/trainingList"
         app:layout_constraintEnd_toEndOf="parent"

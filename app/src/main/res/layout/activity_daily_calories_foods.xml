@@ -69,6 +69,7 @@
         android:layout_marginBottom="6dp"
         android:text="@string/selecione_alimento"
         android:textAlignment="center"
+        android:textColor="@color/yellow"
         android:textSize="24dp"
         app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
         app:layout_constraintEnd_toEndOf="parent"

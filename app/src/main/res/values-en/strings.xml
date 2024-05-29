@@ -104,4 +104,5 @@
     <string name="opening_food_details">Opening food details</string>
     <string name="double_click_to_open_food_details">Double click to open food details</string>
     <string name="daily_calories_removed_successfully">Daily calories removed successfully</string>
+    <string name="treino">Training</string>
 </resources>
