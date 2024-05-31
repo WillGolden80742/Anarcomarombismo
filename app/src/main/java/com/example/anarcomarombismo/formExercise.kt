@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
+import com.example.anarcomarombismo.Controller.Tree
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -33,7 +34,6 @@ class formExercise : AppCompatActivity() {
     private lateinit var removeExerciseButton: Button
     private var trainingID: Long = 0
     private var exerciseID: Long = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_exercise)
@@ -65,7 +65,52 @@ class formExercise : AppCompatActivity() {
                 }
             }
         }
+
+        dumpMuscle ().forEach { muscle ->
+            print(muscle.toString())
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        loadExerciseIfExistInCache()
+    }
+
+    // muscle
+    fun dumpMuscle(): Set<Tree> {
+        val musculos = Tree("Músculos")
+        val membrosSuperiores = Tree("Membros Superiores").also { musculos.addNode(it) }
+        val tronco = Tree("Tronco").also { musculos.addNode(it) }
+        val membrosInferiores = Tree("Membros Inferiores").also { musculos.addNode(it) }
+        Tree("Bíceps").also { membrosSuperiores.addNode(it) }
+        Tree("Tríceps").also { membrosSuperiores.addNode(it) }
+        Tree("Peitoral").also { membrosSuperiores.addNode(it) }
+        val deltoides = Tree("Deltóides").also { membrosSuperiores.addNode(it) }
+        Tree("Deltóides Anterior").also { deltoides.addNode(it) }
+        Tree("Deltóides Lateral").also { deltoides.addNode(it) }
+        Tree("Deltóides Posterior").also { deltoides.addNode(it) }
+        val abdominais = Tree("Abdominais").also { tronco.addNode(it) }
+        Tree("Reto Abdominal").also { abdominais.addNode(it) }
+        Tree("Oblíquos Externos").also { abdominais.addNode(it) }
+        Tree("Oblíquos Internos").also { abdominais.addNode(it) }
+        Tree("Dorsal").also { tronco.addNode(it) }
+        Tree("Serrátil Anterior").also { tronco.addNode(it) }
+        val costas = Tree("Costas").also { tronco.addNode(it) }
+        Tree("Transverso Abdominal").also { abdominais.addNode(it) }
+        Tree("Trapézio").also { costas.addNode(it) }
+        Tree("Romboides").also { costas.addNode(it) }
+        Tree("Dorsal").also { costas.addNode(it) }
+        Tree("Eretores da Coluna").also { costas.addNode(it) }
+        val coxas = Tree("Coxas").also { membrosInferiores.addNode(it) }
+        Tree("Quadríceps").also { coxas.addNode(it) }
+        Tree("Adutores").also { coxas.addNode(it) }
+        Tree("Posterior de Coxa").also { coxas.addNode(it) }
+        Tree("Glúteos").also { membrosInferiores.addNode(it) }
+        Tree("Panturrilhas").also { membrosInferiores.addNode(it) }
+        // println("all leafs: " + JSON().toJson(musculos.getLeafs()))E
+        return musculos.getLeafs()
+    }
+
 
     fun formatRepetitionsAndCountSets(it: CharSequence?) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -191,10 +236,7 @@ class formExercise : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        loadExerciseIfExistInCache()
-    }
+
 
     private fun saveExercise() {
         val cache = Cache()
