@@ -92,35 +92,32 @@ class formExercise : AppCompatActivity() {
     // muscle
     fun dumpMuscle(): Set<Tree> {
         /*
-            Músculos
-            ├── Membros Superiores
-            │   ├── Bíceps
-            │   ├── Tríceps
-            │   ├── Peitoral
-            │   └── Deltóides
-            │       ├── Deltóides Anterior
-            │       ├── Deltóides Lateral
-            │       └── Deltóides Posterior
-            ├── Tronco
-            │   ├── Abdominais
-            │   │   ├── Reto Abdominal
-            │   │   ├── Oblíquos Externos
-            │   │   ├── Oblíquos Internos
-            │   │   └── Transverso Abdominal
-            │   ├── Dorsal
-            │   ├── Serrátil Anterior
-            │   └── Costas
-            │       ├── Trapézio
-            │       ├── Romboides
-            │       ├── Dorsal
-            │       └── Eretores da Coluna
-            └── Membros Inferiores
-                ├── Coxas
-                │   ├── Quadríceps
-                │   ├── Adutores
-                │   └── Posterior de Coxa
-                ├── Glúteos
-                └── Panturrilhas
+            Muscles:20
+            ├── Upper Limbs:6
+            │   ├── Triceps:1
+            │   ├── Chest:1
+            │   └── Deltoids:3
+            │       ├── Anterior Deltoids:1
+            │       ├── Lateral Deltoids:1
+            │       └── Posterior Deltoids:1
+            ├── Trunk:9
+            │   ├── Abdominals:4
+            │   │   ├── Rectus Abdominis:1
+            │   │   ├── External Obliques:1
+            │   │   ├── Internal Obliques:1
+            │   │   └── Transverse Abdominis:1
+            │   ├── Back:1
+            │   │   ├── Trapezius:1
+            │   │   ├── Rhomboids:1
+            │   │   └── Erector Spinae:1
+            │   └── Serratus Anterior:1
+            └── Lower Limbs:5
+                ├── Thighs:3
+                │   ├── Quadriceps:1
+                │   ├── Adductors:1
+                │   └── Hamstrings:1
+                ├── Glutes:1
+                └── Calves:1
         */
         val musculos = Tree(R.string.m_sculos)
         val membrosSuperiores = Tree(R.string.membros_superiores).also { musculos.addNode(it) }
