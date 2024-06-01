@@ -14,8 +14,6 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
-import com.google.gson.Gson
-import com.google.gson.JsonObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
