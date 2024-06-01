@@ -65,8 +65,18 @@ class formExercise : AppCompatActivity() {
                 }
             }
         }
+        loadMuscleTree()
+    }
 
-        dumpMuscle ().forEach { muscle ->
+    // show muscle tree
+    fun loadMuscleTree() {
+        val muscle = Tree("")
+        val leafs = dumpMuscle()
+        leafs.forEach { muscle ->
+            print(muscle.setValueInternal(1))
+        }
+        muscle.sumAllNodes()
+        leafs.forEach { muscle ->
             print(muscle.toString())
         }
     }
@@ -78,6 +88,37 @@ class formExercise : AppCompatActivity() {
 
     // muscle
     fun dumpMuscle(): Set<Tree> {
+        /*
+            Músculos
+            ├── Membros Superiores
+            │   ├── Bíceps
+            │   ├── Tríceps
+            │   ├── Peitoral
+            │   └── Deltóides
+            │       ├── Deltóides Anterior
+            │       ├── Deltóides Lateral
+            │       └── Deltóides Posterior
+            ├── Tronco
+            │   ├── Abdominais
+            │   │   ├── Reto Abdominal
+            │   │   ├── Oblíquos Externos
+            │   │   ├── Oblíquos Internos
+            │   │   └── Transverso Abdominal
+            │   ├── Dorsal
+            │   ├── Serrátil Anterior
+            │   └── Costas
+            │       ├── Trapézio
+            │       ├── Romboides
+            │       ├── Dorsal
+            │       └── Eretores da Coluna
+            └── Membros Inferiores
+                ├── Coxas
+                │   ├── Quadríceps
+                │   ├── Adutores
+                │   └── Posterior de Coxa
+                ├── Glúteos
+                └── Panturrilhas
+        */
         val musculos = Tree("Músculos")
         val membrosSuperiores = Tree("Membros Superiores").also { musculos.addNode(it) }
         val tronco = Tree("Tronco").also { musculos.addNode(it) }
@@ -99,7 +140,6 @@ class formExercise : AppCompatActivity() {
         Tree("Transverso Abdominal").also { abdominais.addNode(it) }
         Tree("Trapézio").also { costas.addNode(it) }
         Tree("Romboides").also { costas.addNode(it) }
-        Tree("Dorsal").also { costas.addNode(it) }
         Tree("Eretores da Coluna").also { costas.addNode(it) }
         val coxas = Tree("Coxas").also { membrosInferiores.addNode(it) }
         Tree("Quadríceps").also { coxas.addNode(it) }
@@ -107,7 +147,6 @@ class formExercise : AppCompatActivity() {
         Tree("Posterior de Coxa").also { coxas.addNode(it) }
         Tree("Glúteos").also { membrosInferiores.addNode(it) }
         Tree("Panturrilhas").also { membrosInferiores.addNode(it) }
-        // println("all leafs: " + JSON().toJson(musculos.getLeafs()))E
         return musculos.getLeafs()
     }
 
