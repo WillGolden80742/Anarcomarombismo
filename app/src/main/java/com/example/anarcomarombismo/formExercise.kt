@@ -20,6 +20,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class formExercise : AppCompatActivity() {
@@ -64,7 +65,7 @@ class formExercise : AppCompatActivity() {
                     embedVideo(formattedLink)
                 } catch (e: Exception) {
                     editTextVideoLink.setText("")
-                    System.out.println("Erro ao formatar o link do vídeo: " + e.message)
+                    println("Erro ao formatar o link do vídeo: " + e.message)
                 }
             }
         }
@@ -72,15 +73,25 @@ class formExercise : AppCompatActivity() {
     }
 
     // show muscle tree
-    fun loadMuscleTree() {
+    private fun loadMuscleTree() {
         val muscle = Tree("")
         val leafs = dumpMuscle()
-        leafs.forEach { muscle ->
-            print(muscle.setValueInternal(1))
+        runBlocking {
+            leafs.forEach { leaf ->
+                launch {
+                    leaf.setValueInternal(1)
+                }
+            }
         }
-        muscle.sumAllNodes()
-        leafs.forEach { muscle ->
-            print(muscle.toString(this))
+        runBlocking {
+            muscle.sumAllNodes()
+        }
+        runBlocking {
+            leafs.forEach { leaf ->
+                launch {
+                    println(leaf.toString(this@formExercise))
+                }
+            }
         }
     }
 
