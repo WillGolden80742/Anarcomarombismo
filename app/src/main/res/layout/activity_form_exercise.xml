@@ -55,6 +55,25 @@
                 android:padding="12dp" />
 
             <TextView
+                android:id="@+id/textViewMuscleGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/muscle"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/text_primary"
+                android:textSize="24dp" />
+
+            <Spinner
+                android:id="@+id/spinnerMuscleGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp" />
+
+            <TextView
                 android:id="@+id/textViewRepetitions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

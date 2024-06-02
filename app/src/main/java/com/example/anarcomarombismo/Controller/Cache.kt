@@ -61,11 +61,6 @@ class Cache {
         }
     }
 
-    // directory is \res\json
-    fun getCacheByRes(context: Context, fileName: String): String {
-        val resourceId = context.resources.getIdentifier(fileName, "raw", context.packageName)
-        return context.resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
-    }
 
     fun hasCache(context: Context,nomeArquivo: String): Boolean {
         fileHashed(nomeArquivo)

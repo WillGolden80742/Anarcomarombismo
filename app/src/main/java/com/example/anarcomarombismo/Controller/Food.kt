@@ -40,68 +40,33 @@ class Food (
             grams = 100.00
         }
     }
-    override fun toString(): String {
-        var text:String
-        val decimalFormat = DecimalFormat("#.##")
-        if (grams > 0.0) {
-            text =
-                """ Moisture (%): ${decimalFormat.format((moisture!!.toDouble() * grams) / 100)},
-            | Energy (kcal): ${decimalFormat.format((energyKcal!!.toDouble() * grams) / 100)},
-            | Energy (kJ): ${decimalFormat.format((energyKj!!.toDouble() * grams) / 100)},
-            | Protein (g): ${decimalFormat.format((protein!!.toDouble() * grams) / 100)},
-            | Lipids (g): ${decimalFormat.format((lipids!!.toDouble() * grams) / 100)},
-            | Cholesterol (mg): ${decimalFormat.format((cholesterol!!.toDouble() * grams) / 100)},
-            | Carbohydrate (g): ${decimalFormat.format((carbohydrate!!.toDouble() * grams) / 100)},
-            | Dietary Fiber (g): ${decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100)},
-            | Sodium (mg) : ${decimalFormat.format((sodium!!.toDouble() * grams) / 100)} """.trimMargin()
-        } else {
-            text =
-                """ Moisture (%): ${decimalFormat.format(moisture!!.toDouble())},
-            | Energy (kcal): ${decimalFormat.format(energyKcal!!.toDouble())},
-            | Energy (kJ): ${decimalFormat.format(energyKj!!.toDouble())},
-            | Protein (g): ${decimalFormat.format(protein!!.toDouble())},
-            | Lipids (g): ${decimalFormat.format(lipids!!.toDouble())},
-            | Cholesterol (mg): ${decimalFormat.format(cholesterol!!.toDouble())},
-            | Carbohydrate (g): ${decimalFormat.format(carbohydrate!!.toDouble())},
-            | Dietary Fiber (g): ${decimalFormat.format(dietaryFiber!!.toDouble())},
-            | Sodium (mg) : ${decimalFormat.format(sodium!!.toDouble())} """.trimMargin()
-        }
-        return text
-    }
 
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
-
-        val moistureLabel = context.getString(R.string.moisture)
         val energyKcalLabel = context.getString(R.string.energy_kcal)
         val energyKjLabel = context.getString(R.string.energy_kj)
         val proteinLabel = context.getString(R.string.protein)
         val lipidsLabel = context.getString(R.string.lipids)
-        val cholesterolLabel = context.getString(R.string.cholesterol)
         val carbohydrateLabel = context.getString(R.string.carbohydrate)
         val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
         val sodiumLabel = context.getString(R.string.sodium)
 
         return if (grams > 0.0) {
-            moistureLabel + " : " + decimalFormat.format((moisture!!.toDouble() * grams) / 100) + ",\n" +
-                    energyKcalLabel + " : " + decimalFormat.format((energyKcal!!.toDouble() * grams) / 100) + ",\n" +
-                    energyKjLabel + " : " + decimalFormat.format((energyKj!!.toDouble() * grams) / 100) + ",\n" +
-                    proteinLabel + " : " + decimalFormat.format((protein!!.toDouble() * grams) / 100) + ",\n" +
-                    lipidsLabel + " : " + decimalFormat.format((lipids!!.toDouble() * grams) / 100) + ",\n" +
-                    cholesterolLabel + " : " + decimalFormat.format((cholesterol!!.toDouble() * grams) / 100) + ",\n" +
-                    carbohydrateLabel + " : " + decimalFormat.format((carbohydrate!!.toDouble() * grams) / 100) + ",\n" +
-                    dietaryFiberLabel + " : " + decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100) + ",\n" +
-                    sodiumLabel + " : " + decimalFormat.format((sodium!!.toDouble() * grams) / 100)
+            energyKcalLabel + " : " + decimalFormat.format((energyKcal!!.toDouble() * grams) / 100) + ",\n" +
+            energyKjLabel + " : " + decimalFormat.format((energyKj!!.toDouble() * grams) / 100) + ",\n" +
+            proteinLabel + " : " + decimalFormat.format((protein!!.toDouble() * grams) / 100) + ",\n" +
+            lipidsLabel + " : " + decimalFormat.format((lipids!!.toDouble() * grams) / 100) + ",\n" +
+            carbohydrateLabel + " : " + decimalFormat.format((carbohydrate!!.toDouble() * grams) / 100) + ",\n" +
+            dietaryFiberLabel + " : " + decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100) + ",\n" +
+            sodiumLabel + " : " + decimalFormat.format((sodium!!.toDouble() * grams) / 100)
         } else {
-            moistureLabel + " : " + decimalFormat.format(moisture!!.toDouble()) + ",\n" +
-                    energyKcalLabel + " : " + decimalFormat.format(energyKcal!!.toDouble()) + ",\n" +
-                    energyKjLabel + " : " + decimalFormat.format(energyKj!!.toDouble()) + ",\n" +
-                    proteinLabel + " : " + decimalFormat.format(protein!!.toDouble()) + ",\n" +
-                    lipidsLabel + " : " + decimalFormat.format(lipids!!.toDouble()) + ",\n" +
-                    cholesterolLabel + " : " + decimalFormat.format(cholesterol!!.toDouble()) + ",\n" +
-                    carbohydrateLabel + " : " + decimalFormat.format(carbohydrate!!.toDouble()) + ",\n" +
-                    dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber!!.toDouble()) + ",\n" +
-                    sodiumLabel + " : " + decimalFormat.format(sodium!!.toDouble())
+            energyKcalLabel + " : " + decimalFormat.format(energyKcal!!.toDouble()) + ",\n" +
+            energyKjLabel + " : " + decimalFormat.format(energyKj!!.toDouble()) + ",\n" +
+            proteinLabel + " : " + decimalFormat.format(protein!!.toDouble()) + ",\n" +
+            lipidsLabel + " : " + decimalFormat.format(lipids!!.toDouble()) + ",\n" +
+            carbohydrateLabel + " : " + decimalFormat.format(carbohydrate!!.toDouble()) + ",\n" +
+            dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber!!.toDouble()) + ",\n" +
+            sodiumLabel + " : " + decimalFormat.format(sodium!!.toDouble())
         }
     }
 }

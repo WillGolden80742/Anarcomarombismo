@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.view.size
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
@@ -18,7 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class formExercise : AppCompatActivity() {
@@ -26,6 +28,7 @@ class formExercise : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var editTextVideoLink: EditText
     private lateinit var editTextExerciseName: EditText
+    private lateinit var spinnerMuscleGroup: Spinner
     private lateinit var editTextSets: EditText
     private lateinit var editTextRepetitions: EditText
     private lateinit var editTextLoad: EditText
@@ -35,6 +38,9 @@ class formExercise : AppCompatActivity() {
     private lateinit var removeExerciseButton: Button
     private var trainingID: Long = 0
     private var exerciseID: Long = 0
+    private var leafsNames: List<String> = listOf()
+    private lateinit var leafsMap:Set<Tree>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_exercise)
@@ -42,7 +48,6 @@ class formExercise : AppCompatActivity() {
         trainingID = intent.getLongExtra("trainingID", 0)
         exerciseID = intent.getLongExtra("exerciseID", 0)
         println("ID do exercio: $exerciseID")
-        loadMuscleTree()
         loadExerciseIfExistInCache()
         addExerciseButton.setOnClickListener {
             saveExercise()
@@ -69,39 +74,14 @@ class formExercise : AppCompatActivity() {
         }
 
     }
-
-    // show muscle tree
-    private fun loadMuscleTree() {
-        val muscle = Tree("")
-        val leafs = dumpMuscle()
-        runBlocking {
-            leafs.forEach { leaf ->
-                launch {
-                    leaf.setValueInternal(1)
-                }
-            }
-        }
-        runBlocking {
-            muscle.sumAllNodes()
-        }
-        runBlocking {
-            leafs.forEach { leaf ->
-                launch {
-                    println(leaf.toString(this@formExercise))
-                }
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         loadExerciseIfExistInCache()
     }
-
     // muscle
-    fun dumpMuscle(): Set<Tree> {
+    fun dumpAndLoadMuscles(): Set<Tree> {
         /*
-            Muscles:20
+            Musclesthis,:20
             ├── Upper Limbs:6
             │   ├── Triceps:1
             │   ├── Chest:1
@@ -128,6 +108,7 @@ class formExercise : AppCompatActivity() {
                 ├── Glutes:1
                 └── Calves:1
         */
+        val leafs = Tree("").getLeafs()
         val musculos = Tree(R.string.m_sculos)
         val membrosSuperiores = Tree(R.string.membros_superiores).also { musculos.addNode(it) }
         val tronco = Tree(R.string.tronco).also { musculos.addNode(it) }
@@ -156,7 +137,14 @@ class formExercise : AppCompatActivity() {
         Tree(R.string.posterior_de_coxa).also { coxas.addNode(it) }
         Tree(R.string.gl_teos).also { membrosInferiores.addNode(it) }
         Tree(R.string.panturrilhas).also { membrosInferiores.addNode(it) }
-        return musculos.getLeafs()
+        leafs.forEach { leaf ->
+            leaf.setValueInternal(1)
+        }
+        musculos.sumAllNodes()
+        leafs.forEach { leaf ->
+            println(leaf.toString(this))
+        }
+        return leafs
     }
 
     fun formatRepetitionsAndCountSets(it: CharSequence?) {
@@ -230,6 +218,7 @@ class formExercise : AppCompatActivity() {
         webView.setBackgroundColor(0x00000000)
         editTextVideoLink = findViewById(R.id.editTextVideoLink)
         editTextExerciseName = findViewById(R.id.editTextExerciseName)
+        spinnerMuscleGroup = findViewById(R.id.spinnerMuscleGroup)
         editTextSets = findViewById(R.id.editTextSets)
         editTextRepetitions = findViewById(R.id.editTextRepetitions)
         editTextLoad = findViewById(R.id.editTextLoad)
@@ -245,6 +234,7 @@ class formExercise : AppCompatActivity() {
         val jsonUtil = JSON()
 
         CoroutineScope(Dispatchers.Main).launch {
+            loadSpinner()
             if (exerciseID > 0) {
                 val exerciseArray = withContext(Dispatchers.IO) {
                     jsonUtil.fromJson(cache.getCache(this@formExercise, "Exercicios_$trainingID"), Array<Exercise>::class.java)
@@ -256,17 +246,40 @@ class formExercise : AppCompatActivity() {
                         editTextVideoLink.setText(formattedLink)
                         embedVideo(formattedLink)
                         editTextExerciseName.setText(exercise.name)
+                        val value = leafsNames.size
+                        for (i in 0 until value) {
+                            if (spinnerMuscleGroup.getItemAtPosition(i).toString() == exercise.muscle) {
+                                spinnerMuscleGroup.setSelection(i)
+                                break
+                            }
+                        }
                         editTextSets.setText(exercise.sets.toString())
-                        editTextRepetitions.setText(exercise.repetitions.toString())
+                        editTextRepetitions.setText(exercise.repetitions)
                         editTextLoad.setText(exercise.load.toString())
                         editTextRest.setText(exercise.rest.toString())
                         editTextCadence.setText(exercise.cadence)
-                        addExerciseButton.text = "Atualizar Exercício"
+                        addExerciseButton.text = getString(R.string.atualizar_exerc_cio)
                     }
                 }
             } else {
                 removeExerciseButton.isVisible = false
             }
+        }
+    }
+
+    fun loadSpinner() {
+        try {
+            leafsMap = dumpAndLoadMuscles()
+            leafsNames = leafsMap.map { getString(it.obj as Int) }
+            leafsNames = leafsNames.sorted()
+            leafsNames = listOf(getString(R.string.select_muscle)) + leafsNames
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, leafsNames).also {
+                it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinnerMuscleGroup.adapter = it
+            }
+            spinnerMuscleGroup.setSelection(0)
+        } catch (e: Exception) {
+            println("Erro ao carregar spinner de músculos: " + e.message)
         }
     }
 
@@ -296,7 +309,7 @@ class formExercise : AppCompatActivity() {
         val exerciseHint = getString(R.string.exercise_hint)
 
         // Verificar se todos os campos estão preenchidos
-        if (editTextVideoLink.text.toString().isEmpty() || editTextExerciseName.text.toString().isEmpty() || editTextSets.text.toString().isEmpty() || editTextRepetitions.text.toString().isEmpty() || editTextLoad.text.toString().isEmpty()) {
+        if (spinnerMuscleGroup.selectedItemPosition == 0 || editTextExerciseName.text.toString().isEmpty() || editTextSets.text.toString().isEmpty() || editTextRepetitions.text.toString().isEmpty() || editTextLoad.text.toString().isEmpty()) {
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
@@ -312,6 +325,7 @@ class formExercise : AppCompatActivity() {
             editTextVideoLink.text.toString(),
             exerciseID,
             editTextExerciseName.text.toString().takeIf { it.isNotEmpty() } ?: exerciseHint,
+            spinnerMuscleGroup.getItemAtPosition(spinnerMuscleGroup.selectedItemPosition).toString(),
             editTextSets.text.toString().toIntOrNull() ?: defaultSets.toInt(),
             editTextRepetitions.text.toString() ?: defaultReps,
             editTextLoad.text.toString().toDoubleOrNull() ?: 0.0,

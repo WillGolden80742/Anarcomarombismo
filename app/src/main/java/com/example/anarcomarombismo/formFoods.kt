@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
@@ -15,14 +17,12 @@ class formFoods : AppCompatActivity() {
 
     private lateinit var editTextName: EditText
     private lateinit var editTextGrams: EditText
-    private lateinit var editTextHumidity: EditText
     private lateinit var editTextProtein: EditText
     private lateinit var editTextCarbohydrate: EditText
     private lateinit var editTextLipids: EditText
-    private lateinit var editTextCholesterol: EditText
     private lateinit var editTextDietaryFiber: EditText
     private lateinit var editTextSodium: EditText
-    private lateinit var editTextCaloriesKcal: EditText
+    private lateinit var editTextCaloriesKcal: TextView
     private lateinit var addFoodFormButton: Button
     private lateinit var removeFoodFormButton: Button
     private lateinit var foodNutritionList: List<Food>
@@ -37,11 +37,9 @@ class formFoods : AppCompatActivity() {
         // Inicializando os componentes
         editTextName = findViewById(R.id.editTextName)
         editTextGrams = findViewById(R.id.editTextGrams)
-        editTextHumidity = findViewById(R.id.editTextHumidity)
         editTextProtein = findViewById(R.id.editTextProtein)
         editTextCarbohydrate = findViewById(R.id.editTextCarbohydrate)
         editTextLipids = findViewById(R.id.editTextLipids)
-        editTextCholesterol = findViewById(R.id.editTextCholesterol)
         editTextDietaryFiber = findViewById(R.id.editTextDietaryFiber)
         editTextSodium = findViewById(R.id.editTextSodium)
         editTextCaloriesKcal = findViewById(R.id.editTextCaloriesKcal)
@@ -65,11 +63,9 @@ class formFoods : AppCompatActivity() {
                 currentFood = foodNutritionList.find { it.foodNumber == foodID.toString() }!!
                 editTextName.setText(currentFood.foodDescription)
                 editTextGrams.setText(currentFood.grams.toString())
-                editTextHumidity.setText(currentFood.moisture)
                 editTextProtein.setText(currentFood.protein)
                 editTextCarbohydrate.setText(currentFood.carbohydrate)
                 editTextLipids.setText(currentFood.lipids)
-                editTextCholesterol.setText(currentFood.cholesterol)
                 editTextDietaryFiber.setText(currentFood.dietaryFiber)
                 editTextSodium.setText(currentFood.sodium)
                 editTextCaloriesKcal.setText(currentFood.energyKcal)
@@ -91,9 +87,9 @@ class formFoods : AppCompatActivity() {
         // Listener para o botão de adicionar food
         addFoodFormButton.setOnClickListener {
             if (intent.hasExtra("foodID")) {
-                updateFood()
+                saveFood(1)
             } else {
-                createFood()
+                saveFood(0)
             }
         }
         // Listener para o botão de remove food
@@ -105,60 +101,33 @@ class formFoods : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        calcCalories(listOf(editTextProtein, editTextCarbohydrate, editTextLipids))
     }
 
-    fun createFood() {
-        val foodDescription = editTextName.text.toString()
-        var grams = editTextGrams.text.toString().toDouble()
-        var moisture = editTextHumidity.text.toString()
-        val protein = editTextProtein.text.toString()
-        val carbohydrate = editTextCarbohydrate.text.toString()
-        val lipids = editTextLipids.text.toString()
-        val cholesterol = editTextCholesterol.text.toString()
-        val dietaryFiber = editTextDietaryFiber.text.toString()
-        val sodium = editTextSodium.text.toString()
-        val calorieskcal = editTextCaloriesKcal.text.toString()
+    private fun calcCalories(editText:List<EditText>) {
+        editText.forEach { e ->
+            e.addTextChangedListener {
+                val protein = editTextProtein.text.toString()
+                val carbohydrate = editTextCarbohydrate.text.toString()
+                val lipids = editTextLipids.text.toString()
 
-        // Verificar se todos os campos estão preenchidos
-        if (foodDescription.isEmpty() || grams == 0.0 || moisture.isEmpty() || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
-            dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()) {
-            // Mostrar mensagem de erro indicando qual campo está vazio
-            Toast.makeText(this, getString(R.string.todos_os_campos_s_o_obrigat_rios), Toast.LENGTH_SHORT).show()
-            return // Impede a execução do código restante se algum campo estiver vazio
-        }
-
-        val food = Food().apply {
-            foodNumber = (System.currentTimeMillis()).toString()
-            if (foodDescription.isEmpty()) {
-                this.foodDescription = getString(R.string.nome_de_comida)
-            } else {
-                this.foodDescription = foodDescription
+                if (protein.isNotEmpty() && carbohydrate.isNotEmpty() && lipids.isNotEmpty()) {
+                    val proteinValue = protein.toDouble()
+                    val carbohydrateValue = carbohydrate.toDouble()
+                    val lipidsValue = lipids.toDouble()
+                    val calories = (proteinValue * 4 + carbohydrateValue * 4 + lipidsValue * 9)
+                    // round to 2 decimal places
+                    editTextCaloriesKcal.setText(formatDoubleNumber(calories))
+                }
             }
-            if (grams == 0.0) {
-                grams = 100.0
-            }
-            this.grams = 100.0
-            this.moisture = moisture
-            this.protein = (protein.toDouble() / grams * 100).toString()
-            this.carbohydrate = (carbohydrate.toDouble() / grams * 100).toString()
-            this.lipids = (lipids.toDouble() / grams * 100).toString()
-            this.cholesterol = (cholesterol.toDouble() / grams * 100).toString()
-            this.dietaryFiber = (dietaryFiber.toDouble() / grams * 100).toString()
-            this.sodium = (sodium.toDouble() / grams * 100).toString()
-            this.energyKcal = (calorieskcal.toDouble() / grams * 100).toString()
-            // Converter calorias para kJ
-            this.energyKj = ((calorieskcal.toDouble() / grams * 100) * 4.184).toString()
         }
-
-        // Adicionar alimento à lista e salvar no cache
-        foodNutritionList =  jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
-        cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
-
-        // Concluir e enviar a lista de alimentos para a próxima atividade
-        val intent = Intent(this, dailyCalories::class.java)
-        startActivity(intent)
-        Toast.makeText(this, getString(R.string.alimento_salvo_com_sucesso), Toast.LENGTH_SHORT).show()
     }
+
+    fun formatDoubleNumber(value: Double):String {
+        return "%.2f".format(value).replace(",", ".")
+    }
+
 
     fun removeFood() {
         foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().filter { it.foodNumber != currentFood.foodNumber }
@@ -168,61 +137,85 @@ class formFoods : AppCompatActivity() {
     }
 
     // edit food
-    fun updateFood() {
-        val foodDescription = editTextName.text.toString()
-        var grams = editTextGrams.text.toString().toDouble()
-        val moisture = editTextHumidity.text.toString()
-        val protein = editTextProtein.text.toString()
-        val carbohydrate = editTextCarbohydrate.text.toString()
-        val lipids = editTextLipids.text.toString()
-        val cholesterol = editTextCholesterol.text.toString()
-        val dietaryFiber = editTextDietaryFiber.text.toString()
-        val sodium = editTextSodium.text.toString()
-        val calorieskcal = editTextCaloriesKcal.text.toString()
+    fun saveFood(action: Int) {
+        try {
+            val foodDescription = editTextName.text.toString()
+            var grams = editTextGrams.text.toString().toDoubleOrNull() ?: 0.0
+            val protein = editTextProtein.text.toString()
+            val carbohydrate = editTextCarbohydrate.text.toString()
+            val lipids = editTextLipids.text.toString()
+            val dietaryFiber = editTextDietaryFiber.text.toString()
+            val sodium = editTextSodium.text.toString()
+            val calorieskcal = editTextCaloriesKcal.text.toString()
 
-        // Verificar se todos os campos estão preenchidos val foodDescription = editTextName.text.toString() var grams = editTextGrams.text.toString().toDouble() val protein = editTextProtein.text.toString() val carbohydrate = editTextCarbohydrate.text.toString() val lipids = editTextLipids.text.toString() val cholesterol = editTextCholesterol.text.toString() val dietaryFiber = editTextDietaryFiber.text.toString() val sodium = editTextSodium.text.toString() val calorieskcal = editTextCaloriesKcal.text.toString()
-        if (foodDescription.isEmpty() || grams == 0.0 || moisture.isEmpty() || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty() ||
-            dietaryFiber.isEmpty() || sodium.isEmpty() || calorieskcal.isEmpty()) {
-            // Mostrar mensagem de erro indicando qual campo está vazio
-            Toast.makeText(this, getString(R.string.todos_os_campos_s_o_obrigat_rios), Toast.LENGTH_SHORT).show()
-            return // Impede a execução do código restante se algum campo estiver vazio
-        }
-
-        val food = Food().apply {
-            foodNumber = currentFood.foodNumber
-            if (foodDescription.isEmpty()) {
-                this.foodDescription = getString(R.string.nome_de_comida)
-            } else {
-                this.foodDescription = foodDescription
+            // Verificar se todos os campos estão preenchidos
+            if (foodDescription.isEmpty() || grams == 0.0 || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty()) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.todos_os_campos_s_o_obrigat_rios),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return
             }
-            if (grams == 0.0) {
-                grams = 100.0
-            }
-            this.grams = 100.0
-            this.moisture = moisture
-            this.protein = (protein.toDouble() / grams * 100).toString()
-            this.carbohydrate = (carbohydrate.toDouble() / grams * 100).toString()
-            this.lipids = (lipids.toDouble() / grams * 100).toString()
-            this.cholesterol = (cholesterol.toDouble() / grams * 100).toString()
-            this.dietaryFiber = (dietaryFiber.toDouble() / grams * 100).toString()
-            this.sodium = (sodium.toDouble() / grams * 100).toString()
-            this.energyKcal = (calorieskcal.toDouble() / grams * 100).toString()
-            // Converter calorias para kJ
-            this.energyKj = ((calorieskcal.toDouble() / grams * 100) * 4.184).toString()
-        }
 
-        // Adicionar alimento à lista e salvar no cache
-        foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().map {
-                if (it.foodNumber == currentFood.foodNumber) {
-                    food
-                } else {
-                    it
+            val food = Food().apply {
+                if (action == 1) { // Atualizar
+                    foodNumber = currentFood.foodNumber
+                } else { // Criar
+                    foodNumber = (System.currentTimeMillis()).toString()
                 }
-        }
+                if (foodDescription.isEmpty()) {
+                    this.foodDescription = getString(R.string.nome_de_comida)
+                } else {
+                    this.foodDescription = foodDescription
+                }
+                if (grams == 0.0) {
+                    grams = 100.0
+                }
+                this.grams = 100.0
+                this.protein = formatDoubleNumber((protein.toDouble() / grams * 100))
+                this.carbohydrate = formatDoubleNumber((carbohydrate.toDouble() / grams * 100))
+                this.lipids = formatDoubleNumber((lipids.toDouble() / grams * 100))
+                this.dietaryFiber = formatDoubleNumber((dietaryFiber.toDouble() / grams * 100))
+                this.sodium = formatDoubleNumber((sodium.toDouble() / grams * 100))
+                this.energyKcal = formatDoubleNumber((calorieskcal.toDouble() / grams * 100))
+                this.energyKj = formatDoubleNumber(((calorieskcal.toDouble() / grams * 100) * 4.184))
+            }
 
-        cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
-        finish()
-        Toast.makeText(this, getString(R.string.update_nutrition_sucessful), Toast.LENGTH_SHORT).show()
+            if (action == 1) { // Atualizar
+                foodNutritionList =
+                    jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().map {
+                        if (it.foodNumber == currentFood.foodNumber) {
+                            food
+                        } else {
+                            it
+                        }
+                    }
+                Toast.makeText(
+                    this,
+                    getString(R.string.update_nutrition_sucessful),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if (action == 0) { // Criar
+                foodNutritionList =
+                    jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
+                // Concluir e enviar a lista de alimentos para a próxima atividade
+                val intent = Intent(this, dailyCalories::class.java)
+                startActivity(intent)
+                Toast.makeText(
+                    this,
+                    getString(R.string.alimento_salvo_com_sucesso),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            // Salvar no cache
+            cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            finish()
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erro ao salvar o alimento", Toast.LENGTH_SHORT).show()
+        }
     }
+
 
 }

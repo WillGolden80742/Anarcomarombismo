@@ -35,359 +35,186 @@
       app:layout_constraintEnd_toEndOf="parent">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
       <TextView
           android:id="@+id/textViewName"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:layout_marginBottom="9dp"
+          android:layout_marginBottom="8dp"
           android:text="@string/descri_o_de_comida"
           android:textAppearance="?android:attr/textAppearanceMedium"
-          android:textSize="24dp"
-          app:layout_constraintBottom_toTopOf="@+id/editTextName"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+          android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextName"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:ems="10"
           android:hint="@string/insira_a_descri_o_da_comida"
           android:inputType="textPersonName"
-          app:layout_constraintBottom_toTopOf="@+id/textViewGrams"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
           android:background="@drawable/edittext_background"
+          android:padding="12dp" />
+
+      <TextView
+          android:id="@+id/textViewCaloriesKcal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          android:text="@string/calories_kcal"
+          android:textAppearance="?android:attr/textAppearanceMedium"
+          android:textSize="24dp" />
+
+      <TextView
+          android:id="@+id/editTextCaloriesKcal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          android:background="@drawable/edittext_background"
+          android:ems="10"
+          android:hint="@string/enter_calories_kcal"
+          android:inputType="numberDecimal"
           android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+          android:text="0"
+          android:textSize="20sp" />
 
       <TextView
           android:id="@+id/textViewGrams"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:text="@string/gramas"
           android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextGrams"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextName"
           android:textSize="24dp" />
+
 
       <EditText
           android:id="@+id/editTextGrams"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:ems="10"
           android:hint="@string/insira_gramas"
           android:inputType="numberDecimal"
           android:text="100.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewHumidity"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
           android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@+id/textViewGrams" />
-
-      <TextView
-          android:id="@+id/textViewHumidity"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:layout_marginBottom="8dp"
-          android:text="@string/humidity"
-          android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextHumidity"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextGrams"
-          android:textSize="24dp" />
-
-      <EditText
-          android:id="@+id/editTextHumidity"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:layout_marginBottom="8dp"
-          android:ems="10"
-          android:hint="@string/enter_humidity"
-          android:inputType="numberDecimal"
-          android:text="70.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewProtein"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@+id/textViewHumidity" />
+          android:padding="12dp" />
 
       <TextView
           android:id="@+id/textViewProtein"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:text="@string/protein"
           android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextProtein"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextHumidity"
           android:textSize="24dp" />
 
-      <!-- The rest of your code remains the same -->
       <EditText
           android:id="@+id/editTextProtein"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:ems="10"
           android:hint="@string/enter_protein"
           android:inputType="numberDecimal"
           android:text="0.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewCarbohydrate"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
           android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@+id/textViewProtein" />
+          android:padding="12dp" />
 
       <TextView
           android:id="@+id/textViewCarbohydrate"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:text="@string/carbohydrate"
           android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextCarbohydrate"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextProtein"
           android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextCarbohydrate"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:ems="10"
           android:hint="@string/enter_carbohydrate"
           android:inputType="numberDecimal"
           android:text="0.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewLipids"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
           android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@+id/textViewCarbohydrate" />
+          android:padding="12dp" />
 
       <TextView
           android:id="@+id/textViewLipids"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:text="@string/lipids"
           android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextLipids"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextCarbohydrate"
           android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextLipids"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
-          android:background="@drawable/edittext_background"
           android:ems="10"
           android:hint="@string/enter_lipids"
           android:inputType="numberDecimal"
-          android:padding="12dp"
           android:text="0.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewCholesterol"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textViewLipids" />
-
-      <TextView
-          android:id="@+id/textViewCholesterol"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:layout_marginBottom="8dp"
-          android:text="@string/cholesterol"
-          android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextCholesterol"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextLipids"
-          android:textSize="24dp" />
-
-      <EditText
-          android:id="@+id/editTextCholesterol"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:layout_marginBottom="8dp"
-          android:ems="10"
-          android:hint="@string/enter_cholesterol"
-          android:inputType="numberDecimal"
-          android:text="0.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewDietaryFiber"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
           android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@+id/textViewCholesterol" />
+          android:padding="12dp" />
 
       <TextView
           android:id="@+id/textViewDietaryFiber"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:text="@string/dietary_fiber"
           android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextDietaryFiber"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextCholesterol"
           android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextDietaryFiber"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:ems="10"
           android:hint="@string/enter_dietary_fiber"
           android:inputType="numberDecimal"
           android:text="0.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewSodium"
-          app:layout_constraintEnd_toEndOf="parent"
           android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/textViewDietaryFiber" />
+          android:padding="12dp" />
 
       <TextView
           android:id="@+id/textViewSodium"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:text="@string/sodium"
           android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextSodium"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextDietaryFiber"
           android:textSize="24dp" />
 
       <EditText
           android:id="@+id/editTextSodium"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
           android:layout_marginBottom="8dp"
           android:ems="10"
           android:hint="@string/enter_sodium"
           android:inputType="numberDecimal"
           android:text="0.0"
-          app:layout_constraintBottom_toTopOf="@+id/textViewCaloriesKcal"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
           android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@+id/textViewSodium" />
+          android:padding="12dp" />
 
-      <TextView
-          android:id="@+id/textViewCaloriesKcal"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:layout_marginBottom="8dp"
-          android:text="@string/calories_kcal"
-          android:textAppearance="?android:attr/textAppearanceMedium"
-          app:layout_constraintBottom_toTopOf="@+id/editTextCaloriesKcal"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toBottomOf="@+id/editTextSodium"
-          android:textSize="24dp" />
+    </LinearLayout>
 
-      <EditText
-          android:id="@+id/editTextCaloriesKcal"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="20dp"
-          android:layout_marginBottom="8dp"
-          android:ems="10"
-          android:hint="@string/enter_calories_kcal"
-          android:inputType="numberDecimal"
-          android:text="100.0"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          android:background="@drawable/edittext_background"
-          android:padding="12dp"
-          app:layout_constraintTop_toBottomOf="@id/textViewCaloriesKcal" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
   </ScrollView>
 
   <androidx.constraintlayout.widget.ConstraintLayout

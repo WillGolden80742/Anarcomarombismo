@@ -2,12 +2,15 @@ package com.example.anarcomarombismo
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import com.example.anarcomarombismo.Adapters.FoodAdapter
 import com.example.anarcomarombismo.Controller.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
@@ -67,6 +70,7 @@ class formDailyCalories : AppCompatActivity() {
 
         searchButton.setOnClickListener {
             searchFood(searchEditText.text.toString())
+            hideKeyboard(this.currentFocus ?: View(this))
         }
 
         addFoodButton.setOnClickListener {
@@ -95,7 +99,7 @@ class formDailyCalories : AppCompatActivity() {
 
         searchEditText.setOnEditorActionListener { _, _, _ ->
             searchFood(searchEditText.text.toString())
-            true
+            hideKeyboard(this.currentFocus ?: View(this))
         }
 
         seeFoodsButton.setOnClickListener {
@@ -152,6 +156,11 @@ class formDailyCalories : AppCompatActivity() {
         setFoodToFoodList()
     }
 
+    fun hideKeyboard (view: View): Boolean {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        return true
+    }
     override fun onResume() {
         super.onResume()
         if (dailyCaloriesFoods.getFoodList().size !== dailyCalories.foodsList.size) {

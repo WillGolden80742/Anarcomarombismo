@@ -121,34 +121,48 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
 
     private fun dumpExercise() {
 
-        val trainingExercisesMap = mapOf<Long, Array<Exercise>>(
+        val trainingExercisesMap = mapOf(
             1L to arrayOf(
-                Exercise(1,"https://www.youtube.com/watch?v=R3Kqv2s-VXQ", 1, getString(R.string.supino_reto), 4, "8,8,8,8", 100.0),
-                Exercise(1, "https://www.youtube.com/watch?v=XOGNcjXmafQ",2, getString(R.string.supino_inclinado), 3, "10,10,10", 90.0),
-                Exercise(1, "https://www.youtube.com/watch?v=ivtmCIHELfE",3, getString(R.string.crucifixo_com_halteres), 3, "12,12,12", 20.0),
-                Exercise(1, "https://www.youtube.com/watch?v=WUPk8Gq20cs",4, getString(R.string.tr_ceps_pulley), 4, "10,10,10,10", 50.0),
-                Exercise(1, "https://www.youtube.com/watch?v=f7IVPwvq5_o",5, getString(R.string.tr_ceps_testa), 3, "12,12,12", 30.0)
+                Exercise(1, "https://www.youtube.com/watch?v=Pw-zpREJ7xo", 1, getString(R.string.dumbbell_press),getString(R.string.peitoral),4,"10,10,10,10", 100.0),
+                Exercise(1, "https://www.youtube.com/watch?v=Ky_JXqloq0w", 2, getString(R.string.dumbbell_press_30),getString(R.string.peitoral),4,"10,10,10,10", 90.0),
+                Exercise(1, "https://youtu.be/0hsnZxrhAY8?si=ZF0VDqFCBmpCkYwZ&t=331", 3,getString(R.string.dumbbell_press_less30),getString(R.string.peitoral),4,"10,10,10,10", 20.0),
+                Exercise(1, "https://www.youtube.com/watch?v=q_Qs9fdwscs", 4, getString(R.string.pullover_com_halter_deitado_no_banco_reto),getString(R.string.peitoral),4,"10,10,10,10", 50.0),
+                Exercise(1, "https://www.youtube.com/watch?v=qLtVeISKSeA&t=123s", 5, getString(R.string.tr_ceps_testa), getString(R.string.tr_ceps),4,"10,10,10,10", 30.0),
+                Exercise(1, "https://www.youtube.com/watch?v=cQ5ae1dHTAQ", 6, getString(R.string.tr_ceps_pulley), getString(R.string.tr_ceps),4,"10,10,10,10", 0.0),
+                Exercise(1, "https://www.youtube.com/watch?v=XYjcAZFNPnc", 7, getString(R.string.tr_ceps_franc_s_na_polia_baixa), getString(R.string.tr_ceps),4,"10,10,10,10", 0.0),
+                Exercise(1, "https://www.youtube.com/watch?v=iZEN4DK5BFM", 8, getString(R.string.tr_ceps_bilateral_m_quina), getString(R.string.tr_ceps),4,"10,10,10,10", 0.0)
             ),
             2L to arrayOf(
-                Exercise(2, "https://www.youtube.com/watch?v=zxfqoXEoUvc",1, getString(R.string.barra_fixa), 4, "6,6,6,6", 0.0),
-                Exercise(2, "https://www.youtube.com/watch?v=PoFFS_UMf8c",2, getString(R.string.remada_curvada), 3, "8,8,8", 0.0),
-                Exercise(2, "https://www.youtube.com/watch?v=-74jtRco5kI",3, getString(R.string.pulldown_na_polia), 3, "10,10,10", 0.0),
-                Exercise(2, "https://www.youtube.com/watch?v=TtIJUCHLSVM",4, getString(R.string.rosca_direta), 4, "10,10,10,10", 0.0),
-                Exercise(2, "https://www.youtube.com/watch?v=XkHuPKcVhBU",5, getString(R.string.rosca_alternada_com_halteres), 3, "12,12,12", 0.0)
+                Exercise(2, "https://www.youtube.com/watch?v=vUu_4jBxM1c", 1, getString(R.string.pulley_frente_tri_ngulo), getString(R.string.dorsal),4,"10,10,10,10", 0.0),
+                Exercise(2, "https://www.youtube.com/watch?v=YywSCu4Y360", 2, getString(R.string.pulley_frente_barra), getString(R.string.dorsal),4,"10,10,10,10", 0.0),
+                Exercise(2, "https://www.youtube.com/watch?v=gH_nPs_DoQI", 3, getString(R.string.pulley_articulado), getString(R.string.dorsal),4,"10,10,10,10", 0.0),
+                Exercise(2, "https://www.youtube.com/watch?v=mUgFn3aMAP4", 4, getString(R.string.remada_baixa), getString(R.string.dorsal),4,"10,10,10,10", 0.0),
+                Exercise(2, "https://www.youtube.com/watch?v=FHyZEuRpSg4", 5, getString(R.string.b_ceps_barra_w),  getString(R.string.b_ceps),4,"10,10,10,10", 0.0),
+                Exercise(2, "https://www.youtube.com/watch?v=ITRfzXEcBz0", 6, getString(R.string.rosca_martelo_alternado_cada_lado_conta_como_repeti_o),getString(R.string.b_ceps),4,"10,10,10,10", 0.0),
+                Exercise(2, "https://www.youtube.com/watch?v=1lR_dT07wBM", 7, getString(R.string.rosca_direta_na_corda),getString(R.string.b_ceps),4,"10,10,10,10", 0.0),
+                Exercise(2, "https://youtu.be/QtGkO8fRI6c?si=Vh2VoMPC3-0tsjPg&t=366", 8, getString(R.string.rosca_spider),getString(R.string.b_ceps),4,"10,10,10,10", 0.0)
             ),
             3L to arrayOf(
-                Exercise(3, "https://www.youtube.com/watch?v=hbbxJbod00k",1, getString(R.string.desenvolvimento_militar), 4, "8,8,8,8", 0.0),
-                Exercise(3, "https://www.youtube.com/watch?v=y1how8HHmOQ",2, getString(R.string.eleva_o_lateral), 3, "10,10,10", 0.0),
-                Exercise(3, "https://www.youtube.com/watch?v=w2NK3GsfzAc",3, getString(R.string.eleva_o_frontal_com_halteres), 3, "12,12,12", 0.0),
-                Exercise(3, "https://www.youtube.com/watch?v=vAiDKER9I5I",4, getString(R.string.encolhimento_de_ombros_com_barra), 4, "10,10,10,10", 0.0),
-                Exercise(3, "https://www.youtube.com/watch?v=aVjapCzICRI",5, getString(R.string.encolhimento_de_ombros_com_halteres), 3, "12,12,12", 0.0)
+                Exercise(3, "https://www.youtube.com/watch?v=eufDL9MmF8A", 1, getString(R.string.desenvolvimento_com_halteres),getString(R.string.delt_ides_anterior),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://www.youtube.com/watch?v=c7zMmbWkUPw", 2, getString(R.string.eleva_o_lateral),getString(R.string.delt_ides_lateral),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://www.youtube.com/watch?v=kKjjeiXL960", 3, getString(R.string.eleva_o_frontal),getString(R.string.delt_ides_anterior),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://youtu.be/IwWvZ0rlNXs?si=e9hu1OEBA0ikhvpL&t=45", 4, getString(R.string.eleva_o_lateral_sentado),getString(R.string.delt_ides_lateral),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://www.youtube.com/watch?v=XIJdRoAHHj4", 5, getString(R.string.remada_alta_com_barra_w), getString(R.string.trap_zio),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://youtu.be/RhGjwIUe16E?si=wSfdW_EbDDs2DbZW", 6, getString(R.string.encolhimento_com_halter_na_lateral_do_corpo), getString(R.string.trap_zio),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://youtu.be/RhGjwIUe16E?si=wSfdW_EbDDs2DbZW", 7, getString(R.string.encolhimento_com_halter_na_frente_do_corpo), getString(R.string.trap_zio),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://youtu.be/RhGjwIUe16E?si=wSfdW_EbDDs2DbZW", 8, getString(R.string.encolhimento_com_halter_detr_s_do_corpo), getString(R.string.trap_zio),4,"10,10,10,10", 0.0),
+                Exercise(3, "https://www.youtube.com/watch?v=IwWvZ0rlNXs", 9, getString(R.string.eleva_o_lateral_no_banco_inclinado),getString(R.string.delt_ides_lateral),4,"10,10,10,10", 0.0)
             ),
             4L to arrayOf(
-                Exercise(4, "https://www.youtube.com/watch?v=fYvifUC5Nac",1, getString(R.string.agachamento_livre), 4, "10,10,10,10", 0.0),
-                Exercise(4, "https://www.youtube.com/watch?v=qL3YKlcdFUw",2, getString(R.string.leg_press), 3, "12,12,12", 0.0),
-                Exercise(4, "https://www.youtube.com/watch?v=mzfs2LZrFPg",3, getString(R.string.extens_o_de_pernas), 3, "12,12,12", 0.0),
-                Exercise(4, "https://www.youtube.com/watch?v=FURGALhnSks",4, getString(R.string.flex_o_plantar_em_p), 4, "15,15,15,15", 0.0),
-                Exercise(4, "https://www.youtube.com/watch?v=1NBoneuGtQo",5, getString(R.string.flex_o_plantar_sentado), 3, "15,15,15,15", 0.0)
+                Exercise(4, "https://www.youtube.com/watch?v=emujvqD_Pq8", 1, getString(R.string.panturrilhas), getString(R.string.panturrilhas),6,"15,15,15,15,15,15", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=g-73WZ_c6m4", 2, getString(R.string.agachamento_livre), getString(R.string.quadr_ceps),4,"10,10,10,10", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=adPY6cd4h58", 3, getString(R.string.leg_press_45), getString(R.string.quadr_ceps),4,"10,10,10,10", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=pTUfuTLoTQU", 4, getString(R.string.cadeira_flexora), getString(R.string.posterior_de_coxa),4,"10,10,10,10", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=I_uBK4DDflU", 5, getString(R.string.cadeira_extensora), getString(R.string.quadr_ceps),4,"10,10,10,10", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=KIoiwCfcTXM", 6, getString(R.string.mesa_flexora), getString(R.string.posterior_de_coxa),4,"10,10,10,10", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=SNu9SM_j3b4", 7, getString(R.string.abdu_o_de_perna_na_m_quina), getString(R.string.gl_teos),4,"10,10,10,10", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=SNu9SM_j3b4", 8, getString(R.string.adu_o_de_perna_na_m_quina), getString(R.string.adutores),4,"10,10,10,10", 0.0),
+                Exercise(4, "https://www.youtube.com/watch?v=_6ElJLyBXcE", 9, getString(R.string.agachamento_stiff),getString(R.string.posterior_de_coxa),4,"10,10,10,10", 0.0)
             )
         )
 

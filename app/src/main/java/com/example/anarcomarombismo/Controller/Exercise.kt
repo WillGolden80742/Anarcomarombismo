@@ -8,6 +8,7 @@ class Exercise(
     var LinkVideo: String ,
     var exerciseID: Long,
     var name: String = "Exercício",
+    var muscle: String = "",
     var sets: Int = 3,
     var repetitions: String = "10,10,10",
     var load: Double = 20.0, // Carga padrão em kg
@@ -16,10 +17,10 @@ class Exercise(
 ) {
 
     fun toString(context: Context): String {
-        return "${context.getString(R.string.sets)}: $sets, ${context.getString(R.string.reps)}: $repetitions, ${context.getString(R.string.load)}: $load, ${context.getString(R.string.rest)}: $rest, ${context.getString(R.string.cadence)}: $cadence"
+        return "${context.getString(R.string.muscle)}: $muscle, ${context.getString(R.string.sets)}: $sets, ${context.getString(R.string.reps)}: $repetitions, ${context.getString(R.string.load)}: $load, ${context.getString(R.string.rest)}: $rest, ${context.getString(R.string.cadence)}: $cadence"
     }
 
     override fun toString(): String {
-        return "sets: $sets, repetitions: $repetitions, load:$load, rest: $rest, cadence: '$cadence'"
+        return "Muscle: $muscle, sets: $sets, repetitions: $repetitions, load:$load, rest: $rest, cadence: '$cadence'"
     }
 }
