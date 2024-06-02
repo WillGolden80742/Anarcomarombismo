@@ -102,6 +102,10 @@ class formDailyCalories : AppCompatActivity() {
             hideKeyboard(this.currentFocus ?: View(this))
         }
 
+        searchEditText.setOnClickListener {
+            searchEditText.setText("")
+        }
+
         seeFoodsButton.setOnClickListener {
             callDailyCaloriesFoods()
         }
@@ -159,7 +163,6 @@ class formDailyCalories : AppCompatActivity() {
     fun hideKeyboard (view: View): Boolean {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        searchEditText.setText("")
         return true
     }
     override fun onResume() {
