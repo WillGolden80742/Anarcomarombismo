@@ -159,12 +159,6 @@ class formDailyCalories : AppCompatActivity() {
 
         setFoodToFoodList()
     }
-
-    fun hideKeyboard (view: View): Boolean {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        return true
-    }
     override fun onResume() {
         super.onResume()
         if (dailyCaloriesFoods.getFoodList().size !== dailyCalories.foodsList.size) {
@@ -173,6 +167,11 @@ class formDailyCalories : AppCompatActivity() {
             totalCaloriesLabel.text = "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
         }
         setFoodToFoodList()
+    }
+    fun hideKeyboard (view: View): Boolean {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        return true
     }
 
     private fun click(food: Food) {
@@ -213,6 +212,9 @@ class formDailyCalories : AppCompatActivity() {
                         dailyCalories.date = selectedDate
                         dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
                         totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
+                    }
+                    if (dailyCalories.foodsList.isNotEmpty()) {
+                        seeFoodsButton.isEnabled = true
                     }
                 }
             }
@@ -301,6 +303,7 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     fun addFoodToDailyList() {
+        seeFoodsButton.isEnabled = true
         try {
             currentFood?.let { food ->
                 gramsEditText.text.toString().toDoubleOrNull()?.let { grams ->
@@ -324,7 +327,6 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     fun saveDailyCalories() {
-        addFoodToDailyList()
         val cache = Cache()
         val jsonUtil = JSON()
         try {

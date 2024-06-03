@@ -162,26 +162,27 @@
         app:layout_constraintTop_toBottomOf="@+id/addFoodButton"
         app:layout_constraintVertical_bias="0.8" />
 
-    <Button
-        android:id="@+id/seeFoodsButton"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/button_color"
-        android:text="@string/ver"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_eye_show_24_filled"
-        app:iconGravity="textStart"
-        app:iconSize="24dp"
-        app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@+id/removeDailyCaloriesButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/saveCaloriesButton"
-        app:layout_constraintTop_toBottomOf="@+id/addFoodButton"
-        app:layout_constraintVertical_bias="1" />
+        <Button
+            android:id="@+id/seeFoodsButton"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="@color/button_color"
+            android:enabled="false"
+            android:text="@string/ver"
+            android:textColor="@color/yellow"
+            app:icon="@drawable/ic_fluent_eye_show_24_filled"
+            app:iconGravity="textStart"
+            app:iconSize="24dp"
+            app:iconTint="@color/yellow"
+            app:layout_constraintBottom_toTopOf="@+id/removeDailyCaloriesButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/saveCaloriesButton"
+            app:layout_constraintTop_toBottomOf="@+id/addFoodButton"
+            app:layout_constraintVertical_bias="1" />
 
     <TextView
         android:id="@+id/gramsTextView"

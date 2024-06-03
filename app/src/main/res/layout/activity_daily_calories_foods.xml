@@ -12,70 +12,15 @@
     <ListView
         android:id="@+id/listFoodsView"
         android:layout_width="0dp"
-        android:layout_height="505dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:divider="@drawable/list_divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/removeFoodButton"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/button_color"
-        android:enabled="false"
-        android:text="@string/remover"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_delete_24_regular"
-        app:iconGravity="textStart"
-        app:iconSize="24dp"
-        app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@+id/saveFoodButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listFoodsView" />
-
-    <Button
-        android:id="@+id/saveFoodButton"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/button_color"
-        android:text="@string/salvar"
-        android:textColor="@color/yellow"
-        app:iconTint="@color/yellow"
-        app:icon="@drawable/ic_fluent_save_24_regular"
-        app:iconGravity="textStart"
-        app:iconSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/removeFoodButton"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/foodSelectedTextView"
-        android:layout_width="0dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="6dp"
-        android:text="@string/selecione_alimento"
-        android:textAlignment="center"
-        android:textColor="@color/yellow"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
