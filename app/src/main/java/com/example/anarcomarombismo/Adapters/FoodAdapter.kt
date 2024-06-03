@@ -9,9 +9,7 @@ import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.R
 
-class FoodAdapter(context: Context, foodList: List<Food>) :
-    ArrayAdapter<Food>(context, 0, foodList) {
-
+class FoodAdapter(context: Context, foodList: List<Food>) : ArrayAdapter<Food>(context, 0, foodList) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView
         if (listItemView == null) {
