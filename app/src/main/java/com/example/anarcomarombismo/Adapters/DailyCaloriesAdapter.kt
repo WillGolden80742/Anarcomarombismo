@@ -9,8 +9,7 @@ import android.widget.TextView
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.R
 
-class DailyCaloriesAdapter(context: Context, private val dailyCaloriesList: List<DailyCalories>) :
-    ArrayAdapter<DailyCalories>(context, 0, dailyCaloriesList) {
+class DailyCaloriesAdapter(context: Context, private val dailyCaloriesList: List<DailyCalories>) : ArrayAdapter<DailyCalories>(context, 0, dailyCaloriesList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView
