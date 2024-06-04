@@ -40,10 +40,10 @@ class DailyCalories {
 
         return  energyKcalLabel + " : " + decimalFormat.format(calorieskcal) + ", " +
                 energyKjLabel + " : " + decimalFormat.format(calorieskj) + ", \n" +
-                proteinLabel + " : " + decimalFormat.format(protein) + ", " +
-                lipidsLabel + " : " + decimalFormat.format(lipids) + ", " +
-                carbohydrateLabel + " : " + decimalFormat.format(carbohydrate) + ", " +
-                dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber) + ", " +
+                proteinLabel + " : " + decimalFormat.format(protein) + ", \n" +
+                lipidsLabel + " : " + decimalFormat.format(lipids) + ", \n" +
+                carbohydrateLabel + " : " + decimalFormat.format(carbohydrate) + ", \n" +
+                dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber) + ", \n" +
                 sodiumLabel + " : " + decimalFormat.format(sodium)
     }
 
