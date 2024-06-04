@@ -30,14 +30,21 @@ class DailyCalories {
 
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
-        val formattedProtein = decimalFormat.format(protein)
-        val formattedCarbohydrate = decimalFormat.format(carbohydrate)
-        val formattedLipids = decimalFormat.format(lipids)
-        val formattedDietaryFiber = decimalFormat.format(dietaryFiber)
-        val formattedSodium = decimalFormat.format(sodium)
-        val formattedCaloriesKcal = decimalFormat.format(calorieskcal)
-        val formattedCaloriesKj = decimalFormat.format(calorieskj)
-        return "$formattedCaloriesKcal kcal, $formattedCaloriesKj kj\n$formattedProtein g ${context.getString(R.string.protein)}, $formattedCarbohydrate g ${context.getString(R.string.carbohydrate_b)}, $formattedLipids g  ${context.getString(R.string.lipids)}, $formattedDietaryFiber g ${context.getString(R.string.dietary_fiber_b)}, $formattedSodium mg ${context.getString(R.string.sodium_b)}"
+        val energyKcalLabel = context.getString(R.string.energy_kcal)
+        val energyKjLabel = context.getString(R.string.energy_kj)
+        val proteinLabel = context.getString(R.string.protein)
+        val lipidsLabel = context.getString(R.string.lipids)
+        val carbohydrateLabel = context.getString(R.string.carbohydrate)
+        val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
+        val sodiumLabel = context.getString(R.string.sodium)
+
+        return  energyKcalLabel + " : " + decimalFormat.format(calorieskcal) + ", " +
+                energyKjLabel + " : " + decimalFormat.format(calorieskj) + ", \n" +
+                proteinLabel + " : " + decimalFormat.format(protein) + ", " +
+                lipidsLabel + " : " + decimalFormat.format(lipids) + ", " +
+                carbohydrateLabel + " : " + decimalFormat.format(carbohydrate) + ", " +
+                dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber) + ", " +
+                sodiumLabel + " : " + decimalFormat.format(sodium)
     }
 
     fun addFood(food: Food) {
