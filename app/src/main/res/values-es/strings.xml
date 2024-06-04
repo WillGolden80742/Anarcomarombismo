@@ -14,6 +14,7 @@
     <string name="calorias_di_rias">Calorías Diarias</string>
     <string name="calories_kcal">Calorías (kcal)</string>
     <string name="carbohydrate">Carbohidrato (g)</string>
+    <string name="carbohydrate_b">carboidrato</string>
     <string name="costas_e_b_ceps">Espalda y Bíceps</string>
     <string name="daily_calories_removed_successfully">Calorías diarias eliminadas con éxito</string>
     <string name="daily_calories_saved_successfully">Daily calories saved successfully</string>
@@ -26,6 +27,7 @@
     <string name="description">Descripción</string>
     <string name="description_hint">Ingrese la descripción</string>
     <string name="dietary_fiber">Fibra Dietética (g)</string>
+    <string name="dietary_fiber_b">fibra dietética</string>
     <string name="double_click_to_open_food_details">Doble click para abrir detalles de comida</string>
     <string name="eleva_o_lateral">Elevación Lateral</string>
     <string name="energy_kcal">Calorías (kcal)</string>
@@ -52,6 +54,7 @@
     <string name="peito_e_tr_ceps">Pecho y Tríceps</string>
     <string name="pernas_e_panturrilha">Piernas y Pantorrilla</string>
     <string name="protein">Proteína (g)</string>
+    <string name="protein_b">proteina</string>
     <string name="remove">Eliminar</string>
     <string name="remove_exercise">Eliminar Ejercicio</string>
     <string name="remove_exercise_successful">¡Ejercicio eliminado con éxito!</string>
@@ -69,6 +72,7 @@
     <string name="sets">Series</string>
     <string name="sets_hint">Ingrese el número de series</string>
     <string name="sodium">Sodio (mg)</string>
+    <string name="sodium_b">sodio</string>
     <string name="todos_os_campos_s_o_obrigat_rios">Todos los campos son obligatorios</string>
     <string name="tr_ceps_pulley">Tríceps en Polea</string>
     <string name="tr_ceps_testa">Tríceps Frontal</string>
@@ -148,4 +152,6 @@
     <string name="adu_o_de_perna_na_m_quina">Aducción de Piernas en Máquina</string>
     <string name="agachamento_stiff">Peso Muerto Rumano</string>
     <string name="alimentos_selecionados">Alimentos Seleccionados</string>
+    <string name="loading">Cargando ...</string>
+    <string name="please_wait">Por favor espere ...</string>
 </resources>

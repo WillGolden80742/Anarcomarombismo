@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Random
 
 class formExercise : AppCompatActivity() {
 
@@ -342,7 +343,8 @@ class formExercise : AppCompatActivity() {
                 }
             }.toTypedArray()
         } else {
-            exercise.exerciseID = System.currentTimeMillis()
+            val random = Random().nextInt(100)
+            exercise.exerciseID = System.currentTimeMillis()+random
             exerciseArray.plus(exercise)
         }
 

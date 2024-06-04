@@ -1,5 +1,7 @@
 package com.example.anarcomarombismo.Controller
 
+import android.content.Context
+import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -26,17 +28,16 @@ class DailyCalories {
         }
     }
 
-    override fun toString(): String {
+    fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
         val formattedProtein = decimalFormat.format(protein)
         val formattedCarbohydrate = decimalFormat.format(carbohydrate)
         val formattedLipids = decimalFormat.format(lipids)
-        val formattedCholesterol = decimalFormat.format(cholesterol)
         val formattedDietaryFiber = decimalFormat.format(dietaryFiber)
         val formattedSodium = decimalFormat.format(sodium)
         val formattedCaloriesKcal = decimalFormat.format(calorieskcal)
         val formattedCaloriesKj = decimalFormat.format(calorieskj)
-        return "$formattedCaloriesKcal kcal, $formattedCaloriesKj kj\n$formattedProtein g protein, $formattedCarbohydrate g carbohydrate, $formattedLipids g lipids, $formattedCholesterol mg cholesterol, $formattedDietaryFiber g dietary fiber, $formattedSodium mg sodium"
+        return "$formattedCaloriesKcal kcal, $formattedCaloriesKj kj\n$formattedProtein g ${context.getString(R.string.protein)}, $formattedCarbohydrate g ${context.getString(R.string.carbohydrate_b)}, $formattedLipids g  ${context.getString(R.string.lipids)}, $formattedDietaryFiber g ${context.getString(R.string.dietary_fiber_b)}, $formattedSodium mg ${context.getString(R.string.sodium_b)}"
     }
 
     fun addFood(food: Food) {

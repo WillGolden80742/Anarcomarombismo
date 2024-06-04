@@ -54,7 +54,6 @@ class FoodAdapter(context: Context, foodList: List<Food>, activity:String="formD
                         ).show()
                         var formDailyCalories = context as formDailyCalories
                         currentItem?.let { it1 -> formDailyCalories.selectedFood(it1) }
-                            .also { formDailyCalories.addFoodToDailyList() }
                     } catch (e: Exception) {
                         Toast.makeText(context, "Erro ao adicionar food", Toast.LENGTH_SHORT).show()
                     }
@@ -76,6 +75,12 @@ class FoodAdapter(context: Context, foodList: List<Food>, activity:String="formD
                         Toast.makeText(context, "Erro ao remover food", Toast.LENGTH_SHORT).show()
                     }
                 }
+            }
+            "loading" -> {
+                descriptionTextView.text = context.getString(R.string.loading)
+                detailsTextView.text = context.getString(R.string.please_wait)
+                editButton.isVisible = false
+                addButton.isVisible = false
             }
         }
 

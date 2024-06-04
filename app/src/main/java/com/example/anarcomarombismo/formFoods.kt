@@ -12,6 +12,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
+import java.util.Random
 
 class formFoods : AppCompatActivity() {
 
@@ -162,7 +163,8 @@ class formFoods : AppCompatActivity() {
                 if (action == 1) { // Atualizar
                     foodNumber = currentFood.foodNumber
                 } else { // Criar
-                    foodNumber = (System.currentTimeMillis()).toString()
+                    val random = Random().nextInt(100)
+                    foodNumber = (System.currentTimeMillis()).toString()+random
                 }
                 if (foodDescription.isEmpty()) {
                     this.foodDescription = getString(R.string.nome_de_comida)

@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
+import java.util.Random
 
 class exercises : AppCompatActivity() {
 
@@ -94,8 +95,9 @@ class exercises : AppCompatActivity() {
                 println("Exercício em Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
             }
         } else {
+            val random = Random().nextInt(100)
             val exerciseArray = arrayOf(
-                Exercise(trainingID,"",System.currentTimeMillis()+1,"Exercicio", "",3, "10,10,10", 0.0),
+                Exercise(trainingID,"",System.currentTimeMillis()+random,"Exercicio", "",3, "10,10,10", 0.0),
             )
             for (exercise in exerciseArray) {
                 println("Exercício fora de Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")

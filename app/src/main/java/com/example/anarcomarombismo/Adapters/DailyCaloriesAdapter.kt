@@ -23,7 +23,7 @@ class DailyCaloriesAdapter(context: Context, private val dailyCaloriesList: List
         dateTextView.text = currentCalories.date
 
         val descriptionTextView = listItemView.findViewById<TextView>(R.id.textViewItem)
-        descriptionTextView.text = currentCalories.toString()
+        descriptionTextView.text = currentCalories.toString(context)
 
         return listItemView
     }

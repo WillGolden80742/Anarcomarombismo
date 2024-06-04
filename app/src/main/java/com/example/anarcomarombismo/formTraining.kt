@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Training
+import java.util.Random
 
 class formTraining : AppCompatActivity() {
 
@@ -78,7 +79,8 @@ class formTraining : AppCompatActivity() {
             cache.setCache(this, "Treinos", jsonUtil.toJson(trainingArray))
             Toast.makeText(this, getString(R.string.update_training_successful), Toast.LENGTH_SHORT).show()
         } else {
-            val training = Training(System.currentTimeMillis(), name, description)
+            val random = Random().nextInt(100)
+            val training = Training(System.currentTimeMillis()+random, name, description)
             val trainingArray = jsonUtil.fromJson(cache.getCache(this, "Treinos"), Array<Training>::class.java)
             val newTrainingArray = trainingArray.plus(training)
             cache.setCache(this, "Treinos", jsonUtil.toJson(newTrainingArray))
