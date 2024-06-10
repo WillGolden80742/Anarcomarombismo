@@ -38,7 +38,7 @@ class DailyCalories {
         val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
         val sodiumLabel = context.getString(R.string.sodium)
 
-        return  energyKcalLabel + " : " + decimalFormat.format(calorieskcal) + ", " +
+        return  energyKcalLabel + " : " + decimalFormat.format(calorieskcal) + ", \n" +
                 energyKjLabel + " : " + decimalFormat.format(calorieskj) + ", \n" +
                 proteinLabel + " : " + decimalFormat.format(protein) + ", \n" +
                 lipidsLabel + " : " + decimalFormat.format(lipids) + ", \n" +

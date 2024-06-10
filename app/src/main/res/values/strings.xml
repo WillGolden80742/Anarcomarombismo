@@ -89,7 +89,7 @@
     <string name="update_training">Atualizar</string>
     <string name="update_training_successful">Treino atualizado com sucesso!</string>
     <string name="ver">Ver</string>
-    <string name="video_link">Link de Vídeo (youtube)</string>
+    <string name="video_link">Link de Vídeo</string>
     <string name="video_link_hint">Insira o link de video (Youtube apenas)</string>
     <string name="m_sculos">Músculos</string>
     <string name="membros_superiores">Membros Superiores</string>
