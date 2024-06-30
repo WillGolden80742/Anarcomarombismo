@@ -35,10 +35,3 @@ This project is an Android application designed to assist users in tracking thei
 2.  Open the project in Android Studio.
 3.  Build and run the app on your Android device or emulator.
 
-### Contributing
-
-Contributions are welcome! If you find any bugs or have suggestions for improvements, please open an issue or submit a pull request.
-
-### License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
