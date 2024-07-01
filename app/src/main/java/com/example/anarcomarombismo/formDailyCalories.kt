@@ -273,32 +273,35 @@ class formDailyCalories : AppCompatActivity() {
 
     fun addFoodToDailyList() {
         seeFoodsButton.isEnabled = true
-        try {
-            currentFood?.let { food ->
-                gramsEditText.text.toString().toDoubleOrNull()?.let { grams ->
-                    val grams = gramsEditText.text.toString().toDouble()
-                    val temporaryCalcule =
-                        this.currentFood!!.energyKcal.toDouble() * (grams / 100)
-                    val totalCalories =
-                        String.format("%.1f", temporaryCalcule + dailyCalories.calorieskcal)
-                    Toast.makeText(
-                        this,
-                        "$temporaryCalcule kcal + ${dailyCalories.calorieskcal} kcal = $totalCalories kcal",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    food.grams = grams
-                    dailyCalories.date = editTextDate.text.toString()
-                    dailyCalories.addFood(food)
-                    totalCaloriesLabel.text =
-                        "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
+        if (currentFood !== null) {
+            try {
+                currentFood?.let { food ->
+                    gramsEditText.text.toString().toDoubleOrNull()?.let { grams ->
+                        val grams = gramsEditText.text.toString().toDouble()
+                        val temporaryCalcule =
+                            this.currentFood!!.energyKcal.toDouble() * (grams / 100)
+                        val totalCalories =
+                            String.format("%.1f", temporaryCalcule + dailyCalories.calorieskcal)
+                        Toast.makeText(
+                            this,
+                            "$temporaryCalcule kcal + ${dailyCalories.calorieskcal} kcal = $totalCalories kcal",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        food.grams = grams
+                        dailyCalories.date = editTextDate.text.toString()
+                        dailyCalories.addFood(food)
+                        totalCaloriesLabel.text =
+                            "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
+                        currentFood = null
+                    } ?: run {
+                        gramsEditText.error = "Invalid input"
+                    }
                 } ?: run {
-                    gramsEditText.error = "Invalid input"
+                    throw RuntimeException("Current food is null")
                 }
-            } ?: run {
-                throw RuntimeException("Current food is null")
+            } catch (e: Exception) {
+                println(RuntimeException("Error adding food to daily list: $e"))
             }
-        } catch (e: Exception) {
-            println(RuntimeException("Error adding food to daily list: $e"))
         }
     }
 

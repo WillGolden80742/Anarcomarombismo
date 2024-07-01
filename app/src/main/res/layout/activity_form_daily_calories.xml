@@ -101,7 +101,7 @@
             android:backgroundTint="@color/button_color"
             android:enabled="false"
             android:textColor="@color/yellow"
-            app:icon="@drawable/ic_fluent_checkmark_24_filled"
+            app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
             app:iconGravity="textStart"
             app:iconSize="32dp"
             app:iconTint="@color/yellow"

@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:backgroundTint="@color/button_color"
-            app:srcCompat="@drawable/ic_fluent_text_bullet_list_add_24_filled"
+            app:srcCompat="@drawable/ic_fluent_cursor_24_filled"
             app:tint="@color/yellow" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
