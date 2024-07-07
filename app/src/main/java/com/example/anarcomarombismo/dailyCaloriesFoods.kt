@@ -14,8 +14,6 @@ class dailyCaloriesFoods : AppCompatActivity() {
     private lateinit var listView: ListView
     private lateinit var searchFoodListEditText: EditText
     private lateinit var searchFoodListButton: Button
-    private val DOUBLE_CLICK_TIME_DELTA: Long = 300
-    private var lastClickTime: Long = 0
     companion object {
         private var foodList: List<Food> = emptyList()
 
