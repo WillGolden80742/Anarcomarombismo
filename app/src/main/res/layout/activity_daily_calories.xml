@@ -15,59 +15,69 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="11dp"
         android:text="@string/calorias_di_rias"
-        android:textStyle="bold"
         android:textColor="@color/title_color"
         android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/caloriesFoodList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ListView
         android:id="@+id/caloriesFoodList"
         android:layout_width="0dp"
-        android:layout_height="512dp"
+        android:layout_height="540dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/addFoodFormButton"
-        app:layout_constraintEnd_toEndOf="parent"
         android:divider="@drawable/list_divider"
+        app:layout_constraintBottom_toTopOf="@+id/buttonsLinearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dailyCaloriesTitle" />
 
-    <Button
-        android:id="@+id/addFoodFormButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/buttonsLinearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:backgroundTint="@color/button_color"
-        android:text="@string/add_calories"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-        app:iconGravity="textStart"
-        app:iconSize="42dp"
-        app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addNewFoodButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList"
-        app:layout_constraintVertical_bias="1" />
-
-    <Button
-        android:id="@+id/addNewFoodButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:backgroundTint="@color/button_color"
-        android:text="@string/add_food"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_food_24_regular"
-        app:iconGravity="textStart"
-        app:iconSize="42dp"
-        app:iconTint="@color/yellow"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addFoodFormButton"
-        app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList">
+
+        <Button
+            android:id="@+id/addFoodFormButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/button_color"
+            android:text="@string/add_calories"
+            android:textColor="@color/yellow"
+            app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
+            app:iconGravity="textStart"
+            app:iconSize="42dp"
+            app:iconTint="@color/yellow" />
+
+        <Button
+            android:id="@+id/addNewFoodButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/button_color"
+            android:text="@string/add_food"
+            android:textColor="@color/yellow"
+            app:icon="@drawable/ic_fluent_food_24_regular"
+            app:iconGravity="textStart"
+            app:iconSize="42dp"
+            app:iconTint="@color/yellow" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
