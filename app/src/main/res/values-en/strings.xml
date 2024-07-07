@@ -20,7 +20,6 @@
     <string name="cadence_hint">Enter the cadence</string>
     <string name="cadence">Cadence</string>
     <string name="calf_and_legs">Legs and Calves</string>
-    <string name="calorias_di_rias">Daily Calories</string>
     <string name="calories_kcal">Calories (kcal)</string>
     <string name="calves">Calves</string>
     <string name="carbohydrate_b">carboidrato</string>
@@ -28,6 +27,7 @@
     <string name="chest_and_triceps">Chest and Triceps</string>
     <string name="daily_calories_removed_successfully">Daily calories removed successfully</string>
     <string name="daily_calories_saved_successfully">Daily calories saved successfully</string>
+    <string name="daily_calories">Daily Calories</string>
     <string name="default_cadence">3-1-3</string>
     <string name="default_reps">10,10,10</string>
     <string name="default_rest">60</string>

@@ -20,7 +20,6 @@
     <string name="cadence_hint">Ingrese la cadencia</string>
     <string name="cadence">Cadencia</string>
     <string name="calf_and_legs">Piernas y Pantorrilla</string>
-    <string name="calorias_di_rias">Calorías Diarias</string>
     <string name="calories_kcal">Calorías (kcal)</string>
     <string name="calves">Pantorrillas</string>
     <string name="carbohydrate_b">carboidrato</string>
@@ -28,6 +27,7 @@
     <string name="chest_and_triceps">Pecho y Tríceps</string>
     <string name="daily_calories_removed_successfully">Calorías diarias eliminadas con éxito</string>
     <string name="daily_calories_saved_successfully">Daily calories saved successfully</string>
+    <string name="daily_calories">Calorías Diarias</string>
     <string name="default_cadence">3-1-3</string>
     <string name="default_reps">10,10,10</string>
     <string name="default_rest">60</string>
