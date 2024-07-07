@@ -49,13 +49,14 @@ class FoodAdapter(context: Context, foodList: List<Food>, activity:String="formD
                     try {
                         Toast.makeText(
                             context,
-                            "Add button clicked for ${currentItem?.foodDescription}",
+                            "\"${currentItem?.foodDescription}\""+ context.getString(R.string.selected),
                             Toast.LENGTH_SHORT
                         ).show()
                         var formDailyCalories = context as formDailyCalories
                         currentItem?.let { it1 -> formDailyCalories.selectedFood(it1) }
                     } catch (e: Exception) {
-                        Toast.makeText(context, "Erro ao adicionar food", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,
+                            context.getString(R.string.add_food_error), Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -42,6 +42,8 @@ class formDailyCalories : AppCompatActivity() {
     private lateinit var addFoodButton: Button
     private var currentFood: Food? = null
     private var temporaryCalcule: Double = 0.0
+    private val DOUBLE_CLICK_TIME_DELTA: Long = 300
+    private var lastClickTime: Long = 0
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,8 +128,14 @@ class formDailyCalories : AppCompatActivity() {
         }
 
         removeDailyCaloriesButton.setOnClickListener {
-            // will excluse the current dailyCalories from the list and return to the previous activity
-            removeDailyCalories()
+            val clickTime = System.currentTimeMillis()
+            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                removeDailyCalories()
+            } else {
+                Toast.makeText(this,
+                    getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
+            }
+            lastClickTime = clickTime
         }
 
     }

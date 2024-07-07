@@ -31,6 +31,8 @@ class formFoods : AppCompatActivity() {
     private var jsonUtil = JSON()
     private var cache = Cache()
     private var foodCache: String = ""
+    private val DOUBLE_CLICK_TIME_DELTA: Long = 300
+    private var lastClickTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_foods)
@@ -95,12 +97,19 @@ class formFoods : AppCompatActivity() {
         }
         // Listener para o botão de remove food
         removeFoodFormButton.setOnClickListener {
-            if (intent.hasExtra("foodID")) {
-                removeFood()
+            val clickTime = System.currentTimeMillis()
+            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                if (intent.hasExtra("foodID")) {
+                    removeFood()
+                } else {
+                    val intent = Intent(this, dailyCalories::class.java)
+                    startActivity(intent)
+                }
             } else {
-                val intent = Intent(this, dailyCalories::class.java)
-                startActivity(intent)
+                Toast.makeText(this,
+                    getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
             }
+            lastClickTime = clickTime
         }
 
         calcCalories(listOf(editTextProtein, editTextCarbohydrate, editTextLipids))
