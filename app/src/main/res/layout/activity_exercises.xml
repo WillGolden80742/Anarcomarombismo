@@ -15,8 +15,9 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
         android:text="trainingName"
-        android:textColor="@color/yellow"
+        android:textColor="@color/title_color"
         android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/descriptionTrainingLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,11 +29,11 @@
         android:layout_height="512dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="40dp"
+        android:divider="@drawable/list_divider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:divider="@drawable/list_divider"
         app:layout_constraintTop_toBottomOf="@+id/dailyCaloriesTitle" />
 
     <Button

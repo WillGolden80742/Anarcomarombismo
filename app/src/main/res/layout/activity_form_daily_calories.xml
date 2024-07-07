@@ -13,214 +13,188 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-    <EditText
-        android:id="@+id/searchEditText"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
-        app:layout_constraintEnd_toStartOf="@+id/searchButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="75dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="@color/button_color"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_search_24_filled"
-        app:iconSize="32dp"
-        app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/searchEditText"
-        app:layout_constraintTop_toTopOf="@id/searchEditText"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ListView
-        android:id="@+id/listFoodsView"
-        android:layout_width="0dp"
-        android:layout_height="324dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toTopOf="@id/totalCaloriesLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:divider="@drawable/list_divider"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText" />
-
-    <TextView
-        android:id="@+id/nameFoodLabel"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/totalCaloriesLabel" />
-
-    <TextView
-        android:id="@+id/editTextDate"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="#000000"
-        android:ems="10"
-        android:inputType="date"
-        android:text="00/00/0000"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/addFoodButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameFoodLabel" />
-
-        <Button
-            android:id="@+id/addFoodButton"
-            android:layout_width="80dp"
-            android:layout_height="46dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="19dp"
-            android:backgroundTint="@color/button_color"
-            android:enabled="false"
-            android:textColor="@color/yellow"
-            app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-            app:iconGravity="textStart"
-            app:iconSize="32dp"
-            app:iconTint="@color/yellow"
-            app:layout_constraintBottom_toTopOf="@+id/seeFoodsButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.647"
-            app:layout_constraintStart_toEndOf="@+id/gramsTextView"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
-
-    <EditText
-        android:id="@+id/gramsEditText"
-        android:layout_width="200dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:inputType="number"
-        android:text="100"
-        app:layout_constraintBottom_toTopOf="@+id/saveCaloriesButton"
-        app:layout_constraintEnd_toStartOf="@+id/gramsTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate"
-        app:layout_constraintVertical_bias="0.227" />
-
-    <TextView
-        android:id="@+id/totalCaloriesLabel"
-        android:layout_width="0dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Total: 0000"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toTopOf="@id/nameFoodLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listFoodsView" />
-
-
-    <Button
-        android:id="@+id/saveCaloriesButton"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/button_color"
-        android:text="@string/salvar"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_save_24_regular"
-        app:iconGravity="textStart"
-        app:iconSize="24dp"
-        app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@+id/removeDailyCaloriesButton"
-        app:layout_constraintEnd_toStartOf="@+id/seeFoodsButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addFoodButton"
-        app:layout_constraintVertical_bias="0.8" />
-
-        <Button
-            android:id="@+id/seeFoodsButton"
+        <EditText
+            android:id="@+id/searchEditText"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
+            app:layout_constraintEnd_toStartOf="@+id/searchButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="75dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="@color/button_color"
+            android:textColor="@color/yellow"
+            app:icon="@drawable/ic_fluent_search_24_filled"
+            app:iconSize="32dp"
+            app:iconTint="@color/yellow"
+            app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/searchEditText"
+            app:layout_constraintTop_toTopOf="@id/searchEditText"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ListView
+            android:id="@+id/listFoodsView"
+            android:layout_width="0dp"
+            android:layout_height="324dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toTopOf="@id/totalCaloriesLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:divider="@drawable/list_divider"
+            app:layout_constraintTop_toBottomOf="@id/searchEditText" />
+
+        <TextView
+            android:id="@+id/nameFoodLabel"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/select_food"
+            android:textSize="22dp"
+            app:layout_constraintBottom_toTopOf="@+id/editTextDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalCaloriesLabel" />
+
+        <TextView
+            android:id="@+id/editTextDate"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#000000"
+            android:ems="10"
+            android:inputType="date"
+            android:text="00/00/0000"
+            android:textSize="32dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayoutInput"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameFoodLabel" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="40dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayoutButtons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDate">
+
+            <EditText
+                android:id="@+id/gramsEditText"
+                android:layout_width="0dp"
+                android:layout_height="46dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:text="100" />
+
+            <TextView
+                android:id="@+id/gramsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_marginStart="10dp"
+                android:text="g"
+                android:textAlignment="center"
+                android:textSize="32dp" />
+
+            <Button
+                android:id="@+id/addFoodButton"
+                android:layout_width="wrap_content"
+                android:layout_height="46dp"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/button_color"
+                android:enabled="false"
+                android:textColor="@color/yellow"
+                app:icon="@drawable/ic_fluent_save_24_regular"
+                app:iconGravity="textStart"
+                app:iconSize="32dp"
+                app:iconTint="@color/yellow" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/totalCaloriesLabel"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="Total: 0000"
+            android:textSize="32dp"
+            app:layout_constraintBottom_toTopOf="@id/nameFoodLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/listFoodsView" />
+
+        <LinearLayout
+            android:id="@+id/linearLayoutButtons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/removeDailyCaloriesButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutInput">
+
+            <Button
+                android:id="@+id/seeFoodsButton"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/button_color"
+                android:enabled="false"
+                android:text="@string/see"
+                android:textColor="@color/yellow"
+                app:icon="@drawable/ic_fluent_eye_show_24_filled"
+                app:iconGravity="textStart"
+                app:iconSize="24dp"
+                app:iconTint="@color/yellow" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/removeDailyCaloriesButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:backgroundTint="@color/button_color"
-            android:enabled="false"
-            android:text="@string/ver"
+            android:text="@string/remover"
             android:textColor="@color/yellow"
-            app:icon="@drawable/ic_fluent_eye_show_24_filled"
+            app:icon="@drawable/ic_fluent_delete_24_regular"
             app:iconGravity="textStart"
             app:iconSize="24dp"
             app:iconTint="@color/yellow"
-            app:layout_constraintBottom_toTopOf="@+id/removeDailyCaloriesButton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/saveCaloriesButton"
-            app:layout_constraintTop_toBottomOf="@+id/addFoodButton"
-            app:layout_constraintVertical_bias="1" />
-
-    <TextView
-        android:id="@+id/gramsTextView"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="16dp"
-        android:text="g"
-        android:textAlignment="center"
-        android:textSize="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/saveCaloriesButton"
-        app:layout_constraintEnd_toStartOf="@+id/addFoodButton"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/gramsEditText"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate"
-        app:layout_constraintVertical_bias="0.227" />
-
-    <Button
-        android:id="@+id/removeDailyCaloriesButton"
-        :src="@drawable/ic_fluent_delete_24_regular"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:backgroundTint="@color/button_color"
-        android:text="@string/apagar"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_delete_24_regular"
-        app:iconGravity="textStart"
-        app:iconSize="24dp"
-        app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seeFoodsButton"
-        app:layout_constraintVertical_bias="1.0" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutButtons" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

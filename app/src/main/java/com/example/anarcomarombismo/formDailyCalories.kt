@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Adapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
@@ -41,7 +40,6 @@ class formDailyCalories : AppCompatActivity() {
     private lateinit var removeDailyCaloriesButton: Button
     private lateinit var gramsEditText: EditText
     private lateinit var addFoodButton: Button
-    private lateinit var saveCaloriesButton: Button
     private var currentFood: Food? = null
     private var temporaryCalcule: Double = 0.0
     @SuppressLint("MissingInflatedId")
@@ -60,7 +58,6 @@ class formDailyCalories : AppCompatActivity() {
         addFoodButton = findViewById(R.id.addFoodButton)
         seeFoodsButton = findViewById(R.id.seeFoodsButton)
         removeDailyCaloriesButton = findViewById(R.id.removeDailyCaloriesButton)
-        saveCaloriesButton = findViewById(R.id.saveCaloriesButton)
 
         loading()
         //getInputExtra
@@ -73,16 +70,13 @@ class formDailyCalories : AppCompatActivity() {
 
         addFoodButton.setOnClickListener {
             try {
-                saveCaloriesButton.isEnabled = true
                 addFoodToDailyList()
+                saveDailyCalories()
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
             }
         }
 
-        saveCaloriesButton.setOnClickListener {
-            saveDailyCalories()
-        }
 
         gramsEditText.addTextChangedListener {
             // get gramsEditText value and calculate the total calories
@@ -148,6 +142,7 @@ class formDailyCalories : AppCompatActivity() {
                 seeFoodsButton.isEnabled = false
             }
             currentFood = null
+            saveDailyCalories()
         }
     }
 
@@ -236,6 +231,7 @@ class formDailyCalories : AppCompatActivity() {
             val temporaryTotal = temporaryCalcule + dailyCalories.calorieskcal
             totalCaloriesLabel.text = "Total: ${String.format("%.1f", temporaryTotal)} kcal"
             nameFoodLabel.text = currentFood!!.foodDescription
+            gramsEditText.isEnabled = true
         } catch (e: Exception) {
             println(RuntimeException("Error handling food click: $e"))
         }
@@ -306,7 +302,6 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     fun saveDailyCalories() {
-        addFoodToDailyList()
         val dailyCaloriesFoodsList = dailyCalories.foodsList.filter { it.foodDescription != "NO_DESCRIPTION" }
         if (dailyCaloriesFoodsList.isNotEmpty() || currentFood != null) {
             val cache = Cache()
@@ -324,14 +319,12 @@ class formDailyCalories : AppCompatActivity() {
                 dailyCalories.foodsList = dailyCaloriesFoodsList
                 dailyCaloriesList = dailyCaloriesList.plus(dailyCalories)
                 cache.setCache(this, "dailyCalories", jsonUtil.toJson(dailyCaloriesList))
-                Toast.makeText(
-                    this,
-                    getString(R.string.daily_calories_saved_successfully), Toast.LENGTH_SHORT
-                ).show()
+                gramsEditText.isEnabled = false
+                gramsEditText.setText("100")
+                nameFoodLabel.setText(this.getString(R.string.select_food))
             } catch (e: Exception) {
                 println(RuntimeException("Error saving daily calories: $e"))
             }
-            finish()
         } else {
             removeDailyCalories()
         }

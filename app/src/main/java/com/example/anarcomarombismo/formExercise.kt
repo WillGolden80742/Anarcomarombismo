@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
@@ -110,34 +109,34 @@ class formExercise : AppCompatActivity() {
                 └── Calves:1
         */
         val leafs = Tree("").getLeafs()
-        val musculos = Tree(R.string.m_sculos)
-        val membrosSuperiores = Tree(R.string.membros_superiores).also { musculos.addNode(it) }
-        val tronco = Tree(R.string.tronco).also { musculos.addNode(it) }
-        val membrosInferiores = Tree(R.string.membros_inferiores).also { musculos.addNode(it) }
-        Tree(R.string.b_ceps).also { membrosSuperiores.addNode(it) }
-        Tree(R.string.tr_ceps).also { membrosSuperiores.addNode(it) }
-        Tree(R.string.peitoral).also { membrosSuperiores.addNode(it) }
-        val deltoides = Tree(R.string.delt_ides).also { membrosSuperiores.addNode(it) }
-        Tree(R.string.delt_ides_anterior).also { deltoides.addNode(it) }
-        Tree(R.string.delt_ides_lateral).also { deltoides.addNode(it) }
-        Tree(R.string.delt_ides_posterior).also { deltoides.addNode(it) }
-        val abdominais = Tree(R.string.abdominais).also { tronco.addNode(it) }
-        Tree(R.string.reto_abdominal).also { abdominais.addNode(it) }
-        Tree(R.string.obl_quos_externos).also { abdominais.addNode(it) }
-        Tree(R.string.obl_quos_internos).also { abdominais.addNode(it) }
-        Tree(R.string.dorsal).also { tronco.addNode(it) }
-        Tree(R.string.serr_til_anterior).also { tronco.addNode(it) }
-        val costas = Tree(R.string.costas).also { tronco.addNode(it) }
-        Tree(R.string.transverso_abdominal).also { abdominais.addNode(it) }
-        Tree(R.string.trap_zio).also { costas.addNode(it) }
-        Tree(R.string.romboides).also { costas.addNode(it) }
-        Tree(R.string.eretores_da_coluna).also { costas.addNode(it) }
-        val coxas = Tree(R.string.coxas).also { membrosInferiores.addNode(it) }
-        Tree(R.string.quadr_ceps).also { coxas.addNode(it) }
-        Tree(R.string.adutores).also { coxas.addNode(it) }
-        Tree(R.string.posterior_de_coxa).also { coxas.addNode(it) }
-        Tree(R.string.gl_teos).also { membrosInferiores.addNode(it) }
-        Tree(R.string.panturrilhas).also { membrosInferiores.addNode(it) }
+        val musculos = Tree(R.string.muscles)
+        val membrosSuperiores = Tree(R.string.upper_limbs).also { musculos.addNode(it) }
+        val tronco = Tree(R.string.torso).also { musculos.addNode(it) }
+        val membrosInferiores = Tree(R.string.lower_members).also { musculos.addNode(it) }
+        Tree(R.string.biceps).also { membrosSuperiores.addNode(it) }
+        Tree(R.string.triceps).also { membrosSuperiores.addNode(it) }
+        Tree(R.string.breastplate).also { membrosSuperiores.addNode(it) }
+        val deltoides = Tree(R.string.deltoids).also { membrosSuperiores.addNode(it) }
+        Tree(R.string.anterior_deltoids).also { deltoides.addNode(it) }
+        Tree(R.string.lateral_deltoids).also { deltoides.addNode(it) }
+        Tree(R.string.posterior_deltoids).also { deltoides.addNode(it) }
+        val abdominais = Tree(R.string.abs).also { tronco.addNode(it) }
+        Tree(R.string.rectus_abdominal).also { abdominais.addNode(it) }
+        Tree(R.string.oblique_external).also { abdominais.addNode(it) }
+        Tree(R.string.oblique_internal).also { abdominais.addNode(it) }
+        Tree(R.string.back).also { tronco.addNode(it) }
+        Tree(R.string.serratil_anterior).also { tronco.addNode(it) }
+        val costas = Tree(R.string.back_).also { tronco.addNode(it) }
+        Tree(R.string.transverse_abdominal).also { abdominais.addNode(it) }
+        Tree(R.string.trapezium).also { costas.addNode(it) }
+        Tree(R.string.rhomboids).also { costas.addNode(it) }
+        Tree(R.string.spine_erectors).also { costas.addNode(it) }
+        val coxas = Tree(R.string.thighs).also { membrosInferiores.addNode(it) }
+        Tree(R.string.quadriceps).also { coxas.addNode(it) }
+        Tree(R.string.adductors).also { coxas.addNode(it) }
+        Tree(R.string.thigh_back).also { coxas.addNode(it) }
+        Tree(R.string.glutes).also { membrosInferiores.addNode(it) }
+        Tree(R.string.calves).also { membrosInferiores.addNode(it) }
         leafs.forEach { leaf ->
             leaf.setValueInternal(1)
         }
@@ -259,7 +258,7 @@ class formExercise : AppCompatActivity() {
                         editTextLoad.setText(exercise.load.toString())
                         editTextRest.setText(exercise.rest.toString())
                         editTextCadence.setText(exercise.cadence)
-                        addExerciseButton.text = getString(R.string.atualizar_exerc_cio)
+                        addExerciseButton.text = getString(R.string.update_exercise)
                     }
                 }
             } else {

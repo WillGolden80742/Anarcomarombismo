@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
     tools:context=".training_main">
 
     <TextView
@@ -16,8 +15,9 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="19dp"
         android:text="@string/anarcomarombismo"
-        android:textColor="@color/yellow"
+        android:textColor="@color/title_color"
         android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/trainingList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

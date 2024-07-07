@@ -3,14 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#000000">
+    android:padding="16dp" >
 
     <TextView
         android:id="@+id/titleTextViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
         android:textSize="24sp"
         android:textStyle="bold"
         android:paddingBottom="4dp" />
@@ -19,7 +17,6 @@
         android:id="@+id/textViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#CCCCCC"
         android:textSize="18sp"
         android:paddingTop="4dp" />
 </LinearLayout>

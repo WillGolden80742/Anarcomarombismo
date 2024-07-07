@@ -134,7 +134,7 @@ class formFoods : AppCompatActivity() {
         foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().filter { it.foodNumber != currentFood.foodNumber }
         cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
         finish()
-        Toast.makeText(this, getString(R.string.alimento_removido_com_sucesso), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
     }
 
     // edit food
@@ -167,7 +167,7 @@ class formFoods : AppCompatActivity() {
                     foodNumber = (System.currentTimeMillis()).toString()+random
                 }
                 if (foodDescription.isEmpty()) {
-                    this.foodDescription = getString(R.string.nome_de_comida)
+                    this.foodDescription = getString(R.string.food_name)
                 } else {
                     this.foodDescription = foodDescription
                 }
@@ -206,7 +206,7 @@ class formFoods : AppCompatActivity() {
                 startActivity(intent)
                 Toast.makeText(
                     this,
-                    getString(R.string.alimento_salvo_com_sucesso),
+                    getString(R.string.successful_target_food),
                     Toast.LENGTH_SHORT
                 ).show()
             }
