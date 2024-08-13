@@ -156,4 +156,7 @@
     <string name="upper_limbs">Miembros Superiores</string>
     <string name="video_link_hint">Ingrese el enlace del video (Solo Youtube)</string>
     <string name="video_link">Enlace de Video</string>
+    <string name="fill_in_the_food_name">Por favor ingrese el nombre del alimento</string>
+    <string name="save_food_error">Error al guardar alimento</string>
+    <string name="it_was_not_possible_to_load_the_food">No se pudo cargar el alimento</string>
 </resources>

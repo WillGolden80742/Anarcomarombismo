@@ -120,7 +120,8 @@ class formFoods : AppCompatActivity() {
     }
 
     private fun handleFoodLoadingError(e: Exception) {
-        Toast.makeText(this, "Não foi possível carregar o alimento", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,
+            getString(R.string.it_was_not_possible_to_load_the_food), Toast.LENGTH_SHORT).show()
         println("Erro food: $e")
     }
 
@@ -208,8 +209,8 @@ class formFoods : AppCompatActivity() {
             val sodium = editTextSodium.text.toString().toDoubleOrNullOrZero()
             val caloriesKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero()
 
-            if (grams == 0.0 || protein == 0.0 || carbohydrate == 0.0 || lipids == 0.0) {
-                showToast(getString(R.string.todos_os_campos_s_o_obrigat_rios))
+            if (foodDescription == getString(R.string.food_name)) {
+                showToast(getString(R.string.fill_in_the_food_name))
                 return
             }
 
@@ -229,7 +230,7 @@ class formFoods : AppCompatActivity() {
             cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
             finish()
         } catch (e: Exception) {
-            showToast("Erro ao salvar o alimento")
+            showToast(getString(R.string.save_food_error))
         }
     }
 
