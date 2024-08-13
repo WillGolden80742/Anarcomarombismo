@@ -36,6 +36,7 @@ class formExercise : AppCompatActivity() {
     private lateinit var editTextCadence: EditText // Novo campo para cadência
     private lateinit var addExerciseButton: Button
     private lateinit var removeExerciseButton: Button
+    private lateinit var textVideoLink: String
     private var trainingID: Long = 0
     private var exerciseID: Long = 0
     private var leafsNames: List<String> = listOf()
@@ -243,6 +244,7 @@ class formExercise : AppCompatActivity() {
                 for (exercise in exerciseArray) {
                     if (exercise.exerciseID == exerciseID) {
                         val formattedLink = generateYouTubeEmbedLink(exercise.LinkVideo)
+                        textVideoLink = formattedLink
                         editTextVideoLink.setText(formattedLink)
                         embedVideo(formattedLink)
                         editTextExerciseName.setText(exercise.name)
@@ -300,61 +302,81 @@ class formExercise : AppCompatActivity() {
 
 
     private fun saveExercise() {
-        val cache = Cache()
-        val jsonUtil = JSON()
-        val defaultCadence = getString(R.string.default_cadence)
-        val defaultRest = getString(R.string.default_rest)
-        val defaultReps = getString(R.string.default_reps)
-        val defaultSets = getString(R.string.default_sets)
-        val exerciseHint = getString(R.string.exercise_hint)
-
-        // Verificar se todos os campos estão preenchidos
-        if (spinnerMuscleGroup.selectedItemPosition == 0 || editTextExerciseName.text.toString().isEmpty() || editTextSets.text.toString().isEmpty() || editTextRepetitions.text.toString().isEmpty() || editTextLoad.text.toString().isEmpty()) {
+        if (!areFieldsValid()) {
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
 
-        val exerciseArray = if (cache.hasCache(this, "Exercicios_$trainingID")) {
-            jsonUtil.fromJson(cache.getCache(this, "Exercicios_$trainingID"), Array<Exercise>::class.java)
+        val cacheKey = "Exercicios_$trainingID"
+        val exerciseArray = getExerciseArray(cacheKey)
+        val exercise = buildExercise()
+        val updatedExerciseArray = updateExerciseArray(exerciseArray, exercise)
+
+        saveExerciseArray(cacheKey, updatedExerciseArray)
+        showToastMessage(exerciseID > 0)
+        finish()
+    }
+
+    private fun areFieldsValid(): Boolean {
+        return spinnerMuscleGroup.selectedItemPosition != 0 &&
+                editTextExerciseName.text.toString().isNotEmpty() &&
+                editTextSets.text.toString().isNotEmpty() &&
+                editTextRepetitions.text.toString().isNotEmpty() &&
+                editTextLoad.text.toString().isNotEmpty()
+    }
+
+    private fun getExerciseArray(cacheKey: String): Array<Exercise> {
+        val cache = Cache()
+        val jsonUtil = JSON()
+        return if (cache.hasCache(this, cacheKey)) {
+            jsonUtil.fromJson(cache.getCache(this, cacheKey), Array<Exercise>::class.java)
         } else {
             arrayOf()
         }
+    }
 
-        var exercise = Exercise(
-            trainingID,
-            editTextVideoLink.text.toString(),
-            exerciseID,
-            editTextExerciseName.text.toString().takeIf { it.isNotEmpty() } ?: exerciseHint,
-            spinnerMuscleGroup.getItemAtPosition(spinnerMuscleGroup.selectedItemPosition).toString(),
-            editTextSets.text.toString().toIntOrNull() ?: defaultSets.toInt(),
-            editTextRepetitions.text.toString() ?: defaultReps,
-            editTextLoad.text.toString().toDoubleOrNull() ?: 0.0,
-            editTextRest.text.toString().toIntOrNull() ?: defaultRest.toInt(),
-            editTextCadence.text.toString().takeIf { it.isNotEmpty() } ?: defaultCadence
+    private fun buildExercise(): Exercise {
+        val exerciseHint = getString(R.string.exercise_hint)
+        val defaultCadence = getString(R.string.default_cadence)
+        val defaultRest = getString(R.string.default_rest).toInt()
+        val defaultReps = getString(R.string.default_reps)
+        val defaultSets = getString(R.string.default_sets).toInt()
+        return Exercise(
+            trainingID = trainingID,
+            LinkVideo = editTextVideoLink.text.toString(),
+            exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100),
+            name = editTextExerciseName.text.toString().takeIf { it.isNotEmpty() } ?: exerciseHint,
+            muscle = spinnerMuscleGroup.selectedItem.toString(),
+            sets = editTextSets.text.toString().toIntOrNull() ?: defaultSets,
+            repetitions = editTextRepetitions.text.toString().takeIf { it.isNotEmpty() } ?: defaultReps,
+            load = editTextLoad.text.toString().toDoubleOrNull() ?: 0.0,
+            rest = editTextRest.text.toString().toIntOrNull() ?: defaultRest,
+            cadence = editTextCadence.text.toString().takeIf { it.isNotEmpty() } ?: defaultCadence
         )
+    }
 
-        val newExerciseArray = if (exerciseID > 0) {
-            exerciseArray.map {
-                if (it.exerciseID == exerciseID) {
-                    exercise
-                } else {
-                    it
-                }
-            }.toTypedArray()
+    private fun updateExerciseArray(
+        exerciseArray: Array<Exercise>,
+        exercise: Exercise
+    ): Array<Exercise> {
+        return if (exerciseID > 0) {
+            exerciseArray.map { if (it.exerciseID == exerciseID) exercise else it }.toTypedArray()
         } else {
-            val random = Random().nextInt(100)
-            exercise.exerciseID = System.currentTimeMillis()+random
             exerciseArray.plus(exercise)
         }
-
-        cache.setCache(this, "Exercicios_$trainingID", jsonUtil.toJson(newExerciseArray))
-        if (exerciseID > 0) {
-            Toast.makeText(this, getString(R.string.update_exercise_successful), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, getString(R.string.save_exercise_successful), Toast.LENGTH_SHORT).show()
-        }
-        finish()
     }
+
+    private fun saveExerciseArray(cacheKey: String, exerciseArray: Array<Exercise>) {
+        val cache = Cache()
+        val jsonUtil = JSON()
+        cache.setCache(this, cacheKey, jsonUtil.toJson(exerciseArray))
+    }
+
+    private fun showToastMessage(isUpdate: Boolean) {
+        val messageResId = if (isUpdate) R.string.update_exercise_successful else R.string.save_exercise_successful
+        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
 
 
     private fun removeExercise() {
@@ -375,6 +397,10 @@ class formExercise : AppCompatActivity() {
 
     private fun generateYouTubeEmbedLink(text: String): String {
         val trimmedText = text.trim()
+
+        if (trimmedText.contains("youtube.com/embed/")) {
+            return trimmedText
+        }
 
         if (!isValidYouTubeLink(trimmedText)) {
             return ""
