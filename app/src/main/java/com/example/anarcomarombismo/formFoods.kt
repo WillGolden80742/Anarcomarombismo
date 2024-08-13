@@ -37,7 +37,28 @@ class formFoods : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_foods)
 
-        // Inicializando os componentes
+        initializeUIComponents()
+
+        val foodID = intent.getStringExtra("foodID")
+
+        if (foodID != null) {
+            setupForFoodUpdate(foodID)
+        } else {
+            prepareForNewFoodEntry()
+        }
+
+        addFoodFormButton.setOnClickListener {
+            handleAddOrUpdateFood(foodID)
+        }
+
+        removeFoodFormButton.setOnClickListener {
+            handleFoodRemoval(foodID)
+        }
+
+        setupCaloriesCalculation()
+    }
+
+    private fun initializeUIComponents() {
         editTextName = findViewById(R.id.editTextName)
         editTextGrams = findViewById(R.id.editTextGrams)
         editTextProtein = findViewById(R.id.editTextProtein)
@@ -48,72 +69,100 @@ class formFoods : AppCompatActivity() {
         editTextCaloriesKcal = findViewById(R.id.editTextCaloriesKcal)
         addFoodFormButton = findViewById(R.id.addFoodFormButton)
         removeFoodFormButton = findViewById(R.id.removeFoodFormButton)
+    }
 
-        // if has extra, load the food
-        if (intent.hasExtra("foodID")) {
-            val foodID = intent.getStringExtra("foodID")
-            addFoodFormButton.text = getString(R.string.update_nutrition_info)
-            try {
-                foodCache = cache.getCache(this, "Alimentos")
-                if (foodCache != "NOT_FOUND") {
-                    foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
-                } else {
-                    // get R.raw.nutritional_table and add to cache
-                    foodCache = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-                    cache.setCache(this, "Alimentos", foodCache)
-                    foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
-                }
-                currentFood = foodNutritionList.find { it.foodNumber == foodID.toString() }!!
-                editTextName.setText(currentFood.foodDescription)
-                editTextGrams.setText(currentFood.grams.toString())
-                editTextProtein.setText(currentFood.protein)
-                editTextCarbohydrate.setText(currentFood.carbohydrate)
-                editTextLipids.setText(currentFood.lipids)
-                editTextDietaryFiber.setText(currentFood.dietaryFiber)
-                editTextSodium.setText(currentFood.sodium)
-                editTextCaloriesKcal.setText(currentFood.energyKcal)
-            } catch (e: Exception) {
-                // Toast para indicar que não foi possível carregar o alimento
-                Toast.makeText(this, "Não foi possível carregar o alimento", Toast.LENGTH_SHORT).show()
-                System.out.println("Erro food: "+e)
+    private fun setupForFoodUpdate(foodID: String) {
+        addFoodFormButton.text = getString(R.string.update_nutrition_info)
+
+        try {
+            loadFoodData(foodID)
+            populateFoodForm(currentFood)
+        } catch (e: Exception) {
+            handleFoodLoadingError(e)
+        }
+    }
+
+    private fun prepareForNewFoodEntry() {
+        removeFoodFormButton.isVisible = false
+        loadFoodCacheIfNecessary()
+    }
+
+    private fun loadFoodCacheIfNecessary() {
+        foodCache = cache.getCache(this, "Alimentos")
+        if (foodCache == "NOT_FOUND") {
+            val rawFoodData = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
+            cache.setCache(this, "Alimentos", rawFoodData)
+        }
+    }
+
+    private fun loadFoodData(foodID: String) {
+        foodCache = cache.getCache(this, "Alimentos")
+        foodNutritionList = if (foodCache != "NOT_FOUND") {
+            jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
+        } else {
+            val rawFoodData = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
+            cache.setCache(this, "Alimentos", rawFoodData)
+            jsonUtil.fromJson(rawFoodData, Array<Food>::class.java).toList()
+        }
+        currentFood = foodNutritionList.find { it.foodNumber == foodID }
+            ?: throw Exception("Food with ID $foodID not found")
+    }
+
+    private fun populateFoodForm(food: Food) {
+        editTextName.setText(food.foodDescription)
+        editTextGrams.setText(food.grams.toString())
+        editTextProtein.setText(food.protein)
+        editTextCarbohydrate.setText(food.carbohydrate)
+        editTextLipids.setText(food.lipids)
+        editTextDietaryFiber.setText(food.dietaryFiber)
+        editTextSodium.setText(food.sodium)
+        editTextCaloriesKcal.setText(food.energyKcal)
+    }
+
+    private fun handleFoodLoadingError(e: Exception) {
+        Toast.makeText(this, "Não foi possível carregar o alimento", Toast.LENGTH_SHORT).show()
+        println("Erro food: $e")
+    }
+
+    private fun handleAddOrUpdateFood(foodID: String?) {
+        if (foodID != null) {
+            saveFood(1)
+        } else {
+            saveFood( 0)
+        }
+    }
+
+    private fun handleFoodRemoval(foodID: String?) {
+        val clickTime = System.currentTimeMillis()
+        if (isDoubleClick(clickTime)) {
+            if (foodID != null) {
+                removeFood()
+            } else {
+                navigateToDailyCalories()
             }
         } else {
-            removeFoodFormButton.isVisible = false
-            //if hash no cache create a cache to
-            foodCache = cache.getCache(this, "Alimentos")
-            if (foodCache == "NOT_FOUND") {
-                // get R.raw.nutritional_table and add to cache
-                foodCache = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-                cache.setCache(this, "Alimentos", foodCache)
-            }
+            showDoubleClickWarning()
         }
-        // Listener para o botão de adicionar food
-        addFoodFormButton.setOnClickListener {
-            if (intent.hasExtra("foodID")) {
-                saveFood(1)
-            } else {
-                saveFood(0)
-            }
-        }
-        // Listener para o botão de remove food
-        removeFoodFormButton.setOnClickListener {
-            val clickTime = System.currentTimeMillis()
-            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-                if (intent.hasExtra("foodID")) {
-                    removeFood()
-                } else {
-                    val intent = Intent(this, dailyCalories::class.java)
-                    startActivity(intent)
-                }
-            } else {
-                Toast.makeText(this,
-                    getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
-            }
-            lastClickTime = clickTime
-        }
+        lastClickTime = clickTime
+    }
 
+    private fun isDoubleClick(clickTime: Long): Boolean {
+        return clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA
+    }
+
+    private fun navigateToDailyCalories() {
+        val intent = Intent(this, dailyCalories::class.java)
+        startActivity(intent)
+    }
+
+    private fun showDoubleClickWarning() {
+        Toast.makeText(this, getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setupCaloriesCalculation() {
         calcCalories(listOf(editTextProtein, editTextCarbohydrate, editTextLipids))
     }
+
 
     private fun calcCalories(editText:List<EditText>) {
         editText.forEach { e ->
@@ -134,12 +183,12 @@ class formFoods : AppCompatActivity() {
         }
     }
 
-    fun formatDoubleNumber(value: Double):String {
+    private fun formatDoubleNumber(value: Double):String {
         return "%.2f".format(value).replace(",", ".")
     }
 
 
-    fun removeFood() {
+    private fun removeFood() {
         foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().filter { it.foodNumber != currentFood.foodNumber }
         cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
         finish()
@@ -147,86 +196,103 @@ class formFoods : AppCompatActivity() {
     }
 
     // edit food
-    fun saveFood(action: Int) {
+    private fun saveFood(action: Int) {
         try {
-            val foodDescription = editTextName.text.toString()
-            var grams = editTextGrams.text.toString().toDoubleOrNull() ?: 0.0
-            val protein = editTextProtein.text.toString()
-            val carbohydrate = editTextCarbohydrate.text.toString()
-            val lipids = editTextLipids.text.toString()
-            val dietaryFiber = editTextDietaryFiber.text.toString()
-            val sodium = editTextSodium.text.toString()
-            val calorieskcal = editTextCaloriesKcal.text.toString()
+            val foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() }
+                ?: getString(R.string.food_name)
+            val grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0
+            val protein = editTextProtein.text.toString().toDoubleOrNullOrZero()
+            val carbohydrate = editTextCarbohydrate.text.toString().toDoubleOrNullOrZero()
+            val lipids = editTextLipids.text.toString().toDoubleOrNullOrZero()
+            val dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNullOrZero()
+            val sodium = editTextSodium.text.toString().toDoubleOrNullOrZero()
+            val caloriesKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero()
 
-            // Verificar se todos os campos estão preenchidos
-            if (foodDescription.isEmpty() || grams == 0.0 || protein.isEmpty() || carbohydrate.isEmpty() || lipids.isEmpty()) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.todos_os_campos_s_o_obrigat_rios),
-                    Toast.LENGTH_SHORT
-                ).show()
+            if (grams == 0.0 || protein == 0.0 || carbohydrate == 0.0 || lipids == 0.0) {
+                showToast(getString(R.string.todos_os_campos_s_o_obrigat_rios))
                 return
             }
 
-            val food = Food().apply {
-                if (action == 1) { // Atualizar
-                    foodNumber = currentFood.foodNumber
-                } else { // Criar
-                    val random = Random().nextInt(100)
-                    foodNumber = (System.currentTimeMillis()).toString()+random
-                }
-                if (foodDescription.isEmpty()) {
-                    this.foodDescription = getString(R.string.food_name)
-                } else {
-                    this.foodDescription = foodDescription
-                }
-                if (grams == 0.0) {
-                    grams = 100.0
-                }
-                this.grams = 100.0
-                this.protein = formatDoubleNumber((protein.toDouble() / grams * 100))
-                this.carbohydrate = formatDoubleNumber((carbohydrate.toDouble() / grams * 100))
-                this.lipids = formatDoubleNumber((lipids.toDouble() / grams * 100))
-                this.dietaryFiber = formatDoubleNumber((dietaryFiber.toDouble() / grams * 100))
-                this.sodium = formatDoubleNumber((sodium.toDouble() / grams * 100))
-                this.energyKcal = formatDoubleNumber((calorieskcal.toDouble() / grams * 100))
-                this.energyKj = formatDoubleNumber(((calorieskcal.toDouble() / grams * 100) * 4.184))
-            }
+            val food = createFood(
+                foodDescription = foodDescription,
+                grams = grams,
+                protein = protein,
+                carbohydrate = carbohydrate,
+                lipids = lipids,
+                dietaryFiber = dietaryFiber,
+                sodium = sodium,
+                caloriesKcal = caloriesKcal,
+                action = action
+            )
 
-            if (action == 1) { // Atualizar
-                foodNutritionList =
-                    jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().map {
-                        if (it.foodNumber == currentFood.foodNumber) {
-                            food
-                        } else {
-                            it
-                        }
-                    }
-                Toast.makeText(
-                    this,
-                    getString(R.string.update_nutrition_sucessful),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else if (action == 0) { // Criar
-                foodNutritionList =
-                    jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
-                // Concluir e enviar a lista de alimentos para a próxima atividade
-                val intent = Intent(this, dailyCalories::class.java)
-                startActivity(intent)
-                Toast.makeText(
-                    this,
-                    getString(R.string.successful_target_food),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            // Salvar no cache
+            updateOrCreateFood(action, food)
             cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
             finish()
         } catch (e: Exception) {
-            Toast.makeText(this, "Erro ao salvar o alimento", Toast.LENGTH_SHORT).show()
+            showToast("Erro ao salvar o alimento")
         }
     }
+
+    private fun String.toDoubleOrNullOrZero(): Double {
+        return this.toDoubleOrNull() ?: 0.0
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createFood(
+        foodDescription: String,
+        grams: Double,
+        protein: Double,
+        carbohydrate: Double,
+        lipids: Double,
+        dietaryFiber: Double,
+        sodium: Double,
+        caloriesKcal: Double,
+        action: Int
+    ): Food {
+        return Food().apply {
+            foodNumber = if (action == 1) currentFood.foodNumber else generateFoodNumber()
+            this.foodDescription = foodDescription
+            this.grams = grams
+            this.protein = formatDoubleNumber((protein / grams * 100))
+            this.carbohydrate = formatDoubleNumber((carbohydrate / grams * 100))
+            this.lipids = formatDoubleNumber((lipids / grams * 100))
+            this.dietaryFiber = formatDoubleNumber((dietaryFiber / grams * 100))
+            this.sodium = formatDoubleNumber((sodium / grams * 100))
+            this.energyKcal = formatDoubleNumber((caloriesKcal / grams * 100))
+            this.energyKj = formatDoubleNumber((caloriesKcal / grams * 100) * 4.184)
+        }
+    }
+
+    private fun generateFoodNumber(): String {
+        val random = Random().nextInt(100)
+        return "${System.currentTimeMillis()}$random"
+    }
+
+    private fun updateOrCreateFood(action: Int, food: Food) {
+        foodNutritionList = when (action) {
+            1 -> updateFoodInList(food)
+            0 -> createFoodInList(food)
+            else -> foodNutritionList
+        }
+        showToast(
+            if (action == 1) getString(R.string.update_nutrition_sucessful)
+            else getString(R.string.successful_target_food)
+        )
+    }
+
+    private fun updateFoodInList(food: Food): List<Food> {
+        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().map {
+            if (it.foodNumber == currentFood.foodNumber) food else it
+        }
+    }
+
+    private fun createFoodInList(food: Food): List<Food> {
+        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
+    }
+
 
 
 }

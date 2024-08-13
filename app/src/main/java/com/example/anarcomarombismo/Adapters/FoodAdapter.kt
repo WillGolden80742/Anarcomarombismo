@@ -19,7 +19,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class FoodAdapter(context: Context, foodList: List<Food>, activity:String="formDailyCalories") : ArrayAdapter<Food>(context, 0, foodList) {
 
     private val activity = activity
-
+    private val DOUBLE_CLICK_TIME_DELTA: Long = 300
+    private var lastClickTime: Long = 0
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView
         if (listItemView == null) {
@@ -64,17 +65,24 @@ class FoodAdapter(context: Context, foodList: List<Food>, activity:String="formD
                 addButton.isVisible = false
                 editButton.setImageResource(R.drawable.ic_fluent_delete_24_regular)
                 editButton.setOnClickListener {
-                    try {
-                        Toast.makeText(
-                            context,
-                            "${currentItem?.foodDescription} removed",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        var dailyCaloriesFoods = context as dailyCaloriesFoods
-                        currentItem?.let { it1 -> dailyCaloriesFoods.removeFood(it1) }
-                    } catch (e: Exception) {
-                        Toast.makeText(context, "Erro ao remover food", Toast.LENGTH_SHORT).show()
+                    val clickTime = System.currentTimeMillis()
+                    if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                        try {
+                            Toast.makeText(
+                                context,
+                                "${currentItem?.foodDescription} removed",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            var dailyCaloriesFoods = context as dailyCaloriesFoods
+                            currentItem?.let { it1 -> dailyCaloriesFoods.removeFood(it1) }
+                        } catch (e: Exception) {
+                            Toast.makeText(context, "Erro ao remover food", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(context,
+                            context.getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
                     }
+                    lastClickTime = clickTime
                 }
             }
             "loading" -> {

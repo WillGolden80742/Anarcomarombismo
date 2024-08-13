@@ -1,11 +1,15 @@
 package com.example.anarcomarombismo
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
 import com.example.anarcomarombismo.Adapters.FoodAdapter
+import com.example.anarcomarombismo.Controller.Cache
+import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
 
@@ -14,6 +18,7 @@ class dailyCaloriesFoods : AppCompatActivity() {
     private lateinit var listView: ListView
     private lateinit var searchFoodListEditText: EditText
     private lateinit var searchFoodListButton: Button
+    private lateinit var dailyCaloriesDate: String
     companion object {
         private var foodList: List<Food> = emptyList()
 
@@ -62,14 +67,15 @@ class dailyCaloriesFoods : AppCompatActivity() {
 
     }
 
-    fun loadFoodList() {
+    private fun loadFoodList() {
         // Get the food list from the JSON
         val jsonUtil = JSON()
         setFoodList(intent.getStringExtra("foodsList")?.let { jsonUtil.fromJson(it, Array<Food>::class.java) }?.toList()!!)
+        dailyCaloriesDate = intent.getStringExtra("dailyCaloriesDate")!!
         searchFoodList("")
     }
 
-    fun searchFoodList(value: String) {
+    private fun searchFoodList(value: String) {
         // Search for food in the list
         val filteredList = foodList.filter { it.foodDescription.contains(value, ignoreCase = true) }
         val adapter = FoodAdapter(this, filteredList,"dailyCaloriesFoods")
@@ -82,8 +88,57 @@ class dailyCaloriesFoods : AppCompatActivity() {
         // update the list view
         val adapter = FoodAdapter(this, foodList,"dailyCaloriesFoods")
         listView.adapter = adapter
+        saveDailyCalories()
         if (foodList.isEmpty()) {
             finish()
         }
     }
+
+
+    private fun saveDailyCalories() {
+        val dailyCalories = createDailyCalories()
+        val cache = Cache()
+        val cacheKey = "dailyCalories"
+
+        val updatedDailyCaloriesList = if (cache.hasCache(this, cacheKey)) {
+            val existingList = getDailyCaloriesList(cache, cacheKey)
+            updateDailyCaloriesList(existingList, dailyCalories)
+        } else {
+            listOf(dailyCalories)
+        }
+
+        saveUpdatedListToCache(cache, cacheKey, updatedDailyCaloriesList)
+        showToast(R.string.daily_calories_saved_successfully)
+    }
+
+    private fun createDailyCalories(): DailyCalories {
+        return DailyCalories().apply {
+            date = dailyCaloriesDate
+            foodsList = foodList
+            recalculateCalories()
+        }
+    }
+
+    private fun getDailyCaloriesList(cache: Cache, key: String): List<DailyCalories> {
+        val jsonUtil = JSON()
+        val dailyCaloriesListJson = cache.getCache(this, key)
+        return jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+    }
+
+    private fun updateDailyCaloriesList(existingList: List<DailyCalories>, dailyCalories: DailyCalories): List<DailyCalories> {
+        val filteredList = existingList.filterNot { it.date == dailyCalories.date }
+        return filteredList + dailyCalories
+    }
+
+    private fun saveUpdatedListToCache(cache: Cache, key: String, updatedList: List<DailyCalories>) {
+        val jsonUtil = JSON()
+        val updatedListJson = jsonUtil.toJson(updatedList)
+        cache.setCache(this, key, updatedListJson)
+    }
+
+    private fun showToast(messageResId: Int) {
+        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+
 }
