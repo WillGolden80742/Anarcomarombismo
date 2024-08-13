@@ -79,7 +79,7 @@ class formExercise : AppCompatActivity() {
         loadExerciseIfExistInCache()
     }
     // muscle
-    fun dumpAndLoadMuscles(): Set<Tree> {
+    private fun dumpAndLoadMuscles(): Set<Tree> {
         /*
             Musclesthis,:20
             ├── Upper Limbs:6
@@ -147,7 +147,7 @@ class formExercise : AppCompatActivity() {
         return leafs
     }
 
-    fun formatRepetitionsAndCountSets(it: CharSequence?) {
+    private fun formatRepetitionsAndCountSets(it: CharSequence?) {
         CoroutineScope(Dispatchers.Main).launch {
             val text = it.toString()
             val newText = text.replace(Regex("[^0-9Xx*,]"), "")
@@ -267,7 +267,7 @@ class formExercise : AppCompatActivity() {
         }
     }
 
-    fun loadSpinner() {
+    private fun loadSpinner() {
         try {
             leafsMap = dumpAndLoadMuscles()
             leafsNames = leafsMap.map { getString(it.obj as Int) }
@@ -283,7 +283,7 @@ class formExercise : AppCompatActivity() {
         }
     }
 
-    fun embedVideo(formattedLink: String) {
+    private fun embedVideo(formattedLink: String) {
         CoroutineScope(Dispatchers.Main).launch {
             if (formattedLink.isNotEmpty()) {
                 webView.loadUrl(formattedLink)
@@ -373,50 +373,47 @@ class formExercise : AppCompatActivity() {
         finish()
     }
 
-    fun generateYouTubeEmbedLink(text: String): String {
-        var modifiedText = text.trim()
+    private fun generateYouTubeEmbedLink(text: String): String {
+        val trimmedText = text.trim()
 
-        // Return empty string if the input doesn't contain YouTube or youtu.be links
-        if (!modifiedText.contains("youtu.be") && !modifiedText.contains("youtube")) {
+        if (!isValidYouTubeLink(trimmedText)) {
             return ""
         }
 
-        // Return the link if it's already in embed format
-        if (modifiedText.contains("https://www.youtube.com/embed/")) {
-            return modifiedText
-        }
+        val sanitizedText = removeUnnecessaryParameters(trimmedText)
+        val videoId = extractVideoId(sanitizedText) ?: return ""
 
-        // Remove unnecessary parameters
-        modifiedText = modifiedText.replace(Regex("[&?](feature=youtu\\.be|si=.*)"), "")
-
-        // Extract the time parameter if it exists
-        val timeParameter = modifiedText.substringAfter("&t=", "").let {
-            if (it.isNotEmpty()) "?t=$it" else ""
-        }
-        modifiedText = modifiedText.substringBefore("&t=")
-
-        // Extract video ID based on different URL patterns
-        val videoId = when {
-            modifiedText.contains("/live/") -> modifiedText.substringAfter("/live/").substringBefore("?")
-            modifiedText.contains("/shorts/") -> modifiedText.substringAfter("/shorts/").substringBefore("?")
-            modifiedText.contains("youtube.com/") -> {
-                if (modifiedText.contains("watch?v=")) {
-                    modifiedText.substringAfter("watch?v=").substringBefore("&")
-                } else ""
-            }
-            modifiedText.contains("youtu.be/") -> modifiedText.substringAfter("youtu.be/").substringBefore("?")
-            else -> ""
-        }
-
-        // Return empty string if no valid video ID is found
-        if (videoId.isEmpty()) {
-            return ""
-        }
-
-        // Generate the embed link
-        val embedLink = "https://www.youtube.com/embed/$videoId$timeParameter"
-        return embedLink
+        return buildEmbedLink(videoId, sanitizedText)
     }
+
+    private fun isValidYouTubeLink(text: String): Boolean {
+        return text.contains("youtu.be") || text.contains("youtube")
+    }
+
+    private fun removeUnnecessaryParameters(text: String): String {
+        return text.replace(Regex("[&?](feature=youtu\\.be|si=.*)"), "")
+    }
+
+    private fun extractVideoId(text: String): String? {
+        return when {
+            text.contains("/live/") -> text.substringAfter("/live/").substringBefore("?")
+            text.contains("/shorts/") -> text.substringAfter("/shorts/").substringBefore("?")
+            text.contains("watch?v=") -> text.substringAfter("watch?v=").substringBefore("&")
+            text.contains("youtu.be/") -> text.substringAfter("youtu.be/").substringBefore("?")
+            else -> null
+        }
+    }
+
+    private fun buildEmbedLink(videoId: String, text: String): String {
+        val timeParameter = extractTimeParameter(text)
+        return "https://www.youtube.com/embed/$videoId$timeParameter"
+    }
+
+    private fun extractTimeParameter(text: String): String {
+        val time = text.substringAfter("&t=", "").takeIf { it.isNotEmpty() }
+        return time?.let { "?t=$it" } ?: ""
+    }
+
 
 
 }
