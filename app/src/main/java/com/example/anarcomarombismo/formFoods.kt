@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -23,7 +22,7 @@ class formFoods : AppCompatActivity() {
     private lateinit var editTextLipids: EditText
     private lateinit var editTextDietaryFiber: EditText
     private lateinit var editTextSodium: EditText
-    private lateinit var editTextCaloriesKcal: TextView
+    private lateinit var editTextCaloriesKcal: EditText
     private lateinit var addFoodFormButton: Button
     private lateinit var removeFoodFormButton: Button
     private lateinit var foodNutritionList: List<Food>
@@ -116,7 +115,7 @@ class formFoods : AppCompatActivity() {
         editTextLipids.setText(food.lipids)
         editTextDietaryFiber.setText(food.dietaryFiber)
         editTextSodium.setText(food.sodium)
-        editTextCaloriesKcal.text = food.energyKcal
+        editTextCaloriesKcal.setText(food.energyKcal)
     }
 
     private fun handleFoodLoadingError(e: Exception) {
