@@ -116,7 +116,7 @@ class formFoods : AppCompatActivity() {
         editTextLipids.setText(food.lipids)
         editTextDietaryFiber.setText(food.dietaryFiber)
         editTextSodium.setText(food.sodium)
-        editTextCaloriesKcal.setText(food.energyKcal)
+        editTextCaloriesKcal.text = food.energyKcal
     }
 
     private fun handleFoodLoadingError(e: Exception) {
