@@ -41,6 +41,8 @@ class formExercise : AppCompatActivity() {
     private var exerciseID: Long = 0
     private var leafsNames: List<String> = listOf()
     private lateinit var leafsMap:Set<Tree>
+    private val DOUBLE_CLICK_TIME_DELTA: Long = 300
+    private var lastClickTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +56,14 @@ class formExercise : AppCompatActivity() {
             saveExercise()
         }
         removeExerciseButton.setOnClickListener {
-            removeExercise()
+            val clickTime = System.currentTimeMillis()
+            if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+                removeExercise()
+            } else {
+                Toast.makeText(this,
+                    this.getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
+            }
+            lastClickTime = clickTime
         }
         // listener change text editTextRepetitions
         editTextRepetitions.addTextChangedListener {

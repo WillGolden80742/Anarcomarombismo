@@ -4,13 +4,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DailyExercices () {
-    private lateinit var date: String
-    private lateinit var exercise: Exercise
+class DailyExercices (var date: String, var exercise: Exercise) {
 
-    fun addExercise(exercise: Exercise) {
-        this.exercise = exercise
-    }
 
     init {
         if (date == "") {
