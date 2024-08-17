@@ -10,8 +10,23 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
+import com.example.anarcomarombismo.Controller.FoodSearch
 import com.example.anarcomarombismo.Controller.JSON
-import java.util.Random
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
+import java.io.IOException
+import java.net.URLEncoder
+import java.text.DecimalFormat
+import java.util.UUID
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import kotlin.random.Random
 
 class formFoods : AppCompatActivity() {
 
@@ -55,6 +70,10 @@ class formFoods : AppCompatActivity() {
         }
 
         setupCaloriesCalculation()
+
+        // fetchFoodDataAsync("feijão")
+
+        // fetchSelecteFoodAsync("https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/gen%C3%A9rico/feij%C3%A3o-carioca-cozido")
     }
 
     private fun initializeUIComponents() {
@@ -267,7 +286,7 @@ class formFoods : AppCompatActivity() {
     }
 
     private fun generateFoodNumber(): String {
-        val random = Random().nextInt(100)
+        val random = UUID.randomUUID().toString()
         return "${System.currentTimeMillis()}$random"
     }
 
@@ -293,6 +312,150 @@ class formFoods : AppCompatActivity() {
         return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
     }
 
+    fun fetchFoodData(query: String): List<FoodSearch> {
+        val encodedQuery = URLEncoder.encode(query, "UTF-8")
+        val url = "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery"
+        val items = mutableListOf<FoodSearch>()
 
+        try {
+            val document: Document = Jsoup.connect(url)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                .get()
+
+            val links: Elements = document.select("a.prominent")
+            val smallTextDivs: Elements = document.select("div.smallText")
+
+            for (link in links) {
+                val href = link.attr("href")
+                val name = link.text().trim()
+                var smallTextContent = ""
+
+                for (div in smallTextDivs) {
+                    if (div.parent() == link.parent()) {
+                        smallTextContent = div.text().trim()
+                        break
+                    }
+                }
+
+                val smallTextBeforeDash = smallTextContent.split("-")[0]
+
+                val grams: String? = Regex("(\\d+\\s*g|\\d+g)").find(smallTextBeforeDash)?.value
+
+                if (grams != null) {
+                    items.add(
+                        FoodSearch(
+                            name = name,
+                            href = "https://www.fatsecret.com.br$href",
+                            smallText = smallTextBeforeDash,
+                            grams = grams.replace("g", "")
+                        )
+                    )
+                }
+            }
+        } catch (e: IOException) {
+            println("Erro: ${e.message}")
+            // Retorna uma lista vazia em caso de erro
+            return emptyList()
+        }
+        return items
+    }
+
+    fun parseFoodData(url: String): Food {
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+        val response = client.newCall(request).execute()
+
+        if (!response.isSuccessful) throw Exception("Failed to fetch data")
+
+        val html = response.body?.string() ?: throw Exception("No content received")
+        val doc: Document = Jsoup.parse(html)
+
+        // Extract food description
+        val foodDescription = doc.select("h1[style='text-transform:none']").text().trim()
+
+        // Extract nutrients
+        val nutrients = mutableMapOf<String, String>()
+        doc.select("div.nutrient.left").forEach { element: Element ->
+            val keyText = element.text().trim()
+            val value = element.nextElementSibling()?.text()?.replace(',', '.')?.trim() ?: "0"
+            nutrients[keyText] = value
+        }
+
+        // Convert Kj to Kcal
+        fun convertKjToKcal(kj: Double): Double = kj / 4.184
+
+        // Extract energy and convert
+        val energyKj = nutrients["Energia"]?.replace(Regex("[^0-9,.]"), "")?.replace(',', '.')?.toDoubleOrNull() ?: 0.0
+        val energyKcal = convertKjToKcal(energyKj)
+
+        // Generate a foodNumber with a random number and timestamp
+        val foodNumber = "${Random.nextInt(1000, 9999)}${System.currentTimeMillis()}"
+
+        // Create the Food object
+        return Food(
+            foodNumber = foodNumber,
+            foodDescription = foodDescription,
+            energyKcal = DecimalFormat("#.##").format(energyKcal).replace(",", "."),
+            energyKj = (energyKj * 100).toString(),
+            protein = nutrients["Proteínas"]?.replace(Regex("[^0-9.]"), "") ?: "0.0",
+            lipids = nutrients["Gorduras"]?.replace(Regex("[^0-9.]"), "") ?: "0.0",
+            cholesterol = nutrients["Colesterol"]?.replace(Regex("[^0-9]"), "") ?: "0.0",
+            carbohydrate = nutrients["Carboidratos"]?.replace(Regex("[^0-9.]"), "") ?: "0.0",
+            dietaryFiber = nutrients["Fibras"]?.replace(Regex("[^0-9.]"), "") ?: "0.0",
+            sodium = nutrients["Sódio"]?.replace(Regex("[^0-9]"), "") ?: "0.0",
+            potassium = nutrients["Potássio"]?.replace(Regex("[^0-9]"), "") ?: "0.0"
+        )
+    }
+
+    fun parseNutritionalData(html: String) {
+        // Parse o HTML
+        val doc: Document = Jsoup.parse(html)
+
+        // Selecione a tabela de fatos nutricionais
+        val nutritionFactsDiv: Element? = doc.select("div.nutrition_facts").first()
+
+        // Obtenha a lista de nutrientes
+        val nutrients: Elements = nutritionFactsDiv!!.select("div.nutrient")
+
+        // Mapeie os nutrientes
+        val data = mutableMapOf<String, String>()
+        var nutrientName = ""
+        for (nutrient in nutrients) {
+            val text = nutrient.text()
+            if (nutrient.hasClass("left")) {
+                nutrientName = text
+            } else if (nutrient.hasClass("right")) {
+                data[nutrientName] = text
+            }
+        }
+
+        // Exiba os dados
+        data.forEach { (key, value) ->
+            println("$key: $value")
+        }
+    }
+
+    // Usar Coroutine para chamada assíncrona
+    fun fetchFoodDataAsync(query: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = fetchFoodData(query)
+            var jsonUtil = JSON()
+            withContext(Dispatchers.Main) {
+                for (foodSearch in result) {
+                    println("${jsonUtil.toJson(foodSearch)}")
+                }
+            }
+        }
+    }
+
+    fun fetchSelecteFoodAsync (url: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = parseFoodData(url)
+            var jsonUtil = JSON()
+            withContext(Dispatchers.Main) {
+                println("${jsonUtil.toJson(result)}")
+            }
+        }
+    }
 
 }
