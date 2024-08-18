@@ -581,8 +581,13 @@ class formDailyCalories : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             val result = fetchFoodData(query)
             withContext(Dispatchers.Main) {
-                for (foodSearch in result) {
-                    fetchSelectedFoodAsync(foodSearch.href,foodSearch.grams.toDoubleOrNull() ?: 100.0)
+                if (query.isNotEmpty()) {
+                    for (foodSearch in result) {
+                        fetchSelectedFoodAsync(
+                            foodSearch.href,
+                            foodSearch.grams.toDoubleOrNull() ?: 100.0
+                        )
+                    }
                 }
             }
         }
