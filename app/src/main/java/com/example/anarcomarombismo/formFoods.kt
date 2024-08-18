@@ -71,9 +71,7 @@ class formFoods : AppCompatActivity() {
 
         setupCaloriesCalculation()
 
-        // fetchFoodDataAsync("feijão")
-
-        // fetchSelecteFoodAsync("https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/gen%C3%A9rico/feij%C3%A3o-carioca-cozido")
+        fetchFoodDataAsync("feijão")
     }
 
     private fun initializeUIComponents() {
@@ -436,19 +434,18 @@ class formFoods : AppCompatActivity() {
     }
 
     // Usar Coroutine para chamada assíncrona
-    fun fetchFoodDataAsync(query: String) {
+    private fun fetchFoodDataAsync(query: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val result = fetchFoodData(query)
-            var jsonUtil = JSON()
             withContext(Dispatchers.Main) {
                 for (foodSearch in result) {
-                    println("${jsonUtil.toJson(foodSearch)}")
+                    fetchSelectedFoodAsync(foodSearch.href)
                 }
             }
         }
     }
 
-    fun fetchSelecteFoodAsync (url: String) {
+    private fun fetchSelectedFoodAsync (url: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val result = parseFoodData(url)
             var jsonUtil = JSON()
