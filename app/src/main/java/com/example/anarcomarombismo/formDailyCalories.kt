@@ -490,12 +490,12 @@ class formDailyCalories : AppCompatActivity() {
                         )
                     }
                 }
+                cache.setCache(this, queryHash, jsonUtil.toJson(items))
             } catch (e: IOException) {
                 println("Erro: ${e.message}")
                 // Retorna uma lista vazia em caso de erro
                 return emptyList()
             }
-            cache.setCache(this, queryHash, jsonUtil.toJson(items))
             return items
         }
     }
