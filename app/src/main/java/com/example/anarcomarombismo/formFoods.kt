@@ -69,7 +69,7 @@ class formFoods : AppCompatActivity() {
             handleFoodRemoval(foodID)
         }
 
-        // setupCaloriesCalculation()
+        setupCaloriesCalculation()
     }
 
     private fun initializeUIComponents() {
