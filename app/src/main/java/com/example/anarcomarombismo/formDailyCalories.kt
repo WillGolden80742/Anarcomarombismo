@@ -25,18 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
-import java.io.IOException
-import java.math.BigInteger
-import java.net.URLEncoder
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -264,7 +252,7 @@ class formDailyCalories : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             try {
                 val foodList = loadFoodList()
-                var filteredList = filterFoodList(foodList, query).sortedBy { it.foodDescription }
+                val filteredList = filterFoodList(foodList, query)
                 updateListView(filteredList)
                 fetchFoodDataAsync(query)
             } catch (e: Exception) {
@@ -441,18 +429,19 @@ class formDailyCalories : AppCompatActivity() {
         dailyCaloriesFoods.run { setFoodList(dailyCalories.foodsList) }
     }
 
+
     // Usar Coroutine para chamada assíncrona
     private fun fetchFoodDataAsync(query: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            if (query.isNotEmpty()) {
+        if (query.isNotEmpty()) {
+            CoroutineScope(Dispatchers.IO).launch {
                 val result = FoodSearch().fetchFoodData(this@formDailyCalories, query)
                 withContext(Dispatchers.Main) {
+
                     for (foodSearch in result) {
                         fetchSelectedFoodAsync(
                             foodSearch.href,
                             foodSearch.grams.toDoubleOrNull() ?: 100.0
                         )
-                        println("search name" + foodSearch.name)
                     }
                 }
             }
@@ -461,7 +450,7 @@ class formDailyCalories : AppCompatActivity() {
 
     private fun fetchSelectedFoodAsync (url: String, grams:Double) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = FoodSearch().getFoodByURL(this@formDailyCalories,url,grams)
+            val result = FoodSearch().parseFoodData(this@formDailyCalories,url,grams)
             withContext(Dispatchers.Main) {
                 if (result.foodDescription != "NO_DESCRIPTION") {
                     appendListView(result)
