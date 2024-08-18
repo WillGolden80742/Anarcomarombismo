@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.anarcomarombismo.Controller.Food
+import com.example.anarcomarombismo.Controller.JSON
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCaloriesFoods
 import com.example.anarcomarombismo.formDailyCalories
@@ -42,6 +43,7 @@ class FoodAdapter(context: Context, foodList: List<Food>, activity:String="formD
                 editButton.setOnClickListener {
                     val intent = Intent(context, formFoods::class.java).apply {
                         putExtra("foodID", currentItem?.foodNumber)
+                        putExtra("foodObject", currentItem?.let { it1 -> JSON().toJson(it1) })
                     }
                     context.startActivity(intent)
                 }
