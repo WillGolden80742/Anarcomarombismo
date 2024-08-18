@@ -52,13 +52,13 @@ class Food (
         val sodiumLabel = context.getString(R.string.sodium)
 
         return if (grams > 0.0) {
-            energyKcalLabel + " : " + decimalFormat.format((energyKcal!!.toDouble() * grams) / 100) + ",\n" +
-            energyKjLabel + " : " + decimalFormat.format((energyKj!!.toDouble() * grams) / 100) + ",\n" +
-            proteinLabel + " : " + decimalFormat.format((protein!!.toDouble() * grams) / 100) + ",\n" +
-            lipidsLabel + " : " + decimalFormat.format((lipids!!.toDouble() * grams) / 100) + ",\n" +
-            carbohydrateLabel + " : " + decimalFormat.format((carbohydrate!!.toDouble() * grams) / 100) + ",\n" +
-            dietaryFiberLabel + " : " + decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100) + ",\n" +
-            sodiumLabel + " : " + decimalFormat.format((sodium!!.toDouble() * grams) / 100)
+            energyKcalLabel + " : " + decimalFormat.format((energyKcal!!.toDouble() * grams) / 100.0) + ",\n" +
+            energyKjLabel + " : " + decimalFormat.format((energyKj!!.toDouble() * grams) / 100.0) + ",\n" +
+            proteinLabel + " : " + decimalFormat.format((protein!!.toDouble() * grams) / 100.0) + ",\n" +
+            lipidsLabel + " : " + decimalFormat.format((lipids!!.toDouble() * grams) / 100.0) + ",\n" +
+            carbohydrateLabel + " : " + decimalFormat.format((carbohydrate!!.toDouble() * grams) / 100.0) + ",\n" +
+            dietaryFiberLabel + " : " + decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100.0) + ",\n" +
+            sodiumLabel + " : " + decimalFormat.format((sodium!!.toDouble() * grams) / 100.0)
         } else {
             energyKcalLabel + " : " + decimalFormat.format(energyKcal!!.toDouble()) + ",\n" +
             energyKjLabel + " : " + decimalFormat.format(energyKj!!.toDouble()) + ",\n" +

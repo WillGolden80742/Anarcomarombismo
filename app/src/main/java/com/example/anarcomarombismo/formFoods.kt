@@ -249,13 +249,13 @@ class formFoods : AppCompatActivity() {
             foodNumber = if (action == 1) currentFood.foodNumber else generateFoodNumber()
             this.foodDescription = foodDescription
             this.grams = 100.0
-            this.protein = formatDoubleNumber((protein / grams * 100))
-            this.carbohydrate = formatDoubleNumber((carbohydrate / grams * 100))
-            this.lipids = formatDoubleNumber((lipids / grams * 100))
-            this.dietaryFiber = formatDoubleNumber((dietaryFiber / grams * 100))
-            this.sodium = formatDoubleNumber((sodium / grams * 100))
-            this.energyKcal = formatDoubleNumber((caloriesKcal / grams * 100))
-            this.energyKj = formatDoubleNumber((caloriesKcal / grams * 100) * 4.184)
+            this.protein = formatDoubleNumber((protein / grams * 100.0))
+            this.carbohydrate = formatDoubleNumber((carbohydrate / grams * 100.0))
+            this.lipids = formatDoubleNumber((lipids / grams * 100.0))
+            this.dietaryFiber = formatDoubleNumber((dietaryFiber / grams * 100.0))
+            this.sodium = formatDoubleNumber((sodium / grams * 100.0))
+            this.energyKcal = formatDoubleNumber((caloriesKcal / grams * 100.0))
+            this.energyKj = formatDoubleNumber((caloriesKcal / grams * 100.0) * 4.184)
         }
     }
 

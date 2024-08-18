@@ -544,15 +544,15 @@ class formDailyCalories : AppCompatActivity() {
                     foodNumber = foodNumber,
                     grams = 100.0,
                     foodDescription = foodDescription,
-                    energyKcal = DecimalFormat("#.##").format((energyKcal / grams) * 100).replace(",", "."),
-                    energyKj = DecimalFormat("#.##").format((energyKj / grams) * 100).replace(",", "."),
-                    protein = DecimalFormat("#.##").format((nutrients["Proteínas"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100).replace(",", "."),
-                    lipids = DecimalFormat("#.##").format((nutrients["Gorduras"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100).replace(",", "."),
-                    cholesterol = DecimalFormat("#.##").format((nutrients["Colesterol"]?.replace(Regex("[^0-9]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100).replace(",", "."),
-                    carbohydrate = DecimalFormat("#.##").format((nutrients["Carboidratos"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100).replace(",", "."),
-                    dietaryFiber = DecimalFormat("#.##").format((nutrients["Fibras"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100).replace(",", "."),
-                    sodium = DecimalFormat("#.##").format((nutrients["Sódio"]?.replace(Regex("[^0-9]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100).replace(",", "."),
-                    potassium = DecimalFormat("#.##").format((nutrients["Potássio"]?.replace(Regex("[^0-9]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100).replace(",", ".")
+                    energyKcal = DecimalFormat("#.##").format((energyKcal / grams) * 100.0).replace(",", "."),
+                    energyKj = DecimalFormat("#.##").format((energyKj / grams) * 100.0).replace(",", "."),
+                    protein = DecimalFormat("#.##").format((nutrients["Proteínas"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100.0).replace(",", "."),
+                    lipids = DecimalFormat("#.##").format((nutrients["Gorduras"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100.0).replace(",", "."),
+                    cholesterol = DecimalFormat("#.##").format((nutrients["Colesterol"]?.replace(Regex("[^0-9]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100.0).replace(",", "."),
+                    carbohydrate = DecimalFormat("#.##").format((nutrients["Carboidratos"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100.0).replace(",", "."),
+                    dietaryFiber = DecimalFormat("#.##").format((nutrients["Fibras"]?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100.0).replace(",", "."),
+                    sodium = DecimalFormat("#.##").format((nutrients["Sódio"]?.replace(Regex("[^0-9]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100.0).replace(",", "."),
+                    potassium = DecimalFormat("#.##").format((nutrients["Potássio"]?.replace(Regex("[^0-9]"), "")?.toDoubleOrNull() ?: 0.0) / grams * 100.0).replace(",", ".")
                 )
                 cache.setCache(this, foodNumber, jsonUtil.toJson(food))
                 println(JSON().toJson(food))
