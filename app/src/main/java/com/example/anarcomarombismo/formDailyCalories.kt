@@ -447,7 +447,7 @@ class formDailyCalories : AppCompatActivity() {
         val jsonUtil = JSON()
         val queryHash = getHashMd5(query)+query.length
         if (cache.hasCache(this, queryHash)) {
-            println("CACHE HIT")
+            println("CACHE HIT for queryHash: $queryHash")
             return jsonUtil.fromJson(cache.getCache(this, queryHash), Array<FoodSearch>::class.java).toList()
         } else {
             val encodedQuery = URLEncoder.encode(query, "UTF-8")
@@ -505,6 +505,7 @@ class formDailyCalories : AppCompatActivity() {
         val jsonUtil = JSON()
         val foodNumber = getHashMd5(url)+url.length
         if (cache.hasCache(this, foodNumber)) {
+            println("CACHE HIT for foodNumber: $foodNumber")
             return jsonUtil.fromJson(cache.getCache(this, foodNumber), Food::class.java)
         } else {
             try {
@@ -597,5 +598,6 @@ class formDailyCalories : AppCompatActivity() {
             }
         }
     }
+
 
 }

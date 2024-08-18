@@ -10,23 +10,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
-import com.example.anarcomarombismo.Controller.FoodSearch
 import com.example.anarcomarombismo.Controller.JSON
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
-import java.io.IOException
-import java.net.URLEncoder
-import java.text.DecimalFormat
 import java.util.UUID
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import kotlin.random.Random
 
 class formFoods : AppCompatActivity() {
 
