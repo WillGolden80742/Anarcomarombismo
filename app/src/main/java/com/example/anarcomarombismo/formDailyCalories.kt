@@ -239,7 +239,7 @@ class formDailyCalories : AppCompatActivity() {
         try {
             val grams = it.toString().toDoubleOrNull().let { it ?: 0.0 }
             val currentCalorie = currentFood?.energyKcal?.replace(",", ".")?.toDouble().let { it?: 0.0 }
-            val temporaryCalcule = currentCalorie * (grams!! / 100)
+            val temporaryCalcule = currentCalorie * (grams!! / 100.0)
             val temporaryTotal = temporaryCalcule + dailyCalories.calorieskcal
             totalCaloriesLabel.text = "Total: ${String.format("%.1f", temporaryTotal)} kcal"
         } catch (e: Exception) {
