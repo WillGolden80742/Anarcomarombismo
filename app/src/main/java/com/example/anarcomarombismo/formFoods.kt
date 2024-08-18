@@ -186,12 +186,13 @@ class formFoods : AppCompatActivity() {
             foodNutritionList = jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
                 .filter { it.foodNumber != currentFood.foodNumber }
             cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
-            finish()
+            Toast.makeText(this, getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(this, getString(R.string.error_removing_food), Toast.LENGTH_SHORT).show()
             println("Erro food: $e")
+        } finally {
+            finish()
         }
-        Toast.makeText(this, getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
     }
 
     // edit food
@@ -226,9 +227,10 @@ class formFoods : AppCompatActivity() {
 
             updateOrCreateFood(action, food)
             cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
-            finish()
         } catch (e: Exception) {
             showToast(getString(R.string.save_food_error))
+        } finally {
+            finish()
         }
     }
 
