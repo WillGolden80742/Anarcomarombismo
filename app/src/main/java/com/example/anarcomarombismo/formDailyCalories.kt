@@ -303,7 +303,6 @@ class formDailyCalories : AppCompatActivity() {
         println(RuntimeException("Error reading the JSON file: $e"))
     }
 
-
     private fun addFoodToDailyList() {
         seeFoodsButton.isEnabled = true
         if (currentFood !== null) {
