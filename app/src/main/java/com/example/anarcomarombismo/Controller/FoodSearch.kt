@@ -57,7 +57,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
                 // Create the Food object and normalize the values
                 val food = Food(
                     foodNumber = foodNumber,
-                    editable = false,
                     grams = 100.0,
                     foodDescription = foodDescription,
                     energyKcal = DecimalFormat("#.##").format((energyKcal / grams) * 100.0).replace(",", "."),
