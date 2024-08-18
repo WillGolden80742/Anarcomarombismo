@@ -109,8 +109,8 @@
                 android:layout_width="0dp"
                 android:layout_height="46dp"
                 android:layout_weight="1"
-                android:editable="false"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="number"
                 android:text="100" />
 
