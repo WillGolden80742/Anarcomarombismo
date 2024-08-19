@@ -1,8 +1,6 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
-import android.widget.Toast
-import com.example.anarcomarombismo.R
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
