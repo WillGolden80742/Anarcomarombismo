@@ -38,7 +38,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
     private fun fetchAndCacheFoodData(context: Context, query: String, queryHash: String): List<FoodSearch> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
-        val normalizedQuery = normalizeString(query) // Normaliza a query para ignorar acentos
 
         val items = mutableListOf<FoodSearch>()
 
@@ -52,7 +51,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
                 for (link in links) {
                     val foodSearch = parseFoodSearch(link, smallTextDivs)
-                    if (foodSearch != null && normalizeString(foodSearch.name).contains(normalizedQuery, ignoreCase = true)) {
+                    if (foodSearch != null && containsQuery(foodSearch.name,query)) {
                         items.add(foodSearch)
                     }
                 }
@@ -65,6 +64,18 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         cache.setCache(context, queryHash, jsonUtil.toJson(items))
 
         return items
+    }
+
+    private fun containsQuery(text: String, query: String): Boolean {
+        val normalizedText = normalizeString(text)
+        val normalizedQuery = normalizeString(query)
+        // loop split by space
+        for (word in normalizedQuery.split(" ")) {
+            if (!normalizedText.contains(word, ignoreCase = true)) {
+                return false
+            }
+        }
+        return true
     }
     private fun normalizeString(text: String): String {
         return Normalizer.normalize(text, Normalizer.Form.NFD)
