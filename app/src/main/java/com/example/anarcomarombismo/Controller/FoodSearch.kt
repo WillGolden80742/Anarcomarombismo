@@ -36,25 +36,29 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
     private fun fetchAndCacheFoodData(context: Context, query: String, queryHash: String): List<FoodSearch> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
-        val url = "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery"
+
         val items = mutableListOf<FoodSearch>()
 
-        try {
-            val document = fetchDocument(url)
-            val links = document.select("a.prominent")
-            val smallTextDivs = document.select("div.smallText")
+        for (i in 0..1) {
+            val url =
+                "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
+            try {
+                val document = fetchDocument(url)
+                val links = document.select("a.prominent")
+                val smallTextDivs = document.select("div.smallText")
 
-            for (link in links) {
-                val foodSearch = parseFoodSearch(link, smallTextDivs)
-                if (foodSearch != null) {
-                    items.add(foodSearch)
+                for (link in links) {
+                    val foodSearch = parseFoodSearch(link, smallTextDivs)
+                    if (foodSearch != null) {
+                        items.add(foodSearch)
+                    }
                 }
-            }
 
-            cache.setCache(context, queryHash, jsonUtil.toJson(items))
-        } catch (e: IOException) {
-            println("Erro: ${e.message}")
-            return emptyList()
+                cache.setCache(context, queryHash, jsonUtil.toJson(items))
+            } catch (e: IOException) {
+                println("Erro: ${e.message}")
+                return emptyList()
+            }
         }
 
         return items
