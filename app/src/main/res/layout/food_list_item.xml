@@ -5,13 +5,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/foodTitleTextViewItem"
+    <!-- Horizontal ScrollView around the foodTitleTextViewItem -->
+    <HorizontalScrollView
+        android:id="@+id/foodTitleTextViewScrollViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:paddingBottom="4dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80dp">
+
+        <TextView
+            android:id="@+id/foodTitleTextViewItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </HorizontalScrollView>
 
     <TextView
         android:id="@+id/foodTextViewItem"
@@ -19,7 +28,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:paddingTop="4dp"
-        android:layout_below="@id/foodTitleTextViewItem" />
+        android:layout_below="@id/foodTitleTextViewScrollViewItem" />
 
     <LinearLayout
         android:layout_width="wrap_content"

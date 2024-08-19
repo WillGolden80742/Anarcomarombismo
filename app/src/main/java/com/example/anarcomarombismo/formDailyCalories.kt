@@ -254,7 +254,7 @@ class formDailyCalories : AppCompatActivity() {
                 val foodList = loadFoodList()
                 val filteredList = filterFoodList(foodList, query)
                 updateListView(filteredList)
-                fetchFoodDataAsync(query)
+                searchFoodAsync(query)
             } catch (e: Exception) {
                 handleException(e)
             }
@@ -316,7 +316,7 @@ class formDailyCalories : AppCompatActivity() {
                             String.format("%.1f", temporaryCalcule + dailyCalories.calorieskcal)
                         Toast.makeText(
                             this,
-                            "$temporaryCalcule kcal + ${dailyCalories.calorieskcal} kcal = $totalCalories kcal",
+                            "$temporaryCalcule kcal + ${String.format("%.1f", dailyCalories.calorieskcal)} kcal = $totalCalories kcal",
                             Toast.LENGTH_SHORT
                         ).show()
                         food.grams = grams
@@ -430,14 +430,14 @@ class formDailyCalories : AppCompatActivity() {
 
 
     // Usar Coroutine para chamada assíncrona
-    private fun fetchFoodDataAsync(query: String) {
+    private fun searchFoodAsync(query: String) {
         if (query.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = FoodSearch().fetchFoodData(this@formDailyCalories, query)
+                val result = FoodSearch().searchFood(this@formDailyCalories, query)
                 withContext(Dispatchers.Main) {
 
                     for (foodSearch in result) {
-                        fetchSelectedFoodAsync(
+                        getFoodByURLAsync(
                             foodSearch.href,
                             foodSearch.grams.toDoubleOrNull() ?: 100.0
                         )
@@ -447,9 +447,9 @@ class formDailyCalories : AppCompatActivity() {
         }
     }
 
-    private fun fetchSelectedFoodAsync (url: String, grams:Double) {
+    private fun getFoodByURLAsync (url: String, grams:Double) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = FoodSearch().parseFoodData(this@formDailyCalories,url,grams)
+            val result = FoodSearch().getFoodByURL(this@formDailyCalories,url,grams)
             withContext(Dispatchers.Main) {
                 if (result.foodDescription != "NO_DESCRIPTION") {
                     appendListView(result)

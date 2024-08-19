@@ -97,7 +97,20 @@ class formFoods : AppCompatActivity() {
     private fun loadFoodData() {
         intent.getStringExtra("foodObject")?.let {
             currentFood = jsonUtil.fromJson(it, Food::class.java)
+            if (currentFood.foodNumber.contains("web")) {
+                editable(false)
+            }
         }
+    }
+
+    private fun editable (b:Boolean) {
+        addFoodFormButton.isVisible = false
+        removeFoodFormButton.isVisible = false
+        editTextName.isEnabled = b
+        editTextGrams.isEnabled = b
+        editTextProtein.isEnabled = b
+        editTextCarbohydrate.isEnabled = b
+        editTextLipids.isEnabled = b
     }
 
     private fun populateFoodForm(food: Food) {
