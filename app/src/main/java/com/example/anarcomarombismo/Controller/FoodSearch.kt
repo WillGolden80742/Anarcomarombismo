@@ -1,6 +1,8 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.widget.Toast
+import com.example.anarcomarombismo.R
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
@@ -18,6 +20,9 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
     private val cache = Cache()
     private val jsonUtil = JSON()
     fun searchFood(context: Context, query: String): List<FoodSearch> {
+        Toast.makeText(context,
+            context.getString(R.string.searching_online, query), Toast.LENGTH_SHORT).show()
+        
         val queryHash = getKey(query)
 
         if (cache.hasCache(context, queryHash)) {
