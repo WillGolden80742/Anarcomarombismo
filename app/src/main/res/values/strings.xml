@@ -160,5 +160,4 @@
     <string name="save_food_error">Erro ao salvar o alimento</string>
     <string name="it_was_not_possible_to_load_the_food">Não foi possível carregar o alimento</string>
     <string name="error_removing_food">Não foi possível remover o alimento</string>
-    <string name="searching_online">Buscando %1$s online</string>
 </resources>

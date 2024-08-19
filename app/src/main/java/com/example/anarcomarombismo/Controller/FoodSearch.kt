@@ -27,8 +27,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             println("CACHE HIT for queryHash: $queryHash")
             return getCachedFoodData(context, queryHash)
         } else {
-            Toast.makeText(context,
-                context.getString(R.string.searching_online, query), Toast.LENGTH_SHORT).show()
             return fetchAndCacheFoodData(context, query, queryHash)
         }
     }

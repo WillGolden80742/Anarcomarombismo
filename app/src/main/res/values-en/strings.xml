@@ -160,5 +160,4 @@
     <string name="save_food_error">Save food error</string>
     <string name="it_was_not_possible_to_load_the_food">It was not possible to load the food</string>
     <string name="error_removing_food">Error removing food</string>
-    <string name="searching_online">Searching %1$s online</string>
 </resources>
