@@ -13,6 +13,8 @@ import java.net.URLEncoder
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.DecimalFormat
+import java.text.Normalizer
+
 class FoodSearch (var name:String = "", var href:String = "",var smallText:String = "", var grams:String = "") {
 
     private val cache = Cache()
@@ -36,6 +38,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
     private fun fetchAndCacheFoodData(context: Context, query: String, queryHash: String): List<FoodSearch> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
+        val normalizedQuery = normalizeString(query) // Normaliza a query para ignorar acentos
 
         val items = mutableListOf<FoodSearch>()
 
@@ -49,7 +52,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
                 for (link in links) {
                     val foodSearch = parseFoodSearch(link, smallTextDivs)
-                    if (foodSearch != null && foodSearch.name.contains(query, ignoreCase = true)) {
+                    if (foodSearch != null && normalizeString(foodSearch.name).contains(normalizedQuery, ignoreCase = true)) {
                         items.add(foodSearch)
                     }
                 }
@@ -62,6 +65,10 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         cache.setCache(context, queryHash, jsonUtil.toJson(items))
 
         return items
+    }
+    private fun normalizeString(text: String): String {
+        return Normalizer.normalize(text, Normalizer.Form.NFD)
+            .replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "")
     }
 
     private fun fetchDocument(url: String): Document {
@@ -139,7 +146,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
     private fun extractFoodDescription(doc: Document): String {
         var foodDescription = doc.select("h1[style='text-transform:none']").text().trim()
-        return foodDescription.replace(Regex("\\(\\d+g\\)", RegexOption.IGNORE_CASE), "").trim()
+        return foodDescription.replace(Regex("\\d+g", RegexOption.IGNORE_CASE), "100g").trim()
     }
     private fun extractNutrients(doc: Document): MutableMap<String, String> {
         val nutrients = mutableMapOf<String, String>()
