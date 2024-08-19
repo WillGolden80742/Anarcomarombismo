@@ -53,13 +53,13 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
                         items.add(foodSearch)
                     }
                 }
-
-                cache.setCache(context, queryHash, jsonUtil.toJson(items))
             } catch (e: IOException) {
                 println("Erro: ${e.message}")
                 return emptyList()
             }
         }
+
+        cache.setCache(context, queryHash, jsonUtil.toJson(items))
 
         return items
     }
