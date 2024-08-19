@@ -49,7 +49,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
                 for (link in links) {
                     val foodSearch = parseFoodSearch(link, smallTextDivs)
-                    if (foodSearch != null && foodSearch.name.contains(query, ignoreCase = true)) {
+                    if (foodSearch != null) {
                         items.add(foodSearch)
                     }
                 }
