@@ -146,7 +146,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
     private fun extractFoodDescription(doc: Document): String {
         var foodDescription = doc.select("h1[style='text-transform:none']").text().trim()
-        return foodDescription.replace(Regex("\\d+g", RegexOption.IGNORE_CASE), "100g").trim()
+        return foodDescription.replace(Regex("\\d+g", RegexOption.IGNORE_CASE), "").replace("()","").trim()
     }
     private fun extractNutrients(doc: Document): MutableMap<String, String> {
         val nutrients = mutableMapOf<String, String>()
