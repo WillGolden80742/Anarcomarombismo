@@ -220,7 +220,7 @@ class formDailyCalories : AppCompatActivity() {
         }
     }
     private fun setFoodToFoodList() {
-        searchFood("")
+        searchFood(searchEditText.text.toString())
     }
     private fun calculeTotalCalories(it: CharSequence?) {
         try {
