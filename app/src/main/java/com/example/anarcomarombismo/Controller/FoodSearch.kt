@@ -20,27 +20,20 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
     private val cache = Cache()
     private val jsonUtil = JSON()
     fun searchFood(context: Context, query: String): List<FoodSearch> {
-
         val queryHash = getKey(query)
-
         if (cache.hasCache(context, queryHash)) {
             println("CACHE HIT for queryHash: $queryHash")
             return getCachedFoodData(context, queryHash)
         }
-
         return fetchAndCacheFoodData(context, query, queryHash)
     }
-
     private fun getCachedFoodData(context: Context, queryHash: String): List<FoodSearch> {
         val cachedJson = cache.getCache(context, queryHash)
         return jsonUtil.fromJson(cachedJson, Array<FoodSearch>::class.java).toList()
     }
-
     private fun fetchAndCacheFoodData(context: Context, query: String, queryHash: String): List<FoodSearch> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
-
         val items = mutableListOf<FoodSearch>()
-
         for (i in 0..1) {
             val url =
                 "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
@@ -60,12 +53,9 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
                 return emptyList()
             }
         }
-
         cache.setCache(context, queryHash, jsonUtil.toJson(items))
-
         return items
     }
-
     private fun containsQuery(text: String, query: String): Boolean {
         val normalizedText = normalizeString(text)
         val normalizedQuery = normalizeString(query)
@@ -81,21 +71,17 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         return Normalizer.normalize(text, Normalizer.Form.NFD)
             .replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "")
     }
-
     private fun fetchDocument(url: String): Document {
         return Jsoup.connect(url)
             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
             .get()
     }
-
     private fun parseFoodSearch(link: Element, smallTextDivs: Elements): FoodSearch? {
         val href = link.attr("href")
         val name = link.text().trim()
         val smallTextContent = findSmallTextContent(link, smallTextDivs)
         val smallTextBeforeDash = smallTextContent.split("-")[0]
-
         val grams = extractGrams(smallTextBeforeDash)
-
         return if (grams != null) {
             FoodSearch(
                 name = name,
@@ -107,7 +93,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             null
         }
     }
-
     private fun findSmallTextContent(link: Element, smallTextDivs: Elements): String {
         for (div in smallTextDivs) {
             if (div.parent() == link.parent()) {
@@ -116,19 +101,15 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         }
         return ""
     }
-
     private fun extractGrams(text: String): String? {
         return Regex("(\\d+\\s*g|\\d+g)").find(text)?.value
     }
-
     fun getFoodByURL(context: Context, url: String, grams: Double): Food {
         val foodNumber = getKey(url)
-
         if (cache.hasCache(context, foodNumber)) {
             println("CACHE HIT for foodNumber: $foodNumber")
             return jsonUtil.fromJson(cache.getCache(context, foodNumber), Food::class.java)
         }
-
         return try {
             val html = fetchHtmlContent(url)
             val doc: Document = Jsoup.parse(html)
@@ -145,18 +126,13 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             Food()
         }
     }
-
-
     private fun fetchHtmlContent(url: String): String {
         val client = OkHttpClient()
         val request = Request.Builder().url(url).build()
         val response = client.newCall(request).execute()
-
         if (!response.isSuccessful) throw Exception("Failed to fetch data")
-
         return response.body?.string() ?: throw Exception("No content received")
     }
-
     private fun extractFoodDescription(doc: Document): String {
         val foodDescription = doc.select("div.summarypanelcontent h1").text().trim()
         return foodDescription.replace(Regex("\\d+g", RegexOption.IGNORE_CASE), "").replace("()", "").trim()
@@ -170,11 +146,9 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         }
         return nutrients
     }
-
     private fun convertKjToKcal(kj: Double): Double {
         return kj / 4.184
     }
-
     private fun createFoodObject(
         foodNumber: String,
         grams: Double,
@@ -200,16 +174,13 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             potassium = formatNutrientValue(nutrients["Potássio"], grams)
         )
     }
-
     private fun formatNutrientValue(nutrientValue: String?, grams: Double): String {
         val value = nutrientValue?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0
         return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
     }
-
     private fun formatNutrientValue(value: Double, grams: Double): String {
         return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
     }
-
     private fun getKey(value: String): String {
         return try {
             val md = MessageDigest.getInstance("MD5")
