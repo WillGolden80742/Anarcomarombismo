@@ -20,15 +20,15 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
     private val cache = Cache()
     private val jsonUtil = JSON()
     fun searchFood(context: Context, query: String): List<FoodSearch> {
-        
+
         val queryHash = getKey(query)
 
         if (cache.hasCache(context, queryHash)) {
             println("CACHE HIT for queryHash: $queryHash")
             return getCachedFoodData(context, queryHash)
-        } else {
-            return fetchAndCacheFoodData(context, query, queryHash)
         }
+
+        return fetchAndCacheFoodData(context, query, queryHash)
     }
 
     private fun getCachedFoodData(context: Context, queryHash: String): List<FoodSearch> {
@@ -123,27 +123,29 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
     fun getFoodByURL(context: Context, url: String, grams: Double): Food {
         val foodNumber = getKey(url)
+
         if (cache.hasCache(context, foodNumber)) {
             println("CACHE HIT for foodNumber: $foodNumber")
             return jsonUtil.fromJson(cache.getCache(context, foodNumber), Food::class.java)
-        } else {
-            try {
-                val html = fetchHtmlContent(url)
-                val doc: Document = Jsoup.parse(html)
+        }
 
-                val foodDescription = extractFoodDescription(doc)
-                val nutrients = extractNutrients(doc)
-                val food = createFoodObject(foodNumber, grams, foodDescription, nutrients)
+        return try {
+            val html = fetchHtmlContent(url)
+            val doc: Document = Jsoup.parse(html)
 
-                cache.setCache(context, foodNumber, jsonUtil.toJson(food))
-                println(JSON().toJson(food))
-                return food
-            } catch (e: Exception) {
-                println("Error Food: ${e.message}")
-                return Food()
-            }
+            val foodDescription = extractFoodDescription(doc)
+            val nutrients = extractNutrients(doc)
+            val food = createFoodObject(foodNumber, grams, foodDescription, nutrients)
+
+            cache.setCache(context, foodNumber, jsonUtil.toJson(food))
+            println(JSON().toJson(food))
+            food
+        } catch (e: Exception) {
+            println("Error Food: ${e.message}")
+            Food()
         }
     }
+
 
     private fun fetchHtmlContent(url: String): String {
         val client = OkHttpClient()
@@ -156,8 +158,8 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
     }
 
     private fun extractFoodDescription(doc: Document): String {
-        var foodDescription = doc.select("h1[style='text-transform:none']").text().trim()
-        return foodDescription.replace(Regex("\\d+g", RegexOption.IGNORE_CASE), "").replace("()","").trim()
+        val foodDescription = doc.select("div.summarypanelcontent h1").text().trim()
+        return foodDescription.replace(Regex("\\d+g", RegexOption.IGNORE_CASE), "").replace("()", "").trim()
     }
     private fun extractNutrients(doc: Document): MutableMap<String, String> {
         val nutrients = mutableMapOf<String, String>()
