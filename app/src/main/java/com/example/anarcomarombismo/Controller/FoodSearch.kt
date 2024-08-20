@@ -16,7 +16,6 @@ import java.text.DecimalFormat
 import java.text.Normalizer
 
 class FoodSearch (var name:String = "", var href:String = "",var smallText:String = "", var grams:String = "") {
-
     private val cache = Cache()
     private val jsonUtil = JSON()
     fun searchFood(context: Context, query: String): List<FoodSearch> {
