@@ -157,7 +157,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         val energyKj = nutrients["Energia"]?.replace(Regex("[^0-9,.]"), "")?.replace(',', '.')
             ?.toDoubleOrNull() ?: 0.0
         val energyKcal = convertKjToKcal(energyKj)
-
         return Food(
             foodNumber = "web$foodNumber",
             grams = 100.0,
