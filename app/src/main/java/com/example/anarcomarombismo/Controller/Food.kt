@@ -43,6 +43,7 @@ class Food (
 
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
+        val gramsLabel = context.getString(R.string.grams)
         val energyKcalLabel = context.getString(R.string.energy_kcal)
         val energyKjLabel = context.getString(R.string.energy_kj)
         val proteinLabel = context.getString(R.string.protein)
@@ -52,6 +53,7 @@ class Food (
         val sodiumLabel = context.getString(R.string.sodium)
 
         return if (grams > 0.0) {
+            gramsLabel + " : " + decimalFormat.format(grams) + ",\n" +
             energyKcalLabel + " : " + decimalFormat.format((energyKcal!!.toDouble() * grams) / 100.0) + ",\n" +
             energyKjLabel + " : " + decimalFormat.format((energyKj!!.toDouble() * grams) / 100.0) + ",\n" +
             proteinLabel + " : " + decimalFormat.format((protein!!.toDouble() * grams) / 100.0) + ",\n" +
@@ -60,6 +62,7 @@ class Food (
             dietaryFiberLabel + " : " + decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100.0) + ",\n" +
             sodiumLabel + " : " + decimalFormat.format((sodium!!.toDouble() * grams) / 100.0)
         } else {
+            gramsLabel + " : " + decimalFormat.format(grams) + ",\n" +
             energyKcalLabel + " : " + decimalFormat.format(energyKcal!!.toDouble()) + ",\n" +
             energyKjLabel + " : " + decimalFormat.format(energyKj!!.toDouble()) + ",\n" +
             proteinLabel + " : " + decimalFormat.format(protein!!.toDouble()) + ",\n" +

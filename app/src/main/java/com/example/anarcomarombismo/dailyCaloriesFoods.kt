@@ -87,9 +87,11 @@ class dailyCaloriesFoods : AppCompatActivity() {
         // update the list view
         val adapter = FoodAdapter(this, foodList,"dailyCaloriesFoods")
         listView.adapter = adapter
-        saveDailyCalories()
         if (foodList.isEmpty()) {
+            removeDailyCalories()
             finish()
+        } else {
+            saveDailyCalories()
         }
     }
 
@@ -110,6 +112,13 @@ class dailyCaloriesFoods : AppCompatActivity() {
         showToast(R.string.daily_calories_saved_successfully)
     }
 
+    private fun removeDailyCalories() {
+        val cache = Cache()
+        val cacheKey = "dailyCalories"
+        val updatedDailyCaloriesList = getDailyCaloriesList(cache, cacheKey).filterNot { it.date == dailyCaloriesDate }
+        saveUpdatedListToCache(cache, cacheKey, updatedDailyCaloriesList)
+        showToast(R.string.daily_calories_removed_successfully)
+    }
     private fun createDailyCalories(): DailyCalories {
         return DailyCalories().apply {
             date = dailyCaloriesDate
