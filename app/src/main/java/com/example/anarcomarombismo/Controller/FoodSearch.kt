@@ -60,11 +60,11 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         val normalizedQuery = normalizeString(query)
         // loop split by space
         for (word in normalizedQuery.split(" ")) {
-            if (!normalizedText.contains(word, ignoreCase = true)) {
-                return false
+            if (normalizedText.contains(word, ignoreCase = true)) {
+                return true
             }
         }
-        return true
+        return false
     }
     private fun normalizeString(text: String): String {
         return Normalizer.normalize(text, Normalizer.Form.NFD)
