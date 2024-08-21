@@ -60,7 +60,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         val normalizedQuery = normalizeString(query)
         // loop split by space
         for (word in normalizedQuery.split(" ")) {
-            if (normalizedText.contains(word, ignoreCase = true)) {
+            if (normalizedText.contains(word, ignoreCase = true) && word.length > 2) {
                 return true
             }
         }
