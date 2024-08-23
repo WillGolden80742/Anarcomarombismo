@@ -17,10 +17,10 @@ class Exercise(
 ) {
 
     fun toString(context: Context): String {
-        return "${context.getString(R.string.muscle)}: $muscle, ${context.getString(R.string.sets)}: $sets, ${context.getString(R.string.reps)}: $repetitions, ${context.getString(R.string.load)}: $load, ${context.getString(R.string.rest)}: $rest, ${context.getString(R.string.cadence)}: $cadence"
+        return "${context.getString(R.string.muscle)}: $muscle, \n${context.getString(R.string.sets)}: $sets,\n${context.getString(R.string.reps)}: $repetitions, \n${context.getString(R.string.load)}: $load, \n${context.getString(R.string.rest)}: $rest, \n${context.getString(R.string.cadence)}: $cadence"
     }
 
     override fun toString(): String {
-        return "Muscle: $muscle, sets: $sets, repetitions: $repetitions, load:$load, rest: $rest, cadence: '$cadence'"
+        return "Muscle: $muscle, \nsets: $sets, \nrepetitions: $repetitions, \nload:$load, \nrest: $rest, \ncadence: '$cadence'"
     }
 }
