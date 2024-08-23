@@ -66,8 +66,8 @@
                 android:textColor="@color/text_primary"
                 android:textSize="24dp" />
 
-            <EditText
-                android:id="@+id/editTextPlayMuscleGroup"
+            <Spinner
+                android:id="@+id/spinnerPlayMuscleGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
@@ -209,7 +209,7 @@
 
     </ScrollView>
 
-    <Button
+    <CheckBox
         android:id="@+id/addPlayExerciseFormButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -218,18 +218,20 @@
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/button_color"
         android:padding="12dp"
-        android:text="@string/add_exercise"
+        android:text="@string/exercise_finished"
         android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_save_24_regular"
+        android:buttonTint="@color/yellow"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
         app:iconGravity="textStart"
         app:iconSize="32dp"
         app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@+id/removePlayExerciseFormButton"
+        app:layout_constraintBottom_toTopOf="@+id/savePlayExerciseFormButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/removePlayExerciseFormButton"
+        android:id="@+id/savePlayExerciseFormButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -237,9 +239,9 @@
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/button_color"
         android:padding="12dp"
-        android:text="@string/remove_exercise"
+        android:text="@string/save"
         android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_delete_24_regular"
+        app:icon="@drawable/ic_fluent_save_24_regular"
         app:iconGravity="textStart"
         app:iconSize="32dp"
         app:iconTint="@color/yellow"

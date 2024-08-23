@@ -31,15 +31,11 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingExerciseActionButton"
+        <Switch
+            android:id="@+id/switchItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            app:backgroundTint="@color/button_color"
-            app:srcCompat="@drawable/ic_fluent_play_24_regular"
-            app:tint="@color/yellow" />
+            android:layout_marginTop="20dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingEditExerciseActionButton"
@@ -50,7 +46,6 @@
             app:backgroundTint="@color/button_color"
             app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
             app:tint="@color/yellow" />
-
 
     </LinearLayout>
 

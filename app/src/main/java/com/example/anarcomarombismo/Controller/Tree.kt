@@ -1,8 +1,9 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import com.example.anarcomarombismo.R
 
-class Tree(val obj: Any) {  // Changed name to obj and type to Any
+class Tree(val obj: Any = 0) {  // Changed name to obj and type to Any
     private var value: Int
         get() = values[obj] ?: 0  // Updated to use obj
         set(value) {
@@ -127,5 +128,73 @@ class Tree(val obj: Any) {  // Changed name to obj and type to Any
             currentNode = currentNode.superNode
         }
         return result.trimStart('-').trim() + "\n"
+    }
+
+    fun dumpAndLoadMuscles(context: Context): Set<Tree> {
+        /*
+            Musclesthis,:20
+            ├── Upper Limbs:6
+            │   ├── Triceps:1
+            │   ├── Chest:1
+            │   └── Deltoids:3
+            │       ├── Anterior Deltoids:1
+            │       ├── Lateral Deltoids:1
+            │       └── Posterior Deltoids:1
+            ├── Trunk:9
+            │   ├── Abdominals:4
+            │   │   ├── Rectus Abdominis:1
+            │   │   ├── External Obliques:1
+            │   │   ├── Internal Obliques:1
+            │   │   └── Transverse Abdominis:1
+            │   ├── Back:1
+            │   │   ├── Trapezius:1
+            │   │   ├── Rhomboids:1
+            │   │   └── Erector Spinae:1
+            │   └── Serratus Anterior:1
+            └── Lower Limbs:5
+                ├── Thighs:3
+                │   ├── Quadriceps:1
+                │   ├── Adductors:1
+                │   └── Hamstrings:1
+                ├── Glutes:1
+                └── Calves:1
+        */
+        val leafs = Tree("").getLeafs()
+        val musculos = Tree(R.string.muscles)
+        val membrosSuperiores = Tree(R.string.upper_limbs).also { musculos.addNode(it) }
+        val tronco = Tree(R.string.torso).also { musculos.addNode(it) }
+        val membrosInferiores = Tree(R.string.lower_members).also { musculos.addNode(it) }
+        Tree(R.string.biceps).also { membrosSuperiores.addNode(it) }
+        Tree(R.string.triceps).also { membrosSuperiores.addNode(it) }
+        Tree(R.string.breastplate).also { membrosSuperiores.addNode(it) }
+        val deltoides = Tree(R.string.deltoids).also { membrosSuperiores.addNode(it) }
+        Tree(R.string.anterior_deltoids).also { deltoides.addNode(it) }
+        Tree(R.string.lateral_deltoids).also { deltoides.addNode(it) }
+        Tree(R.string.posterior_deltoids).also { deltoides.addNode(it) }
+        val abdominais = Tree(R.string.abs).also { tronco.addNode(it) }
+        Tree(R.string.rectus_abdominal).also { abdominais.addNode(it) }
+        Tree(R.string.oblique_external).also { abdominais.addNode(it) }
+        Tree(R.string.oblique_internal).also { abdominais.addNode(it) }
+        Tree(R.string.back).also { tronco.addNode(it) }
+        Tree(R.string.serratil_anterior).also { tronco.addNode(it) }
+        val costas = Tree(R.string.back_).also { tronco.addNode(it) }
+        Tree(R.string.transverse_abdominal).also { abdominais.addNode(it) }
+        Tree(R.string.trapezium).also { costas.addNode(it) }
+        Tree(R.string.rhomboids).also { costas.addNode(it) }
+        Tree(R.string.spine_erectors).also { costas.addNode(it) }
+        val coxas = Tree(R.string.thighs).also { membrosInferiores.addNode(it) }
+        Tree(R.string.quadriceps).also { coxas.addNode(it) }
+        Tree(R.string.adductors).also { coxas.addNode(it) }
+        Tree(R.string.thigh_back).also { coxas.addNode(it) }
+        Tree(R.string.glutes).also { membrosInferiores.addNode(it) }
+        Tree(R.string.calves).also { membrosInferiores.addNode(it) }
+        leafs.forEach { leaf ->
+            leaf.setValueInternal(1)
+        }
+        musculos.sumAllNodes()
+        leafs.forEach { leaf ->
+            println(leaf.toString(context))
+        }
+        return leafs
     }
 }

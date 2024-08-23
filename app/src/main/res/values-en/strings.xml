@@ -160,4 +160,6 @@
     <string name="save_food_error">Save food error</string>
     <string name="it_was_not_possible_to_load_the_food">It was not possible to load the food</string>
     <string name="error_removing_food">Error removing food</string>
+    <string name="exercise_finished">Exercise finished</string>
+    <string name="finished">finished</string>
 </resources>

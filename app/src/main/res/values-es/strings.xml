@@ -160,4 +160,6 @@
     <string name="save_food_error">Error al guardar alimento</string>
     <string name="it_was_not_possible_to_load_the_food">No se pudo cargar el alimento</string>
     <string name="error_removing_food">No se pudo eliminar el alimento</string>
+    <string name="exercise_finished">Ejercicio finalizado</string>
+    <string name="finished">finalizado</string>
 </resources>

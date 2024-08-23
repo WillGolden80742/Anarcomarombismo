@@ -73,7 +73,7 @@ class formExercise : AppCompatActivity() {
         editTextVideoLink.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 try {
-                    val formattedLink = generateYouTubeEmbedLink(editTextVideoLink.text.toString())
+                    val formattedLink = Exercise().generateYouTubeEmbedLink(editTextVideoLink.text.toString())
                     editTextVideoLink.setText(formattedLink)
                     embedVideo(formattedLink)
                 } catch (e: Exception) {
@@ -87,74 +87,6 @@ class formExercise : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadExerciseIfExistInCache()
-    }
-    // muscle
-    private fun dumpAndLoadMuscles(): Set<Tree> {
-        /*
-            Musclesthis,:20
-            ├── Upper Limbs:6
-            │   ├── Triceps:1
-            │   ├── Chest:1
-            │   └── Deltoids:3
-            │       ├── Anterior Deltoids:1
-            │       ├── Lateral Deltoids:1
-            │       └── Posterior Deltoids:1
-            ├── Trunk:9
-            │   ├── Abdominals:4
-            │   │   ├── Rectus Abdominis:1
-            │   │   ├── External Obliques:1
-            │   │   ├── Internal Obliques:1
-            │   │   └── Transverse Abdominis:1
-            │   ├── Back:1
-            │   │   ├── Trapezius:1
-            │   │   ├── Rhomboids:1
-            │   │   └── Erector Spinae:1
-            │   └── Serratus Anterior:1
-            └── Lower Limbs:5
-                ├── Thighs:3
-                │   ├── Quadriceps:1
-                │   ├── Adductors:1
-                │   └── Hamstrings:1
-                ├── Glutes:1
-                └── Calves:1
-        */
-        val leafs = Tree("").getLeafs()
-        val musculos = Tree(R.string.muscles)
-        val membrosSuperiores = Tree(R.string.upper_limbs).also { musculos.addNode(it) }
-        val tronco = Tree(R.string.torso).also { musculos.addNode(it) }
-        val membrosInferiores = Tree(R.string.lower_members).also { musculos.addNode(it) }
-        Tree(R.string.biceps).also { membrosSuperiores.addNode(it) }
-        Tree(R.string.triceps).also { membrosSuperiores.addNode(it) }
-        Tree(R.string.breastplate).also { membrosSuperiores.addNode(it) }
-        val deltoides = Tree(R.string.deltoids).also { membrosSuperiores.addNode(it) }
-        Tree(R.string.anterior_deltoids).also { deltoides.addNode(it) }
-        Tree(R.string.lateral_deltoids).also { deltoides.addNode(it) }
-        Tree(R.string.posterior_deltoids).also { deltoides.addNode(it) }
-        val abdominais = Tree(R.string.abs).also { tronco.addNode(it) }
-        Tree(R.string.rectus_abdominal).also { abdominais.addNode(it) }
-        Tree(R.string.oblique_external).also { abdominais.addNode(it) }
-        Tree(R.string.oblique_internal).also { abdominais.addNode(it) }
-        Tree(R.string.back).also { tronco.addNode(it) }
-        Tree(R.string.serratil_anterior).also { tronco.addNode(it) }
-        val costas = Tree(R.string.back_).also { tronco.addNode(it) }
-        Tree(R.string.transverse_abdominal).also { abdominais.addNode(it) }
-        Tree(R.string.trapezium).also { costas.addNode(it) }
-        Tree(R.string.rhomboids).also { costas.addNode(it) }
-        Tree(R.string.spine_erectors).also { costas.addNode(it) }
-        val coxas = Tree(R.string.thighs).also { membrosInferiores.addNode(it) }
-        Tree(R.string.quadriceps).also { coxas.addNode(it) }
-        Tree(R.string.adductors).also { coxas.addNode(it) }
-        Tree(R.string.thigh_back).also { coxas.addNode(it) }
-        Tree(R.string.glutes).also { membrosInferiores.addNode(it) }
-        Tree(R.string.calves).also { membrosInferiores.addNode(it) }
-        leafs.forEach { leaf ->
-            leaf.setValueInternal(1)
-        }
-        musculos.sumAllNodes()
-        leafs.forEach { leaf ->
-            println(leaf.toString(this))
-        }
-        return leafs
     }
 
     private fun formatRepetitionsAndCountSets(it: CharSequence?) {
@@ -252,7 +184,7 @@ class formExercise : AppCompatActivity() {
 
                 for (exercise in exerciseArray) {
                     if (exercise.exerciseID == exerciseID) {
-                        val formattedLink = generateYouTubeEmbedLink(exercise.LinkVideo)
+                        val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.LinkVideo)
                         textVideoLink = formattedLink
                         editTextVideoLink.setText(formattedLink)
                         embedVideo(formattedLink)
@@ -280,7 +212,7 @@ class formExercise : AppCompatActivity() {
 
     private fun loadSpinner() {
         try {
-            leafsMap = dumpAndLoadMuscles()
+            leafsMap = Tree().dumpAndLoadMuscles(this)
             leafsNames = leafsMap.map { getString(it.obj as Int) }
             leafsNames = leafsNames.sorted()
             leafsNames = listOf(getString(R.string.select_muscle)) + leafsNames
@@ -403,52 +335,5 @@ class formExercise : AppCompatActivity() {
         Toast.makeText(this, getString(R.string.remove_exercise_successful), Toast.LENGTH_SHORT).show()
         finish()
     }
-
-    private fun generateYouTubeEmbedLink(text: String): String {
-        val trimmedText = text.trim()
-
-        if (trimmedText.contains("youtube.com/embed/")) {
-            return trimmedText
-        }
-
-        if (!isValidYouTubeLink(trimmedText)) {
-            return ""
-        }
-
-        val sanitizedText = removeUnnecessaryParameters(trimmedText)
-        val videoId = extractVideoId(sanitizedText) ?: return ""
-
-        return buildEmbedLink(videoId, sanitizedText)
-    }
-
-    private fun isValidYouTubeLink(text: String): Boolean {
-        return text.contains("youtu.be") || text.contains("youtube")
-    }
-
-    private fun removeUnnecessaryParameters(text: String): String {
-        return text.replace(Regex("[&?](feature=youtu\\.be|si=.*)"), "")
-    }
-
-    private fun extractVideoId(text: String): String? {
-        return when {
-            text.contains("/live/") -> text.substringAfter("/live/").substringBefore("?")
-            text.contains("/shorts/") -> text.substringAfter("/shorts/").substringBefore("?")
-            text.contains("watch?v=") -> text.substringAfter("watch?v=").substringBefore("&")
-            text.contains("youtu.be/") -> text.substringAfter("youtu.be/").substringBefore("?")
-            else -> null
-        }
-    }
-
-    private fun buildEmbedLink(videoId: String, text: String): String {
-        val timeParameter = extractTimeParameter(text)
-        return "https://www.youtube.com/embed/$videoId$timeParameter"
-    }
-
-    private fun extractTimeParameter(text: String): String {
-        val time = text.substringAfter("&t=", "").takeIf { it.isNotEmpty() }
-        return time?.let { "?t=$it" } ?: ""
-    }
-
-
 
 }
