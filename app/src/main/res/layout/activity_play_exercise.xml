@@ -205,31 +205,6 @@
                 android:padding="12dp"
                 android:text="@string/default_cadence" />
 
-            <TextView
-                android:id="@+id/textViewPlayVideoLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/video_link"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_primary"
-                android:textSize="24dp" />
-
-            <EditText
-                android:id="@+id/editPlayTextVideoLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/edittext_background"
-                android:ems="10"
-                android:hint="@string/video_link_hint"
-                android:inputType="textUri"
-                android:padding="12dp" />
-
         </LinearLayout>
 
     </ScrollView>

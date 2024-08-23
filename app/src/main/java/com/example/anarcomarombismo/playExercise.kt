@@ -2,11 +2,17 @@ package com.example.anarcomarombismo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class playExercise : AppCompatActivity() {
 
@@ -18,7 +24,6 @@ class playExercise : AppCompatActivity() {
     private lateinit var loadEditText: EditText
     private lateinit var restEditText: EditText
     private lateinit var cadenceEditText: EditText
-    private lateinit var videoLinkEditText: EditText
     private lateinit var addExerciseButton: Button
     private lateinit var removeExerciseButton: Button
 
@@ -31,6 +36,11 @@ class playExercise : AppCompatActivity() {
 
     private fun instantiateFields() {
         webView = findViewById(R.id.webView)
+        val webSettings: WebSettings = webView.settings
+        webSettings.javaScriptEnabled = true
+        webView.webViewClient = WebViewClient()
+        embedVideo("")
+        webView.setBackgroundColor(0x00000000)
         exerciseNameEditText = findViewById(R.id.editPlayTextExerciseName)
         muscleGroupTextView = findViewById(R.id.textViewPlayMuscleGroup)
         repetitionsEditText = findViewById(R.id.editPlayTextRepetitions)
@@ -38,9 +48,22 @@ class playExercise : AppCompatActivity() {
         loadEditText = findViewById(R.id.editPlayTextLoad)
         restEditText = findViewById(R.id.editPlayTextRest)
         cadenceEditText = findViewById(R.id.editPlayTextCadence)
-        videoLinkEditText = findViewById(R.id.editPlayTextVideoLink)
         addExerciseButton = findViewById(R.id.addPlayExerciseFormButton)
         removeExerciseButton = findViewById(R.id.removePlayExerciseFormButton)
+    }
+
+    private fun embedVideo(formattedLink: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            if (formattedLink.isNotEmpty()) {
+                webView.loadUrl(formattedLink)
+            } else {
+                val text = withContext(Dispatchers.IO) {
+                    val inputStream = resources.openRawResource(R.raw.vector_banner)
+                    inputStream.bufferedReader().use { it.readText() }
+                }
+                webView.loadUrl("data:image/svg+xml;base64," + text)
+            }
+        }
     }
 
 }
