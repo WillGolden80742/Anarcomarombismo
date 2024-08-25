@@ -25,6 +25,7 @@ import java.util.Random
 
 class formExercise : AppCompatActivity() {
 
+
     private lateinit var webView: WebView
     private lateinit var editTextVideoLink: EditText
     private lateinit var editTextExerciseName: EditText
@@ -209,7 +210,6 @@ class formExercise : AppCompatActivity() {
             }
         }
     }
-
     private fun loadSpinner() {
         try {
             leafsMap = Tree().dumpAndLoadMuscles(this)
