@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -27,6 +28,7 @@ class formExercise : AppCompatActivity() {
 
 
     private lateinit var webView: WebView
+    private lateinit var textViewVideoLink: TextView
     private lateinit var editTextVideoLink: EditText
     private lateinit var editTextExerciseName: EditText
     private lateinit var spinnerMuscleGroup: Spinner
@@ -40,6 +42,7 @@ class formExercise : AppCompatActivity() {
     private lateinit var textVideoLink: String
     private var trainingID: Long = 0
     private var exerciseID: Long = 0
+    private var action: String = ""
     private var leafsNames: List<String> = listOf()
     private lateinit var leafsMap:Set<Tree>
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
@@ -51,6 +54,15 @@ class formExercise : AppCompatActivity() {
         instantiateFields()
         trainingID = intent.getLongExtra("trainingID", 0)
         exerciseID = intent.getLongExtra("exerciseID", 0)
+        action = intent.getStringExtra("action") ?: ""
+        when (action) {
+            "edit" -> {
+                enableButtons(true)
+            }
+            "play" -> {
+                enableButtons(false)
+            }
+        }
         println("ID do exercio: $exerciseID")
         loadExerciseIfExistInCache()
         addExerciseButton.setOnClickListener {
@@ -88,6 +100,23 @@ class formExercise : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadExerciseIfExistInCache()
+    }
+
+    fun enableButtons(enable: Boolean) {
+        addExerciseButton.isEnabled = enable
+        removeExerciseButton.isEnabled = enable
+        editTextVideoLink.isEnabled = enable
+        editTextExerciseName.isEnabled = enable
+        spinnerMuscleGroup.isEnabled = enable
+        editTextSets.isEnabled = enable
+        editTextRepetitions.isEnabled = enable
+        editTextLoad.isEnabled = enable
+        editTextRest.isEnabled = enable
+        editTextCadence.isEnabled = enable
+        removeExerciseButton.isVisible = enable
+        addExerciseButton.isVisible = enable
+        editTextVideoLink.isVisible = enable
+        textViewVideoLink.isVisible = enable
     }
 
     private fun formatRepetitionsAndCountSets(it: CharSequence?) {
@@ -159,6 +188,7 @@ class formExercise : AppCompatActivity() {
         webView.webViewClient = WebViewClient()
         embedVideo("")
         webView.setBackgroundColor(0x00000000)
+        textViewVideoLink = findViewById(R.id.textViewVideoLink)
         editTextVideoLink = findViewById(R.id.editTextVideoLink)
         editTextExerciseName = findViewById(R.id.editTextExerciseName)
         spinnerMuscleGroup = findViewById(R.id.spinnerMuscleGroup)

@@ -13,7 +13,7 @@ class Exercise(
     var repetitions: String = "10,10,10",
     var load: Double = 20.0, // Carga padrão em kg
     var rest: Int = 60, // Tempo de repouso padrão em segundos
-    var cadence: String = "3-1-3" // Cadência padrão
+    var cadence: String = "3-1-3", // Cadência padrão
 ) {
 
     fun generateYouTubeEmbedLink(text: String): String {

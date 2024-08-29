@@ -1,5 +1,6 @@
 package com.example.anarcomarombismo
 
+import android.app.DatePickerDialog
 import com.example.anarcomarombismo.Adapters.ExerciseAdapter
 import com.example.anarcomarombismo.Controller.JSON
 import android.content.Intent
@@ -11,10 +12,14 @@ import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import java.util.Random
 
 class exercises : AppCompatActivity() {
 
+    private lateinit var dateTextView: TextView
     private lateinit var addExerciseButton: Button
     private lateinit var editTraining: Button
     private lateinit var exerciseList: ListView
@@ -27,6 +32,7 @@ class exercises : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
+        dateTextView = findViewById(R.id.dateTextView)
         addExerciseButton = findViewById(R.id.addFoodFormButton)
         exerciseList = findViewById(R.id.caloriesFoodList)
         editTraining = findViewById(R.id.removeFoodFormButton)
@@ -46,7 +52,39 @@ class exercises : AppCompatActivity() {
         editTraining.setOnClickListener {
             editTraining()
         }
+
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        dateTextView.setOnClickListener {
+            // Cria um DatePickerDialog para selecionar a data
+            val datePickerDialog = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    // Define a data selecionada no TextView
+                    val selectedDate =
+                        "$selectedDay/${selectedMonth + 1}/$selectedYear" // Mês é base 0, por isso adicionamos 1
+                    if (selectedDate != dateTextView.text) {
+                        // Formata a data no formato 00/00/0000
+                        val formattedDate =
+                            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDate)?.let {
+                                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
+                            }
+                        dateTextView.text = formattedDate
+                        loadExercises(trainingID, formattedDate.toString())
+                    }
+                }, year, month, day
+            )
+
+            // Define a data máxima como a data atual
+            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
+
+            datePickerDialog.show()
+        }
     }
+
     // onResume()
     override fun onResume() {
         super.onResume()
@@ -73,7 +111,7 @@ class exercises : AppCompatActivity() {
         }
     }
 
-    private fun loadExercises(trainingID: Long) {
+    private fun loadExercises(trainingID: Long,date:String) {
         cache = Cache()
         // get treino name from cache to show in the top of the screen
         if (cache!!.hasCache(this,"Treinos")) {
@@ -105,8 +143,12 @@ class exercises : AppCompatActivity() {
             cache!!.setCache(this,"Exercicios_$trainingID", jsonUtil.toJson(exerciseArray))
         }
         val exerciseArray = jsonUtil.fromJson(cache!!.getCache(this, "Exercicios_$trainingID"), Array<Exercise>::class.java)
-        val exerciseAdapter = ExerciseAdapter(this, exerciseArray)
+        val exerciseAdapter = ExerciseAdapter(this, exerciseArray,date)
         exerciseList.adapter = exerciseAdapter
+    }
+
+    private fun loadExercises(trainingID: Long) {
+        loadExercises(trainingID,"")
     }
 
 }

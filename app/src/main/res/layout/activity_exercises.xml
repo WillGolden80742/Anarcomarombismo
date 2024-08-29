@@ -1,27 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".exercises">
 
-    <TextView
-        android:id="@+id/dailyCaloriesTitle"
+    <!-- LinearLayout to hold the title and date -->
+    <LinearLayout
+        android:id="@+id/titleAndDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="5dp"
-        android:text="trainingName"
-        android:textColor="@color/title_color"
-        android:textSize="32sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/descriptionTrainingLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Title TextView -->
+        <TextView
+            android:id="@+id/dailyCaloriesTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="trainingName"
+            android:textColor="@color/title_color"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <!-- Date TextView -->
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:text="29/08/2024"
+            android:textColor="@color/title_color"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Description TextView -->
+
+    <!-- ListView -->
+
+    <TextView
+        android:id="@+id/descriptionTrainingLabel"
+        android:layout_width="0dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="6dp"
+        android:text="TextView"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/caloriesFoodList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleAndDate"
+        app:layout_constraintVertical_bias="0.077" />
+
+    <!-- Add Button -->
 
     <ListView
         android:id="@+id/caloriesFoodList"
@@ -29,12 +71,14 @@
         android:layout_height="512dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="100dp"
         android:divider="@drawable/list_divider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyCaloriesTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTrainingLabel"
+        app:layout_constraintVertical_bias="0.708" />
 
     <Button
         android:id="@+id/addFoodFormButton"
@@ -55,6 +99,7 @@
         app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList"
         app:layout_constraintVertical_bias="1" />
 
+    <!-- Remove Button -->
     <Button
         android:id="@+id/removeFoodFormButton"
         android:layout_width="0dp"
@@ -73,20 +118,5 @@
         app:layout_constraintStart_toEndOf="@+id/addFoodFormButton"
         app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList"
         app:layout_constraintVertical_bias="1" />
-
-    <TextView
-        android:id="@+id/descriptionTrainingLabel"
-        android:layout_width="0dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="6dp"
-        android:text="TextView"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toTopOf="@+id/caloriesFoodList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyCaloriesTitle"
-        app:layout_constraintVertical_bias="0.571" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

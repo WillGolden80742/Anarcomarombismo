@@ -125,7 +125,7 @@ class formDailyCalories : AppCompatActivity() {
                 month,
                 day
             )
-
+            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
             datePickerDialog.show()
         }
 

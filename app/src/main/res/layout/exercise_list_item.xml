@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -31,13 +32,15 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp">
 
-        <CheckBox
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/checkBoxItem"
-            android:buttonTint="@color/yellow"
-            android:layout_marginTop="20dp"
-            android:textSize="18dp"
-            android:layout_height="50dp"
-            android:layout_width="50dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            app:backgroundTint="@color/button_color"
+            app:srcCompat="@drawable/ic_fluent_select_all_off_24_regular"
+            app:tint="@color/yellow" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingEditExerciseActionButton"
