@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".formTraining">
 
-    <!-- Nome do Treinamento -->
-
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="0dp"

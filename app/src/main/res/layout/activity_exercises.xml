@@ -43,9 +43,6 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Description TextView -->
-
-    <!-- ListView -->
 
     <TextView
         android:id="@+id/descriptionTrainingLabel"
@@ -68,10 +65,10 @@
     <ListView
         android:id="@+id/caloriesFoodList"
         android:layout_width="0dp"
-        android:layout_height="512dp"
+        android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="70dp"
         android:divider="@drawable/list_divider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +96,6 @@
         app:layout_constraintTop_toBottomOf="@+id/caloriesFoodList"
         app:layout_constraintVertical_bias="1" />
 
-    <!-- Remove Button -->
     <Button
         android:id="@+id/removeFoodFormButton"
         android:layout_width="0dp"

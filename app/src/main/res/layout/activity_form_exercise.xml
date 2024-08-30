@@ -12,16 +12,17 @@
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:background="#000"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/addExerciseFormButton"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/webView">
@@ -234,42 +235,51 @@
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/addExerciseFormButton"
+    <LinearLayout
+        android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/button_color"
-        android:padding="12dp"
-        android:text="@string/add_exercise"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_save_24_regular"
-        app:iconGravity="textStart"
-        app:iconSize="32dp"
-        app:iconTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@+id/removeExerciseFormButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/removeExerciseFormButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/button_color"
-        android:padding="12dp"
-        android:text="@string/remove_exercise"
-        android:textColor="@color/yellow"
-        app:icon="@drawable/ic_fluent_delete_24_regular"
-        app:iconGravity="textStart"
-        app:iconSize="32dp"
-        app:iconTint="@color/yellow"
+        android:layout_margin="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
+
+        <Button
+            android:id="@+id/addExerciseFormButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/button_color"
+            android:padding="12dp"
+            android:text="@string/add_exercise"
+            android:textColor="@color/yellow"
+            app:icon="@drawable/ic_fluent_save_24_regular"
+            app:iconGravity="textStart"
+            app:iconSize="32dp"
+            app:iconTint="@color/yellow" />
+
+        <Button
+            android:id="@+id/removeExerciseFormButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/button_color"
+            android:padding="12dp"
+            android:text="@string/remove_exercise"
+            android:textColor="@color/yellow"
+            app:icon="@drawable/ic_fluent_delete_24_regular"
+            app:iconGravity="textStart"
+            app:iconSize="32dp"
+            app:iconTint="@color/yellow" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
