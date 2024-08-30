@@ -240,9 +240,9 @@ class formFoods : AppCompatActivity() {
 
             updateOrCreateFood(action, food)
             cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            finish()
         } catch (e: Exception) {
             showToast(getString(R.string.save_food_error))
-        } finally {
             finish()
         }
     }
