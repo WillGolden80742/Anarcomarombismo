@@ -277,6 +277,7 @@ class formExercise : AppCompatActivity() {
                     }
                 }
             } else {
+                visualizeExerciseFormButton.isVisible = false
                 removeExerciseButton.isVisible = false
             }
         }
