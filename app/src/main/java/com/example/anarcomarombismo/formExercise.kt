@@ -9,14 +9,17 @@ import android.webkit.WebViewClient
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
+import com.example.anarcomarombismo.Controller.DailyExercices
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -39,9 +42,13 @@ class formExercise : AppCompatActivity() {
     private lateinit var editTextCadence: EditText // Novo campo para cadência
     private lateinit var addExerciseButton: Button
     private lateinit var removeExerciseButton: Button
+    private lateinit var checkExerciseFormButton: FloatingActionButton
+    private lateinit var editExerciseFormButton: FloatingActionButton
+    private lateinit var visualizeExerciseFormButton: LinearLayout
     private lateinit var textVideoLink: String
     private var trainingID: Long = 0
     private var exerciseID: Long = 0
+    private var exerciseDate: String = ""
     private var action: String = ""
     private var leafsNames: List<String> = listOf()
     private lateinit var leafsMap:Set<Tree>
@@ -51,9 +58,12 @@ class formExercise : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_exercise)
+
         instantiateFields()
+
         trainingID = intent.getLongExtra("trainingID", 0)
         exerciseID = intent.getLongExtra("exerciseID", 0)
+        exerciseDate = intent.getStringExtra("exerciseDate") ?: ""
         action = intent.getStringExtra("action") ?: ""
         when (action) {
             "edit" -> {
@@ -63,11 +73,13 @@ class formExercise : AppCompatActivity() {
                 enableButtons(false)
             }
         }
-        println("ID do exercio: $exerciseID")
+
         loadExerciseIfExistInCache()
+
         addExerciseButton.setOnClickListener {
             saveExercise()
         }
+
         removeExerciseButton.setOnClickListener {
             val clickTime = System.currentTimeMillis()
             if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
@@ -78,7 +90,7 @@ class formExercise : AppCompatActivity() {
             }
             lastClickTime = clickTime
         }
-        // listener change text editTextRepetitions
+
         editTextRepetitions.addTextChangedListener {
             formatRepetitionsAndCountSets(it)
         }
@@ -96,13 +108,40 @@ class formExercise : AppCompatActivity() {
             }
         }
 
+        editExerciseFormButton.setOnClickListener {
+            enableButtons(true)
+        }
+
+        checkExerciseFormButton.setOnClickListener {
+            checkExercise()
+        }
+
     }
     override fun onResume() {
         super.onResume()
         loadExerciseIfExistInCache()
+        if (isCheckExercise()) {
+            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
+        } else {
+            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
+        }
     }
 
-    fun enableButtons(enable: Boolean) {
+    private fun isCheckExercise(): Boolean {
+        return DailyExercices(this).getExercice(exerciseDate,exerciseID.toInt())
+    }
+    private fun checkExercise() {
+        val dailyExercices = DailyExercices(this)
+        if (isCheckExercise()) {
+            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
+            dailyExercices.exerciceNotDone(exerciseDate,exerciseID.toInt())
+        } else {
+            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
+            dailyExercices.exerciceDone(exerciseDate,exerciseID.toInt())
+            Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private fun enableButtons(enable: Boolean) {
         addExerciseButton.isEnabled = enable
         removeExerciseButton.isEnabled = enable
         editTextVideoLink.isEnabled = enable
@@ -117,6 +156,7 @@ class formExercise : AppCompatActivity() {
         addExerciseButton.isVisible = enable
         editTextVideoLink.isVisible = enable
         textViewVideoLink.isVisible = enable
+        visualizeExerciseFormButton.isVisible = !enable
     }
 
     private fun formatRepetitionsAndCountSets(it: CharSequence?) {
@@ -199,13 +239,14 @@ class formExercise : AppCompatActivity() {
         editTextCadence = findViewById(R.id.editTextCadence) // Inicialização do novo campo para cadência
         addExerciseButton = findViewById(R.id.addExerciseFormButton)
         removeExerciseButton = findViewById(R.id.removeExerciseFormButton)
+        visualizeExerciseFormButton = findViewById(R.id.visualizeExerciseFormButton)
+        checkExerciseFormButton = findViewById(R.id.checkExerciseFormButton)
+        editExerciseFormButton = findViewById(R.id.editExerciseFormButton)
     }
 
     private fun loadExerciseIfExistInCache() {
-
         val cache = Cache()
         val jsonUtil = JSON()
-
         CoroutineScope(Dispatchers.Main).launch {
             loadSpinner()
             if (exerciseID > 0) {
@@ -240,6 +281,7 @@ class formExercise : AppCompatActivity() {
             }
         }
     }
+
     private fun loadSpinner() {
         try {
             leafsMap = Tree().dumpAndLoadMuscles(this)

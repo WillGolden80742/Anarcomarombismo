@@ -43,7 +43,7 @@ class exercises : AppCompatActivity() {
 
         println("ID do treinamento: $trainingID")
         // Carrega os exercícios com base no ID do treinamento
-        loadExercises(trainingID)
+        loadExercises(trainingID,dateTextView.text.toString())
 
         addExerciseButton.setOnClickListener {
             callAddExercise()
@@ -88,7 +88,7 @@ class exercises : AppCompatActivity() {
     // onResume()
     override fun onResume() {
         super.onResume()
-        loadExercises(trainingID)
+        loadExercises(trainingID,dateTextView.text.toString())
     }
 
     private fun callAddExercise() {
@@ -147,8 +147,5 @@ class exercises : AppCompatActivity() {
         exerciseList.adapter = exerciseAdapter
     }
 
-    private fun loadExercises(trainingID: Long) {
-        loadExercises(trainingID,"")
-    }
 
 }

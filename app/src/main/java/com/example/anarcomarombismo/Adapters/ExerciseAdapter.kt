@@ -39,7 +39,7 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
 
 
         floatingEditExerciseActionButton.setOnClickListener {
-            callFormExercise("edit", currentExercise)
+            callFormExercise("edit", currentExercise,date)
             println("ID do exercício: ${exerciseList[position].exerciseID}")
         }
 
@@ -65,17 +65,18 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
         }
 
         listItemView.setOnClickListener {
-            callFormExercise("play", currentExercise)
+            callFormExercise("play", currentExercise,date)
             println("ID do exercício: ${currentExercise.exerciseID}")
         }
 
         return listItemView
     }
 
-    private fun callFormExercise(action: String, exercise: Exercise) {
+    private fun callFormExercise(action: String, exercise: Exercise,date:String=getCurrentDate()) {
         val intent = Intent(context, formExercise::class.java)
         intent.putExtra("trainingID", exercise.trainingID)
         intent.putExtra("exerciseID", exercise.exerciseID)
+        intent.putExtra("exerciseDate", date)
         intent.putExtra("action", action)
         println("ID do exercício: ${exercise.exerciseID}")
         context.startActivity(intent)
