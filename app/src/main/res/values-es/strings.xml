@@ -162,4 +162,5 @@
     <string name="error_removing_food">No se pudo eliminar el alimento</string>
     <string name="exercise_finished">Ejercicio finalizado</string>
     <string name="finished">finalizado</string>
+    <string name="last_7_days">Últimos 7 días</string>
 </resources>
