@@ -59,11 +59,11 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
             if (exerciceDone) {
                 checkItem.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
                 dailyExercices.exerciseNotDone(date,currentExercise.exerciseID.toInt())
-                countDays(labelCheckBoxItem,currentExercise)
             } else {
                 checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
                 dailyExercices.exerciseDone(date,currentExercise.exerciseID.toInt())
                 Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
+                countDays(labelCheckBoxItem,currentExercise)
             }
         }
 
