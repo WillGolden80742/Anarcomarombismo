@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
-import com.example.anarcomarombismo.Controller.DailyExercices
+import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.formExercise
@@ -18,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise>,private var date:String="") : ArrayAdapter<Exercise>(context, 0, exerciseList) {
+class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise>, private var date:String="") : ArrayAdapter<Exercise>(context, 0, exerciseList) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var listItemView = convertView
         if (listItemView == null) {
@@ -30,6 +29,7 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
         }
 
         val currentExercise = exerciseList[position]
+        val labelCheckBoxItem = listItemView!!.findViewById<TextView>(R.id.labelCheckBoxItem)
         val nameTextView = listItemView!!.findViewById<TextView>(R.id.titleTextViewItem)
         nameTextView.text = currentExercise.name
         val descriptionTextView = listItemView.findViewById<TextView>(R.id.textViewItem)
@@ -43,7 +43,18 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
             println("ID do exercício: ${exerciseList[position].exerciseID}")
         }
 
-        val checked = DailyExercices(context).getExercice(date,currentExercise.exerciseID.toInt())
+        val checked = DailyExercises(context).getExercise(date,currentExercise.exerciseID.toInt())
+
+        val countDays = DailyExercises(context).getExerciseDays(currentExercise.exerciseID.toInt())
+
+        if (countDays >= 0) {
+            labelCheckBoxItem.text = "$countDays "+ context.getString(R.string.dias)
+            if (countDays == 1) {
+                labelCheckBoxItem.text = labelCheckBoxItem.text.substring(0, labelCheckBoxItem.text.length - 1)
+            }
+        } else {
+            labelCheckBoxItem.text = ""
+        }
 
         if (checked) {
             checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
@@ -51,15 +62,23 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
             checkItem.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
         }
 
-        val dailyExercices = DailyExercices(context)
+        val dailyExercices = DailyExercises(context)
         checkItem.setOnClickListener {
-            val exerciceDone = dailyExercices.getExercice(date,currentExercise.exerciseID.toInt())
+            val exerciceDone = dailyExercices.getExercise(date,currentExercise.exerciseID.toInt())
             if (exerciceDone) {
                 checkItem.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-                dailyExercices.exerciceNotDone(date,currentExercise.exerciseID.toInt())
+                dailyExercices.exerciseNotDone(date,currentExercise.exerciseID.toInt())
+                if (countDays >= 0) {
+                    labelCheckBoxItem.text = "$countDays "+ context.getString(R.string.dias)
+                    if (countDays == 1) {
+                        labelCheckBoxItem.text = labelCheckBoxItem.text.substring(0, labelCheckBoxItem.text.length - 1)
+                    }
+                } else {
+                    labelCheckBoxItem.text = ""
+                }
             } else {
                 checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-                dailyExercices.exerciceDone(date,currentExercise.exerciseID.toInt())
+                dailyExercices.exerciseDone(date,currentExercise.exerciseID.toInt())
                 Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
             }
         }
@@ -72,7 +91,7 @@ class ExerciseAdapter(context: Context, private val exerciseList: Array<Exercise
         return listItemView
     }
 
-    private fun callFormExercise(action: String, exercise: Exercise,date:String=getCurrentDate()) {
+    private fun callFormExercise(action: String, exercise: Exercise, date:String=getCurrentDate()) {
         val intent = Intent(context, formExercise::class.java)
         intent.putExtra("trainingID", exercise.trainingID)
         intent.putExtra("exerciseID", exercise.exerciseID)

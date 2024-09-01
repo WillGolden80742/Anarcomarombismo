@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
-import com.example.anarcomarombismo.Controller.DailyExercices
+import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -128,16 +128,16 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun isCheckExercise(): Boolean {
-        return DailyExercices(this).getExercice(exerciseDate,exerciseID.toInt())
+        return DailyExercises(this).getExercise(exerciseDate,exerciseID.toInt())
     }
     private fun checkExercise() {
-        val dailyExercices = DailyExercices(this)
+        val dailyExercices = DailyExercises(this)
         if (isCheckExercise()) {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-            dailyExercices.exerciceNotDone(exerciseDate,exerciseID.toInt())
+            dailyExercices.exerciseNotDone(exerciseDate,exerciseID.toInt())
         } else {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-            dailyExercices.exerciceDone(exerciseDate,exerciseID.toInt())
+            dailyExercices.exerciseDone(exerciseDate,exerciseID.toInt())
             Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }

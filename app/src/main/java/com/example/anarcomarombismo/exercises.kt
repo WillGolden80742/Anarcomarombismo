@@ -47,7 +47,7 @@ class exercises : AppCompatActivity() {
         }
 
         dateTextView.setOnClickListener {
-            // selectDate()
+            selectDate()
         }
     }
     // onResume()
