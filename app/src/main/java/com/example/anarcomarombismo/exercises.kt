@@ -38,6 +38,8 @@ class exercises : AppCompatActivity() {
 
         instacieFields()
 
+        dateTextView.text = getCurrentDate()
+
         addExerciseButton.setOnClickListener {
             callAddExercise()
         }
@@ -50,6 +52,7 @@ class exercises : AppCompatActivity() {
             selectDate()
         }
     }
+
     // onResume()
     override fun onResume() {
         super.onResume()

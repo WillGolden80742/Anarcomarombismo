@@ -163,5 +163,7 @@
     <string name="exercise_finished">Exercise finished</string>
     <string name="finished">finished</string>
     <string name="last_7_days">Last 7 days</string>
-    <string name="dias">days</string>
+    <string name="days">days</string>
+    <string name="day">day</string>
+    <string name="exercise_id_is_invalid">Exercise ID is invalid</string>
 </resources>

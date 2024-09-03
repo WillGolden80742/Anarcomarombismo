@@ -137,10 +137,11 @@ class formExercise : AppCompatActivity() {
             dailyExercices.exerciseNotDone(exerciseDate,exerciseID.toInt())
         } else {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-            dailyExercices.exerciseDone(exerciseDate,exerciseID.toInt())
+            dailyExercices.exerciseDone(exerciseDate,exerciseID.toInt(),editTextSets.text.toString().toInt())
             Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun enableButtons(enable: Boolean) {
         addExerciseButton.isEnabled = enable
         removeExerciseButton.isEnabled = enable
