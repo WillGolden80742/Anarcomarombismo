@@ -48,6 +48,7 @@ class ExerciseAdapter(
         }
 
         val dailyExercises = DailyExercises(context)
+        val exerciseByDate = ExerciseByDate(date, currentExercise)
 
         val checked = dailyExercises.getExercise(date, currentExercise)
 
