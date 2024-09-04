@@ -166,4 +166,5 @@
     <string name="days">days</string>
     <string name="day">day</string>
     <string name="exercise_id_is_invalid">Exercise ID is invalid</string>
+    <string name="click_and_hold_to_complete_all_series">Click and hold to complete all series</string>
 </resources>

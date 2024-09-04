@@ -143,7 +143,9 @@ class ExerciseAdapter(
             unmarkExerciseAsDone(dailyExercises, exerciseId, trainingId, checkItem)
         } else {
             markExerciseAsDone(dailyExercises, exerciseId, trainingId, checkItem)
-            Toast.makeText(context, "${exerciseList.find { it.exerciseID == exerciseId }?.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${exerciseList.find { it.exerciseID == exerciseId }?.name} ${context.getString(R.string.finished)}\n"+ context.getString(
+                R.string.click_and_hold_to_complete_all_series
+            ), Toast.LENGTH_SHORT).show()
         }
     }
 
