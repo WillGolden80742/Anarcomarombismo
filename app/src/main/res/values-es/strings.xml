@@ -163,7 +163,7 @@
     <string name="exercise_finished">Ejercicio finalizado</string>
     <string name="finished">finalizado</string>
     <string name="last_7_days">Últimos 7 días</string>
-    <string name="days">días</string>
-    <string name="day">día</string>
+    <string name="days">dias</string>
+    <string name="day">dia</string>
     <string name="exercise_id_is_invalid">ID del ejercicio es inválido</string>
 </resources>
