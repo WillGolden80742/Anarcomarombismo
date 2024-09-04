@@ -48,7 +48,6 @@ class formExercise : AppCompatActivity() {
     private lateinit var textVideoLink: String
     private var trainingID: Long = 0
     private var exerciseID: Long = 0
-    private var currentExercise: Exercise? = null
     private var exerciseDate: String = ""
     private var action: String = ""
     private var leafsNames: List<String> = listOf()
@@ -129,16 +128,16 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun isCheckExercise(): Boolean {
-        return DailyExercises(this).getExercise(exerciseDate,currentExercise!!)
+        return DailyExercises(this).getExercise(exerciseDate,exerciseID,trainingID)
     }
     private fun checkExercise() {
         val dailyExercices = DailyExercises(this)
         if (isCheckExercise()) {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-            dailyExercices.exerciseNotDone(exerciseDate,currentExercise!!)
+            dailyExercices.exerciseNotDone(exerciseDate,exerciseID,trainingID)
         } else {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-            dailyExercices.exerciseDone(exerciseDate,currentExercise!!)
+            dailyExercices.exerciseDone(exerciseDate,exerciseID,trainingID,editTextSets.text.toString().toInt())
             Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -258,7 +257,6 @@ class formExercise : AppCompatActivity() {
 
                 for (exercise in exerciseArray) {
                     if (exercise.exerciseID == exerciseID) {
-                        currentExercise = exercise
                         val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.LinkVideo)
                         textVideoLink = formattedLink
                         editTextVideoLink.setText(formattedLink)
