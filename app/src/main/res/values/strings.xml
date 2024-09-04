@@ -166,5 +166,4 @@
     <string name="days">dias</string>
     <string name="day">día</string>
     <string name="exercise_id_is_invalid">ID do exercício inválido</string>
-    <string name="click_and_hold_to_complete_all_series">Clique e segure para completar todas as séries</string>
 </resources>
