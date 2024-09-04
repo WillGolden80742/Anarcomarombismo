@@ -61,6 +61,16 @@ class ExerciseAdapter(
             handleExerciseCheck(currentExercise, labelCheckBoxItem, checkItem)
         }
 
+        checkItem.setOnLongClickListener{
+            val dailyExercises = DailyExercises(context)
+            val exerciseCount = dailyExercises.getExerciseCount(currentExercise.exerciseID, currentExercise.trainingID)
+            repeat(currentExercise.sets-exerciseCount) {
+                handleExerciseCheck(currentExercise, labelCheckBoxItem, checkItem)
+            }
+            true
+        }
+
+
         listItemView.setOnClickListener {
             callFormExercise("play", currentExercise, date)
             println("ID do exercício: ${currentExercise.exerciseID}")
