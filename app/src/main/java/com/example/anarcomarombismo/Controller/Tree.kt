@@ -33,7 +33,7 @@ class Tree(val obj: Any = 0) {  // Changed name to obj and type to Any
         }
     }
 
-    fun setValueInternal(value: Int) {
+    private fun setValueInternal(value: Int) {
         values[obj] = value  // Updated to use obj
     }
 
@@ -57,7 +57,7 @@ class Tree(val obj: Any = 0) {  // Changed name to obj and type to Any
         }
     }
 
-    fun getLeafs(): Set<Tree> {
+    private fun getLeafs(): Set<Tree> {
         return leafs
     }
 
@@ -82,7 +82,7 @@ class Tree(val obj: Any = 0) {  // Changed name to obj and type to Any
         }
     }
 
-    fun sumAllNodes() {
+    private fun sumAllNodes() {
         sumNodes(leafs)
     }
 
@@ -193,7 +193,7 @@ class Tree(val obj: Any = 0) {  // Changed name to obj and type to Any
         }
         musculos.sumAllNodes()
         leafs.forEach { leaf ->
-            println(leaf.toString(context))
+            println("muscle: "+leaf.toString(context))
         }
         return leafs
     }

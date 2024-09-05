@@ -67,7 +67,7 @@ class exercises : AppCompatActivity() {
         descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
         trainingName = findViewById(R.id.dailyCaloriesTitle)
     }
-    fun selectDate () {
+    private fun selectDate () {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -96,7 +96,7 @@ class exercises : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    fun getCurrentDate(): String {
+    private fun getCurrentDate(): String {
         val currentDate = Date()
         return dateFormatStored.format(currentDate)
     }
