@@ -56,7 +56,7 @@ class exercises : AppCompatActivity() {
     // onResume()
     override fun onResume() {
         super.onResume()
-        loadExercises(trainingID,getCurrentDate())
+        loadExercises(trainingID,dateTextView.text.toString())
     }
 
     fun instacieFields() {
