@@ -54,6 +54,7 @@ class formExercise : AppCompatActivity() {
     private lateinit var leafsMap:Set<Tree>
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
+    private var currentExercise: Exercise? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +74,6 @@ class formExercise : AppCompatActivity() {
                 enableButtons(false)
             }
         }
-
-        loadExerciseIfExistInCache()
 
         addExerciseButton.setOnClickListener {
             saveExercise()
@@ -113,31 +112,26 @@ class formExercise : AppCompatActivity() {
         }
 
         checkExerciseFormButton.setOnClickListener {
-            checkExercise()
+            checkExercise(currentExercise!!)
         }
 
     }
     override fun onResume() {
         super.onResume()
         loadExerciseIfExistInCache()
-        if (isCheckExercise()) {
-            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-        } else {
-            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-        }
     }
 
-    private fun isCheckExercise(): Boolean {
-        return DailyExercises(this).getExercise(exerciseDate,exerciseID,trainingID)
+    private fun isCheckExercise(exercise: Exercise): Boolean {
+        return DailyExercises(this).getExercise(exerciseDate,exercise)
     }
-    private fun checkExercise() {
+    private fun checkExercise(exercise: Exercise) {
         val dailyExercices = DailyExercises(this)
-        if (isCheckExercise()) {
+        if (isCheckExercise(exercise)) {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-            dailyExercices.exerciseNotDone(exerciseDate,exerciseID,trainingID)
+            dailyExercices.exerciseNotDone(exerciseDate,currentExercise!!)
         } else {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-            dailyExercices.exerciseDone(exerciseDate,exerciseID,trainingID,editTextSets.text.toString().toInt())
+            dailyExercices.exerciseDone(exerciseDate,currentExercise!!)
             Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }
@@ -257,6 +251,7 @@ class formExercise : AppCompatActivity() {
 
                 for (exercise in exerciseArray) {
                     if (exercise.exerciseID == exerciseID) {
+                        currentExercise = exercise
                         val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.LinkVideo)
                         textVideoLink = formattedLink
                         editTextVideoLink.setText(formattedLink)
@@ -275,6 +270,11 @@ class formExercise : AppCompatActivity() {
                         editTextRest.setText(exercise.rest.toString())
                         editTextCadence.setText(exercise.cadence)
                         addExerciseButton.text = getString(R.string.update_exercise)
+                        if (isCheckExercise(exercise)) {
+                            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
+                        } else {
+                            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
+                        }
                     }
                 }
             } else {
