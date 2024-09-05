@@ -128,10 +128,10 @@ class formExercise : AppCompatActivity() {
         val dailyExercices = DailyExercises(this)
         if (isCheckExercise(exercise)) {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-            dailyExercices.exerciseNotDone(exerciseDate,currentExercise!!)
+            dailyExercices.exerciseNotDone(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
         } else {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-            dailyExercices.exerciseDone(exerciseDate,currentExercise!!)
+            dailyExercices.exerciseDone(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
             Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }
