@@ -55,6 +55,8 @@ class formExercise : AppCompatActivity() {
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
     private var currentExercise: Exercise? = null
+    private val cache = Cache()
+    private val jsonUtil = JSON()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -240,8 +242,6 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun loadExerciseIfExistInCache() {
-        val cache = Cache()
-        val jsonUtil = JSON()
         CoroutineScope(Dispatchers.Main).launch {
             loadSpinner()
             if (exerciseID > 0) {
@@ -341,8 +341,6 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun getExerciseArray(cacheKey: String): Array<Exercise> {
-        val cache = Cache()
-        val jsonUtil = JSON()
         return if (cache.hasCache(this, cacheKey)) {
             jsonUtil.fromJson(cache.getCache(this, cacheKey), Array<Exercise>::class.java)
         } else {
@@ -382,8 +380,6 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun saveExerciseArray(cacheKey: String, exerciseArray: Array<Exercise>) {
-        val cache = Cache()
-        val jsonUtil = JSON()
         cache.setCache(this, cacheKey, jsonUtil.toJson(exerciseArray))
     }
 
@@ -395,8 +391,6 @@ class formExercise : AppCompatActivity() {
 
 
     private fun removeExercise() {
-        val cache = Cache()
-        val jsonUtil = JSON()
         val exerciseArray = if (cache.hasCache(this, "Exercicios_$trainingID")) {
             jsonUtil.fromJson(cache.getCache(this, "Exercicios_$trainingID"), Array<Exercise>::class.java)
         } else {
