@@ -251,7 +251,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun searchFood(query: String) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val foodList = loadFoodList()
+                val foodList = getFoodList()
                 val filteredList = filterFoodList(foodList, query)
                 updateListView(filteredList)
                 searchFoodAsync(query)
@@ -261,7 +261,7 @@ class formDailyCalories : AppCompatActivity() {
         }
     }
 
-    private suspend fun loadFoodList(): List<Food> {
+    private suspend fun getFoodList(): List<Food> {
         val cacheKey = "Alimentos"
         val cache = Cache()
         val jsonUtil = JSON()

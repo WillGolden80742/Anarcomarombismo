@@ -11,6 +11,8 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 class formFoods : AppCompatActivity() {
@@ -298,8 +300,8 @@ class formFoods : AppCompatActivity() {
     }
 
     private fun updateFoodInList(food: Food): List<Food> {
-        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList().map {
-            if (it.foodNumber == currentFood.foodNumber) food else it
+        return getFoodList().toList().map {
+            if (it.foodNumber == food.foodNumber) food else it
         }
     }
 
@@ -307,6 +309,22 @@ class formFoods : AppCompatActivity() {
         return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
     }
 
+    private fun getFoodList(): List<Food> {
+        val cacheKey = "Alimentos"
+        val cache = Cache()
+        val jsonUtil = JSON()
 
+        return if (cache.hasCache(this, cacheKey)) {
+            jsonUtil.fromJson(cache.getCache(this, cacheKey), Array<Food>::class.java).toList()
+        } else {
+            val jsonContent = loadJsonFromResource(R.raw.nutritional_table)
+            cache.setCache(this, cacheKey, jsonContent)
+            jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
+        }
+    }
+
+    private fun loadJsonFromResource(resourceId: Int): String {
+        return resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
+    }
 
 }
