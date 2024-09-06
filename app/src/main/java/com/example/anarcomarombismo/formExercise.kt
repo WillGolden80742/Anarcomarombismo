@@ -28,8 +28,7 @@ import kotlinx.coroutines.withContext
 import java.util.Random
 
 class formExercise : AppCompatActivity() {
-
-
+    // Views
     private lateinit var webView: WebView
     private lateinit var textViewVideoLink: TextView
     private lateinit var editTextVideoLink: EditText
@@ -38,26 +37,28 @@ class formExercise : AppCompatActivity() {
     private lateinit var editTextSets: EditText
     private lateinit var editTextRepetitions: EditText
     private lateinit var editTextLoad: EditText
-    private lateinit var editTextRest: EditText // Novo campo para repouso
-    private lateinit var editTextCadence: EditText // Novo campo para cadência
+    private lateinit var editTextRest: EditText
+    private lateinit var editTextCadence: EditText
     private lateinit var addExerciseButton: Button
     private lateinit var removeExerciseButton: Button
     private lateinit var checkExerciseFormButton: FloatingActionButton
     private lateinit var editExerciseFormButton: FloatingActionButton
     private lateinit var visualizeExerciseFormButton: LinearLayout
-    private lateinit var textVideoLink: String
+    // Data
     private var trainingID: Long = 0
     private var exerciseID: Long = 0
     private var exerciseDate: String = ""
     private var action: String = ""
+    private lateinit var leafsMap: Set<Tree>
     private var leafsNames: List<String> = listOf()
-    private lateinit var leafsMap:Set<Tree>
+    private var textVideoLink: String = ""
+    private var currentExercise: Exercise? = null
+    // Constants
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
-    private var currentExercise: Exercise? = null
+    // Helpers
     private val cache = Cache()
     private val jsonUtil = JSON()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_exercise)
