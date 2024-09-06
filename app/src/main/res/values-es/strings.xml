@@ -166,4 +166,5 @@
     <string name="days">dias</string>
     <string name="day">dia</string>
     <string name="exercise_id_is_invalid">ID del ejercicio es inválido</string>
+    <string name="food_removal_error">Error al eliminar el alimento</string>
 </resources>

@@ -17,86 +17,130 @@ import com.example.anarcomarombismo.formDailyCalories
 import com.example.anarcomarombismo.formFoods
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class FoodAdapter(context: Context, foodList: List<Food>, activity:String="formDailyCalories") : ArrayAdapter<Food>(context, 0, foodList) {
+class FoodAdapter(
+    context: Context,
+    foodList: List<Food>,
+    private val activity: String = "formDailyCalories"
+) : ArrayAdapter<Food>(context, 0, foodList) {
 
-    private val activity = activity
-    private val DOUBLE_CLICK_TIME_DELTA: Long = 300
+    private val inflater = LayoutInflater.from(context)
+    private val doubleClickTimeDelta: Long = 300
     private var lastClickTime: Long = 0
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var listItemView = convertView
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(context).inflate(R.layout.food_list_item, parent, false)
-        }
+        val listItemView = convertView ?: inflater.inflate(R.layout.food_list_item, parent, false)
+        val currentItem = getItem(position) ?: return listItemView
 
-        val currentItem = getItem(position)
-
-        val descriptionTextView = listItemView!!.findViewById<TextView>(R.id.foodTitleTextViewItem)
-        val detailsTextView = listItemView.findViewById<TextView>(R.id.foodTextViewItem)
-        val editButton = listItemView.findViewById<FloatingActionButton>(R.id.foodFloatingEditActionButton)
-        val addButton = listItemView.findViewById<FloatingActionButton>(R.id.foodFloatingAddActionButton)
-
-        descriptionTextView.text = currentItem?.foodDescription
-        detailsTextView.text = currentItem?.toString(context)
-
-        when (activity) {
-            "formDailyCalories" -> {
-                editButton.setOnClickListener {
-                    val intent = Intent(context, formFoods::class.java).apply {
-                        putExtra("foodID", currentItem?.foodNumber)
-                        putExtra("foodObject", currentItem?.let { it1 -> JSON().toJson(it1) })
-                    }
-                    context.startActivity(intent)
-                }
-
-                addButton.setOnClickListener {
-                    try {
-                        Toast.makeText(
-                            context,
-                            "\"${currentItem?.foodDescription}\""+ context.getString(R.string.selected),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        var formDailyCalories = context as formDailyCalories
-                        currentItem?.let { it1 -> formDailyCalories.selectedFood(it1) }
-                    } catch (e: Exception) {
-                        Toast.makeText(context,
-                            context.getString(R.string.add_food_error), Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-            "dailyCaloriesFoods" -> {
-                addButton.isVisible = false
-                editButton.setImageResource(R.drawable.ic_fluent_delete_24_regular)
-                editButton.setOnClickListener {
-                    val clickTime = System.currentTimeMillis()
-                    if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-                        try {
-                            Toast.makeText(
-                                context,
-                                "${currentItem?.foodDescription} removed",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            var dailyCaloriesFoods = context as dailyCaloriesFoods
-                            currentItem?.let { it1 -> dailyCaloriesFoods.removeFood(it1) }
-                        } catch (e: Exception) {
-                            Toast.makeText(context, "Erro ao remover food", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        Toast.makeText(context,
-                            context.getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
-                    }
-                    lastClickTime = clickTime
-                }
-            }
-            "loading" -> {
-                descriptionTextView.text = context.getString(R.string.loading)
-                detailsTextView.text = context.getString(R.string.please_wait)
-                editButton.isVisible = false
-                addButton.isVisible = false
-            }
-        }
-
+        bindViews(listItemView, currentItem)
         return listItemView
     }
 
+    private fun bindViews(view: View, food: Food) {
+        val descriptionTextView = view.findViewById<TextView>(R.id.foodTitleTextViewItem)
+        val detailsTextView = view.findViewById<TextView>(R.id.foodTextViewItem)
+        val editButton = view.findViewById<FloatingActionButton>(R.id.foodFloatingEditActionButton)
+        val addButton = view.findViewById<FloatingActionButton>(R.id.foodFloatingAddActionButton)
 
+        descriptionTextView.text = food.foodDescription
+        detailsTextView.text = food.toString(context)
+
+        handleActivityState(activity, food, descriptionTextView, detailsTextView, editButton, addButton)
+    }
+
+    private fun handleActivityState(
+        activity: String,
+        food: Food,
+        descriptionTextView: TextView,
+        detailsTextView: TextView,
+        editButton: FloatingActionButton,
+        addButton: FloatingActionButton
+    ) {
+        when (activity) {
+            "formDailyCalories" -> formDailyCalories(food, editButton, addButton)
+            "dailyCaloriesFoods" -> dailyCaloriesFoods(food, editButton, addButton)
+            "loading" -> loading(descriptionTextView, detailsTextView, editButton, addButton)
+        }
+    }
+
+    private fun loading(
+        descriptionTextView: TextView,
+        detailsTextView: TextView,
+        editButton: FloatingActionButton,
+        addButton: FloatingActionButton
+    ) {
+        descriptionTextView.text = context.getString(R.string.loading)
+        detailsTextView.text = context.getString(R.string.please_wait)
+        editButton.isVisible = false
+        addButton.isVisible = false
+    }
+
+    private fun formDailyCalories(food: Food, editButton: FloatingActionButton, addButton: FloatingActionButton) {
+        editButton.setOnClickListener {
+            navigateToFormFoods(food)
+        }
+
+        addButton.setOnClickListener {
+            addFoodToDailyCalories(food)
+        }
+    }
+
+    private fun navigateToFormFoods(food: Food) {
+        val intent = Intent(context, formFoods::class.java).apply {
+            putExtra("foodID", food.foodNumber)
+            putExtra("foodObject", JSON().toJson(food))
+        }
+        context.startActivity(intent)
+    }
+
+    private fun addFoodToDailyCalories(food: Food) {
+        try {
+            Toast.makeText(
+                context,
+                "\"${food.foodDescription}\" " + context.getString(R.string.selected),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            val dailyCalories = context as? formDailyCalories
+            dailyCalories?.selectedFood(food)
+        } catch (e: Exception) {
+            showToast(R.string.add_food_error)
+        }
+    }
+
+    private fun dailyCaloriesFoods(food: Food, editButton: FloatingActionButton, addButton: FloatingActionButton) {
+        addButton.isVisible = false
+        editButton.setImageResource(R.drawable.ic_fluent_delete_24_regular)
+
+        editButton.setOnClickListener {
+            handleFoodRemoval(food)
+        }
+    }
+
+    private fun handleFoodRemoval(food: Food) {
+        val clickTime = System.currentTimeMillis()
+        if (isDoubleClick(clickTime)) {
+            removeFood(food)
+        } else {
+            showToast(R.string.double_click_fast_for_exclusion)
+        }
+        lastClickTime = clickTime
+    }
+
+    private fun isDoubleClick(clickTime: Long): Boolean {
+        return clickTime - lastClickTime < doubleClickTimeDelta
+    }
+
+    private fun removeFood(food: Food) {
+        try {
+            Toast.makeText(context, "${food.foodDescription} removed", Toast.LENGTH_SHORT).show()
+            val dailyCalories = context as? dailyCaloriesFoods
+            dailyCalories?.removeFood(food)
+        } catch (e: Exception) {
+            showToast(R.string.food_removal_error)
+        }
+    }
+
+    private fun showToast(messageResId: Int) {
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
 }
