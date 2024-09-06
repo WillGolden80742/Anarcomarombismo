@@ -75,12 +75,11 @@ class FoodAdapter(
     }
 
     private fun formDailyCalories(food: Food, editButton: FloatingActionButton, addButton: FloatingActionButton) {
-        editButton.setOnClickListener {
-            navigateToFormFoods(food)
-        }
-
         addButton.setOnClickListener {
             addFoodToDailyCalories(food)
+        }
+        editButton.setOnClickListener {
+            navigateToFormFoods(food)
         }
     }
 
@@ -110,7 +109,6 @@ class FoodAdapter(
     private fun dailyCaloriesFoods(food: Food, editButton: FloatingActionButton, addButton: FloatingActionButton) {
         addButton.isVisible = false
         editButton.setImageResource(R.drawable.ic_fluent_delete_24_regular)
-
         editButton.setOnClickListener {
             handleFoodRemoval(food)
         }
