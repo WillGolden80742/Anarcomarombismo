@@ -11,8 +11,6 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.util.UUID
 
 class formFoods : AppCompatActivity() {
