@@ -25,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -222,6 +223,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun setFoodToFoodList() {
         searchFood(searchEditText.text.toString())
     }
+
     private fun calculeTotalCalories(it: CharSequence?) {
         try {
             val grams = it.toString().toDoubleOrNull().let { it ?: 0.0 }
@@ -285,8 +287,13 @@ class formDailyCalories : AppCompatActivity() {
         return if (query.isEmpty()) {
             foodList
         } else {
-            foodList.filter { it.foodDescription.contains(query, ignoreCase = true) }
+            foodList.filter { normalizeString(it.foodDescription).contains(normalizeString(query), ignoreCase = true) }
         }
+    }
+
+    private fun normalizeString(text: String): String {
+        return Normalizer.normalize(text, Normalizer.Form.NFD)
+            .replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "")
     }
 
     private fun updateListView(filteredList: List<Food>) {
