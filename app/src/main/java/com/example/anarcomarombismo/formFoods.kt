@@ -42,6 +42,8 @@ class formFoods : AppCompatActivity() {
 
         val foodID = intent.getStringExtra("foodID")
 
+        loadFoodCacheIfNecessary()
+
         if (foodID != null) {
             setupForFoodUpdate()
         } else {
@@ -85,7 +87,6 @@ class formFoods : AppCompatActivity() {
 
     private fun prepareForNewFoodEntry() {
         removeFoodFormButton.isVisible = false
-        loadFoodCacheIfNecessary()
     }
 
     private fun loadFoodCacheIfNecessary() {
@@ -93,6 +94,7 @@ class formFoods : AppCompatActivity() {
         if (foodCache == "NOT_FOUND") {
             val rawFoodData = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
             cache.setCache(this, "Alimentos", rawFoodData)
+            foodCache = rawFoodData
         }
     }
 
@@ -300,31 +302,12 @@ class formFoods : AppCompatActivity() {
     }
 
     private fun updateFoodInList(food: Food): List<Food> {
-        return getFoodList().toList().map {
-            if (it.foodNumber == food.foodNumber) food else it
-        }
+        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
+            .map { if (it.foodNumber == food.foodNumber) food else it }
     }
 
     private fun createFoodInList(food: Food): List<Food> {
         return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
-    }
-
-    private fun getFoodList(): List<Food> {
-        val cacheKey = "Alimentos"
-        val cache = Cache()
-        val jsonUtil = JSON()
-
-        return if (cache.hasCache(this, cacheKey)) {
-            jsonUtil.fromJson(cache.getCache(this, cacheKey), Array<Food>::class.java).toList()
-        } else {
-            val jsonContent = loadJsonFromResource(R.raw.nutritional_table)
-            cache.setCache(this, cacheKey, jsonContent)
-            jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
-        }
-    }
-
-    private fun loadJsonFromResource(resourceId: Int): String {
-        return resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
     }
 
 }
