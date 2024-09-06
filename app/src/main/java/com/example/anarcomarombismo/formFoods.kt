@@ -45,7 +45,7 @@ class formFoods : AppCompatActivity() {
         if (foodID != null) {
             setupForFoodUpdate()
         } else {
-            prepareForNewFoodEntry()
+            removeFoodFormButton.isVisible = false
         }
 
         addFoodFormButton.setOnClickListener {
@@ -83,9 +83,6 @@ class formFoods : AppCompatActivity() {
         }
     }
 
-    private fun prepareForNewFoodEntry() {
-        removeFoodFormButton.isVisible = false
-    }
 
     private fun loadFoodCacheIfNecessary() {
         foodCache = cache.getCache(this, "Alimentos")
