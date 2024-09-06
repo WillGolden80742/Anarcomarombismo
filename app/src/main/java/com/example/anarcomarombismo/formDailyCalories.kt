@@ -153,7 +153,6 @@ class formDailyCalories : AppCompatActivity() {
                 seeFoodsButton.isEnabled = false
             }
             currentFood = null
-            // saveDailyCalories()
         }
     }
 
