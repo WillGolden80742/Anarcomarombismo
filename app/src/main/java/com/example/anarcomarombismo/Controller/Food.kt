@@ -1,12 +1,13 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.widget.Toast
 import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
 import java.util.UUID
 
 class Food (
-    var foodNumber: String = "0",
+    var foodNumber: String = "",
     var grams: Double = 100.0,
     var foodDescription: String = "NO_DESCRIPTION",
     var moisture: String = "0.0",
@@ -36,11 +37,102 @@ class Food (
     var niacin: String = "0.0",
     var vitaminC: String = ""
 ) {
+    private var jsonUtil = JSON()
+    private var cache = Cache()
     init {
         if (grams == null) {
             grams = 100.00
         }
     }
+
+    fun saveFood(context: Context): Boolean {
+        this.foodNumber = if (foodNumber.isEmpty()) generateFoodNumber() else foodNumber
+        this.foodDescription = foodDescription
+        this.grams = 100.0
+        this.protein = formatDoubleNumber((protein.toDouble() / grams * 100.0))
+        this.carbohydrate = formatDoubleNumber((carbohydrate.toDouble() / grams * 100.0))
+        this.lipids = formatDoubleNumber((lipids.toDouble() / grams * 100.0))
+        this.dietaryFiber = formatDoubleNumber((dietaryFiber.toDouble() / grams * 100.0))
+        this.sodium = formatDoubleNumber((sodium.toDouble() / grams * 100.0))
+        this.energyKcal = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0))
+        this.energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
+        return saveFood(this, context)
+    }
+
+     fun removeFood(context: Context) {
+        try {
+            val foodNutritionList = jsonUtil.fromJson(loadFoodCacheIfNecessary(context), Array<Food>::class.java).toList()
+                .filter { it.foodNumber != foodNumber }
+            cache.setCache(context, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            Toast.makeText(context, context.getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(context, context.getString(R.string.error_removing_food), Toast.LENGTH_SHORT).show()
+            println("Erro food: $e")
+        }
+    }
+    private fun saveFood(food: Food, context: Context): Boolean {
+        try {
+            val foodCache = loadFoodCacheIfNecessary(context)
+
+            if (food.foodDescription == context.getString(R.string.food_name)) {
+                showToast(context.getString(R.string.fill_in_the_food_name), context)
+                return false
+            }
+
+            val isUpdate = food.foodNumber.isNotEmpty() && foodCache.contains(food.foodNumber)
+
+            val foodNutritionList = if (isUpdate) {
+                updateFoodInList(food, foodCache)
+            } else {
+                createFoodInList(food, foodCache)
+            }
+
+            showToast(
+                if (isUpdate) context.getString(R.string.update_nutrition_sucessful)
+                else context.getString(R.string.successful_target_food),
+                context
+            )
+            cache.setCache(context, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            return true
+
+        } catch (e: Exception) {
+            showToast(context.getString(R.string.save_food_error), context)
+            return false
+        }
+    }
+
+    private fun loadFoodCacheIfNecessary(context: Context): String {
+        var foodCache = cache.getCache(context, "Alimentos")
+        if (foodCache == "NOT_FOUND") {
+            val rawFoodData = context.resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
+            cache.setCache(context, "Alimentos", rawFoodData)
+            foodCache = rawFoodData
+        }
+        return foodCache
+    }
+
+    private fun updateFoodInList(food: Food, foodCache: String): List<Food> {
+        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
+            .map { if (it.foodNumber == food.foodNumber) food else it }
+    }
+
+    private fun createFoodInList(food: Food, foodCache: String): List<Food> {
+        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
+    }
+
+    private fun showToast(message: String,context: Context) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun formatDoubleNumber(value: Double):String {
+        return "%.2f".format(value).replace(",", ".")
+    }
+
+    private fun generateFoodNumber(): String {
+        val random = UUID.randomUUID().toString()
+        return "${System.currentTimeMillis()}$random"
+    }
+
 
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")

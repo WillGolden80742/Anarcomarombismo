@@ -1,7 +1,9 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.widget.Toast
 import com.example.anarcomarombismo.R
+import java.util.Random
 
 class Exercise(
     var trainingID: Long = 0,
@@ -15,6 +17,46 @@ class Exercise(
     var rest: Int = 60, // Tempo de repouso padrão em segundos
     var cadence: String = "3-1-3", // Cadência padrão
 ) {
+
+    private val cache = Cache()
+    private val jsonUtil = JSON()
+    fun saveExercise(context: Context):Boolean {
+        val cacheKey = "Exercicios_$trainingID"
+        val exerciseArray = getExerciseArray(context,cacheKey)
+        val updatedExerciseArray = updateExerciseArray(exerciseArray, this@Exercise)
+        saveExerciseArray(context,cacheKey, updatedExerciseArray)
+        showToastMessage(context,exerciseID > 0)
+        return true
+    }
+
+    private fun saveExerciseArray(context: Context,cacheKey: String, exerciseArray: Array<Exercise>) {
+        cache.setCache(context, cacheKey, jsonUtil.toJson(exerciseArray))
+    }
+
+    private fun showToastMessage(context: Context,isUpdate: Boolean) {
+        val messageResId = if (isUpdate) R.string.update_exercise_successful else R.string.save_exercise_successful
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateExerciseArray(
+        exerciseArray: Array<Exercise>,
+        exercise: Exercise
+    ): Array<Exercise> {
+        return if (exerciseID > 0) {
+            exerciseArray.map { if (it.exerciseID == exerciseID) exercise else it }.toTypedArray()
+        } else {
+            exercise.exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100)
+            exerciseArray.plus(exercise)
+        }
+    }
+    private fun getExerciseArray(context: Context,cacheKey: String): Array<Exercise> {
+        return if (cache.hasCache(context, cacheKey)) {
+            jsonUtil.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
+        } else {
+            arrayOf()
+        }
+    }
+
 
     fun generateYouTubeEmbedLink(text: String): String {
         val trimmedText = text.trim()
