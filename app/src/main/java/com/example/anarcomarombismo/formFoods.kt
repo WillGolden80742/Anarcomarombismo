@@ -203,9 +203,6 @@ class formFoods : AppCompatActivity() {
     }
 
 
-
-
-
     private fun String.toDoubleOrNullOrZero(): Double {
         return this.toDoubleOrNull() ?: 0.0
     }

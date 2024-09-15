@@ -316,7 +316,6 @@ class formExercise : AppCompatActivity() {
     }
 
 
-
     private fun saveExercise() {
         if (!areFieldsValid()) {
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
