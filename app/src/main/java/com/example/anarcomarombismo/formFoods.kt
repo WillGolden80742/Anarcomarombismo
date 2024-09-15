@@ -130,12 +130,21 @@ class formFoods : AppCompatActivity() {
     }
 
     private fun handleAddOrUpdateFood(foodID: String?) {
-        if (foodID != null) {
-            saveFood(1)
-        } else {
-            saveFood( 0)
-        }
+        val action = if (foodID != null) 1 else 0
+        saveFood(Food().apply {
+            foodNumber = if (action == 1) currentFood.foodNumber else generateFoodNumber()
+            foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() } ?: getString(R.string.food_name)
+            grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0
+            protein = editTextProtein.text.toString().toDoubleOrNullOrZero().toString()
+            carbohydrate = editTextCarbohydrate.text.toString().toDoubleOrNullOrZero().toString()
+            lipids = editTextLipids.text.toString().toDoubleOrNullOrZero().toString()
+            dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNullOrZero().toString()
+            sodium = editTextSodium.text.toString().toDoubleOrNullOrZero().toString()
+            energyKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero().toString()
+            energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
+        }, action)
     }
+
 
     private fun handleFoodRemoval(foodID: String?) {
         val clickTime = System.currentTimeMillis()
@@ -208,36 +217,15 @@ class formFoods : AppCompatActivity() {
     }
 
     // edit food
-    private fun saveFood(action: Int) {
+    private fun saveFood(food: Food, action: Int) {
         try {
-            val foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() }
-                ?: getString(R.string.food_name)
-            val grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0
-            val protein = editTextProtein.text.toString().toDoubleOrNullOrZero()
-            val carbohydrate = editTextCarbohydrate.text.toString().toDoubleOrNullOrZero()
-            val lipids = editTextLipids.text.toString().toDoubleOrNullOrZero()
-            val dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNullOrZero()
-            val sodium = editTextSodium.text.toString().toDoubleOrNullOrZero()
-            val caloriesKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero()
-
-            if (foodDescription == getString(R.string.food_name)) {
+            if (food.foodDescription == getString(R.string.food_name)) {
                 showToast(getString(R.string.fill_in_the_food_name))
                 return
             }
 
-            val food = createFood(
-                foodDescription = foodDescription,
-                grams = grams,
-                protein = protein,
-                carbohydrate = carbohydrate,
-                lipids = lipids,
-                dietaryFiber = dietaryFiber,
-                sodium = sodium,
-                caloriesKcal = caloriesKcal,
-                action = action
-            )
-
             updateOrCreateFood(action, food)
+
             cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
             finish()
         } catch (e: Exception) {
@@ -252,31 +240,6 @@ class formFoods : AppCompatActivity() {
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun createFood(
-        foodDescription: String,
-        grams: Double,
-        protein: Double,
-        carbohydrate: Double,
-        lipids: Double,
-        dietaryFiber: Double,
-        sodium: Double,
-        caloriesKcal: Double,
-        action: Int
-    ): Food {
-        return Food().apply {
-            foodNumber = if (action == 1) currentFood.foodNumber else generateFoodNumber()
-            this.foodDescription = foodDescription
-            this.grams = 100.0
-            this.protein = formatDoubleNumber((protein / grams * 100.0))
-            this.carbohydrate = formatDoubleNumber((carbohydrate / grams * 100.0))
-            this.lipids = formatDoubleNumber((lipids / grams * 100.0))
-            this.dietaryFiber = formatDoubleNumber((dietaryFiber / grams * 100.0))
-            this.sodium = formatDoubleNumber((sodium / grams * 100.0))
-            this.energyKcal = formatDoubleNumber((caloriesKcal / grams * 100.0))
-            this.energyKj = formatDoubleNumber((caloriesKcal / grams * 100.0) * 4.184)
-        }
     }
 
     private fun generateFoodNumber(): String {
