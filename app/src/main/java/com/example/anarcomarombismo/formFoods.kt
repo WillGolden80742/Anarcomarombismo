@@ -130,9 +130,8 @@ class formFoods : AppCompatActivity() {
     }
 
     private fun handleAddOrUpdateFood(foodID: String?) {
-        val action = if (foodID != null) 1 else 0
-        saveFood(Food().apply {
-            foodNumber = if (action == 1) currentFood.foodNumber else generateFoodNumber()
+        val food = Food().apply {
+            foodNumber = foodID ?: generateFoodNumber()
             foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() } ?: getString(R.string.food_name)
             grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0
             protein = editTextProtein.text.toString().toDoubleOrNullOrZero().toString()
@@ -142,9 +141,9 @@ class formFoods : AppCompatActivity() {
             sodium = editTextSodium.text.toString().toDoubleOrNullOrZero().toString()
             energyKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero().toString()
             energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
-        }, action)
+        }
+        saveFood(food)
     }
-
 
     private fun handleFoodRemoval(foodID: String?) {
         val clickTime = System.currentTimeMillis()
@@ -217,16 +216,31 @@ class formFoods : AppCompatActivity() {
     }
 
     // edit food
-    private fun saveFood(food: Food, action: Int) {
+    private fun saveFood(food: Food) {
         try {
             if (food.foodDescription == getString(R.string.food_name)) {
                 showToast(getString(R.string.fill_in_the_food_name))
                 return
             }
 
-            updateOrCreateFood(action, food)
+            val isUpdate = food.foodNumber.isNotEmpty() && foodCache.contains(food.foodNumber)
+
+            foodNutritionList = if (isUpdate) {
+                updateFoodInList(food)
+            } else {
+                createFoodInList(food)
+            }
+
+            showToast(
+                if (isUpdate) getString(R.string.update_nutrition_sucessful)
+                else getString(R.string.successful_target_food)
+            )
 
             cache.setCache(this, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            showToast(
+                if (isUpdate) getString(R.string.update_nutrition_sucessful)
+                else getString(R.string.successful_target_food)
+            )
             finish()
         } catch (e: Exception) {
             showToast(getString(R.string.save_food_error))
@@ -245,18 +259,6 @@ class formFoods : AppCompatActivity() {
     private fun generateFoodNumber(): String {
         val random = UUID.randomUUID().toString()
         return "${System.currentTimeMillis()}$random"
-    }
-
-    private fun updateOrCreateFood(action: Int, food: Food) {
-        foodNutritionList = when (action) {
-            1 -> updateFoodInList(food)
-            0 -> createFoodInList(food)
-            else -> foodNutritionList
-        }
-        showToast(
-            if (action == 1) getString(R.string.update_nutrition_sucessful)
-            else getString(R.string.successful_target_food)
-        )
     }
 
     private fun updateFoodInList(food: Food): List<Food> {

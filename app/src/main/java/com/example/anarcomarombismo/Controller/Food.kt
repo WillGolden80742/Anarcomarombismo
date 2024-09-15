@@ -3,6 +3,7 @@ package com.example.anarcomarombismo.Controller
 import android.content.Context
 import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
+import java.util.UUID
 
 class Food (
     var foodNumber: String = "0",
