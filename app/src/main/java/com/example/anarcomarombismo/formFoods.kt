@@ -130,19 +130,20 @@ class formFoods : AppCompatActivity() {
     }
 
     private fun handleAddOrUpdateFood(foodID: String?) {
-        val food = Food().apply {
-            foodNumber = foodID ?: generateFoodNumber()
-            foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() } ?: getString(R.string.food_name)
-            grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0
-            protein = editTextProtein.text.toString().toDoubleOrNullOrZero().toString()
-            carbohydrate = editTextCarbohydrate.text.toString().toDoubleOrNullOrZero().toString()
-            lipids = editTextLipids.text.toString().toDoubleOrNullOrZero().toString()
-            dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNullOrZero().toString()
-            sodium = editTextSodium.text.toString().toDoubleOrNullOrZero().toString()
-            energyKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero().toString()
-            energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
-        }
-        saveFood(food)
+        saveFood(
+            Food().apply {
+                foodNumber = foodID ?: generateFoodNumber()
+                foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() } ?: getString(R.string.food_name)
+                grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0
+                protein = editTextProtein.text.toString().toDoubleOrNullOrZero().toString()
+                carbohydrate = editTextCarbohydrate.text.toString().toDoubleOrNullOrZero().toString()
+                lipids = editTextLipids.text.toString().toDoubleOrNullOrZero().toString()
+                dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNullOrZero().toString()
+                sodium = editTextSodium.text.toString().toDoubleOrNullOrZero().toString()
+                energyKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero().toString()
+                energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
+            }
+        )
     }
 
     private fun handleFoodRemoval(foodID: String?) {
