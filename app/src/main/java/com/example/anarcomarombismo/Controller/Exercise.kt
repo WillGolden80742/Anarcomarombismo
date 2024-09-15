@@ -17,13 +17,16 @@ class Exercise(
     var rest: Int = 60, // Tempo de repouso padrão em segundos
     var cadence: String = "3-1-3", // Cadência padrão
 ) {
-
     private val cache = Cache()
     private val jsonUtil = JSON()
+
     fun saveExercise(context: Context):Boolean {
+        return saveExercise(context,this)
+    }
+    private fun saveExercise(context: Context,exercise: Exercise):Boolean {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context,cacheKey)
-        val updatedExerciseArray = updateExerciseArray(exerciseArray, this@Exercise)
+        val updatedExerciseArray = updateExerciseArray(exerciseArray, exercise)
         saveExerciseArray(context,cacheKey, updatedExerciseArray)
         showToastMessage(context,exerciseID > 0)
         return true
@@ -42,11 +45,10 @@ class Exercise(
         exerciseArray: Array<Exercise>,
         exercise: Exercise
     ): Array<Exercise> {
-        return if (exerciseID > 0) {
-            exerciseArray.map { if (it.exerciseID == exerciseID) exercise else it }.toTypedArray()
+        return if (exercise.exerciseID > 0) {
+            exerciseArray.map { if (it.exerciseID == exercise.exerciseID) exercise else it }.toTypedArray()
         } else {
-            exercise.exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100)
-            exerciseArray.plus(exercise)
+            exerciseArray.plus(exercise.apply { exerciseID = System.currentTimeMillis() + Random().nextInt(100) })
         }
     }
     private fun getExerciseArray(context: Context,cacheKey: String): Array<Exercise> {
