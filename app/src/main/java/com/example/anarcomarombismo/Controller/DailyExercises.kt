@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-
 class DailyExercises (context: Context) {
     private val context = context
     private val jsonUtil = JSON()
