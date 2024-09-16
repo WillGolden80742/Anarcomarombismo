@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.Toast
 import com.example.anarcomarombismo.Adapters.FoodAdapter
-import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
