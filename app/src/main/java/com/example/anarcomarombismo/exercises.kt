@@ -25,8 +25,6 @@ class exercises : AppCompatActivity() {
     private lateinit var exerciseList: ListView
     private lateinit var trainingName: TextView
     private lateinit var descriptionTrainingLabel: TextView
-    private var cache: Cache?   = null
-    private var jsonUtil = JSON()
     private var trainingID: Long = 0
     private val dateFormatStored = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     override fun onCreate(savedInstanceState: Bundle?) {

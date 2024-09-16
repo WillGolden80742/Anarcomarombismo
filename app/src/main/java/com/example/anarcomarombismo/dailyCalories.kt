@@ -23,7 +23,6 @@ class dailyCalories : AppCompatActivity() {
         caloriesFoodList = findViewById(R.id.caloriesFoodList)
         addCaloriesButton = findViewById(R.id.addFoodFormButton)
         addNewFoodButton = findViewById(R.id.addNewFoodButton)
-        setDailyCaloriesList()
         addCaloriesButton.setOnClickListener {
             callFormDailyCalories()
         }
@@ -45,10 +44,13 @@ class dailyCalories : AppCompatActivity() {
     // onResume
     override fun onResume() {
         super.onResume()
-        setDailyCaloriesList()
+        DailyCalories().loadList(this) { dailyCaloriesList ->
+            val adapter = DailyCaloriesAdapter(this, dailyCaloriesList)
+            caloriesFoodList.adapter = adapter
+        }
     }
 
-    fun callFormDailyCalories() {
+    private fun callFormDailyCalories() {
         try {
             startActivity(Intent(this, formDailyCalories::class.java))
         } catch (e: Exception) {
@@ -56,7 +58,7 @@ class dailyCalories : AppCompatActivity() {
         }
     }
 
-    fun callFoodForm() {
+    private fun callFoodForm() {
         try {
             startActivity(Intent(this, formFoods::class.java))
         } catch (e: Exception) {
@@ -64,41 +66,6 @@ class dailyCalories : AppCompatActivity() {
         }
     }
 
-    fun setDailyCaloriesList() {
-        GlobalScope.launch(Dispatchers.IO) {
-            val cache = Cache()
-            val jsonUtil = JSON()
-            var dailyCaloriesList: List<DailyCalories> = emptyList() // Inicialize a lista como vazia
-            try {
-                // Verifique se o cache não é nulo antes de acessá-lo
-                if (cache != null && cache.hasCache(this@dailyCalories, "dailyCalories")) {
-                    // Obtenha a lista de calorias diárias do cache
-                    val dailyCaloriesListJson = cache.getCache(this@dailyCalories, "dailyCalories")
-                    println("Lista de calorias diárias: $dailyCaloriesListJson")
-                    dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-                } else {
-                    val dailyCaloriesListJson = cache.getCache(this@dailyCalories, "emptyDailyCalories")
-                    println("Lista de calorias diárias: $dailyCaloriesListJson")
-                    dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-                }
-                // Ordenar a lista por data (ano -> mês -> dia)
-                dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
-                    val dateParts = dailyCalories.date.split("/")
-                    // Converter a data para o formato YYYYMMDD para ordenação correta
-                    "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt()
-                }
-                // Atualize a UI na thread principal
-                launch(Dispatchers.Main) {
-                    // Crie um adapter para a lista de objetos DailyCalories
-                    val adapter = DailyCaloriesAdapter(this@dailyCalories, dailyCaloriesList)
-                    // Atribua o adapter à lista de alimentos
-                    caloriesFoodList.adapter = adapter
-                }
-            } catch (e: Exception) {
-                println("Erro ao carregar a lista de calorias diárias: $e")
-            }
-        }
-    }
 
 
 }

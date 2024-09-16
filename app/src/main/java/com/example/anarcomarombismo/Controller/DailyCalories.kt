@@ -84,6 +84,36 @@ class DailyCalories {
             }
         }
     }
+
+    fun loadList(context: Context, callback: (List<DailyCalories>) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val cache = Cache()
+            val jsonUtil = JSON()
+            var dailyCaloriesList: List<DailyCalories> = emptyList()
+            try {
+                if (cache.hasCache(context, "dailyCalories")) {
+                    val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+                    println("Lista de calorias diárias: $dailyCaloriesListJson")
+                    dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+                } else {
+                    val dailyCaloriesListJson = cache.getCache(context, "emptyDailyCalories")
+                    println("Lista de calorias diárias: $dailyCaloriesListJson")
+                    dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+                }
+                // Sort the list by date (year -> month -> day)
+                dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
+                    val dateParts = dailyCalories.date.split("/")
+                    "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt()
+                }
+                withContext(Dispatchers.Main) {
+                    callback(dailyCaloriesList)
+                }
+            } catch (e: Exception) {
+                println("Erro ao carregar a lista de calorias diárias: $e")
+            }
+        }
+    }
+
     private fun getExistingDailyCaloriesList(context: Context, cache: Cache, jsonUtil: JSON): List<DailyCalories> {
         return if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
