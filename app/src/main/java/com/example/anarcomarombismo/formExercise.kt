@@ -315,37 +315,14 @@ class formExercise : AppCompatActivity() {
         }
     }
 
-
     private fun saveExercise() {
         if (!areFieldsValid()) {
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
-
-        val cacheKey = "Exercicios_$trainingID"
-        val exerciseArray = getExerciseArray(cacheKey)
         val exercise = buildExercise()
-        val updatedExerciseArray = updateExerciseArray(exerciseArray, exercise)
-
-        saveExerciseArray(cacheKey, updatedExerciseArray)
-        showToastMessage(exerciseID > 0)
+        exercise.saveExercise(this)
         finish()
-    }
-
-    private fun areFieldsValid(): Boolean {
-        return spinnerMuscleGroup.selectedItemPosition != 0 &&
-                editTextExerciseName.text.toString().isNotEmpty() &&
-                editTextSets.text.toString().isNotEmpty() &&
-                editTextRepetitions.text.toString().isNotEmpty() &&
-                editTextLoad.text.toString().isNotEmpty()
-    }
-
-    private fun getExerciseArray(cacheKey: String): Array<Exercise> {
-        return if (cache.hasCache(this, cacheKey)) {
-            jsonUtil.fromJson(cache.getCache(this, cacheKey), Array<Exercise>::class.java)
-        } else {
-            arrayOf()
-        }
     }
 
     private fun buildExercise(): Exercise {
@@ -354,10 +331,11 @@ class formExercise : AppCompatActivity() {
         val defaultRest = getString(R.string.default_rest).toInt()
         val defaultReps = getString(R.string.default_reps)
         val defaultSets = getString(R.string.default_sets).toInt()
-        return Exercise(
+
+        return Exercise.build(
             trainingID = trainingID,
-            LinkVideo = editTextVideoLink.text.toString(),
-            exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100),
+            linkVideo = editTextVideoLink.text.toString(),
+            exerciseID = exerciseID,
             name = editTextExerciseName.text.toString().takeIf { it.isNotEmpty() } ?: exerciseHint,
             muscle = spinnerMuscleGroup.selectedItem.toString(),
             sets = editTextSets.text.toString().toIntOrNull() ?: defaultSets,
@@ -368,40 +346,25 @@ class formExercise : AppCompatActivity() {
         )
     }
 
-    private fun updateExerciseArray(
-        exerciseArray: Array<Exercise>,
-        exercise: Exercise
-    ): Array<Exercise> {
-        return if (exerciseID > 0) {
-            exerciseArray.map { if (it.exerciseID == exerciseID) exercise else it }.toTypedArray()
-        } else {
-            exerciseArray.plus(exercise)
-        }
+    private fun areFieldsValid(): Boolean {
+        return spinnerMuscleGroup.selectedItemPosition != 0 &&
+                editTextExerciseName.text.toString().isNotEmpty() &&
+                editTextSets.text.toString().isNotEmpty() &&
+                editTextRepetitions.text.toString().isNotEmpty() &&
+                editTextLoad.text.toString().isNotEmpty()
     }
-
-    private fun saveExerciseArray(cacheKey: String, exerciseArray: Array<Exercise>) {
-        cache.setCache(this, cacheKey, jsonUtil.toJson(exerciseArray))
-    }
-
-    private fun showToastMessage(isUpdate: Boolean) {
-        val messageResId = if (isUpdate) R.string.update_exercise_successful else R.string.save_exercise_successful
-        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
-    }
-
-
 
     private fun removeExercise() {
-        val exerciseArray = if (cache.hasCache(this, "Exercicios_$trainingID")) {
-            jsonUtil.fromJson(cache.getCache(this, "Exercicios_$trainingID"), Array<Exercise>::class.java)
+        val clickTime = System.currentTimeMillis()
+        if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+            val exercise = buildExercise()
+            exercise.removeExercise(this)
+            finish()
         } else {
-            arrayOf()
+            Toast.makeText(this,
+                this.getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
         }
-        val newExerciseArray = exerciseArray.filter {
-            it.exerciseID != exerciseID
-        }.toTypedArray()
-        cache.setCache(this, "Exercicios_$trainingID", jsonUtil.toJson(newExerciseArray))
-        Toast.makeText(this, getString(R.string.remove_exercise_successful), Toast.LENGTH_SHORT).show()
-        finish()
+        lastClickTime = clickTime
     }
 
 }

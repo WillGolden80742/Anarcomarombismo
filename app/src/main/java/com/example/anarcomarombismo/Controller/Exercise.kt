@@ -20,38 +20,44 @@ class Exercise(
     private val cache = Cache()
     private val jsonUtil = JSON()
 
-    fun saveExercise(context: Context):Boolean {
-        return saveExercise(context,this)
-    }
-    private fun saveExercise(context: Context,exercise: Exercise):Boolean {
-        val cacheKey = "Exercicios_$trainingID"
-        val exerciseArray = getExerciseArray(context,cacheKey)
-        val updatedExerciseArray = updateExerciseArray(exerciseArray, exercise)
-        saveExerciseArray(context,cacheKey, updatedExerciseArray)
-        showToastMessage(context,exerciseID > 0)
-        return true
-    }
-
-    private fun saveExerciseArray(context: Context,cacheKey: String, exerciseArray: Array<Exercise>) {
-        cache.setCache(context, cacheKey, jsonUtil.toJson(exerciseArray))
-    }
-
-    private fun showToastMessage(context: Context,isUpdate: Boolean) {
-        val messageResId = if (isUpdate) R.string.update_exercise_successful else R.string.save_exercise_successful
-        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
-    }
-
-    private fun updateExerciseArray(
-        exerciseArray: Array<Exercise>,
-        exercise: Exercise
-    ): Array<Exercise> {
-        return if (exercise.exerciseID > 0) {
-            exerciseArray.map { if (it.exerciseID == exercise.exerciseID) exercise else it }.toTypedArray()
-        } else {
-            exerciseArray.plus(exercise.apply { exerciseID = System.currentTimeMillis() + Random().nextInt(100) })
+    companion object {
+        fun build(
+            trainingID: Long,
+            linkVideo: String,
+            exerciseID: Long,
+            name: String,
+            muscle: String,
+            sets: Int,
+            repetitions: String,
+            load: Double,
+            rest: Int,
+            cadence: String
+        ): Exercise {
+            return Exercise().apply {
+                this.trainingID = trainingID
+                this.LinkVideo = linkVideo
+                this.exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100)
+                this.name = name
+                this.muscle = muscle
+                this.sets = sets
+                this.repetitions = repetitions
+                this.load = load
+                this.rest = rest
+                this.cadence = cadence
+            }
         }
     }
-    private fun getExerciseArray(context: Context,cacheKey: String): Array<Exercise> {
+
+    fun saveExercise(context: Context) {
+        val cacheKey = "Exercicios_$trainingID"
+        val exerciseArray = getExerciseArray(context, cacheKey)
+        val updatedExerciseArray = updateExerciseArray(exerciseArray)
+
+        saveExerciseArray(context, cacheKey, updatedExerciseArray)
+        showToastMessage(context, exerciseID in exerciseArray.map { it.exerciseID })
+    }
+
+    private fun getExerciseArray(context: Context, cacheKey: String): Array<Exercise> {
         return if (cache.hasCache(context, cacheKey)) {
             jsonUtil.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
         } else {
@@ -59,6 +65,30 @@ class Exercise(
         }
     }
 
+    private fun updateExerciseArray(exerciseArray: Array<Exercise>): Array<Exercise> {
+        val existingExerciseIndex = exerciseArray.indexOfFirst { it.exerciseID == this.exerciseID }
+        return if (existingExerciseIndex != -1) {
+            exerciseArray.toMutableList().apply {
+                this[existingExerciseIndex] = this@Exercise
+            }.toTypedArray()
+        } else {
+            exerciseArray + this
+        }
+    }
+
+    private fun saveExerciseArray(context: Context, cacheKey: String, exerciseArray: Array<Exercise>) {
+        cache.setCache(context, cacheKey, jsonUtil.toJson(exerciseArray))
+    }
+
+    private fun showToastMessage(context: Context, isUpdate: Boolean) {
+        val messageResId = if (isUpdate) R.string.update_exercise_successful else R.string.save_exercise_successful
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showToastMessage(context: Context, isUpdate: Boolean, addMessageId: Int, updateMessageId: Int) {
+        val messageResId = if (isUpdate) updateMessageId else addMessageId
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
 
     fun generateYouTubeEmbedLink(text: String): String {
         val trimmedText = text.trim()
@@ -75,6 +105,15 @@ class Exercise(
         val videoId = extractVideoId(sanitizedText) ?: return ""
 
         return buildEmbedLink(videoId, sanitizedText)
+    }
+
+    fun removeExercise(context: Context) {
+        val cacheKey = "Exercicios_$trainingID"
+        val exerciseArray = getExerciseArray(context, cacheKey)
+        val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
+
+        saveExerciseArray(context, cacheKey, newExerciseArray)
+        showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
     }
 
     private fun isValidYouTubeLink(text: String): Boolean {
