@@ -140,7 +140,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun selectDate () {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-        DateUtil().selectDate(this, editTextDate, maxDate) { selectedDate ->
+        DateUtil().selectDate(this, editTextDate, maxDate) {
             getDailyCaloriesByDate(maxDate.toString())
         }
     }

@@ -1,6 +1,5 @@
 package com.example.anarcomarombismo
 
-import android.app.DatePickerDialog
 import com.example.anarcomarombismo.Adapters.ExerciseAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -66,9 +65,8 @@ class exercises : AppCompatActivity() {
     private fun selectDate() {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-
-        DateUtil().selectDate(this, dateTextView, maxDate) { selectedDate ->
-            loadExercises(trainingID, selectedDate)
+        DateUtil().selectDate(this, dateTextView, maxDate) {
+            loadExercises(trainingID, it)
         }
     }
     private fun getCurrentDate(): String {
