@@ -44,7 +44,6 @@ class formDailyCalories : AppCompatActivity() {
     private lateinit var gramsEditText: EditText
     private lateinit var addFoodButton: Button
     private var currentFood: Food? = null
-    private var temporaryCalcule: Double = 0.0
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
     @SuppressLint("MissingInflatedId")
@@ -77,6 +76,9 @@ class formDailyCalories : AppCompatActivity() {
             try {
                 addFoodToDailyList()
                 dailyCalories.save(this)
+                addFoodButton.isEnabled = false
+                nameFoodLabel.text = getString(R.string.select_food)
+                gramsEditText.isEnabled = false
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
             }
@@ -241,7 +243,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun searchFood(query: String) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val foodList = getFoodList()
+                val foodList = Food().loadList(this@formDailyCalories)
                 val filteredList = filterFoodList(foodList, query)
                 updateListView(filteredList)
                 searchFoodAsync(query)
@@ -255,25 +257,6 @@ class formDailyCalories : AppCompatActivity() {
             foodList
         } else {
             foodList.filter { normalizeString(it.foodDescription).contains(normalizeString(query), ignoreCase = true) }
-        }
-    }
-    private suspend fun getFoodList(): List<Food> {
-        val cacheKey = "Alimentos"
-        val cache = Cache()
-        val jsonUtil = JSON()
-
-        return if (cache.hasCache(this@formDailyCalories, cacheKey)) {
-            jsonUtil.fromJson(cache.getCache(this@formDailyCalories, cacheKey), Array<Food>::class.java).toList()
-        } else {
-            val jsonContent = loadJsonFromResource(R.raw.nutritional_table)
-            cache.setCache(this@formDailyCalories, cacheKey, jsonContent)
-            jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
-        }
-    }
-
-    private suspend fun loadJsonFromResource(resourceId: Int): String {
-        return withContext(Dispatchers.IO) {
-            resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
         }
     }
 
@@ -339,43 +322,6 @@ class formDailyCalories : AppCompatActivity() {
     private fun showFoodError() {
         throw RuntimeException("Current food is null")
     }
-
-    private fun updateDailyCaloriesCache() {
-        val cache = Cache()
-        val jsonUtil = JSON()
-        try {
-            val dailyCaloriesList = getExistingDailyCaloriesList(cache, jsonUtil)
-            val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == getCurrentFormattedDate() } + dailyCalories
-            cache.setCache(this, "dailyCalories", jsonUtil.toJson(updatedCaloriesList))
-        } catch (e: Exception) {
-            handleError(e, "Error saving daily calories")
-        }
-    }
-
-    private fun getExistingDailyCaloriesList(cache: Cache, jsonUtil: JSON): List<DailyCalories> {
-        return if (cache.hasCache(this, "dailyCalories")) {
-            val dailyCaloriesListJson = cache.getCache(this, "dailyCalories")
-            jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-        } else {
-            emptyList()
-        }
-    }
-
-    private fun getCurrentFormattedDate(): String {
-        return editTextDate.text.toString()
-    }
-
-    private fun resetUI() {
-        gramsEditText.isEnabled = false
-        gramsEditText.setText("100")
-        nameFoodLabel.text = this.getString(R.string.select_food)
-        dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
-    }
-
-    private fun handleError(e: Exception, message: String) {
-        println(RuntimeException("$message: $e"))
-    }
-
 
     // Usar Coroutine para chamada assíncrona
     private fun searchFoodAsync(query: String) {

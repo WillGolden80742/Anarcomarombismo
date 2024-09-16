@@ -58,15 +58,15 @@ class Training(
         return false
     }
 
-    fun load(context: Context, nameEditText: EditText, descriptionEditText: EditText) {
-        val jsonUtil = JSON()
+    fun load(context: Context, trainingID: Long):Training {
         val cache = Cache()
-        if (trainingID > 0) {
-            val trainingArray = jsonUtil.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
-            trainingArray.find { it.trainingID == trainingID }?.let {
-                nameEditText.setText(it.name)
-                descriptionEditText.setText(it.description)
-            }
+        val jsonUtil = JSON()
+        val trainingArray = jsonUtil.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
+        val training = trainingArray.find { it.trainingID == trainingID }
+        if (training != null) {
+            this.name = training.name
+            this.description = training.description
         }
+        return this
     }
 }

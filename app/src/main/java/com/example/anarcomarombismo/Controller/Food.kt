@@ -59,20 +59,9 @@ class Food (
         return save(this, context)
     }
 
-     fun remove(context: Context) {
-        try {
-            val foodNutritionList = jsonUtil.fromJson(loadFoodCacheIfNecessary(context), Array<Food>::class.java).toList()
-                .filter { it.foodNumber != foodNumber }
-            cache.setCache(context, "Alimentos", jsonUtil.toJson(foodNutritionList))
-            Toast.makeText(context, context.getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
-        } catch (e: Exception) {
-            Toast.makeText(context, context.getString(R.string.error_removing_food), Toast.LENGTH_SHORT).show()
-            println("Erro food: $e")
-        }
-    }
     private fun save(food: Food, context: Context): Boolean {
         try {
-            val foodCache = loadFoodCacheIfNecessary(context)
+            val foodCache = loadJSONCache(context)
 
             if (food.foodDescription == context.getString(R.string.food_name)) {
                 showToast(context.getString(R.string.fill_in_the_food_name), context)
@@ -101,9 +90,26 @@ class Food (
         }
     }
 
-    private fun loadFoodCacheIfNecessary(context: Context): String {
-        var foodCache = cache.getCache(context, "Alimentos")
-        if (foodCache == "NOT_FOUND") {
+    fun loadList(context: Context): List<Food> {
+        return jsonUtil.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+    }
+    fun remove(context: Context) {
+        try {
+            val foodNutritionList = jsonUtil.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+                .filter { it.foodNumber != foodNumber }
+            cache.setCache(context, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            Toast.makeText(context, context.getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(context, context.getString(R.string.error_removing_food), Toast.LENGTH_SHORT).show()
+            println("Erro food: $e")
+        }
+    }
+
+    private fun loadJSONCache (context: Context): String {
+        var foodCache: String
+        if (cache.hasCache(context, "Alimentos")) {
+            foodCache = cache.getCache(context, "Alimentos")
+        } else {
             val rawFoodData = context.resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
             cache.setCache(context, "Alimentos", rawFoodData)
             foodCache = rawFoodData

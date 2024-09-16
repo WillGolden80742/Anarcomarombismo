@@ -43,7 +43,10 @@ class formTraining : AppCompatActivity() {
         }
 
         // Load training data if it exists
-        Training(trainingID).load(this, name, description)
+        Training().load(this, trainingID).also {
+            name.setText(it.name)
+            description.setText(it.description)
+        }
 
         if (trainingID > 0) {
             save.text = getString(R.string.update_training)

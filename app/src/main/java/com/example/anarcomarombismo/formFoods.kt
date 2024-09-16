@@ -27,7 +27,6 @@ class formFoods : AppCompatActivity() {
     private lateinit var foodNutritionList: List<Food>
     private lateinit var currentFood: Food
     private var jsonUtil = JSON()
-    private var cache = Cache()
     private var foodCache: String = ""
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
@@ -38,8 +37,6 @@ class formFoods : AppCompatActivity() {
         initializeUIComponents()
 
         val foodID = intent.getStringExtra("foodID")
-
-        loadFoodCacheIfNecessary()
 
         if (foodID != null) {
             setupForFoodUpdate()
@@ -79,16 +76,6 @@ class formFoods : AppCompatActivity() {
             populateFoodForm(currentFood)
         } catch (e: Exception) {
             handleFoodLoadingError(e)
-        }
-    }
-
-
-    private fun loadFoodCacheIfNecessary() {
-        foodCache = cache.getCache(this, "Alimentos")
-        if (foodCache == "NOT_FOUND") {
-            val rawFoodData = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-            cache.setCache(this, "Alimentos", rawFoodData)
-            foodCache = rawFoodData
         }
     }
 

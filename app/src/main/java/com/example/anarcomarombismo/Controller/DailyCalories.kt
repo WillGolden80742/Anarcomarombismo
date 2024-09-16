@@ -33,17 +33,22 @@ class DailyCalories {
         }
     }
 
-    fun save(context: Context):Boolean {
+    fun save(context: Context): Boolean {
         val cache = Cache()
         val jsonUtil = JSON()
-        try {
-            val dailyCaloriesList = getExistingDailyCaloriesList(context,cache, jsonUtil)
-            val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == getCurrentFormattedDate(context) } + this
+        return try {
+            // Obtém a lista existente de DailyCalories do cache
+            val dailyCaloriesList = getExistingDailyCaloriesList(context, cache, jsonUtil)
+
+            // Filtra a lista para remover qualquer item com a mesma data
+            val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
+
+            // Salva a lista atualizada no cache
             cache.setCache(context, "dailyCalories", jsonUtil.toJson(updatedCaloriesList))
-            return true
+            true
         } catch (e: Exception) {
             handleError(e, "Error saving daily calories")
-            return false
+            false
         }
     }
 
@@ -84,17 +89,13 @@ class DailyCalories {
             }
         }
     }
-    private fun getExistingDailyCaloriesList(context: Context,cache: Cache, jsonUtil: JSON): List<DailyCalories> {
+    private fun getExistingDailyCaloriesList(context: Context, cache: Cache, jsonUtil: JSON): List<DailyCalories> {
         return if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
-            jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+            jsonUtil.fromJsonArray(dailyCaloriesListJson)
         } else {
             emptyList()
         }
-    }
-
-    private fun getCurrentFormattedDate(context: Context): String {
-        return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
     }
 
     private fun parseDailyCaloriesList(json: String): List<DailyCalories> {

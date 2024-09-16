@@ -3,8 +3,6 @@ package com.example.anarcomarombismo.Controller
 import android.content.Context
 import android.widget.Toast
 import com.example.anarcomarombismo.R
-import java.text.SimpleDateFormat
-import java.util.Locale
 import java.util.Random
 
 class Exercise(
@@ -23,8 +21,7 @@ class Exercise(
     private val jsonUtil = JSON()
 
     companion object {
-
-        fun loadExercises(context: Context, trainingID: Long, date: String): Array<Exercise> {
+        fun loadList(context: Context, trainingID: Long): Array<Exercise> {
             val cache = Cache()
             val jsonUtil = JSON()
 

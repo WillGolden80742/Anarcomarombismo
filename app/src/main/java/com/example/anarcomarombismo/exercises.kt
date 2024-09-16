@@ -16,7 +16,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.Random
 
 class exercises : AppCompatActivity() {
 
@@ -72,7 +71,7 @@ class exercises : AppCompatActivity() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        // Cria um DatePickerDialog para selecionar a data
+
         val datePickerDialog = DatePickerDialog(
             this,
             { _, selectedYear, selectedMonth, selectedDay ->
@@ -121,21 +120,13 @@ class exercises : AppCompatActivity() {
     }
 
     private fun loadExercises(trainingID: Long, date: String) {
-        cache = Cache()
-        // get treino name from cache to show in the top of the screen
-        if (cache!!.hasCache(this,"Treinos")) {
-            val cachedData = cache!!.getCache(this,"Treinos")
-            val trainingArray = jsonUtil.fromJson(cachedData, Array<Training>::class.java)
-            for (training in trainingArray) {
-                if (training.trainingID == trainingID) {
-                    trainingName.text = training.name
-                    descriptionTrainingLabel.text = training.description
 
-                }
-            }
+        Training().load(this, trainingID).also {
+            trainingName.text = it.name
+            descriptionTrainingLabel.text = it.description
         }
 
-        val exercisesArray = Exercise.loadExercises(this, trainingID, date)
+        val exercisesArray = Exercise.loadList(this, trainingID)
 
         // Update UI elements if necessary
         val exerciseAdapter = ExerciseAdapter(this, exercisesArray, date)
