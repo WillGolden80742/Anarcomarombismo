@@ -93,8 +93,9 @@ class formExercise : AppCompatActivity() {
         }
 
         editTextRepetitions.addTextChangedListener {
-            formatRepetitionsAndCountSets(it)
+            currentExercise?.formatRepetitionsAndCountSets(editTextSets, editTextRepetitions)
         }
+
         // listener change editTextVideoLink focus lost
         editTextVideoLink.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
@@ -156,68 +157,7 @@ class formExercise : AppCompatActivity() {
         visualizeExerciseFormButton.isVisible = !enable
     }
 
-    private fun formatRepetitionsAndCountSets(it: CharSequence?) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val text = it.toString()
-            val newText = text.replace(Regex("[^0-9Xx*,]"), "")
-            if (text.contains("X") || text.contains("x") || text.contains("*")) {
-                handleXFormat(text)
-            } else if (text.contains(",")) {
-                handleCommaFormat(text)
-            } else if (newText != text) {
-                editTextRepetitions.setText(newText)
-            }
-        }
-    }
 
-    private fun handleXFormat(text: String) {
-        CoroutineScope(Dispatchers.Default).launch {
-            val newText = async {
-                text.replace(Regex("[^0-9Xx*]|X{2,}|x{2,}|\\*{2,}"), "")
-            }
-            val processedText = async {
-                val xCount = newText.await().count { it == 'X' || it == 'x' || it == '*' }
-                if (xCount > 1) {
-                    newText.await().dropLast(1)
-                } else {
-                    newText.await()
-                }
-            }
-            val numbers = async {
-                processedText.await().split(Regex("[Xx*]")).filter { it.isNotEmpty() }
-            }
-            withContext(Dispatchers.Main) {
-                try {
-                    editTextSets.setText(numbers.await()[0])
-                } catch (e: Exception) {
-                    editTextSets.setText("1")
-                }
-                editTextRepetitions.setText("")
-                if (processedText.await() != text) {
-                    editTextRepetitions.setText(processedText.await())
-                    editTextRepetitions.setSelection(processedText.await().length)
-                }
-            }
-        }
-    }
-
-    private fun handleCommaFormat(text: String) {
-        CoroutineScope(Dispatchers.Default).launch {
-            val newText = async {
-                text.replace(Regex("[^0-9,]|,{2,}"), "")
-            }
-            val numbers = async {
-                newText.await().split(",").filter { it.isNotEmpty() }
-            }
-            withContext(Dispatchers.Main) {
-                editTextSets.setText(numbers.await().size.toString())
-                if (newText.await() != text) {
-                    editTextRepetitions.setText(newText.await())
-                    editTextRepetitions.setSelection(newText.await().length)
-                }
-            }
-        }
-    }
     private fun instantiateFields() {
         webView = findViewById(R.id.webView)
         val webSettings: WebSettings = webView.settings
