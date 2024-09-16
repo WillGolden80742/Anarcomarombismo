@@ -3,6 +3,8 @@ package com.example.anarcomarombismo.Controller
 import android.content.Context
 import android.widget.Toast
 import com.example.anarcomarombismo.R
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.Random
 
 class Exercise(
@@ -21,6 +23,33 @@ class Exercise(
     private val jsonUtil = JSON()
 
     companion object {
+
+        fun loadExercises(context: Context, trainingID: Long, date: String): Array<Exercise> {
+            val cache = Cache()
+            val jsonUtil = JSON()
+
+            // Load exercises from cache or create default exercises
+            val cacheKey = "Exercicios_$trainingID"
+            val exerciseArray = if (cache.hasCache(context, cacheKey)) {
+                val cachedData = cache.getCache(context, cacheKey)
+                jsonUtil.fromJson(cachedData, Array<Exercise>::class.java)
+            } else {
+                val random = Random().nextInt(100)
+                val defaultExerciseArray = arrayOf(
+                    Exercise(trainingID, "", System.currentTimeMillis() + random, "Exercicio", "", 3, "10,10,10", 0.0)
+                )
+                cache.setCache(context, cacheKey, jsonUtil.toJson(defaultExerciseArray))
+                defaultExerciseArray
+            }
+
+            // Log exercises for debugging purposes
+            for (exercise in exerciseArray) {
+                println("Exercício em Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
+            }
+
+            // Return the array of exercises
+            return exerciseArray
+        }
         fun build(
             trainingID: Long,
             linkVideo: String,
@@ -48,15 +77,34 @@ class Exercise(
         }
     }
 
-    fun saveExercise(context: Context) {
+    fun save(context: Context): Boolean {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val updatedExerciseArray = updateExerciseArray(exerciseArray)
 
         saveExerciseArray(context, cacheKey, updatedExerciseArray)
         showToastMessage(context, exerciseID in exerciseArray.map { it.exerciseID })
+        return true
     }
+    fun remove(context: Context) {
+        val cacheKey = "Exercicios_$trainingID"
+        val exerciseArray = getExerciseArray(context, cacheKey)
+        val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
 
+        saveExerciseArray(context, cacheKey, newExerciseArray)
+        showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
+    }
+    fun load(context: Context, trainingID: Long, exerciseID: Long): Exercise? {
+        val cache = Cache()
+        val jsonUtil = JSON()
+        val cacheKey = "Exercicios_$trainingID"
+        val exerciseArray = if (cache.hasCache(context, cacheKey)) {
+            jsonUtil.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
+        } else {
+            arrayOf()
+        }
+        return exerciseArray.find { it.exerciseID == exerciseID }
+    }
     private fun getExerciseArray(context: Context, cacheKey: String): Array<Exercise> {
         return if (cache.hasCache(context, cacheKey)) {
             jsonUtil.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
@@ -105,15 +153,6 @@ class Exercise(
         val videoId = extractVideoId(sanitizedText) ?: return ""
 
         return buildEmbedLink(videoId, sanitizedText)
-    }
-
-    fun removeExercise(context: Context) {
-        val cacheKey = "Exercicios_$trainingID"
-        val exerciseArray = getExerciseArray(context, cacheKey)
-        val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
-
-        saveExerciseArray(context, cacheKey, newExerciseArray)
-        showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
     }
 
     private fun isValidYouTubeLink(text: String): Boolean {

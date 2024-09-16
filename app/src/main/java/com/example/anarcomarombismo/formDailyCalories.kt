@@ -76,7 +76,7 @@ class formDailyCalories : AppCompatActivity() {
         addFoodButton.setOnClickListener {
             try {
                 addFoodToDailyList()
-                saveDailyCalories()
+                dailyCalories.save(this)
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
             }
@@ -133,7 +133,9 @@ class formDailyCalories : AppCompatActivity() {
         removeDailyCaloriesButton.setOnClickListener {
             val clickTime = System.currentTimeMillis()
             if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-                removeDailyCalories()
+                if(dailyCalories.remove(this)) {
+                    finish()
+                }
             } else {
                 Toast.makeText(this,
                     getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
@@ -169,28 +171,11 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     private fun getDailyCaloriesByDate(selectedDate: String) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val cache = Cache()
-            if (cache.hasCache(this@formDailyCalories, "dailyCalories")) {
-                val dailyCaloriesListJson = cache.getCache(this@formDailyCalories, "dailyCalories")
-                val jsonUtil = JSON()
-                val dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-                val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == selectedDate }
-                withContext(Dispatchers.Main) {
-                    if (dailyCaloriesListFiltered.isNotEmpty()) {
-                        dailyCalories = dailyCaloriesListFiltered[0]
-                        dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
-                        totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
-                    } else {
-                        dailyCalories = DailyCalories()
-                        dailyCalories.date = selectedDate
-                        dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
-                        totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
-                    }
-                    // se a lista de alimentos estiver vazia, desabilita o botão
-                    seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
-                }
-            }
+        DailyCalories().load(this, selectedDate) { dailyCaloriesLoaded ->
+            dailyCalories = dailyCaloriesLoaded
+            dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
+            totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
+            seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
         }
     }
 
@@ -239,13 +224,17 @@ class formDailyCalories : AppCompatActivity() {
         try {
             addFoodButton.isEnabled = true
             currentFood = food
-            temporaryCalcule = currentFood!!.energyKcal.toDouble() * (gramsEditText.text.toString().toDouble() / 100)
+
+            val grams = gramsEditText.text.toString().toDoubleOrNull() ?: 0.0
+            val energy = currentFood?.energyKcal?.toDouble() ?: 0.0
+            val temporaryCalcule = energy * (grams / 100)
             val temporaryTotal = temporaryCalcule + dailyCalories.calorieskcal
+
             totalCaloriesLabel.text = "Total: ${String.format("%.1f", temporaryTotal)} kcal"
-            nameFoodLabel.text = currentFood!!.foodDescription
+            nameFoodLabel.text = currentFood?.foodDescription ?: "Unknown food"
             gramsEditText.isEnabled = true
         } catch (e: Exception) {
-            println(RuntimeException("Error handling food click: $e"))
+            println("Error handling food click: ${e.message}")
         }
     }
 
@@ -261,7 +250,13 @@ class formDailyCalories : AppCompatActivity() {
             }
         }
     }
-
+    private fun filterFoodList(foodList: List<Food>, query: String): List<Food> {
+        return if (query.isEmpty()) {
+            foodList
+        } else {
+            foodList.filter { normalizeString(it.foodDescription).contains(normalizeString(query), ignoreCase = true) }
+        }
+    }
     private suspend fun getFoodList(): List<Food> {
         val cacheKey = "Alimentos"
         val cache = Cache()
@@ -279,14 +274,6 @@ class formDailyCalories : AppCompatActivity() {
     private suspend fun loadJsonFromResource(resourceId: Int): String {
         return withContext(Dispatchers.IO) {
             resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
-        }
-    }
-
-    private fun filterFoodList(foodList: List<Food>, query: String): List<Food> {
-        return if (query.isEmpty()) {
-            foodList
-        } else {
-            foodList.filter { normalizeString(it.foodDescription).contains(normalizeString(query), ignoreCase = true) }
         }
     }
 
@@ -311,48 +298,46 @@ class formDailyCalories : AppCompatActivity() {
 
     private fun addFoodToDailyList() {
         seeFoodsButton.isEnabled = true
-        if (currentFood !== null) {
-            try {
-                currentFood?.let { food ->
-                    gramsEditText.text.toString().toDoubleOrNull()?.let { grams ->
-                        val grams = gramsEditText.text.toString().toDouble()
-                        val temporaryCalcule =
-                            this.currentFood!!.energyKcal.toDouble() * (grams / 100)
-                        val totalCalories =
-                            String.format("%.1f", temporaryCalcule + dailyCalories.calorieskcal)
-                        Toast.makeText(
-                            this,
-                            "$temporaryCalcule kcal + ${String.format("%.1f", dailyCalories.calorieskcal)} kcal = $totalCalories kcal",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        food.grams = grams
-                        dailyCalories.date = editTextDate.text.toString()
-                        dailyCalories.addFood(food)
-                        totalCaloriesLabel.text =
-                            "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
-                        currentFood = null
-                    } ?: run {
-                        gramsEditText.error = "Invalid input"
-                    }
-                } ?: run {
-                    throw RuntimeException("Current food is null")
-                }
-            } catch (e: Exception) {
-                println(RuntimeException("Error adding food to daily list: $e"))
+        currentFood?.let { food ->
+            val grams = getValidatedGrams() ?: return
+            updateCaloriesAndUI(food, grams)
+        } ?: showFoodError()
+    }
+
+    private fun getValidatedGrams(): Double? {
+        return gramsEditText.text.toString().toDoubleOrNull()?.also {
+            if (it <= 0) {
+                gramsEditText.error = "Invalid input"
             }
         }
     }
 
-    private fun saveDailyCalories() {
-        val validFoodsList = dailyCalories.foodsList.filter { it.foodDescription != "NO_DESCRIPTION" }
-        if (validFoodsList.isEmpty() && currentFood == null) {
-            removeDailyCalories()
-            return
-        }
+    private fun updateCaloriesAndUI(food: Food, grams: Double) {
+        val temporaryCalories = calculateCalories(food, grams)
+        showToastWithCalories(temporaryCalories)
+        food.grams = grams
+        dailyCalories.date = editTextDate.text.toString()
+        dailyCalories.addFood(food)
+        updateTotalCaloriesUI()
+        currentFood = null
+    }
 
-        dailyCalories.foodsList = validFoodsList
-        updateDailyCaloriesCache()
-        resetUI()
+    private fun calculateCalories(food: Food, grams: Double): Double {
+        return food.energyKcal.toDouble() * (grams / 100)
+    }
+
+    private fun showToastWithCalories(temporaryCalories: Double) {
+        val totalCalories = temporaryCalories + dailyCalories.calorieskcal
+        val message = "${String.format("%.1f", temporaryCalories)} kcal + ${String.format("%.1f", dailyCalories.calorieskcal)} kcal = ${String.format("%.1f", totalCalories)} kcal"
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateTotalCaloriesUI() {
+        totalCaloriesLabel.text = "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
+    }
+
+    private fun showFoodError() {
+        throw RuntimeException("Current food is null")
     }
 
     private fun updateDailyCaloriesCache() {
@@ -389,49 +374,6 @@ class formDailyCalories : AppCompatActivity() {
 
     private fun handleError(e: Exception, message: String) {
         println(RuntimeException("$message: $e"))
-    }
-
-    private fun removeDailyCalories() {
-        val currentDate = dailyCalories.date
-        val cacheKey = "dailyCalories"
-        val cache = Cache()
-
-        cache.getCache(this, cacheKey)?.let { dailyCaloriesListJson ->
-            val dailyCaloriesList = parseDailyCaloriesList(dailyCaloriesListJson)
-            val updatedCaloriesList = removeCaloriesForDate(dailyCaloriesList, currentDate)
-
-            if (updatedCaloriesList.size != dailyCaloriesList.size) {
-                cache.setCache(this, cacheKey, toJson(updatedCaloriesList))
-                showToast(R.string.daily_calories_removed_successfully)
-                resetDailyCalories(currentDate)
-            }
-        }
-
-        finish()
-    }
-
-    private fun parseDailyCaloriesList(json: String): List<DailyCalories> {
-        return JSON().fromJson(json, Array<DailyCalories>::class.java).toList()
-    }
-
-    private fun removeCaloriesForDate(
-        dailyCaloriesList: List<DailyCalories>,
-        date: String
-    ): List<DailyCalories> {
-        return dailyCaloriesList.filterNot { it.date == date }
-    }
-
-    private fun toJson(dailyCaloriesList: List<DailyCalories>): String {
-        return JSON().toJson(dailyCaloriesList)
-    }
-
-    private fun showToast(messageResId: Int) {
-        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
-    }
-
-    private fun resetDailyCalories(date: String) {
-        dailyCalories = DailyCalories().apply { this.date = date }
-        dailyCaloriesFoods.run { setFoodList(dailyCalories.foodsList) }
     }
 
 

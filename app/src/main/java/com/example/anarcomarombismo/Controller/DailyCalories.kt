@@ -1,7 +1,12 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.widget.Toast
 import com.example.anarcomarombismo.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -28,6 +33,97 @@ class DailyCalories {
         }
     }
 
+    fun save(context: Context):Boolean {
+        val cache = Cache()
+        val jsonUtil = JSON()
+        try {
+            val dailyCaloriesList = getExistingDailyCaloriesList(context,cache, jsonUtil)
+            val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == getCurrentFormattedDate(context) } + this
+            cache.setCache(context, "dailyCalories", jsonUtil.toJson(updatedCaloriesList))
+            return true
+        } catch (e: Exception) {
+            handleError(e, "Error saving daily calories")
+            return false
+        }
+    }
+
+    fun remove(context: Context):Boolean {
+        val currentDate = date
+        val cacheKey = "dailyCalories"
+        val cache = Cache()
+
+        cache.getCache(context, cacheKey)?.let { dailyCaloriesListJson ->
+            val dailyCaloriesList = parseDailyCaloriesList(dailyCaloriesListJson)
+            val updatedCaloriesList = removeCaloriesForDate(dailyCaloriesList, currentDate)
+
+            if (updatedCaloriesList.size != dailyCaloriesList.size) {
+                cache.setCache(context, cacheKey, toJson(updatedCaloriesList))
+                showToast(context, R.string.daily_calories_removed_successfully)
+                resetDailyCalories(currentDate)
+            }
+        }
+        return true
+    }
+
+    fun load(context: Context, selectedDate: String, callback: (DailyCalories) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            val cache = Cache()
+            if (cache.hasCache(context, "dailyCalories")) {
+                val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+                val jsonUtil = JSON()
+                val dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+                val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == selectedDate }
+                withContext(Dispatchers.Main) {
+                    if (dailyCaloriesListFiltered.isNotEmpty()) {
+                        callback(dailyCaloriesListFiltered[0])
+                    } else {
+                        val newDailyCalories = DailyCalories().apply { date = selectedDate }
+                        callback(newDailyCalories)
+                    }
+                }
+            }
+        }
+    }
+    private fun getExistingDailyCaloriesList(context: Context,cache: Cache, jsonUtil: JSON): List<DailyCalories> {
+        return if (cache.hasCache(context, "dailyCalories")) {
+            val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+            jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun getCurrentFormattedDate(context: Context): String {
+        return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+    }
+
+    private fun parseDailyCaloriesList(json: String): List<DailyCalories> {
+        return JSON().fromJson(json, Array<DailyCalories>::class.java).toList()
+    }
+
+    private fun removeCaloriesForDate(
+        dailyCaloriesList: List<DailyCalories>,
+        date: String
+    ): List<DailyCalories> {
+        return dailyCaloriesList.filterNot { it.date == date }
+    }
+
+    private fun toJson(dailyCaloriesList: List<DailyCalories>): String {
+        return JSON().toJson(dailyCaloriesList)
+    }
+
+    private fun showToast(context: Context, messageResId: Int) {
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun resetDailyCalories(date: String) {
+        this.date = date
+        this.foodsList = listOf() // Reset food list if needed
+    }
+
+    private fun handleError(e: Exception, message: String) {
+        println(RuntimeException("$message: $e"))
+    }
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
         val energyKcalLabel = context.getString(R.string.energy_kcal)
@@ -50,11 +146,6 @@ class DailyCalories {
     fun addFood(food: Food) {
         foodsList = foodsList.plus(food)
         calculateCalories(food, "add")
-    }
-
-    fun removeFood(food: Food) {
-        calculateCalories(food, "subtract")
-        foodsList = foodsList.minus(food)
     }
 
     fun recalculateCalories() {

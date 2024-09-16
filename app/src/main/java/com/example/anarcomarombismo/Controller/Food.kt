@@ -45,7 +45,7 @@ class Food (
         }
     }
 
-    fun saveFood(context: Context): Boolean {
+    fun save(context: Context): Boolean {
         this.foodNumber = if (foodNumber.isEmpty()) generateFoodNumber() else foodNumber
         this.foodDescription = foodDescription
         this.grams = 100.0
@@ -56,10 +56,10 @@ class Food (
         this.sodium = formatDoubleNumber((sodium.toDouble() / grams * 100.0))
         this.energyKcal = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0))
         this.energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
-        return saveFood(this, context)
+        return save(this, context)
     }
 
-     fun removeFood(context: Context) {
+     fun remove(context: Context) {
         try {
             val foodNutritionList = jsonUtil.fromJson(loadFoodCacheIfNecessary(context), Array<Food>::class.java).toList()
                 .filter { it.foodNumber != foodNumber }
@@ -70,7 +70,7 @@ class Food (
             println("Erro food: $e")
         }
     }
-    private fun saveFood(food: Food, context: Context): Boolean {
+    private fun save(food: Food, context: Context): Boolean {
         try {
             val foodCache = loadFoodCacheIfNecessary(context)
 

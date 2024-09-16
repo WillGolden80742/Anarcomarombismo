@@ -11,7 +11,6 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
-import java.util.UUID
 
 class formFoods : AppCompatActivity() {
 
@@ -141,7 +140,7 @@ class formFoods : AppCompatActivity() {
             sodium = editTextSodium.text.toString().toDoubleOrNullOrZero().toString()
             energyKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero().toString()
             energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
-        }.saveFood(this)) {
+        }.save(this)) {
             finish()
         }
     }
@@ -150,7 +149,7 @@ class formFoods : AppCompatActivity() {
         val clickTime = System.currentTimeMillis()
         if (isDoubleClick(clickTime)) {
             if (foodID != null) {
-                Food().apply { foodNumber = foodID }.removeFood(this)
+                Food().apply { foodNumber = foodID }.remove(this)
                 finish()
             } else {
                 navigateToDailyCalories()

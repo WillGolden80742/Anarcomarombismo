@@ -25,7 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Random
 
 class formExercise : AppCompatActivity() {
     // Views
@@ -245,45 +244,45 @@ class formExercise : AppCompatActivity() {
     private fun loadExerciseIfExistInCache() {
         CoroutineScope(Dispatchers.Main).launch {
             loadSpinner()
-            if (exerciseID > 0) {
-                val exerciseArray = withContext(Dispatchers.IO) {
-                    jsonUtil.fromJson(cache.getCache(this@formExercise, "Exercicios_$trainingID"), Array<Exercise>::class.java)
-                }
-
-                for (exercise in exerciseArray) {
-                    if (exercise.exerciseID == exerciseID) {
-                        currentExercise = exercise
-                        val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.LinkVideo)
-                        textVideoLink = formattedLink
-                        editTextVideoLink.setText(formattedLink)
-                        embedVideo(formattedLink)
-                        editTextExerciseName.setText(exercise.name)
-                        val value = leafsNames.size
-                        for (i in 0 until value) {
-                            if (spinnerMuscleGroup.getItemAtPosition(i).toString() == exercise.muscle) {
-                                spinnerMuscleGroup.setSelection(i)
-                                break
-                            }
-                        }
-                        editTextSets.setText(exercise.sets.toString())
-                        editTextRepetitions.setText(exercise.repetitions)
-                        editTextLoad.setText(exercise.load.toString())
-                        editTextRest.setText(exercise.rest.toString())
-                        editTextCadence.setText(exercise.cadence)
-                        addExerciseButton.text = getString(R.string.update_exercise)
-                        if (isCheckExercise(exercise)) {
-                            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-                        } else {
-                            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-                        }
-                    }
-                }
-            } else {
+            currentExercise = Exercise().load(this@formExercise, trainingID, exerciseID)
+            currentExercise?.let { exercise ->
+                setUIFromExercise(exercise)
+            } ?: run {
                 visualizeExerciseFormButton.isVisible = false
                 removeExerciseButton.isVisible = false
             }
         }
     }
+
+    private fun setUIFromExercise(exercise: Exercise) {
+        val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.LinkVideo)
+        textVideoLink = formattedLink
+        editTextVideoLink.setText(formattedLink)
+        embedVideo(formattedLink)
+        editTextExerciseName.setText(exercise.name)
+
+        val value = leafsNames.size
+        for (i in 0 until value) {
+            if (spinnerMuscleGroup.getItemAtPosition(i).toString() == exercise.muscle) {
+                spinnerMuscleGroup.setSelection(i)
+                break
+            }
+        }
+
+        editTextSets.setText(exercise.sets.toString())
+        editTextRepetitions.setText(exercise.repetitions)
+        editTextLoad.setText(exercise.load.toString())
+        editTextRest.setText(exercise.rest.toString())
+        editTextCadence.setText(exercise.cadence)
+        addExerciseButton.text = getString(R.string.update_exercise)
+
+        if (isCheckExercise(exercise)) {
+            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
+        } else {
+            checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
+        }
+    }
+
 
     private fun loadSpinner() {
         try {
@@ -320,9 +319,9 @@ class formExercise : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
-        val exercise = buildExercise()
-        exercise.saveExercise(this)
-        finish()
+        if(Exercise().apply { buildExercise() }.save(this)) {
+            finish()
+        }
     }
 
     private fun buildExercise(): Exercise {
@@ -358,7 +357,7 @@ class formExercise : AppCompatActivity() {
         val clickTime = System.currentTimeMillis()
         if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
             val exercise = buildExercise()
-            exercise.removeExercise(this)
+            exercise.remove(this)
             finish()
         } else {
             Toast.makeText(this,

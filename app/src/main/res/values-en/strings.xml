@@ -167,4 +167,5 @@
     <string name="day">day</string>
     <string name="exercise_id_is_invalid">Exercise ID is invalid</string>
     <string name="food_removal_error">Food removal error</string>
+    <string name="remove_training_error">Remove training error</string>
 </resources>

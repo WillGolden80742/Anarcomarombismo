@@ -120,7 +120,7 @@ class exercises : AppCompatActivity() {
         }
     }
 
-    private fun loadExercises(trainingID: Long,date:String) {
+    private fun loadExercises(trainingID: Long, date: String) {
         cache = Cache()
         // get treino name from cache to show in the top of the screen
         if (cache!!.hasCache(this,"Treinos")) {
@@ -134,25 +134,11 @@ class exercises : AppCompatActivity() {
                 }
             }
         }
-        if (cache!!.hasCache(this,"Exercicios_$trainingID")) {
-            val cachedData = cache!!.getCache(this,"Exercicios_$trainingID")
-            val exerciseArray = jsonUtil.fromJson(cachedData, Array<Exercise>::class.java)
-            // Printa todos os exercícios
-            for (exercise in exerciseArray) {
-                println("Exercício em Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
-            }
-        } else {
-            val random = Random().nextInt(100)
-            val exerciseArray = arrayOf(
-                Exercise(trainingID,"",System.currentTimeMillis()+random,"Exercicio", "",3, "10,10,10", 0.0),
-            )
-            for (exercise in exerciseArray) {
-                println("Exercício fora de Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
-            }
-            cache!!.setCache(this,"Exercicios_$trainingID", jsonUtil.toJson(exerciseArray))
-        }
-        val exerciseArray = jsonUtil.fromJson(cache!!.getCache(this, "Exercicios_$trainingID"), Array<Exercise>::class.java)
-        val exerciseAdapter = ExerciseAdapter(this, exerciseArray,date)
+
+        val exercisesArray = Exercise.loadExercises(this, trainingID, date)
+
+        // Update UI elements if necessary
+        val exerciseAdapter = ExerciseAdapter(this, exercisesArray, date)
         exerciseList.adapter = exerciseAdapter
     }
 

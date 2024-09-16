@@ -1,6 +1,6 @@
 package com.example.anarcomarombismo
 
-import com.example.anarcomarombismo.Controller.JSON
+import com.example.anarcomarombismo.Controller.Training
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,9 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
-import com.example.anarcomarombismo.Controller.Cache
-import com.example.anarcomarombismo.Controller.Training
-import java.util.Random
 
 class formTraining : AppCompatActivity() {
 
@@ -19,6 +16,8 @@ class formTraining : AppCompatActivity() {
     private lateinit var save: Button
     private lateinit var removeTraining: Button
     private var trainingID: Long = 0
+    private val DOUBLE_CLICK_TIME_DELTA: Long = 300 // Time interval for double click detection in milliseconds
+    private var lastClickTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,60 +42,31 @@ class formTraining : AppCompatActivity() {
             removeTraining()
         }
 
-        loadTrainingIfExistInCache()
+        // Load training data if it exists
+        Training(trainingID).load(this, name, description)
 
-    }
-
-
-    private fun loadTrainingIfExistInCache() {
-        val cache = Cache()
-        val jsonUtil = JSON()
         if (trainingID > 0) {
-            val trainingArray = jsonUtil.fromJson(cache.getCache(this, "Treinos"), Array<Training>::class.java)
-            for (training in trainingArray) {
-                if (training.trainingID == trainingID) {
-                    name.setText(training.name)
-                    description.setText(training.description)
-                }
-            }
             save.text = getString(R.string.update_training)
         }
     }
 
     private fun saveTraining() {
-        val name = name.text.toString()
-        val description = description.text.toString()
-        val cache = Cache()
-        val jsonUtil = JSON()
-        if (trainingID > 0) {
-            val trainingArray = jsonUtil.fromJson(cache.getCache(this, "Treinos"), Array<Training>::class.java)
-            for (training in trainingArray) {
-                if (training.trainingID == trainingID) {
-                    training.name = name
-                    training.description = description
-                }
-            }
-            cache.setCache(this, "Treinos", jsonUtil.toJson(trainingArray))
-            Toast.makeText(this, getString(R.string.update_training_successful), Toast.LENGTH_SHORT).show()
-        } else {
-            val random = Random().nextInt(100)
-            val training = Training(System.currentTimeMillis()+random, name, description)
-            val trainingArray = jsonUtil.fromJson(cache.getCache(this, "Treinos"), Array<Training>::class.java)
-            val newTrainingArray = trainingArray.plus(training)
-            cache.setCache(this, "Treinos", jsonUtil.toJson(newTrainingArray))
-            Toast.makeText(this, getString(R.string.save_training_successful), Toast.LENGTH_SHORT).show()
-        }
+        val training = Training(trainingID, name.text.toString(), description.text.toString())
+        training.save(this)
         finish()
     }
 
     private fun removeTraining() {
-        val cache = Cache()
-        val jsonUtil = JSON()
-        val trainingArray = jsonUtil.fromJson(cache.getCache(this, "Treinos"), Array<Training>::class.java)
-        val newTrainingArray = trainingArray.filter { it.trainingID != trainingID }
-        cache.setCache(this, "Treinos", jsonUtil.toJson(newTrainingArray))
-        Toast.makeText(this, getString(R.string.remove_training_successful), Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, training_main::class.java)
-        startActivity(intent)
+        val clickTime = System.currentTimeMillis()
+        if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
+            val training = Training(trainingID)
+            if (training.remove(this)) {
+                startActivity(Intent(this, training_main::class.java))
+            }
+        } else {
+            Toast.makeText(this,
+                getString(R.string.double_click_fast_for_exclusion), Toast.LENGTH_SHORT).show()
+        }
+        lastClickTime = clickTime
     }
 }
