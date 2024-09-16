@@ -75,10 +75,11 @@ class formDailyCalories : AppCompatActivity() {
         addFoodButton.setOnClickListener {
             try {
                 addFoodToDailyList()
-                dailyCalories.save(this)
-                addFoodButton.isEnabled = false
-                nameFoodLabel.text = getString(R.string.select_food)
-                gramsEditText.isEnabled = false
+                if(dailyCalories.save(this)) {
+                    addFoodButton.isEnabled = false
+                    nameFoodLabel.text = getString(R.string.select_food)
+                    gramsEditText.isEnabled = false
+                }
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
             }
