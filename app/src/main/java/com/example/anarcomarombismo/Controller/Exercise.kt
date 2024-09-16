@@ -13,7 +13,7 @@ import java.util.Random
 
 class Exercise(
     var trainingID: Long = 0,
-    var LinkVideo: String = "",
+    var linkVideo: String = "",
     var exerciseID: Long = 0,
     var name: String = "Exercício",
     var muscle: String = "",
@@ -67,7 +67,7 @@ class Exercise(
         ): Exercise {
             return Exercise().apply {
                 this.trainingID = trainingID
-                this.LinkVideo = linkVideo
+                this.linkVideo = linkVideo
                 this.exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100)
                 this.name = name
                 this.muscle = muscle

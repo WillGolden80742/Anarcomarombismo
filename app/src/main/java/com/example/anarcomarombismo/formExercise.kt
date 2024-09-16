@@ -22,7 +22,6 @@ import com.example.anarcomarombismo.Controller.Tree
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -195,7 +194,7 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun setUIFromExercise(exercise: Exercise) {
-        val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.LinkVideo)
+        val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.linkVideo)
         textVideoLink = formattedLink
         editTextVideoLink.setText(formattedLink)
         embedVideo(formattedLink)
