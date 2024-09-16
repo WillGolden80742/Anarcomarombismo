@@ -88,37 +88,15 @@ class dailyCaloriesFoods : AppCompatActivity() {
         val adapter = FoodAdapter(this, foodList,"dailyCaloriesFoods")
         listView.adapter = adapter
         if (foodList.isEmpty()) {
-            removeDailyCalories()
+            val dailyCalories = createDailyCalories()
+            dailyCalories.remove(this)
             finish()
         } else {
-            saveDailyCalories()
+            val dailyCalories = createDailyCalories()
+            dailyCalories.save(this)
         }
     }
 
-
-    private fun saveDailyCalories() {
-        val dailyCalories = createDailyCalories()
-        val cache = Cache()
-        val cacheKey = "dailyCalories"
-
-        val updatedDailyCaloriesList = if (cache.hasCache(this, cacheKey)) {
-            val existingList = getDailyCaloriesList(cache, cacheKey)
-            updateDailyCaloriesList(existingList, dailyCalories)
-        } else {
-            listOf(dailyCalories)
-        }
-
-        saveUpdatedListToCache(cache, cacheKey, updatedDailyCaloriesList)
-        showToast(R.string.daily_calories_saved_successfully)
-    }
-
-    private fun removeDailyCalories() {
-        val cache = Cache()
-        val cacheKey = "dailyCalories"
-        val updatedDailyCaloriesList = getDailyCaloriesList(cache, cacheKey).filterNot { it.date == dailyCaloriesDate }
-        saveUpdatedListToCache(cache, cacheKey, updatedDailyCaloriesList)
-        showToast(R.string.daily_calories_removed_successfully)
-    }
     private fun createDailyCalories(): DailyCalories {
         return DailyCalories().apply {
             date = dailyCaloriesDate
@@ -126,27 +104,5 @@ class dailyCaloriesFoods : AppCompatActivity() {
             recalculateCalories()
         }
     }
-
-    private fun getDailyCaloriesList(cache: Cache, key: String): List<DailyCalories> {
-        val jsonUtil = JSON()
-        val dailyCaloriesListJson = cache.getCache(this, key)
-        return jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-    }
-
-    private fun updateDailyCaloriesList(existingList: List<DailyCalories>, dailyCalories: DailyCalories): List<DailyCalories> {
-        val filteredList = existingList.filterNot { it.date == dailyCalories.date }
-        return filteredList + dailyCalories
-    }
-
-    private fun saveUpdatedListToCache(cache: Cache, key: String, updatedList: List<DailyCalories>) {
-        val jsonUtil = JSON()
-        val updatedListJson = jsonUtil.toJson(updatedList)
-        cache.setCache(this, key, updatedListJson)
-    }
-
-    private fun showToast(messageResId: Int) {
-        Toast.makeText(this, getString(messageResId), Toast.LENGTH_SHORT).show()
-    }
-
 
 }

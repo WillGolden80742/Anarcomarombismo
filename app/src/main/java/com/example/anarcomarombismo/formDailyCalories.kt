@@ -16,7 +16,6 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
-import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.FoodSearch
