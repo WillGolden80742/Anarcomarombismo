@@ -52,8 +52,9 @@ class formTraining : AppCompatActivity() {
 
     private fun saveTraining() {
         val training = Training(trainingID, name.text.toString(), description.text.toString())
-        training.save(this)
-        finish()
+        if(training.save(this)) {
+            finish()
+        }
     }
 
     private fun removeTraining() {
