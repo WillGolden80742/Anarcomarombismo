@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import com.example.anarcomarombismo.Controller.DateUtil
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 import java.text.SimpleDateFormat
@@ -62,35 +63,14 @@ class exercises : AppCompatActivity() {
         descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
         trainingName = findViewById(R.id.dailyCaloriesTitle)
     }
-    private fun selectDate () {
+    private fun selectDate() {
         val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val maxDate = calendar.timeInMillis
 
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, selectedYear, selectedMonth, selectedDay ->
-                // Define a data selecionada no TextView
-                val selectedDate =
-                    "$selectedDay/${selectedMonth + 1}/$selectedYear" // Mês é base 0, por isso adicionamos 1
-                if (selectedDate != dateTextView.text) {
-                    // Formata a data no formato 00/00/0000
-                    val formattedDate =
-                        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDate)?.let {
-                            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
-                        }
-                    dateTextView.text = formattedDate
-                    loadExercises(trainingID, formattedDate.toString())
-                }
-            }, year, month, day
-        )
-
-        // Define a data máxima como a data atual
-        datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-        datePickerDialog.show()
+        DateUtil().selectDate(this, dateTextView, maxDate) { selectedDate ->
+            loadExercises(trainingID, selectedDate)
+        }
     }
-
     private fun getCurrentDate(): String {
         val currentDate = Date()
         return dateFormatStored.format(currentDate)

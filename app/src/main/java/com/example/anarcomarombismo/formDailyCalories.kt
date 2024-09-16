@@ -17,6 +17,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.DailyCalories
+import com.example.anarcomarombismo.Controller.DateUtil
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.FoodSearch
 import kotlinx.coroutines.CoroutineScope
@@ -104,32 +105,8 @@ class formDailyCalories : AppCompatActivity() {
             callDailyCaloriesFoods()
         }
 
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
         editTextDate.setOnClickListener {
-            // Cria um DatePickerDialog para selecionar a data
-            val datePickerDialog = DatePickerDialog(
-                this,
-                { _, selectedYear, selectedMonth, selectedDay ->
-                    // Define a data selecionada no EditText
-                    val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear" // Mês é base 0, por isso adicionamos 1
-                    if (selectedDate != editTextDate.text) {
-                        // do format 00/00/0000
-                        val formattedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDate)?.let { SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it) }
-                        editTextDate.text = formattedDate
-                        // get by cache if selectedDate exists
-                        getDailyCaloriesByDate(formattedDate.toString())
-                    }
-                },
-                year,
-                month,
-                day
-            )
-            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-            datePickerDialog.show()
+            selectDate()
         }
 
         removeDailyCaloriesButton.setOnClickListener {
@@ -157,6 +134,14 @@ class formDailyCalories : AppCompatActivity() {
                 seeFoodsButton.isEnabled = false
             }
             currentFood = null
+        }
+    }
+
+    private fun selectDate () {
+        val calendar = Calendar.getInstance()
+        val maxDate = calendar.timeInMillis
+        DateUtil().selectDate(this, editTextDate, maxDate) { selectedDate ->
+            getDailyCaloriesByDate(maxDate.toString())
         }
     }
 
