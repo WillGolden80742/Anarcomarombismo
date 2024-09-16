@@ -37,13 +37,8 @@ class DailyCalories {
         val cache = Cache()
         val jsonUtil = JSON()
         return try {
-            // Obtém a lista existente de DailyCalories do cache
             val dailyCaloriesList = getExistingDailyCaloriesList(context, cache, jsonUtil)
-
-            // Filtra a lista para remover qualquer item com a mesma data
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
-
-            // Salva a lista atualizada no cache
             cache.setCache(context, "dailyCalories", jsonUtil.toJson(updatedCaloriesList))
             true
         } catch (e: Exception) {
