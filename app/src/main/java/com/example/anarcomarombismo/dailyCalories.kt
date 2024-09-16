@@ -1,17 +1,12 @@
 package com.example.anarcomarombismo
 
-import com.example.anarcomarombismo.Controller.JSON
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import com.example.anarcomarombismo.Adapters.DailyCaloriesAdapter
-import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.DailyCalories
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class dailyCalories : AppCompatActivity() {
     private lateinit var caloriesFoodList: ListView

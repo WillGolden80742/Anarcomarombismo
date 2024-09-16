@@ -8,7 +8,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.JSON
 

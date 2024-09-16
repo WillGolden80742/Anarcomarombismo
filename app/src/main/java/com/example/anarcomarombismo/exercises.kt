@@ -2,14 +2,12 @@ package com.example.anarcomarombismo
 
 import android.app.DatePickerDialog
 import com.example.anarcomarombismo.Adapters.ExerciseAdapter
-import com.example.anarcomarombismo.Controller.JSON
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-import com.example.anarcomarombismo.Controller.Cache
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 import java.text.SimpleDateFormat
