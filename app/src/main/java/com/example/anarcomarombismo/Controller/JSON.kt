@@ -23,6 +23,15 @@ class JSON {
         return gson.fromJson(json, listType)
     }
 
+    fun <T> fromJsonArray(json: String, clazz: Class<T>): List<T> {
+        // Cria um TypeToken para representar uma lista do tipo genérico T
+        val listType = TypeToken.getParameterized(List::class.java, clazz).type
+        // Cria uma instância do Gson
+        val gson = Gson()
+        // Usa o método fromJson do Gson para converter o JSON para a lista de objetos do tipo T
+        return gson.fromJson(json, listType)
+    }
+
     // Método para serializar um objeto para JSON
     fun toJson(obj: Any): String {
         // Cria uma instância do Gson
