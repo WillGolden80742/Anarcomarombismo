@@ -52,12 +52,3 @@ To run the Anarcomarombismo app on your local machine, follow these steps:
 2. **Daily Calorie Tracking**: Navigate to the daily calories section to log your food intake. You can search for foods in the database and add them to your log.
 3. **Exercise Management**: Use the exercise management feature to create and track your workouts. You can add new exercises or edit existing ones.
 4. **View Nutritional Information**: Explore the food database to view detailed nutritional information for various foods.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Thanks to the contributors and the open-source community for their support and resources.
-- Special thanks to the developers of the libraries and tools used in this project.
