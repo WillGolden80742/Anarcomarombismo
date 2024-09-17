@@ -1,37 +1,63 @@
-### Anarcomarombismo
+# Anarcomarombismo
 
-This project is an Android application designed to assist users in tracking their workouts and daily calorie intake. The app allows users to create and customize workout routines, log daily calorie consumption, and access a database of food nutritional information.
+Anarcomarombismo is an Android application designed to assist users in tracking their daily calorie intake and managing their exercise routines. The app provides a user-friendly interface for logging food consumption and workouts, making it easier for users to achieve their fitness goals.
 
-### Features
+## Features
 
-#### Workout Tracking
+### 1. Daily Calorie Tracking
+- Users can log their daily food intake, including calories and nutritional information.
+- The app calculates total calories consumed and displays them in an easy-to-read format.
 
-*   Create personalized workout routines.
-*   Log exercises with sets, repetitions, and weights.
-*   Track progress over time.
+### 2. Food Database
+- Access a comprehensive list of foods with detailed nutritional values, including protein, carbohydrates, fats, and more.
+- Users can search for foods and add them to their daily log.
 
-#### Calorie Tracking
+### 3. Exercise Management
+- Users can create, edit, and delete exercise routines.
+- The app allows users to log exercises and track their progress over time.
 
-*   Log daily food intake.
-*   Access a database of food nutritional information.
-*   Calculate and track daily calorie goals.
+### 4. User-Friendly Interface
+- Intuitive design for easy navigation and data entry.
+- Responsive layout that adapts to different screen sizes.
 
-#### Additional Features
+### 5. Data Persistence
+- All user data is saved locally using JSON, allowing for offline access and data retention.
 
-*   User-friendly interface.
-*   Offline functionality (some features may require internet access).
-*   Data caching for improved performance.
+## Technologies Used
 
-### How to Use
+- **Kotlin**: The primary programming language for Android development, providing a modern and concise syntax.
+- **Android SDK**: The software development kit for building Android applications, offering tools and libraries for app development.
+- **JSON**: Used for data storage and retrieval of food and exercise information, enabling easy serialization and deserialization of data.
+- **Coroutines**: For asynchronous programming, allowing for smooth UI interactions without blocking the main thread.
+- **Android Architecture Components**: Utilized for managing UI-related data in a lifecycle-conscious way, ensuring data survives configuration changes.
 
-1.  **Create Workout Routines:** Design your workout routines by selecting exercises and setting parameters like sets, repetitions, and rest periods.
-2.  **Log Exercises:** Record your workouts by entering the exercises performed, weights used, and number of sets and repetitions.
-3.  **Log Daily Calories:** Keep track of your calorie intake by searching for foods in the database and entering the quantity consumed.
-4.  **Track Progress:** Monitor your workout and calorie data to assess your progress and make adjustments as needed.
+## Installation
 
-### Installation
+To run the Anarcomarombismo app on your local machine, follow these steps:
 
-1.  Clone the repository: `git clone https://github.com/WillGolden80742/Anarcomarombismo.git`
-2.  Open the project in Android Studio.
-3.  Build and run the app on your Android device or emulator.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/WillGolden80742/Anarcomarombismo.git
+   ```
 
+2. Open the project in Android Studio.
+
+3. Build the project to download the necessary dependencies.
+
+4. Run the app on an Android emulator or a physical device.
+
+## Usage
+
+1. **Launch the App**: Open the Anarcomarombismo app on your device.
+2. **Daily Calorie Tracking**: Navigate to the daily calories section to log your food intake. You can search for foods in the database and add them to your log.
+3. **Exercise Management**: Use the exercise management feature to create and track your workouts. You can add new exercises or edit existing ones.
+4. **View Nutritional Information**: Explore the food database to view detailed nutritional information for various foods.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Thanks to the contributors and the open-source community for their support and resources.
+- Special thanks to the developers of the libraries and tools used in this project.
