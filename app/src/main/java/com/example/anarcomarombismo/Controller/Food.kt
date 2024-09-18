@@ -48,15 +48,19 @@ class Food (
     fun save(context: Context): Boolean {
         this.foodNumber = if (foodNumber.isEmpty()) generateFoodNumber() else foodNumber
         this.foodDescription = foodDescription
+        this.protein = normalizeNutrient(protein, grams)
+        this.carbohydrate = normalizeNutrient(carbohydrate, grams)
+        this.lipids = normalizeNutrient(lipids, grams)
+        this.dietaryFiber = normalizeNutrient(dietaryFiber, grams)
+        this.sodium = normalizeNutrient(sodium, grams)
+        this.energyKcal = normalizeNutrient(energyKcal, grams)
+        this.energyKj = (normalizeNutrient(energyKcal, grams).toDouble() * 4.184).toString()
         this.grams = 100.0
-        this.protein = formatDoubleNumber((protein.toDouble() / grams * 100.0))
-        this.carbohydrate = formatDoubleNumber((carbohydrate.toDouble() / grams * 100.0))
-        this.lipids = formatDoubleNumber((lipids.toDouble() / grams * 100.0))
-        this.dietaryFiber = formatDoubleNumber((dietaryFiber.toDouble() / grams * 100.0))
-        this.sodium = formatDoubleNumber((sodium.toDouble() / grams * 100.0))
-        this.energyKcal = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0))
-        this.energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
         return save(this, context)
+    }
+
+    private fun normalizeNutrient(nutrient: String, grams: Double): String {
+        return formatDoubleNumber(nutrient.toDouble() / grams * 100.0)
     }
 
     private fun save(food: Food, context: Context): Boolean {
