@@ -1,11 +1,10 @@
 package com.example.anarcomarombismo
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import com.example.anarcomarombismo.Adapters.FoodAdapter
-import com.example.anarcomarombismo.Controller.JSON
+import com.example.anarcomarombismo.Controller.Util.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -17,7 +16,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.DailyCalories
-import com.example.anarcomarombismo.Controller.DateUtil
+import com.example.anarcomarombismo.Controller.Util.Date
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.FoodSearch
 import kotlinx.coroutines.CoroutineScope
@@ -140,7 +139,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun selectDate () {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-        DateUtil().selectDate(this, editTextDate, maxDate) {
+        com.example.anarcomarombismo.Controller.Util.Date().selectDate(this, editTextDate, maxDate) {
             getDailyCaloriesByDate(maxDate.toString())
         }
     }
@@ -183,8 +182,8 @@ class formDailyCalories : AppCompatActivity() {
     private fun callDailyCaloriesFoods() {
         try {
             var dailyCaloriesFoods = Intent(this, dailyCaloriesFoods::class.java)
-            var jsonUtil = JSON()
-            dailyCaloriesFoods.putExtra("foodsList", dailyCalories.foodsList.let { jsonUtil.toJson(it) })
+            var json = JSON()
+            dailyCaloriesFoods.putExtra("foodsList", dailyCalories.foodsList.let { json.toJson(it) })
             dailyCaloriesFoods.putExtra("dailyCaloriesDate", dailyCalories.date)
             startActivity(dailyCaloriesFoods)
         } catch (e: Exception) {

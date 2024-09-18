@@ -1,6 +1,6 @@
 package com.example.anarcomarombismo
 
-import com.example.anarcomarombismo.Controller.JSON
+import com.example.anarcomarombismo.Controller.Util.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebSettings
@@ -15,7 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.example.anarcomarombismo.Controller.Cache
+import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
@@ -56,7 +56,7 @@ class formExercise : AppCompatActivity() {
     private var lastClickTime: Long = 0
     // Helpers
     private val cache = Cache()
-    private val jsonUtil = JSON()
+    private val json = JSON()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_exercise)

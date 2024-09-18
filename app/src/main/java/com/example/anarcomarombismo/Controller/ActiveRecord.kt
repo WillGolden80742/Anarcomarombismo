@@ -1,12 +1,12 @@
 import android.content.Context
 import android.widget.Toast
-import com.example.anarcomarombismo.Controller.Cache
-import com.example.anarcomarombismo.Controller.JSON
+import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.JSON
 
 open class ActiveRecord<T : Any>(private val clazz: Class<T>) {
 
     private val cache = Cache()
-    private val jsonUtil = JSON()
+    private val json = JSON()
 
     // Método para salvar ou atualizar o objeto
     fun save(
@@ -62,7 +62,7 @@ open class ActiveRecord<T : Any>(private val clazz: Class<T>) {
         return try {
             val list = loadList(context, cacheKey).toMutableList()
             onListUpdate(list, obj)
-            cache.setCache(context, cacheKey, jsonUtil.toJson(list))
+            cache.setCache(context, cacheKey, json.toJson(list))
             showToast(context, successMessage)
             true
         } catch (e: ObjectNotFoundException) {
@@ -78,7 +78,7 @@ open class ActiveRecord<T : Any>(private val clazz: Class<T>) {
     private fun loadList(context: Context, cacheKey: String): List<T> {
         val cachedData = cache.getCache(context, cacheKey)
         return if (cache.hasCache(context, cacheKey) && cachedData != null) {
-            jsonUtil.fromJson(cachedData, clazz) as List<T>
+            json.fromJson(cachedData, clazz) as List<T>
         } else {
             emptyList()
         }

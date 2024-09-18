@@ -3,6 +3,8 @@ package com.example.anarcomarombismo.Controller
 import android.content.Context
 import android.widget.EditText
 import android.widget.Toast
+import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,24 +26,24 @@ class Exercise(
     var cadence: String = "3-1-3", // Cadência padrão
 ) {
     private val cache = Cache()
-    private val jsonUtil = JSON()
+    private val json = JSON()
 
     companion object {
         fun loadList(context: Context, trainingID: Long): Array<Exercise> {
             val cache = Cache()
-            val jsonUtil = JSON()
+            val json = JSON()
 
             // Load exercises from cache or create default exercises
             val cacheKey = "Exercicios_$trainingID"
             val exerciseArray = if (cache.hasCache(context, cacheKey)) {
                 val cachedData = cache.getCache(context, cacheKey)
-                jsonUtil.fromJson(cachedData, Array<Exercise>::class.java)
+                json.fromJson(cachedData, Array<Exercise>::class.java)
             } else {
                 val random = Random().nextInt(100)
                 val defaultExerciseArray = arrayOf(
                     Exercise(trainingID, "", System.currentTimeMillis() + random, "Exercicio", "", 3, "10,10,10", 0.0)
                 )
-                cache.setCache(context, cacheKey, jsonUtil.toJson(defaultExerciseArray))
+                cache.setCache(context, cacheKey, json.toJson(defaultExerciseArray))
                 defaultExerciseArray
             }
 
@@ -99,10 +101,10 @@ class Exercise(
     }
     fun load(context: Context, trainingID: Long, exerciseID: Long): Exercise? {
         val cache = Cache()
-        val jsonUtil = JSON()
+        val json = JSON()
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
-            jsonUtil.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
+            json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
         } else {
             arrayOf()
         }
@@ -173,7 +175,7 @@ class Exercise(
     }
     private fun getExerciseArray(context: Context, cacheKey: String): Array<Exercise> {
         return if (cache.hasCache(context, cacheKey)) {
-            jsonUtil.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
+            json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
         } else {
             arrayOf()
         }
@@ -191,7 +193,7 @@ class Exercise(
     }
 
     private fun saveExerciseArray(context: Context, cacheKey: String, exerciseArray: Array<Exercise>) {
-        cache.setCache(context, cacheKey, jsonUtil.toJson(exerciseArray))
+        cache.setCache(context, cacheKey, json.toJson(exerciseArray))
     }
 
     private fun showToastMessage(context: Context, isUpdate: Boolean) {

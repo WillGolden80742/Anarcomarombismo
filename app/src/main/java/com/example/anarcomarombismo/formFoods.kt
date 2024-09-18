@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Food
-import com.example.anarcomarombismo.Controller.JSON
+import com.example.anarcomarombismo.Controller.Util.JSON
 
 class formFoods : AppCompatActivity() {
 
@@ -24,7 +24,7 @@ class formFoods : AppCompatActivity() {
     private lateinit var addFoodFormButton: Button
     private lateinit var removeFoodFormButton: Button
     private lateinit var currentFood: Food
-    private var jsonUtil = JSON()
+    private var json = JSON()
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +78,7 @@ class formFoods : AppCompatActivity() {
 
     private fun loadFoodData() {
         intent.getStringExtra("foodObject")?.let {
-            currentFood = jsonUtil.fromJson(it, Food::class.java)
+            currentFood = json.fromJson(it, Food::class.java)
             if (currentFood.foodNumber.contains("web")) {
                 editable(false)
             }

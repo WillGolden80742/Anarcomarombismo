@@ -8,7 +8,7 @@ import android.widget.ListView
 import com.example.anarcomarombismo.Adapters.FoodAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
-import com.example.anarcomarombismo.Controller.JSON
+import com.example.anarcomarombismo.Controller.Util.JSON
 
 class dailyCaloriesFoods : AppCompatActivity() {
     // Declare elements from layout
@@ -66,8 +66,8 @@ class dailyCaloriesFoods : AppCompatActivity() {
 
     private fun loadFoodList() {
         // Get the food list from the JSON
-        val jsonUtil = JSON()
-        setFoodList(intent.getStringExtra("foodsList")?.let { jsonUtil.fromJson(it, Array<Food>::class.java) }?.toList()!!)
+        val json = JSON()
+        setFoodList(intent.getStringExtra("foodsList")?.let { json.fromJson(it, Array<Food>::class.java) }?.toList()!!)
         dailyCaloriesDate = intent.getStringExtra("dailyCaloriesDate")!!
         searchFoodList("")
     }

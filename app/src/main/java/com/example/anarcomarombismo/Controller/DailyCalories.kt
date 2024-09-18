@@ -2,6 +2,8 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
+import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -35,11 +37,11 @@ class DailyCalories {
 
     fun save(context: Context): Boolean {
         val cache = Cache()
-        val jsonUtil = JSON()
+        val json = JSON()
         return try {
-            val dailyCaloriesList = getExistingDailyCaloriesList(context, cache, jsonUtil)
+            val dailyCaloriesList = getExistingDailyCaloriesList(context, cache, json)
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
-            cache.setCache(context, "dailyCalories", jsonUtil.toJson(updatedCaloriesList))
+            cache.setCache(context, "dailyCalories", json.toJson(updatedCaloriesList))
             true
         } catch (e: Exception) {
             handleError(e, "Error saving daily calories")
@@ -70,8 +72,8 @@ class DailyCalories {
             val cache = Cache()
             if (cache.hasCache(context, "dailyCalories")) {
                 val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
-                val jsonUtil = JSON()
-                val dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+                val json = JSON()
+                val dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
                 val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == selectedDate }
                 withContext(Dispatchers.Main) {
                     if (dailyCaloriesListFiltered.isNotEmpty()) {
@@ -88,17 +90,17 @@ class DailyCalories {
     fun loadList(context: Context, callback: (List<DailyCalories>) -> Unit) {
         GlobalScope.launch(Dispatchers.IO) {
             val cache = Cache()
-            val jsonUtil = JSON()
+            val json = JSON()
             var dailyCaloriesList: List<DailyCalories> = emptyList()
             try {
                 if (cache.hasCache(context, "dailyCalories")) {
                     val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
                     println("Lista de calorias diárias: $dailyCaloriesListJson")
-                    dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+                    dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
                 } else {
                     val dailyCaloriesListJson = cache.getCache(context, "emptyDailyCalories")
                     println("Lista de calorias diárias: $dailyCaloriesListJson")
-                    dailyCaloriesList = jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+                    dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
                 }
                 // Sort the list by date (year -> month -> day)
                 dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
@@ -114,10 +116,10 @@ class DailyCalories {
         }
     }
 
-    private fun getExistingDailyCaloriesList(context: Context, cache: Cache, jsonUtil: JSON): List<DailyCalories> {
+    private fun getExistingDailyCaloriesList(context: Context, cache: Cache, json: JSON): List<DailyCalories> {
         return if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
-            jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+            json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
         } else {
             emptyList()
         }

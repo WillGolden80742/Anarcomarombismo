@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-import com.example.anarcomarombismo.Controller.DateUtil
+import com.example.anarcomarombismo.Controller.Util.Date
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 import java.text.SimpleDateFormat
@@ -65,7 +65,7 @@ class exercises : AppCompatActivity() {
     private fun selectDate() {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-        DateUtil().selectDate(this, dateTextView, maxDate) {
+        com.example.anarcomarombismo.Controller.Util.Date().selectDate(this, dateTextView, maxDate) {
             loadExercises(trainingID, it)
         }
     }

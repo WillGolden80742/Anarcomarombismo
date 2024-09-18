@@ -1,6 +1,6 @@
 package com.example.anarcomarombismo
 
-import com.example.anarcomarombismo.Controller.JSON
+import com.example.anarcomarombismo.Controller.Util.JSON
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import com.example.anarcomarombismo.Adapters.TrainingAdapter
-import com.example.anarcomarombismo.Controller.Cache
+import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Training
@@ -19,7 +19,7 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
     private lateinit var trainingList: ListView
     private lateinit var dailyCaloriesButton: Button
     private var trainingArray = arrayOf<Training>()
-    private var jsonUtil = JSON()
+    private var json = JSON()
     private var cache: Cache? = null
     private val listView: ListView by lazy { findViewById(R.id.trainingList) }
 
@@ -54,7 +54,7 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
             //R.raw.nutritional_table
             val jsonContent = resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
             // Converte o JSON para uma lista de objetos Food
-            val foodNutritionList: List<Food> = jsonUtil.fromJson(jsonContent, Array<Food>::class.java).toList()
+            val foodNutritionList: List<Food> = json.fromJson(jsonContent, Array<Food>::class.java).toList()
             // Imprime os resultados
             for (food in foodNutritionList) {
                 println(food.toString())
@@ -86,7 +86,7 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
         cache = Cache()
         if (cache!!.hasCache(this,"Treinos")) {
             val cachedData = cache!!.getCache(this,"Treinos")
-            trainingArray = jsonUtil.fromJson(cachedData, Array<Training>::class.java)
+            trainingArray = json.fromJson(cachedData, Array<Training>::class.java)
             // print every trainings
             for (training in trainingArray) {
                 println("Treino em Cache: ${training.trainingID} - ${training.name} - ${training.description}")
@@ -101,12 +101,12 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
             for (training in trainingArray) {
                 println("Treino fora de Cache: ${training.trainingID} - ${training.name} - ${training.description}")
             }
-            cache!!.setCache(this,"Treinos", jsonUtil.toJson(trainingArray))
+            cache!!.setCache(this,"Treinos", json.toJson(trainingArray))
             dumpExercise()
         }
 
-        val jsonUtil = JSON()
-        val trainingArrayJson = jsonUtil.toJson(trainingArray)
+        val json = JSON()
+        val trainingArrayJson = json.toJson(trainingArray)
         println("Training Array em JSON: $trainingArrayJson")
         val adapter = TrainingAdapter(this, trainingArray, this)
         listView.adapter = adapter
@@ -114,9 +114,9 @@ class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickL
 
     private fun insertExercisesForTraining(trainingId: Long, exercises: Array<Exercise>) {
         val cache = Cache()
-        val jsonUtil = JSON()
+        val json = JSON()
         // Adicionar os exercícios do treinamento atual ao cache
-        cache.setCache(this, "Exercicios_$trainingId", jsonUtil.toJson(exercises))
+        cache.setCache(this, "Exercicios_$trainingId", json.toJson(exercises))
     }
 
     private fun dumpExercise() {

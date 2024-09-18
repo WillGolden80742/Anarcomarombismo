@@ -1,4 +1,4 @@
-package com.example.anarcomarombismo.Controller
+package com.example.anarcomarombismo.Controller.Util
 
 import com.google.gson.Gson
 

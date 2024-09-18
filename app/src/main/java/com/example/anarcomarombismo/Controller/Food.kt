@@ -2,6 +2,8 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
+import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
 import java.util.UUID
@@ -37,7 +39,7 @@ class Food (
     var niacin: String = "0.0",
     var vitaminC: String = ""
 ) {
-    private var jsonUtil = JSON()
+    private var json = JSON()
     private var cache = Cache()
     init {
         if (grams == null) {
@@ -80,7 +82,7 @@ class Food (
                 else context.getString(R.string.successful_target_food),
                 context
             )
-            cache.setCache(context, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            cache.setCache(context, "Alimentos", json.toJson(foodNutritionList))
             return true
 
         } catch (e: Exception) {
@@ -90,13 +92,13 @@ class Food (
     }
 
     fun loadList(context: Context): List<Food> {
-        return jsonUtil.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+        return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
     }
     fun remove(context: Context) {
         try {
-            val foodNutritionList = jsonUtil.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+            val foodNutritionList = json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
                 .filter { it.foodNumber != foodNumber }
-            cache.setCache(context, "Alimentos", jsonUtil.toJson(foodNutritionList))
+            cache.setCache(context, "Alimentos", json.toJson(foodNutritionList))
             Toast.makeText(context, context.getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(context, context.getString(R.string.error_removing_food), Toast.LENGTH_SHORT).show()
@@ -117,12 +119,12 @@ class Food (
     }
 
     private fun updateFoodInList(food: Food, foodCache: String): List<Food> {
-        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList()
+        return json.fromJson(foodCache, Array<Food>::class.java).toList()
             .map { if (it.foodNumber == food.foodNumber) food else it }
     }
 
     private fun createFoodInList(food: Food, foodCache: String): List<Food> {
-        return jsonUtil.fromJson(foodCache, Array<Food>::class.java).toList() + food
+        return json.fromJson(foodCache, Array<Food>::class.java).toList() + food
     }
 
     private fun showToast(message: String,context: Context) {

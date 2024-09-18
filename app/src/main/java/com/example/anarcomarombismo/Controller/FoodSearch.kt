@@ -1,6 +1,8 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.JSON
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
@@ -17,7 +19,7 @@ import java.text.Normalizer
 
 class FoodSearch (var name:String = "", var href:String = "",var smallText:String = "", var grams:String = "") {
     private val cache = Cache()
-    private val jsonUtil = JSON()
+    private val json = JSON()
     fun searchFood(context: Context, query: String): List<FoodSearch> {
         val queryHash = getKey(query)
         if (cache.hasCache(context, queryHash)) {
@@ -28,7 +30,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
     }
     private fun getCachedFoodData(context: Context, queryHash: String): List<FoodSearch> {
         val cachedJson = cache.getCache(context, queryHash)
-        return jsonUtil.fromJson(cachedJson, Array<FoodSearch>::class.java).toList()
+        return json.fromJson(cachedJson, Array<FoodSearch>::class.java).toList()
     }
     private fun fetchAndCacheFoodData(context: Context, query: String, queryHash: String): List<FoodSearch> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
@@ -52,7 +54,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
                 return emptyList()
             }
         }
-        cache.setCache(context, queryHash, jsonUtil.toJson(items))
+        cache.setCache(context, queryHash, json.toJson(items))
         return items
     }
     private fun containsQuery(text: String, query: String): Boolean {
@@ -107,7 +109,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         val foodNumber = getKey(url)
         if (cache.hasCache(context, foodNumber)) {
             println("CACHE HIT for foodNumber: $foodNumber")
-            return jsonUtil.fromJson(cache.getCache(context, foodNumber), Food::class.java)
+            return json.fromJson(cache.getCache(context, foodNumber), Food::class.java)
         }
         return try {
             val html = fetchHtmlContent(url)
@@ -117,7 +119,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             val nutrients = extractNutrients(doc)
             val food = createFoodObject(foodNumber, grams, foodDescription, nutrients)
 
-            cache.setCache(context, foodNumber, jsonUtil.toJson(food))
+            cache.setCache(context, foodNumber, json.toJson(food))
             println(JSON().toJson(food))
             food
         } catch (e: Exception) {

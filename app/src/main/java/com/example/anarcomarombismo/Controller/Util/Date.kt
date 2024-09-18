@@ -1,4 +1,4 @@
-package com.example.anarcomarombismo.Controller
+package com.example.anarcomarombismo.Controller.Util
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class DateUtil {
+class Date {
 
     fun selectDate(
         context: Context,
