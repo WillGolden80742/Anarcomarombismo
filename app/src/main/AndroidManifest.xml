@@ -44,7 +44,7 @@
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo" />
         <activity
-            android:name=".training_main"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo">
             <intent-filter>

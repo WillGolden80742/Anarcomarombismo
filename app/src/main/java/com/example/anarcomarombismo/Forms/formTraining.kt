@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.anarcomarombismo.R
-import com.example.anarcomarombismo.training_main
+import com.example.anarcomarombismo.MainActivity
 
 class formTraining : AppCompatActivity() {
 
@@ -67,7 +67,7 @@ class formTraining : AppCompatActivity() {
         if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
             val training = Training(trainingID)
             if (training.remove(this)) {
-                startActivity(Intent(this, training_main::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
             }
         } else {
             Toast.makeText(this,

@@ -13,6 +13,35 @@ class Training(
     var description: String = ""
 ) {
 
+    companion object {
+        fun loadTraining(context: Context): Array<Training> {
+            val cache = Cache()
+            val json = JSON()
+            val trainingArray: Array<Training>
+
+            if (cache.hasCache(context, "Treinos")) {
+                val cachedData = cache.getCache(context, "Treinos")
+                trainingArray = json.fromJson(cachedData, Array<Training>::class.java)
+                // Print every training
+                for (training in trainingArray) {
+                    println("Treino em Cache: ${training.trainingID} - ${training.name} - ${training.description}")
+                }
+            } else {
+                trainingArray = arrayOf(
+                    Training(1, context.getString(R.string.training_a), context.getString(R.string.chest_and_triceps)),
+                    Training(2, context.getString(R.string.training_b), context.getString(R.string.back_and_biceps)),
+                    Training(3, context.getString(R.string.training_c), context.getString(R.string.shoulder_and_triceps)),
+                    Training(4, context.getString(R.string.training_d), context.getString(R.string.calf_and_legs))
+                )
+                // Print trainings outside of cache
+                for (training in trainingArray) {
+                    println("Treino fora de Cache: ${training.trainingID} - ${training.name} - ${training.description}")
+                }
+                cache.setCache(context, "Treinos", json.toJson(trainingArray))
+            }
+            return trainingArray
+        }
+    }
     fun save(context: Context): Boolean {
         val cache = Cache()
         val json = JSON()
