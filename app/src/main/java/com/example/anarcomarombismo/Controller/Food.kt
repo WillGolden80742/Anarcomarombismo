@@ -58,11 +58,6 @@ class Food (
         this.grams = 100.0
         return save(this, context)
     }
-
-    private fun normalizeNutrient(nutrient: String, grams: Double): String {
-        return formatDoubleNumber(nutrient.toDouble() / grams * 100.0)
-    }
-
     private fun save(food: Food, context: Context): Boolean {
         try {
             val foodCache = loadJSONCache(context)
@@ -132,6 +127,10 @@ class Food (
 
     private fun showToast(message: String,context: Context) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun normalizeNutrient(nutrient: String, grams: Double): String {
+        return formatDoubleNumber(nutrient.toDouble() / grams * 100.0)
     }
 
     private fun formatDoubleNumber(value: Double):String {
