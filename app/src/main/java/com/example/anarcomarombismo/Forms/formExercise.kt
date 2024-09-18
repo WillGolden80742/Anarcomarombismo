@@ -259,7 +259,7 @@ class formExercise : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
-        if(Exercise().apply { buildExercise() }.save(this)) {
+        if(buildExercise().save(this)) {
             finish()
         }
     }
