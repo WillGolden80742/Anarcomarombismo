@@ -117,7 +117,7 @@ class DailyCalories {
     private fun getExistingDailyCaloriesList(context: Context, cache: Cache, jsonUtil: JSON): List<DailyCalories> {
         return if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
-            jsonUtil.fromJsonArray(dailyCaloriesListJson)
+            jsonUtil.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
         } else {
             emptyList()
         }

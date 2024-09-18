@@ -234,6 +234,7 @@ class formDailyCalories : AppCompatActivity() {
                 searchFoodAsync(query)
             } catch (e: Exception) {
                 handleException(e)
+                println("erro ao carregar : $e")
             }
         }
     }

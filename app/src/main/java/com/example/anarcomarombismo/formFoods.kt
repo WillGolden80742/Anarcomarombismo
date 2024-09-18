@@ -23,10 +23,8 @@ class formFoods : AppCompatActivity() {
     private lateinit var editTextCaloriesKcal: EditText
     private lateinit var addFoodFormButton: Button
     private lateinit var removeFoodFormButton: Button
-    private lateinit var foodNutritionList: List<Food>
     private lateinit var currentFood: Food
     private var jsonUtil = JSON()
-    private var foodCache: String = ""
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
