@@ -33,7 +33,7 @@ class exercises : AppCompatActivity() {
 
         trainingID = intent.getLongExtra("trainingID", 0)
 
-        instacieFields()
+        instantiateFields()
 
         dateTextView.text = getCurrentDate()
 
@@ -49,14 +49,12 @@ class exercises : AppCompatActivity() {
             selectDate()
         }
     }
-
-    // onResume()
     override fun onResume() {
         super.onResume()
         loadExercises(trainingID,dateTextView.text.toString())
     }
 
-    fun instacieFields() {
+    private fun instantiateFields() {
         dateTextView = findViewById(R.id.dateTextView)
         addExerciseButton = findViewById(R.id.addFoodFormButton)
         exerciseList = findViewById(R.id.caloriesFoodList)

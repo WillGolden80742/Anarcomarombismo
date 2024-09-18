@@ -56,8 +56,7 @@ class formTraining : AppCompatActivity() {
     }
 
     private fun saveTraining() {
-        val training = Training(trainingID, name.text.toString(), description.text.toString())
-        if(training.save(this)) {
+        if(Training(trainingID, name.text.toString(),description.text.toString()).save(this)) {
             finish()
         }
     }
@@ -65,8 +64,7 @@ class formTraining : AppCompatActivity() {
     private fun removeTraining() {
         val clickTime = System.currentTimeMillis()
         if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-            val training = Training(trainingID)
-            if (training.remove(this)) {
+            if (Training(trainingID).remove(this)) {
                 startActivity(Intent(this, MainActivity::class.java))
             }
         } else {
