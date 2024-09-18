@@ -11,7 +11,7 @@ import android.widget.Toast
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.R
-import com.example.anarcomarombismo.formExercise
+import com.example.anarcomarombismo.Forms.formExercise
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.Date

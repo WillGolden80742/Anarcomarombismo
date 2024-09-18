@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.ListView
 import com.example.anarcomarombismo.Adapters.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
+import com.example.anarcomarombismo.Forms.formDailyCalories
+import com.example.anarcomarombismo.Forms.formFoods
 
 class dailyCalories : AppCompatActivity() {
     private lateinit var caloriesFoodList: ListView

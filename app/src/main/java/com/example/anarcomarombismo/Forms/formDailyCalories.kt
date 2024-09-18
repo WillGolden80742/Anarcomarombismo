@@ -1,4 +1,4 @@
-package com.example.anarcomarombismo
+package com.example.anarcomarombismo.Forms
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,6 +19,8 @@ import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.FoodSearch
 import com.example.anarcomarombismo.Controller.Util.Calendaries
+import com.example.anarcomarombismo.R
+import com.example.anarcomarombismo.dailyCaloriesFoods
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

@@ -1,4 +1,4 @@
-package com.example.anarcomarombismo
+package com.example.anarcomarombismo.Forms
 
 import com.example.anarcomarombismo.Controller.Util.JSON
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +19,7 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
+import com.example.anarcomarombismo.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

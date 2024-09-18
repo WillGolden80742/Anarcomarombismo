@@ -21,26 +21,26 @@
             android:name=".bodyStatistics"
             android:exported="false" />
         <activity
-            android:name=".formFoods"
+            android:name=".Forms.formFoods"
             android:exported="false" />
         <activity
             android:name=".dailyCaloriesFoods"
             android:exported="false" />
         <activity
-            android:name=".formDailyCalories"
+            android:name=".Forms.formDailyCalories"
             android:exported="false" />
         <activity
             android:name=".dailyCalories"
             android:exported="false" />
         <activity
-            android:name=".formExercise"
+            android:name=".Forms.formExercise"
             android:exported="false" />
         <activity
             android:name=".exercises"
             android:exported="false"
             android:theme="@style/Theme.Anarcomarombismo" />
         <activity
-            android:name=".formTraining"
+            android:name=".Forms.formTraining"
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo" />
         <activity

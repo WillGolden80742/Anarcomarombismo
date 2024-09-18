@@ -1,4 +1,4 @@
-package com.example.anarcomarombismo
+package com.example.anarcomarombismo.Forms
 
 import com.example.anarcomarombismo.Controller.Training
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.view.isVisible
+import com.example.anarcomarombismo.R
+import com.example.anarcomarombismo.training_main
 
 class formTraining : AppCompatActivity() {
 

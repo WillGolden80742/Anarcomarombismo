@@ -1,4 +1,4 @@
-package com.example.anarcomarombismo
+package com.example.anarcomarombismo.Forms
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Util.JSON
+import com.example.anarcomarombismo.R
+import com.example.anarcomarombismo.dailyCalories
 
 class formFoods : AppCompatActivity() {
 

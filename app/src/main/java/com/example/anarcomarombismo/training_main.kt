@@ -12,6 +12,7 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Training
+import com.example.anarcomarombismo.Forms.formTraining
 
 class training_main : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
 

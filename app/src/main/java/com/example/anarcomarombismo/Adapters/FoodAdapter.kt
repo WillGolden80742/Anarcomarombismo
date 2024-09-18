@@ -13,8 +13,8 @@ import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCaloriesFoods
-import com.example.anarcomarombismo.formDailyCalories
-import com.example.anarcomarombismo.formFoods
+import com.example.anarcomarombismo.Forms.formDailyCalories
+import com.example.anarcomarombismo.Forms.formFoods
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class FoodAdapter(
