@@ -96,6 +96,8 @@ class Training(
         if (training != null) {
             this.name = training.name
             this.description = training.description
+        } else {
+            this.name = context.getString(R.string.training)
         }
         return this
     }
