@@ -8,7 +8,7 @@ import android.widget.ListView
 import com.example.anarcomarombismo.Adapters.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Forms.formDailyCalories
-import com.example.anarcomarombismo.Forms.formFoods
+import com.example.anarcomarombismo.Forms.formFood
 
 class dailyCalories : AppCompatActivity() {
     private lateinit var caloriesFoodList: ListView
@@ -57,7 +57,7 @@ class dailyCalories : AppCompatActivity() {
 
     private fun callFoodForm() {
         try {
-            startActivity(Intent(this, formFoods::class.java))
+            startActivity(Intent(this, formFood::class.java))
         } catch (e: Exception) {
             println("Erro ao chamar a tela de alimentos: $e")
         }

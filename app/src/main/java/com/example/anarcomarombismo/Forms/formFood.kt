@@ -13,7 +13,7 @@ import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCalories
 
-class formFoods : AppCompatActivity() {
+class formFood : AppCompatActivity() {
 
     private lateinit var editTextName: EditText
     private lateinit var editTextGrams: EditText

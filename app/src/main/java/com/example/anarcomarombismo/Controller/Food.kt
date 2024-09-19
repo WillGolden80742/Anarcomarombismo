@@ -39,7 +39,11 @@ class Food (
     var niacin: String = "0.0",
     var vitaminC: String = ""
 ) {
-
+    init {
+        if (grams == null) {
+            grams = 100.00
+        }
+    }
     companion object {
         private var json = JSON()
         private var cache = Cache()
@@ -68,12 +72,6 @@ class Food (
             }
         }
     }
-    init {
-        if (grams == null) {
-            grams = 100.00
-        }
-    }
-
     fun save(context: Context): Boolean {
         return save(this, context)
     }

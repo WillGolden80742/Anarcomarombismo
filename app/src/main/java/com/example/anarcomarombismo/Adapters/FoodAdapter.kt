@@ -14,7 +14,7 @@ import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCaloriesFoods
 import com.example.anarcomarombismo.Forms.formDailyCalories
-import com.example.anarcomarombismo.Forms.formFoods
+import com.example.anarcomarombismo.Forms.formFood
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class FoodAdapter(
@@ -84,7 +84,7 @@ class FoodAdapter(
     }
 
     private fun navigateToFormFoods(food: Food) {
-        val intent = Intent(context, formFoods::class.java).apply {
+        val intent = Intent(context, formFood::class.java).apply {
             putExtra("foodID", food.foodNumber)
             putExtra("foodObject", JSON().toJson(food))
         }
