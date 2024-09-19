@@ -117,8 +117,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
 
             val foodDescription = extractFoodDescription(doc)
             val nutrients = extractNutrients(doc)
-            val food = createFoodObject(foodNumber, grams, foodDescription, nutrients)
-
+            val food = buildFood(foodNumber, grams, foodDescription, nutrients)
             cache.setCache(context, foodNumber, json.toJson(food))
             println(JSON().toJson(food))
             food
@@ -150,7 +149,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
     private fun convertKjToKcal(kj: Double): Double {
         return kj / 4.184
     }
-    private fun createFoodObject(
+    private fun buildFood(
         foodNumber: String,
         grams: Double,
         foodDescription: String,
