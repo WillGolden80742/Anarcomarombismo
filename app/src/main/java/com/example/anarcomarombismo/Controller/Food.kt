@@ -39,10 +39,10 @@ class Food (
     var niacin: String = "0.0",
     var vitaminC: String = ""
 ) {
-    private var json = JSON()
-    private var cache = Cache()
 
     companion object {
+        private var json = JSON()
+        private var cache = Cache()
         fun build(
             foodNumber: String = "",
             grams: Double = 100.0,

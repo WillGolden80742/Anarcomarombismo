@@ -25,9 +25,6 @@ class Exercise(
     var rest: Int = 60, // Tempo de repouso padrão em segundos
     var cadence: String = "3-1-3", // Cadência padrão
 ) {
-    private val cache = Cache()
-    private val json = JSON()
-
     companion object {
         private val cache = Cache()
         private val json = JSON()
