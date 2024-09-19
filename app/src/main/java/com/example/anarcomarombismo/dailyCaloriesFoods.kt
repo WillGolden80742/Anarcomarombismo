@@ -79,7 +79,7 @@ class dailyCaloriesFoods : AppCompatActivity() {
         listView.adapter = adapter
     }
 
-    
+
 
     fun removeFood(food: Food) {
         // get the selected food and remove it from the list
