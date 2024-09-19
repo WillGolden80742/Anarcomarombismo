@@ -28,6 +28,31 @@ class Exercise(
     companion object {
         private val cache = Cache()
         private val json = JSON()
+        fun build(
+            trainingID: Long,
+            linkVideo: String,
+            exerciseID: Long,
+            name: String,
+            muscle: String,
+            sets: Int,
+            repetitions: String,
+            load: Double,
+            rest: Int,
+            cadence: String
+        ): Exercise {
+            return Exercise().apply {
+                this.trainingID = trainingID
+                this.linkVideo = linkVideo
+                this.exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100)
+                this.name = name
+                this.muscle = muscle
+                this.sets = sets
+                this.repetitions = repetitions
+                this.load = load
+                this.rest = rest
+                this.cadence = cadence
+            }
+        }
         fun dumpExercise(context: Context) {
             val trainingExercisesMap = mapOf(
                 1L to arrayOf(
@@ -100,31 +125,6 @@ class Exercise(
             }
 
             return exerciseArray
-        }
-        fun build(
-            trainingID: Long,
-            linkVideo: String,
-            exerciseID: Long,
-            name: String,
-            muscle: String,
-            sets: Int,
-            repetitions: String,
-            load: Double,
-            rest: Int,
-            cadence: String
-        ): Exercise {
-            return Exercise().apply {
-                this.trainingID = trainingID
-                this.linkVideo = linkVideo
-                this.exerciseID = exerciseID.takeIf { it > 0 } ?: System.currentTimeMillis() + Random().nextInt(100)
-                this.name = name
-                this.muscle = muscle
-                this.sets = sets
-                this.repetitions = repetitions
-                this.load = load
-                this.rest = rest
-                this.cadence = cadence
-            }
         }
     }
 
