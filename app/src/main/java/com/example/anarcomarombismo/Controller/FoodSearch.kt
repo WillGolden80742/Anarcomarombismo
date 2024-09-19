@@ -24,15 +24,15 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         val queryHash = getKey(query)
         if (cache.hasCache(context, queryHash)) {
             println("CACHE HIT for queryHash: $queryHash")
-            return getCachedFoodData(context, queryHash)
+            return getCachedOfFoodSearch(context, queryHash)
         }
-        return fetchAndCacheFoodData(context, query, queryHash)
+        return fetchAndCacheOfFoodSearch(context, query, queryHash)
     }
-    private fun getCachedFoodData(context: Context, queryHash: String): List<FoodSearch> {
+    private fun getCachedOfFoodSearch(context: Context, queryHash: String): List<FoodSearch> {
         val cachedJson = cache.getCache(context, queryHash)
         return json.fromJson(cachedJson, Array<FoodSearch>::class.java).toList()
     }
-    private fun fetchAndCacheFoodData(context: Context, query: String, queryHash: String): List<FoodSearch> {
+    private fun fetchAndCacheOfFoodSearch(context: Context, query: String, queryHash: String): List<FoodSearch> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
         val items = mutableListOf<FoodSearch>()
         for (i in 0..1) {
@@ -60,7 +60,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
     private fun containsQuery(text: String, query: String): Boolean {
         val normalizedText = normalizeString(text)
         val normalizedQuery = normalizeString(query)
-        // loop split by space
         for (word in normalizedQuery.split(" ")) {
             if (normalizedText.contains(word, ignoreCase = true) && word.length > 2) {
                 return true
