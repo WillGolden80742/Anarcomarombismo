@@ -189,12 +189,6 @@ class DailyCalories {
         }
     }
     private fun calculateCalories(food: Food, operation: String) {
-        calculateNutrientValues(food, operation)
-    }
-    private fun formatNutrientValue(nutrientValue: String): String {
-        return nutrientValue.replace(Regex("(?i)[natr*]"), "0")
-    }
-    private fun calculateNutrientValues(food: Food, operation: String) {
         val energyKcalFormatted = formatNutrientValue(food.energyKcal)
         val energyKjFormatted = formatNutrientValue(food.energyKj)
         val proteinFormatted = formatNutrientValue(food.protein)
@@ -228,5 +222,8 @@ class DailyCalories {
                 sodium -= (sodiumFormatted.toDouble() * calorieMultiplier)
             }
         }
+    }
+    private fun formatNutrientValue(nutrientValue: String): String {
+        return nutrientValue.replace(Regex("(?i)[natr*]"), "0")
     }
 }
