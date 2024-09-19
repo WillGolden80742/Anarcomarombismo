@@ -44,11 +44,11 @@ class formFoods : AppCompatActivity() {
         }
 
         addFoodFormButton.setOnClickListener {
-            handleAddOrUpdateFood(foodID)
+            saveFood(foodID)
         }
 
         removeFoodFormButton.setOnClickListener {
-            handleFoodRemoval(foodID)
+            removeFood(foodID)
         }
 
         setupCaloriesCalculation()
@@ -114,28 +114,31 @@ class formFoods : AppCompatActivity() {
         println("Erro food: $e")
     }
 
-    private fun handleAddOrUpdateFood(foodID: String?) {
-        if(Food().apply {
-            foodNumber = foodID ?: ""
-            foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() } ?: getString(R.string.food_name)
-            grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0
-            protein = editTextProtein.text.toString().toDoubleOrNullOrZero().toString()
-            carbohydrate = editTextCarbohydrate.text.toString().toDoubleOrNullOrZero().toString()
-            lipids = editTextLipids.text.toString().toDoubleOrNullOrZero().toString()
-            dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNullOrZero().toString()
-            sodium = editTextSodium.text.toString().toDoubleOrNullOrZero().toString()
-            energyKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero().toString()
-            energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
-        }.save(this)) {
+    private fun saveFood(foodID: String?) {
+        if (buildFood(foodID).save(this)) {
             finish()
         }
     }
 
-    private fun handleFoodRemoval(foodID: String?) {
+    private fun buildFood(foodID: String?): Food {
+        return Food.build(
+            foodNumber = foodID ?: "",
+            foodDescription = editTextName.text.toString().takeIf { it.isNotEmpty() } ?: getString(R.string.food_name),
+            grams = editTextGrams.text.toString().toDoubleOrNull() ?: 100.0,
+            protein = editTextProtein.text.toString().toDoubleOrNullOrZero().toString(),
+            carbohydrate = editTextCarbohydrate.text.toString().toDoubleOrNullOrZero().toString(),
+            lipids = editTextLipids.text.toString().toDoubleOrNullOrZero().toString(),
+            dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNullOrZero().toString(),
+            sodium = editTextSodium.text.toString().toDoubleOrNullOrZero().toString(),
+            energyKcal = editTextCaloriesKcal.text.toString().toDoubleOrNullOrZero().toString()
+        )
+    }
+
+    private fun removeFood(foodID: String?) {
         val clickTime = System.currentTimeMillis()
         if (isDoubleClick(clickTime)) {
             if (foodID != null) {
-                Food().apply { foodNumber = foodID }.remove(this)
+                buildFood(foodID).remove(this)
                 finish()
             } else {
                 navigateToDailyCalories()

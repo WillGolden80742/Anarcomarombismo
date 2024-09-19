@@ -41,6 +41,33 @@ class Food (
 ) {
     private var json = JSON()
     private var cache = Cache()
+
+    companion object {
+        fun build(
+            foodNumber: String = "",
+            grams: Double = 100.0,
+            foodDescription: String,
+            protein: String,
+            carbohydrate: String,
+            lipids: String,
+            dietaryFiber: String,
+            sodium: String,
+            energyKcal: String
+        ): Food {
+            return Food().apply {
+                this.foodNumber = foodNumber.ifEmpty { generateFoodNumber() }
+                this.foodDescription = foodDescription
+                this.protein = normalizeNutrient(protein, grams)
+                this.carbohydrate = normalizeNutrient(carbohydrate,grams)
+                this.lipids = normalizeNutrient(lipids,grams)
+                this.dietaryFiber = normalizeNutrient(dietaryFiber,grams)
+                this.sodium = normalizeNutrient(sodium,grams)
+                this.energyKcal = normalizeNutrient(energyKcal,grams)
+                this.energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
+                this.grams = 100.0
+            }
+        }
+    }
     init {
         if (grams == null) {
             grams = 100.00
@@ -48,16 +75,6 @@ class Food (
     }
 
     fun save(context: Context): Boolean {
-        this.foodNumber = if (foodNumber.isEmpty()) generateFoodNumber() else foodNumber
-        this.foodDescription = foodDescription
-        this.protein = normalizeNutrient(protein, grams)
-        this.carbohydrate = normalizeNutrient(carbohydrate, grams)
-        this.lipids = normalizeNutrient(lipids, grams)
-        this.dietaryFiber = normalizeNutrient(dietaryFiber, grams)
-        this.sodium = normalizeNutrient(sodium, grams)
-        this.energyKcal = normalizeNutrient(energyKcal, grams)
-        this.energyKj = (normalizeNutrient(energyKcal, grams).toDouble() * 4.184).toString()
-        this.grams = 100.0
         return save(this, context)
     }
     private fun save(food: Food, context: Context): Boolean {

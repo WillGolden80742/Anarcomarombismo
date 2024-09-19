@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
         loadTraining()
     }
 
-    fun callDailyCalories() {
+    private fun callDailyCalories() {
         try {
             startActivity(Intent(this, dailyCalories::class.java))
         } catch (e: Exception) {
@@ -59,11 +59,9 @@ class MainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
 
     private fun loadTraining() {
         val adapter = TrainingAdapter(
-            this,
-            Training.loadTraining(this),
+            this,Training.loadList(this),
             this)
         listView.adapter = adapter
-        Exercise.dumpExercise(this)
     }
 
 }

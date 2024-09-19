@@ -56,15 +56,23 @@ class formTraining : AppCompatActivity() {
     }
 
     private fun saveTraining() {
-        if(Training(trainingID, name.text.toString(),description.text.toString()).save(this)) {
+        if(buildTraining(trainingID).save(this)) {
             finish()
         }
+    }
+
+    private fun buildTraining(trainingID: Long): Training {
+        return Training.build(
+            trainingID = trainingID,
+            name = name.text.toString().takeIf { it.isNotEmpty() } ?: getString(R.string.training),
+            description = description.text.toString()
+        )
     }
 
     private fun removeTraining() {
         val clickTime = System.currentTimeMillis()
         if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-            if (Training(trainingID).remove(this)) {
+            if (buildTraining(trainingID).remove(this)) {
                 startActivity(Intent(this, MainActivity::class.java))
             }
         } else {

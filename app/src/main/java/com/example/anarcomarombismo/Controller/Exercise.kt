@@ -29,6 +29,8 @@ class Exercise(
     private val json = JSON()
 
     companion object {
+        private val cache = Cache()
+        private val json = JSON()
         fun dumpExercise(context: Context) {
             val trainingExercisesMap = mapOf(
                 1L to arrayOf(
@@ -75,18 +77,14 @@ class Exercise(
                 )
             )
 
-            val cache = Cache()
-            val json = JSON()
-
             for ((trainingId, exercises) in trainingExercisesMap) {
-                cache.setCache(context, "Exercicios_$trainingId", json.toJson(exercises))
+                val cacheKey = "Exercicios_$trainingId"
+                cache.setCache(context, cacheKey, json.toJson(exercises))
             }
         }
-        fun loadList(context: Context, trainingID: Long): Array<Exercise> {
-            val cache = Cache()
-            val json = JSON()
 
-            // Load exercises from cache or create default exercises
+        fun loadList(context: Context, trainingID: Long): Array<Exercise> {
+
             val cacheKey = "Exercicios_$trainingID"
             val exerciseArray = if (cache.hasCache(context, cacheKey)) {
                 val cachedData = cache.getCache(context, cacheKey)
@@ -100,12 +98,10 @@ class Exercise(
                 defaultExerciseArray
             }
 
-            // Log exercises for debugging purposes
             for (exercise in exerciseArray) {
                 println("Exercício em Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
             }
 
-            // Return the array of exercises
             return exerciseArray
         }
         fun build(
@@ -139,7 +135,6 @@ class Exercise(
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val updatedExerciseArray = updateExerciseArray(exerciseArray)
-
         saveExerciseArray(context, cacheKey, updatedExerciseArray)
         showToastMessage(context, exerciseID in exerciseArray.map { it.exerciseID })
         return true
@@ -148,7 +143,6 @@ class Exercise(
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
-
         saveExerciseArray(context, cacheKey, newExerciseArray)
         showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
     }

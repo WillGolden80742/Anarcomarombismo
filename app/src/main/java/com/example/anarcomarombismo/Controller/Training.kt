@@ -8,21 +8,34 @@ import com.example.anarcomarombismo.R
 import java.util.Random
 
 class Training(
-    val trainingID: Long = 0,
+    var trainingID: Long = 0,
     var name: String = "",
     var description: String = ""
 ) {
-
+    private var randomTrainingID = 0L
     companion object {
-        fun loadTraining(context: Context): Array<Training> {
-            val cache = Cache()
-            val json = JSON()
+        private val cache = Cache()
+        private val json = JSON()
+        fun build(
+            trainingID: Long = 0,
+            name: String,
+            description: String
+        ): Training {
+            return Training().apply {
+                this.trainingID = trainingID
+                this.randomTrainingID = if (trainingID > 0) trainingID else generateTrainingID()
+                this.name = name
+                this.description = description
+            }
+        }
+        private fun hasTraining(context: Context): Boolean {
+            return cache.hasCache(context, "Treinos")
+        }
+        fun loadList(context: Context): Array<Training> {
             val trainingArray: Array<Training>
-
-            if (cache.hasCache(context, "Treinos")) {
+            if (hasTraining(context)) {
                 val cachedData = cache.getCache(context, "Treinos")
                 trainingArray = json.fromJson(cachedData, Array<Training>::class.java)
-                // Print every training
                 for (training in trainingArray) {
                     println("Treino em Cache: ${training.trainingID} - ${training.name} - ${training.description}")
                 }
@@ -33,14 +46,14 @@ class Training(
                     Training(3, context.getString(R.string.training_c), context.getString(R.string.shoulder_and_triceps)),
                     Training(4, context.getString(R.string.training_d), context.getString(R.string.calf_and_legs))
                 )
-                // Print trainings outside of cache
-                for (training in trainingArray) {
-                    println("Treino fora de Cache: ${training.trainingID} - ${training.name} - ${training.description}")
-                }
                 cache.setCache(context, "Treinos", json.toJson(trainingArray))
+                Exercise.dumpExercise(context)
             }
             return trainingArray
         }
+    }
+    private fun generateTrainingID(): Long {
+        return Random().nextInt(100)+System.currentTimeMillis()
     }
     fun save(context: Context): Boolean {
         val cache = Cache()
@@ -56,13 +69,13 @@ class Training(
                 } else it
             }
         } else {
-            val random = Random().nextInt(100)+System.currentTimeMillis()
-            val newTraining = Training(
-                trainingID = random,
-                name = this.name,
-                description = this.description
+            trainingArray.plus(
+                Training(
+                    trainingID = randomTrainingID,
+                    name = this.name,
+                    description = this.description
+                )
             )
-            trainingArray.plus(newTraining)
         }
         cache.setCache(context, "Treinos", json.toJson(updatedTrainingArray))
         val message = if (trainingID > 0) {
