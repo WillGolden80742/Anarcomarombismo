@@ -188,40 +188,45 @@ class DailyCalories {
             calculateCalories( food, "add")
         }
     }
-
     private fun calculateCalories(food: Food, operation: String) {
-        val energyKcalFormatted = food.energyKcal.replace(Regex("(?i)[natr*]"), "0")
-        val energyKjFormatted = food.energyKj.replace(Regex("(?i)[natr*]"), "0")
-        val proteinFormatted = food.protein.replace(Regex("(?i)[natr*]"), "0")
-        val carbohydrateFormatted = food.carbohydrate.replace(Regex("(?i)[natr*]"), "0")
-        val lipidsFormatted = food.lipids.replace(Regex("(?i)[natr*]"), "0")
-        val cholesterolFormatted = food.cholesterol.replace(Regex("(?i)[natr*]"), "0")
-        val dietaryFiberFormatted = food.dietaryFiber.replace(Regex("(?i)[natr*]"), "0")
-        val sodiumFormatted = food.sodium.replace(Regex("(?i)[natr*]"), "0")
+        calculateNutrientValues(food, operation)
+    }
+    private fun formatNutrientValue(nutrientValue: String): String {
+        return nutrientValue.replace(Regex("(?i)[natr*]"), "0")
+    }
+    private fun calculateNutrientValues(food: Food, operation: String) {
+        val energyKcalFormatted = formatNutrientValue(food.energyKcal)
+        val energyKjFormatted = formatNutrientValue(food.energyKj)
+        val proteinFormatted = formatNutrientValue(food.protein)
+        val carbohydrateFormatted = formatNutrientValue(food.carbohydrate)
+        val lipidsFormatted = formatNutrientValue(food.lipids)
+        val cholesterolFormatted = formatNutrientValue(food.cholesterol)
+        val dietaryFiberFormatted = formatNutrientValue(food.dietaryFiber)
+        val sodiumFormatted = formatNutrientValue(food.sodium)
+
+        val calorieMultiplier = (food.grams / 100.0)
 
         when (operation.lowercase()) {
             "add" -> {
-                calorieskcal += ((energyKcalFormatted.toDouble() / 100) * food.grams)
-                calorieskj += ((energyKjFormatted.toDouble() / 100) * food.grams)
-                protein += ((proteinFormatted.toDouble() / 100) * food.grams)
-                carbohydrate += ((carbohydrateFormatted.toDouble() / 100) * food.grams)
-                lipids += ((lipidsFormatted.toDouble() / 100) * food.grams)
-                cholesterol += ((cholesterolFormatted.toDouble() / 100) * food.grams)
-                dietaryFiber += ((dietaryFiberFormatted.toDouble() / 100) * food.grams)
-                sodium += ((sodiumFormatted.toDouble() / 100) * food.grams)
+                calorieskcal += (energyKcalFormatted.toDouble() * calorieMultiplier)
+                calorieskj += (energyKjFormatted.toDouble() * calorieMultiplier)
+                protein += (proteinFormatted.toDouble() * calorieMultiplier)
+                carbohydrate += (carbohydrateFormatted.toDouble() * calorieMultiplier)
+                lipids += (lipidsFormatted.toDouble() * calorieMultiplier)
+                cholesterol += (cholesterolFormatted.toDouble() * calorieMultiplier)
+                dietaryFiber += (dietaryFiberFormatted.toDouble() * calorieMultiplier)
+                sodium += (sodiumFormatted.toDouble() * calorieMultiplier)
             }
             "subtract" -> {
-                calorieskcal -= ((energyKcalFormatted.toDouble() / 100) * food.grams)
-                calorieskj -= ((energyKjFormatted.toDouble() / 100) * food.grams)
-                protein -= ((proteinFormatted.toDouble() / 100) * food.grams)
-                carbohydrate -= ((carbohydrateFormatted.toDouble() / 100) * food.grams)
-                lipids -= ((lipidsFormatted.toDouble() / 100) * food.grams)
-                cholesterol -= ((cholesterolFormatted.toDouble() / 100) * food.grams)
-                dietaryFiber -= ((dietaryFiberFormatted.toDouble() / 100) * food.grams)
-                sodium -= ((sodiumFormatted.toDouble() / 100) * food.grams)
+                calorieskcal -= (energyKcalFormatted.toDouble() * calorieMultiplier)
+                calorieskj -= (energyKjFormatted.toDouble() * calorieMultiplier)
+                protein -= (proteinFormatted.toDouble() * calorieMultiplier)
+                carbohydrate -= (carbohydrateFormatted.toDouble() * calorieMultiplier)
+                lipids -= (lipidsFormatted.toDouble() * calorieMultiplier)
+                cholesterol -= (cholesterolFormatted.toDouble() * calorieMultiplier)
+                dietaryFiber -= (dietaryFiberFormatted.toDouble() * calorieMultiplier)
+                sodium -= (sodiumFormatted.toDouble() * calorieMultiplier)
             }
         }
     }
-
-
 }
