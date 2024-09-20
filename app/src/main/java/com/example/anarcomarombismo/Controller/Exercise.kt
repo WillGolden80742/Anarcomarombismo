@@ -136,12 +136,13 @@ class Exercise(
         showToastMessage(context, exerciseID in exerciseArray.map { it.exerciseID })
         return true
     }
-    fun remove(context: Context) {
+    fun remove(context: Context):Boolean {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
         saveExerciseArray(context, cacheKey, newExerciseArray)
         showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
+        return true
     }
     fun load(context: Context, trainingID: Long, exerciseID: Long): Exercise? {
         val cache = Cache()
