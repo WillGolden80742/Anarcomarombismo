@@ -106,8 +106,8 @@ class Food (
         }
     }
 
-    fun loadList(context: Context): List<Food> {
-        return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+    fun loadList(context: Context): Array<Food> {
+        return json.fromJson(loadJSONCache(context), Array<Food>::class.java)
     }
     fun remove(context: Context) {
         try {

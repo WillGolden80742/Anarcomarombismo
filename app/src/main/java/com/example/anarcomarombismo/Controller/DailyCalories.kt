@@ -94,7 +94,7 @@ class DailyCalories (
         }
     }
 
-    fun loadList(context: Context): List<DailyCalories> {
+    fun loadList(context: Context): Array<DailyCalories> {
         var dailyCaloriesList: List<DailyCalories> = emptyList()
 
         try {
@@ -118,7 +118,7 @@ class DailyCalories (
             println("Erro ao carregar a lista de calorias diárias: $e")
         }
 
-        return dailyCaloriesList
+        return dailyCaloriesList.toTypedArray()
     }
 
     private fun getExistingDailyCaloriesList(context: Context): List<DailyCalories> {
