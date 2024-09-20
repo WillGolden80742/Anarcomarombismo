@@ -33,6 +33,8 @@ class DailyCalories (
     }
 
     companion object {
+        private val cache = Cache()
+        private val json = JSON()
         fun build(
             date: String = "",
             foodsList: List<Food> = listOf()
@@ -47,10 +49,8 @@ class DailyCalories (
     }
 
     fun save(context: Context): Boolean {
-        val cache = Cache()
-        val json = JSON()
         return try {
-            val dailyCaloriesList = getExistingDailyCaloriesList(context, cache, json)
+            val dailyCaloriesList = getExistingDailyCaloriesList(context)
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
             cache.setCache(context, "dailyCalories", json.toJson(updatedCaloriesList))
             true
@@ -79,7 +79,6 @@ class DailyCalories (
     }
 
     fun load(context: Context, selectedDate: String): DailyCalories {
-        val cache = Cache()
         if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
             val json = JSON()
@@ -96,8 +95,6 @@ class DailyCalories (
     }
 
     fun loadList(context: Context): List<DailyCalories> {
-        val cache = Cache()
-        val json = JSON()
         var dailyCaloriesList: List<DailyCalories> = emptyList()
 
         try {
@@ -124,7 +121,7 @@ class DailyCalories (
         return dailyCaloriesList
     }
 
-    private fun getExistingDailyCaloriesList(context: Context, cache: Cache, json: JSON): List<DailyCalories> {
+    private fun getExistingDailyCaloriesList(context: Context): List<DailyCalories> {
         return if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
             json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()

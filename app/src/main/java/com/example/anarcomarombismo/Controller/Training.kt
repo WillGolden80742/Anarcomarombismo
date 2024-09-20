@@ -56,8 +56,6 @@ class Training(
         return Random().nextInt(100)+System.currentTimeMillis()
     }
     fun save(context: Context): Boolean {
-        val cache = Cache()
-        val json = JSON()
         val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
         val updatedTrainingArray = if (trainingID > 0) {
             trainingArray.map {
@@ -88,8 +86,6 @@ class Training(
     }
 
     fun remove(context: Context): Boolean {
-        val cache = Cache()
-        val json = JSON()
         val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
         val updatedTrainingArray = trainingArray.filter { it.trainingID != trainingID }
         if (updatedTrainingArray.size < trainingArray.size) {
@@ -102,8 +98,6 @@ class Training(
     }
 
     fun load(context: Context, trainingID: Long):Training {
-        val cache = Cache()
-        val json = JSON()
         val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
         val training = trainingArray.find { it.trainingID == trainingID }
         if (training != null) {

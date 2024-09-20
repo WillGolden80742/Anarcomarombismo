@@ -145,8 +145,6 @@ class Exercise(
         return true
     }
     fun load(context: Context, trainingID: Long, exerciseID: Long): Exercise? {
-        val cache = Cache()
-        val json = JSON()
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
             json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
