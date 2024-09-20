@@ -241,7 +241,7 @@ class formDailyCalories : AppCompatActivity() {
     }
     private fun filterFoodList(foodList: List<Food>, query: String): List<Food> {
         return if (query.isEmpty()) {
-            foodList
+            foodList.toList()
         } else {
             foodList.filter { normalizeString(it.foodDescription).contains(normalizeString(query), ignoreCase = true) }
         }

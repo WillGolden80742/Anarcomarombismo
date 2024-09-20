@@ -11,7 +11,7 @@ import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.exercises
 
-class TrainingAdapter(context: Context, private val trainingList: Array<Training>, private val listener: OnTrainingItemClickListener) : ArrayAdapter<Training>(context, 0, trainingList) {
+class TrainingAdapter(context: Context, private val trainingList: List<Training>, private val listener: OnTrainingItemClickListener) : ArrayAdapter<Training>(context, 0, trainingList) {
 
     interface OnTrainingItemClickListener {
         fun onItemClick(training: Training)

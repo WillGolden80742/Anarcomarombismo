@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import com.example.anarcomarombismo.Adapters.TrainingAdapter
-import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formTraining
 

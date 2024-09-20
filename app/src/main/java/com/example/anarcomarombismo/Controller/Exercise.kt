@@ -105,7 +105,7 @@ class Exercise(
             }
         }
 
-        fun loadList(context: Context, trainingID: Long): Array<Exercise> {
+        fun loadList(context: Context, trainingID: Long): List<Exercise> {
 
             val cacheKey = "Exercicios_$trainingID"
             val exerciseArray = if (cache.hasCache(context, cacheKey)) {
@@ -124,7 +124,7 @@ class Exercise(
                 println("Exercício em Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
             }
 
-            return exerciseArray
+            return exerciseArray.toList()
         }
     }
 

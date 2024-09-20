@@ -31,16 +31,16 @@ class Training(
         private fun hasTraining(context: Context): Boolean {
             return cache.hasCache(context, "Treinos")
         }
-        fun loadList(context: Context): Array<Training> {
-            val trainingArray: Array<Training>
+        fun loadList(context: Context): List<Training> {
+            val trainingArray: List<Training>
             if (hasTraining(context)) {
                 val cachedData = cache.getCache(context, "Treinos")
-                trainingArray = json.fromJson(cachedData, Array<Training>::class.java)
+                trainingArray = json.fromJson(cachedData, Array<Training>::class.java).toList()
                 for (training in trainingArray) {
                     println("Treino em Cache: ${training.trainingID} - ${training.name} - ${training.description}")
                 }
             } else {
-                trainingArray = arrayOf(
+                trainingArray = listOf(
                     Training(1, context.getString(R.string.training_a), context.getString(R.string.chest_and_triceps)),
                     Training(2, context.getString(R.string.training_b), context.getString(R.string.back_and_biceps)),
                     Training(3, context.getString(R.string.training_c), context.getString(R.string.shoulder_and_triceps)),
@@ -49,7 +49,7 @@ class Training(
                 cache.setCache(context, "Treinos", json.toJson(trainingArray))
                 Exercise.dumpExercise(context)
             }
-            return trainingArray
+            return trainingArray.toList()
         }
     }
     private fun generateTrainingID(): Long {

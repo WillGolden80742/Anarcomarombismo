@@ -19,7 +19,7 @@ import java.util.Locale
 
 class ExerciseAdapter(
     context: Context,
-    private val exerciseList: Array<Exercise>,
+    private val exerciseList: List<Exercise>,
     private var date: String = ""
 ) : ArrayAdapter<Exercise>(context, 0, exerciseList) {
 
