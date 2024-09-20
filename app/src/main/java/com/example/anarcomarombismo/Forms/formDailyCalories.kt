@@ -142,7 +142,7 @@ class formDailyCalories : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
         Calendaries().selectDate(this, editTextDate, maxDate) {
-            getDailyCaloriesByDate(maxDate.toString())
+            getDailyCaloriesByDate(editTextDate.text.toString())
         }
     }
 
@@ -159,12 +159,12 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     private fun getDailyCaloriesByDate(selectedDate: String) {
-        DailyCalories().load(this, selectedDate) { dailyCaloriesLoaded ->
-            dailyCalories = dailyCaloriesLoaded
-            dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
-            totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
-            seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
-        }
+        dailyCalories = DailyCalories.build(
+            selectedDate
+        ).load(this, selectedDate)
+        dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
+        totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
+        seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
     }
 
     private fun getDailyCalories() {

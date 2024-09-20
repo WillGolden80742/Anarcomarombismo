@@ -5,26 +5,23 @@ import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DailyCalories {
-    var date: String = ""
-    var protein: Double = 0.0
-    var carbohydrate: Double = 0.0
-    var lipids: Double = 0.0
-    var cholesterol: Double = 0.0
-    var dietaryFiber: Double = 0.0
-    var sodium: Double = 0.0
-    var calorieskcal: Double = 0.0
-    var calorieskj: Double = 0.0
+class DailyCalories (
+    var date: String = "",
+    var protein: Double = 0.0,
+    var carbohydrate: Double = 0.0,
+    var lipids: Double = 0.0,
+    var cholesterol: Double = 0.0,
+    var dietaryFiber: Double = 0.0,
+    var sodium: Double = 0.0,
+    var calorieskcal: Double = 0.0,
+    var calorieskj: Double = 0.0,
     var foodsList: List<Food> = listOf()
+) {
 
     init {
         if (date == "") {
@@ -32,6 +29,20 @@ class DailyCalories {
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val formattedDate = dateFormat.format(currentDate)
             date = formattedDate
+        }
+    }
+
+    companion object {
+        fun build(
+            date: String = "",
+            foodsList: List<Food> = listOf()
+        ): DailyCalories {
+            val dailyCalories = DailyCalories().apply {
+                this.date = date
+                this.foodsList = foodsList
+            }
+            dailyCalories.recalculateCalories()
+            return dailyCalories
         }
     }
 
@@ -67,53 +78,50 @@ class DailyCalories {
         return true
     }
 
-    fun load(context: Context, selectedDate: String, callback: (DailyCalories) -> Unit) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val cache = Cache()
-            if (cache.hasCache(context, "dailyCalories")) {
-                val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
-                val json = JSON()
-                val dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-                val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == selectedDate }
-                withContext(Dispatchers.Main) {
-                    if (dailyCaloriesListFiltered.isNotEmpty()) {
-                        callback(dailyCaloriesListFiltered[0])
-                    } else {
-                        val newDailyCalories = DailyCalories().apply { date = selectedDate }
-                        callback(newDailyCalories)
-                    }
-                }
+    fun load(context: Context, selectedDate: String): DailyCalories {
+        val cache = Cache()
+        if (cache.hasCache(context, "dailyCalories")) {
+            val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+            val json = JSON()
+            val dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+            val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == selectedDate }
+            return if (dailyCaloriesListFiltered.isNotEmpty()) {
+                dailyCaloriesListFiltered[0]
+            } else {
+                DailyCalories().apply { date = selectedDate }
             }
+        } else {
+            return DailyCalories().apply { date = selectedDate }
         }
     }
 
-    fun loadList(context: Context, callback: (List<DailyCalories>) -> Unit) {
-        GlobalScope.launch(Dispatchers.IO) {
-            val cache = Cache()
-            val json = JSON()
-            var dailyCaloriesList: List<DailyCalories> = emptyList()
-            try {
-                if (cache.hasCache(context, "dailyCalories")) {
-                    val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
-                    println("Lista de calorias diárias: $dailyCaloriesListJson")
-                    dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-                } else {
-                    val dailyCaloriesListJson = cache.getCache(context, "emptyDailyCalories")
-                    println("Lista de calorias diárias: $dailyCaloriesListJson")
-                    dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-                }
-                // Sort the list by date (year -> month -> day)
-                dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
-                    val dateParts = dailyCalories.date.split("/")
-                    "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt()
-                }
-                withContext(Dispatchers.Main) {
-                    callback(dailyCaloriesList)
-                }
-            } catch (e: Exception) {
-                println("Erro ao carregar a lista de calorias diárias: $e")
+    fun loadList(context: Context): List<DailyCalories> {
+        val cache = Cache()
+        val json = JSON()
+        var dailyCaloriesList: List<DailyCalories> = emptyList()
+
+        try {
+            if (cache.hasCache(context, "dailyCalories")) {
+                val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+                println("Lista de calorias diárias: $dailyCaloriesListJson")
+                dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+            } else {
+                val dailyCaloriesListJson = cache.getCache(context, "emptyDailyCalories")
+                println("Lista de calorias diárias: $dailyCaloriesListJson")
+                dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
             }
+
+            // Sort the list by date (year -> month -> day)
+            dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
+                val dateParts = dailyCalories.date.split("/")
+                "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt()
+            }
+
+        } catch (e: Exception) {
+            println("Erro ao carregar a lista de calorias diárias: $e")
         }
+
+        return dailyCaloriesList
     }
 
     private fun getExistingDailyCaloriesList(context: Context, cache: Cache, json: JSON): List<DailyCalories> {
