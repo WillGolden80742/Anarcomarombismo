@@ -24,7 +24,7 @@ class dailyCalories : AppCompatActivity() {
             callFormDailyCalories()
         }
 
-        caloriesFoodList.setOnItemClickListener { parent, view, position, id ->
+        caloriesFoodList.setOnItemClickListener { parent, _, position, _ ->
             val dailyCalories = parent.getItemAtPosition(position) as DailyCalories
             val intent = Intent(this, formDailyCalories::class.java)
             try {
@@ -34,11 +34,11 @@ class dailyCalories : AppCompatActivity() {
                 println("Erro ao chamar a tela de calorias diárias: $e")
             }
         }
+
         addNewFoodButton.setOnClickListener {
             callFoodForm()
         }
     }
-    // onResume
     override fun onResume() {
         super.onResume()
         val adapter = DailyCaloriesAdapter(this, DailyCalories().fetchAll(this) )

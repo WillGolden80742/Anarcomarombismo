@@ -57,10 +57,11 @@ class MainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
     }
 
     private fun loadTraining() {
-        val adapter = TrainingAdapter(
-            this,Training().fetchAll(this),
-            this)
-        listView.adapter = adapter
+        listView.adapter = TrainingAdapter(
+            this,
+            Training().fetchAll(this),
+            this
+        )
     }
 
 }
