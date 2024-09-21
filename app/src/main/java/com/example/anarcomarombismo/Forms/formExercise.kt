@@ -250,7 +250,7 @@ class formExercise : AppCompatActivity() {
                     val inputStream = resources.openRawResource(R.raw.vector_banner)
                     inputStream.bufferedReader().use { it.readText() }
                 }
-                webView.loadUrl("data:image/svg+xml;base64," + text)
+                webView.loadUrl("data:image/svg+xml;base64,$text")
             }
         }
     }
