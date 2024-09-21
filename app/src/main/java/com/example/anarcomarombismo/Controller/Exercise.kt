@@ -163,7 +163,6 @@ class Exercise(
     fun formatRepetitionsAndCountSets(editTextSets: EditText, editTextRepetitions: EditText) {
         CoroutineScope(Dispatchers.Main).launch {
             val text = editTextRepetitions.text.toString()
-            // Incluindo o sinal '×' na expressão regular
             val newText = text.replace(Regex("[^0-9Xx×*,]"), "")
             if (text.contains("X") || text.contains("x") || text.contains("*") || text.contains("×")) {
                 handleXFormat(editTextSets, editTextRepetitions, text)
@@ -178,7 +177,6 @@ class Exercise(
     private fun handleXFormat(editTextSets: EditText, editTextRepetitions: EditText, text: String) {
         CoroutineScope(Dispatchers.Default).launch {
             val newText = async {
-                // Incluindo o sinal '×' na expressão regular
                 text.replace(Regex("[^0-9Xx×*]|X{2,}|x{2,}|×{2,}|\\*{2,}"), "")
             }
             val processedText = async {
@@ -190,7 +188,6 @@ class Exercise(
                 }
             }
             val numbers = async {
-                // Incluindo o sinal '×' na expressão regular de split
                 processedText.await().split(Regex("[Xx×*]")).filter { it.isNotEmpty() }
             }
             withContext(Dispatchers.Main) {
