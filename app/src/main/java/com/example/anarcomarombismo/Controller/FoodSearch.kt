@@ -5,8 +5,6 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.HtmlHandler
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.Controller.Util.StringHandler
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -17,7 +15,6 @@ import java.net.URLEncoder
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.DecimalFormat
-import java.text.Normalizer
 
 class FoodSearch (var name:String = "", var href:String = "",var smallText:String = "", var grams:String = "") {
     private val cache = Cache()
