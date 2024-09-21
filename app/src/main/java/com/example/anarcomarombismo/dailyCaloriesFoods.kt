@@ -65,7 +65,6 @@ class dailyCaloriesFoods : AppCompatActivity() {
     }
 
     private fun loadFoodList() {
-        // Get the food list from the JSON
         val json = JSON()
         setFoodList(intent.getStringExtra("foodsList")?.let { json.fromJson(it, Array<Food>::class.java) }?.toList()!!)
         dailyCaloriesDate = intent.getStringExtra("dailyCaloriesDate")!!
