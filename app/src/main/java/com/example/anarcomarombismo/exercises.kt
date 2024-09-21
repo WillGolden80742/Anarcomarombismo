@@ -65,7 +65,7 @@ class exercises : AppCompatActivity() {
     private fun selectDate() {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-        Calendaries().selectDate(this, dateTextView, maxDate) {
+        Calendaries.selectDate(this, dateTextView, maxDate) {
             loadExercises(trainingID, it)
         }
     }

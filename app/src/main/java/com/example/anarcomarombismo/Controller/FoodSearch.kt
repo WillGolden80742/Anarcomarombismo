@@ -19,8 +19,6 @@ import java.text.DecimalFormat
 class FoodSearch (var name:String = "", var href:String = "",var smallText:String = "", var grams:String = "") {
     private val cache = Cache()
     private val json = JSON()
-    private val stringHandler = StringHandler()
-    private val htmlHandler = HtmlHandler()
     fun searchFood(context: Context, query: String): List<FoodSearch> {
         val queryHash = getKey(query)
         if (cache.hasCache(context, queryHash)) {
@@ -40,18 +38,18 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             val url =
                 "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
             try {
-                val document = htmlHandler.fetchDocument(url)
+                val document = HtmlHandler.fetchDocument(url)
                 val links = document.select("a.prominent")
                 val smallTextDivs = document.select("div.smallText")
 
                 for (link in links) {
                     val foodSearch = parseFoodSearch(link, smallTextDivs)
-                    if (foodSearch != null && stringHandler.containsQuery(foodSearch.name,query)) {
+                    if (foodSearch != null && StringHandler.containsQuery(foodSearch.name,query)) {
                         items.add(foodSearch)
                     }
                 }
             } catch (e: IOException) {
-                println("Erro: ${e.message}")
+                println("Error: ${e.message}")
                 return emptyList()
             }
         }
@@ -93,7 +91,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             return json.fromJson(cache.getCache(context, foodNumber), Food::class.java)
         }
         return try {
-            val html = htmlHandler.fetchHtmlContent(url)
+            val html = HtmlHandler.fetchHtmlContent(url)
             val doc: Document = Jsoup.parse(html)
 
             val foodDescription = extractFoodDescription(doc)

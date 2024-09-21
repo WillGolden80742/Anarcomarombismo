@@ -73,7 +73,7 @@ class dailyCaloriesFoods : AppCompatActivity() {
     }
 
     private fun searchFoodList(value: String) {
-        val filteredList = foodList.filter { StringHandler().containsQuery(it.foodDescription,value) }
+        val filteredList = foodList.filter { StringHandler.containsQuery(it.foodDescription,value) }
         val adapter = FoodAdapter(this, filteredList,"dailyCaloriesFoods")
         listView.adapter = adapter
     }

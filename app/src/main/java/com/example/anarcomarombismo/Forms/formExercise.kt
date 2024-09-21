@@ -17,6 +17,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
+import com.example.anarcomarombismo.Controller.Util.ExerciseHandler
 import com.example.anarcomarombismo.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -88,7 +89,7 @@ class formExercise : AppCompatActivity() {
         }
 
         editTextRepetitions.addTextChangedListener {
-            Exercise().formatRepetitionsAndCountSets(editTextSets, editTextRepetitions)
+            ExerciseHandler.formatRepetitionsAndCountSets(editTextSets, editTextRepetitions)
         }
 
         // listener change editTextVideoLink focus lost

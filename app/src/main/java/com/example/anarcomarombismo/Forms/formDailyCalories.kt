@@ -136,7 +136,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun selectDate () {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-        Calendaries().selectDate(this, editTextDate, maxDate) {
+        Calendaries.selectDate(this, editTextDate, maxDate) {
             getDailyCaloriesByDate(editTextDate.text.toString())
         }
     }
@@ -232,7 +232,7 @@ class formDailyCalories : AppCompatActivity() {
         return if (query.isEmpty()) {
             foodList.toList()
         } else {
-            foodList.filter { StringHandler().containsQuery(it.foodDescription,query) }
+            foodList.filter { StringHandler.containsQuery(it.foodDescription,query) }
         }
     }
 
