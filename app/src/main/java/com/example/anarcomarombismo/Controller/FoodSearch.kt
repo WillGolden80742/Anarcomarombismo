@@ -2,7 +2,9 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.HtmlHandler
 import com.example.anarcomarombismo.Controller.Util.JSON
+import com.example.anarcomarombismo.Controller.Util.StringHandler
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.jsoup.Jsoup
@@ -20,6 +22,8 @@ import java.text.Normalizer
 class FoodSearch (var name:String = "", var href:String = "",var smallText:String = "", var grams:String = "") {
     private val cache = Cache()
     private val json = JSON()
+    private val stringHandler = StringHandler()
+    private val htmlHandler = HtmlHandler()
     fun searchFood(context: Context, query: String): List<FoodSearch> {
         val queryHash = getKey(query)
         if (cache.hasCache(context, queryHash)) {
@@ -39,13 +43,13 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             val url =
                 "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
             try {
-                val document = fetchDocument(url)
+                val document = htmlHandler.fetchDocument(url)
                 val links = document.select("a.prominent")
                 val smallTextDivs = document.select("div.smallText")
 
                 for (link in links) {
                     val foodSearch = parseFoodSearch(link, smallTextDivs)
-                    if (foodSearch != null && containsQuery(foodSearch.name,query)) {
+                    if (foodSearch != null && stringHandler.containsQuery(foodSearch.name,query)) {
                         items.add(foodSearch)
                     }
                 }
@@ -56,25 +60,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         }
         cache.setCache(context, queryHash, json.toJson(items))
         return items
-    }
-    private fun containsQuery(text: String, query: String): Boolean {
-        val normalizedText = normalizeString(text)
-        val normalizedQuery = normalizeString(query)
-        for (word in normalizedQuery.split(" ")) {
-            if (normalizedText.contains(word, ignoreCase = true) && word.length > 2) {
-                return true
-            }
-        }
-        return false
-    }
-    private fun normalizeString(text: String): String {
-        return Normalizer.normalize(text, Normalizer.Form.NFD)
-            .replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "")
-    }
-    private fun fetchDocument(url: String): Document {
-        return Jsoup.connect(url)
-            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-            .get()
     }
     private fun parseFoodSearch(link: Element, smallTextDivs: Elements): FoodSearch? {
         val href = link.attr("href")
@@ -111,7 +96,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             return json.fromJson(cache.getCache(context, foodNumber), Food::class.java)
         }
         return try {
-            val html = fetchHtmlContent(url)
+            val html = htmlHandler.fetchHtmlContent(url)
             val doc: Document = Jsoup.parse(html)
 
             val foodDescription = extractFoodDescription(doc)
@@ -124,13 +109,6 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             println("Error Food: ${e.message}")
             Food()
         }
-    }
-    private fun fetchHtmlContent(url: String): String {
-        val client = OkHttpClient()
-        val request = Request.Builder().url(url).build()
-        val response = client.newCall(request).execute()
-        if (!response.isSuccessful) throw Exception("Failed to fetch data")
-        return response.body?.string() ?: throw Exception("No content received")
     }
     private fun extractFoodDescription(doc: Document): String {
         val foodDescription = doc.select("div.summarypanelcontent h1").text().trim()

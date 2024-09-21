@@ -9,6 +9,7 @@ import com.example.anarcomarombismo.Controller.Adapter.FoodAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Util.JSON
+import com.example.anarcomarombismo.Controller.Util.StringHandler
 
 class dailyCaloriesFoods : AppCompatActivity() {
     // Declare elements from layout
@@ -72,7 +73,7 @@ class dailyCaloriesFoods : AppCompatActivity() {
     }
 
     private fun searchFoodList(value: String) {
-        val filteredList = foodList.filter { it.foodDescription.contains(value, ignoreCase = true) }
+        val filteredList = foodList.filter { StringHandler().containsQuery(it.foodDescription,value) }
         val adapter = FoodAdapter(this, filteredList,"dailyCaloriesFoods")
         listView.adapter = adapter
     }
