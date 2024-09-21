@@ -47,7 +47,7 @@ class ExerciseAdapter(
             println("ID do exercício: ${exerciseList[position].exerciseID}")
         }
 
-        val checked = DailyExercises(context).getExercise(date, currentExercise)
+        val checked = DailyExercises(context).isExerciseDone(date, currentExercise)
 
         if (checked) {
             checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
@@ -80,7 +80,7 @@ class ExerciseAdapter(
 
     private fun countDays(labelCheckBoxItem: TextView, currentExercise: Exercise) {
         val dailyExercises = DailyExercises(context)
-        val countDays = dailyExercises.getExerciseDays(currentExercise)
+        val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
         val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
         val sets = currentExercise.sets
 
@@ -112,8 +112,8 @@ class ExerciseAdapter(
 
     private fun handleExerciseCheck(currentExercise: Exercise, labelCheckBoxItem: TextView, checkItem: FloatingActionButton) {
         val dailyExercises = DailyExercises(context)
-        val exerciseDone = dailyExercises.getExercise(date, currentExercise)
-        val exerciseDaysCount = dailyExercises.getExerciseDays(currentExercise)
+        val exerciseDone = dailyExercises.isExerciseDone(date, currentExercise)
+        val exerciseDaysCount = dailyExercises.getDaysSinceLastExercise(currentExercise)
         val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
         val sets = currentExercise.sets
 
@@ -132,7 +132,7 @@ class ExerciseAdapter(
 
     private fun markExerciseAsDone(dailyExercises: DailyExercises, currentExercise: Exercise, checkItem: FloatingActionButton) {
         checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-        dailyExercises.exerciseDone(date, currentExercise)
+        dailyExercises.markExerciseAsDone(date, currentExercise)
     }
 
     private fun toggleExerciseState(dailyExercises: DailyExercises, exerciseDone: Boolean, currentExercise: Exercise, checkItem: FloatingActionButton) {
@@ -146,7 +146,7 @@ class ExerciseAdapter(
 
     private fun unmarkExerciseAsDone(dailyExercises: DailyExercises, currentExercise: Exercise, checkItem: FloatingActionButton) {
         checkItem.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-        dailyExercises.exerciseNotDone(date, currentExercise)
+        dailyExercises.unmarkExercise(date, currentExercise)
     }
 
     private fun updateDaysLabel(labelCheckBoxItem: TextView, currentExercise: Exercise) {

@@ -121,16 +121,16 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun isCheckExercise(exercise: Exercise): Boolean {
-        return DailyExercises(this).getExercise(exerciseDate,exercise)
+        return DailyExercises(this).isExerciseDone(exerciseDate,exercise)
     }
     private fun checkExercise(exercise: Exercise) {
         val dailyExercices = DailyExercises(this)
         if (isCheckExercise(exercise)) {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
-            dailyExercices.exerciseNotDone(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
+            dailyExercices.unmarkExercise(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
         } else {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-            dailyExercices.exerciseDone(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
+            dailyExercices.markExerciseAsDone(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
             Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }

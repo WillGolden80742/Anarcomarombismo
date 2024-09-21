@@ -7,53 +7,67 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-class DailyExercises (context: Context) {
+
+class DailyExercises(context: Context) {
     private val context = context
-    private val json = JSON()
-    private val cache = Cache()
-    private val dateFormatInput = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    private val dateFormatStored = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    private val jsonConverter = JSON()
+    private val cacheManager = Cache()
+    private val dateInputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val dateStorageFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
-    private fun getCurrentDate(): String = dateFormatStored.format(Date())
+    private fun getCurrentFormattedDate(): String = dateStorageFormat.format(Date())
 
-    fun exerciseDone(date: String = getCurrentDate(), exercise: Exercise, count: Int = 1) {
-        val parsedDate = dateFormatInput.parse(date)
-        val formattedDate = dateFormatStored.format(parsedDate)
-        val exerciseList = getExerciseList(exercise).toMutableSet()
+    fun markExerciseAsDone(date: String = getCurrentFormattedDate(), exercise: Exercise, count: Int = 1) {
+        val parsedDate = dateInputFormat.parse(date)
+        val formattedDate = dateStorageFormat.format(parsedDate)
+        val exerciseHistory = getExerciseHistory(exercise).toMutableSet()
 
-        val existingExercise = exerciseList.find { it.date == formattedDate && it.exercise.exerciseID == exercise.exerciseID && it.exercise.trainingID == exercise.trainingID }
+        val existingRecord = exerciseHistory.find {
+            it.date == formattedDate &&
+                    it.exercise.exerciseID == exercise.exerciseID &&
+                    it.exercise.trainingID == exercise.trainingID
+        }
 
         try {
-            val updatedExercise = ExerciseByDate(existingExercise!!.date, existingExercise.exercise, existingExercise.count + 1)
-            exerciseList.remove(existingExercise)
-            exerciseList.add(updatedExercise)
+            val updatedRecord = ExerciseByDate(existingRecord!!.date, existingRecord.exercise, existingRecord.count + count)
+            exerciseHistory.remove(existingRecord)
+            exerciseHistory.add(updatedRecord)
         } catch (e: Exception) {
-            exerciseList.add(ExerciseByDate(formattedDate, exercise, count))
+            exerciseHistory.add(ExerciseByDate(formattedDate, exercise, count))
         }
-        updateCache(exercise, exerciseList.toList())
+
+        updateExerciseCache(exercise, exerciseHistory.toList())
     }
 
-    fun exerciseNotDone(date: String = getCurrentDate(), exercise: Exercise, days: Int = 1) {
-        val startDate = dateFormatInput.parse(date) ?: return
-        val exerciseList = getExerciseList(exercise).toMutableSet()
-        val calendar = Calendar.getInstance().apply { time = startDate }
+    fun unmarkExercise(date: String = getCurrentFormattedDate(), exercise: Exercise, days: Int = 1) {
+        val parsedStartDate = dateInputFormat.parse(date) ?: return
+        val exerciseHistory = getExerciseHistory(exercise).toMutableSet()
+        val calendar = Calendar.getInstance().apply { time = parsedStartDate }
 
         repeat(days) {
-            val checkDate = dateFormatStored.format(calendar.time)
-            exerciseList.removeIf { it.date == checkDate && it.exercise.exerciseID == exercise.exerciseID && it.exercise.trainingID == exercise.trainingID }
+            val targetDate = dateStorageFormat.format(calendar.time)
+            exerciseHistory.removeIf {
+                it.date == targetDate &&
+                        it.exercise.exerciseID == exercise.exerciseID &&
+                        it.exercise.trainingID == exercise.trainingID
+            }
             calendar.add(Calendar.DAY_OF_YEAR, -1)
         }
 
-        updateCache(exercise, exerciseList.toList())
+        updateExerciseCache(exercise, exerciseHistory.toList())
     }
 
-    fun getExercise(date: String = getCurrentDate(), exercise: Exercise, days: Int = 1): Boolean {
-        val startDate = dateFormatInput.parse(date) ?: return false
-        val calendar = Calendar.getInstance().apply { time = startDate }
+    fun isExerciseDone(date: String = getCurrentFormattedDate(), exercise: Exercise, days: Int = 1): Boolean {
+        val parsedStartDate = dateInputFormat.parse(date) ?: return false
+        val calendar = Calendar.getInstance().apply { time = parsedStartDate }
 
         repeat(days) {
-            val checkDate = dateFormatStored.format(calendar.time)
-            if (getExerciseList(exercise).any { it.date == checkDate && it.exercise.exerciseID == exercise.exerciseID && it.exercise.trainingID == exercise.trainingID }) {
+            val targetDate = dateStorageFormat.format(calendar.time)
+            if (getExerciseHistory(exercise).any {
+                    it.date == targetDate &&
+                            it.exercise.exerciseID == exercise.exerciseID &&
+                            it.exercise.trainingID == exercise.trainingID
+                }) {
                 return true
             }
             calendar.add(Calendar.DAY_OF_YEAR, -1)
@@ -62,41 +76,44 @@ class DailyExercises (context: Context) {
         return false
     }
 
-    fun getExerciseDays(exercise: Exercise): Int {
-        val exerciseList = getExerciseList(exercise)
-        if (exerciseList.isEmpty()) {
-            return -1
-        }
-        val latestExerciseDate = exerciseList.maxOfOrNull {
-            dateFormatStored.parse(it.date)
+    fun getDaysSinceLastExercise(exercise: Exercise): Int {
+        val exerciseHistory = getExerciseHistory(exercise)
+        if (exerciseHistory.isEmpty()) return -1
+
+        val lastExerciseDate = exerciseHistory.maxOfOrNull {
+            dateStorageFormat.parse(it.date)
         } ?: return -1
-        val currentDate = dateFormatStored.parse(getCurrentDate())
-        val diffInMillis = currentDate?.time?.minus(latestExerciseDate.time) ?: 0
-        val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
-        return diffInDays
+
+        val currentDate = dateStorageFormat.parse(getCurrentFormattedDate())
+        val differenceInMillis = currentDate?.time?.minus(lastExerciseDate.time) ?: 0
+        val differenceInDays = (differenceInMillis / (1000 * 60 * 60 * 24)).toInt()
+
+        return differenceInDays
     }
 
     fun getExerciseCount(exercise: Exercise): Int {
-        val exerciseList = getExerciseList(exercise)
-        if (exerciseList.isEmpty()) {
-            return 0
+        val exerciseHistory = getExerciseHistory(exercise)
+        if (exerciseHistory.isEmpty()) return 0
+
+        val lastExercise = exerciseHistory.maxByOrNull {
+            dateStorageFormat.parse(it.date)?.time ?: 0
         }
-        val latestExercise = exerciseList.maxByOrNull { dateFormatStored.parse(it.date)?.time ?: 0 }
-        return latestExercise?.count ?: 0
+
+        return lastExercise?.count ?: 0
     }
 
-    private fun getExerciseList(exercise:Exercise): Set<ExerciseByDate> {
-        val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseList"
-        return if (cache.hasCache(context, cacheKey)) {
-            val json = cache.getCache(context, cacheKey)
-            this.json.fromJson(json, Array<ExerciseByDate>::class.java).toSet()
+    private fun getExerciseHistory(exercise: Exercise): Set<ExerciseByDate> {
+        val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
+        return if (cacheManager.hasCache(context, cacheKey)) {
+            val cachedJson = cacheManager.getCache(context, cacheKey)
+            jsonConverter.fromJson(cachedJson, Array<ExerciseByDate>::class.java).toSet()
         } else {
             emptySet()
         }
     }
 
-    private fun updateCache(exercise:Exercise, exerciseList: List<ExerciseByDate>) {
-        val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseList"
-        cache.setCache(context, cacheKey, json.toJson(exerciseList))
+    private fun updateExerciseCache(exercise: Exercise, exerciseHistory: List<ExerciseByDate>) {
+        val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
+        cacheManager.setCache(context, cacheKey, jsonConverter.toJson(exerciseHistory))
     }
 }
