@@ -19,6 +19,7 @@ import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.FoodSearch
 import com.example.anarcomarombismo.Controller.Util.Calendaries
+import com.example.anarcomarombismo.Controller.Util.StringHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCaloriesFoods
 import kotlinx.coroutines.CoroutineScope
@@ -243,14 +244,10 @@ class formDailyCalories : AppCompatActivity() {
         return if (query.isEmpty()) {
             foodList.toList()
         } else {
-            foodList.filter { normalizeString(it.foodDescription).contains(normalizeString(query), ignoreCase = true) }
+            foodList.filter { StringHandler().containsQuery(it.foodDescription,query) }
         }
     }
 
-    private fun normalizeString(text: String): String {
-        return Normalizer.normalize(text, Normalizer.Form.NFD)
-            .replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "")
-    }
 
     private fun updateListView(filteredList: List<Food>) {
         val adapter = FoodAdapter(this@formDailyCalories, filteredList)
@@ -316,7 +313,6 @@ class formDailyCalories : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val result = FoodSearch().searchFood(this@formDailyCalories, query)
                 withContext(Dispatchers.Main) {
-
                     for (foodSearch in result) {
                         getFoodByURLAsync(
                             foodSearch.href,
