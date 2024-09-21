@@ -73,20 +73,14 @@ class dailyCaloriesFoods : AppCompatActivity() {
     }
 
     private fun searchFoodList(value: String) {
-        // Search for food in the list
         val filteredList = foodList.filter { it.foodDescription.contains(value, ignoreCase = true) }
         val adapter = FoodAdapter(this, filteredList,"dailyCaloriesFoods")
         listView.adapter = adapter
     }
 
-
-
     fun removeFood(food: Food) {
-        // get the selected food and remove it from the list
         foodList = foodList.minus(food)
-        // update the list view
-        val adapter = FoodAdapter(this, foodList,"dailyCaloriesFoods")
-        listView.adapter = adapter
+        listView.adapter = FoodAdapter(this, foodList,"dailyCaloriesFoods")
         if (foodList.isEmpty()) {
             buildDailyCalories().remove(this)
             finish()
