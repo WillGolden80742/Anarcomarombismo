@@ -2,6 +2,7 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
+import com.example.anarcomarombismo.Controller.Interface.PersistentData
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -11,15 +12,15 @@ class Training(
     var trainingID: Long = 0,
     var name: String = "",
     var description: String = ""
-) {
+): PersistentData<Training> {
     private var randomTrainingID = 0L
     companion object {
         private val cache = Cache()
         private val json = JSON()
         fun build(
             trainingID: Long = 0,
-            name: String,
-            description: String
+            name: String = "",
+            description: String = ""
         ): Training {
             return Training().apply {
                 this.trainingID = trainingID
@@ -31,31 +32,11 @@ class Training(
         private fun hasTraining(context: Context): Boolean {
             return cache.hasCache(context, "Treinos")
         }
-        fun loadList(context: Context): List<Training> {
-            val trainingArray: List<Training>
-            if (hasTraining(context)) {
-                val cachedData = cache.getCache(context, "Treinos")
-                trainingArray = json.fromJson(cachedData, Array<Training>::class.java).toList()
-                for (training in trainingArray) {
-                    println("Treino em Cache: ${training.trainingID} - ${training.name} - ${training.description}")
-                }
-            } else {
-                trainingArray = listOf(
-                    Training(1, context.getString(R.string.training_a), context.getString(R.string.chest_and_triceps)),
-                    Training(2, context.getString(R.string.training_b), context.getString(R.string.back_and_biceps)),
-                    Training(3, context.getString(R.string.training_c), context.getString(R.string.shoulder_and_triceps)),
-                    Training(4, context.getString(R.string.training_d), context.getString(R.string.calf_and_legs))
-                )
-                cache.setCache(context, "Treinos", json.toJson(trainingArray))
-                Exercise.dumpExercise(context)
-            }
-            return trainingArray.toList()
-        }
     }
     private fun generateTrainingID(): Long {
         return Random().nextInt(100)+System.currentTimeMillis()
     }
-    fun save(context: Context): Boolean {
+    override fun save(context: Context): Boolean {
         val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
         val updatedTrainingArray = if (trainingID > 0) {
             trainingArray.map {
@@ -85,7 +66,7 @@ class Training(
         return true
     }
 
-    fun remove(context: Context): Boolean {
+    override fun remove(context: Context): Boolean {
         val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
         val updatedTrainingArray = trainingArray.filter { it.trainingID != trainingID }
         if (updatedTrainingArray.size < trainingArray.size) {
@@ -108,4 +89,29 @@ class Training(
         }
         return this
     }
+    override fun load(context: Context, id: Any): Training {
+        return load(context,id as Long)
+    }
+    override fun loadList(context: Context): List<Training> {
+        val trainingArray: List<Training>
+        if (hasTraining(context)) {
+            val cachedData = cache.getCache(context, "Treinos")
+            trainingArray = json.fromJson(cachedData, Array<Training>::class.java).toList()
+            for (training in trainingArray) {
+                println("Treino em Cache: ${training.trainingID} - ${training.name} - ${training.description}")
+            }
+        } else {
+            trainingArray = listOf(
+                Training(1, context.getString(R.string.training_a), context.getString(R.string.chest_and_triceps)),
+                Training(2, context.getString(R.string.training_b), context.getString(R.string.back_and_biceps)),
+                Training(3, context.getString(R.string.training_c), context.getString(R.string.shoulder_and_triceps)),
+                Training(4, context.getString(R.string.training_d), context.getString(R.string.calf_and_legs))
+            )
+            cache.setCache(context, "Treinos", json.toJson(trainingArray))
+            Exercise.dumpExercise(context)
+        }
+        return trainingArray.toList()
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
+import com.example.anarcomarombismo.Controller.Interface.PersistentData
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -38,7 +39,7 @@ class Food (
     var pyridoxine: String = "0.0",
     var niacin: String = "0.0",
     var vitaminC: String = ""
-) {
+): PersistentData<Food> {
     init {
         if (grams == null) {
             grams = 100.00
@@ -50,13 +51,13 @@ class Food (
         fun build(
             foodNumber: String = "",
             grams: Double = 100.0,
-            foodDescription: String,
-            protein: String,
-            carbohydrate: String,
-            lipids: String,
-            dietaryFiber: String,
-            sodium: String,
-            energyKcal: String
+            foodDescription: String = "NO_DESCRIPTION",
+            protein: String = "0.0",
+            carbohydrate: String = "0.0",
+            lipids: String = "0.0",
+            dietaryFiber: String = "0.0",
+            sodium: String = "0.0",
+            energyKcal: String = "0.0"
         ): Food {
             return Food().apply {
                 this.foodNumber = foodNumber.ifEmpty { generateFoodNumber() }
@@ -72,7 +73,7 @@ class Food (
             }
         }
     }
-    fun save(context: Context): Boolean {
+    override fun save(context: Context): Boolean {
         return save(this, context)
     }
     private fun save(food: Food, context: Context): Boolean {
@@ -106,18 +107,30 @@ class Food (
         }
     }
 
-    fun loadList(context: Context): List<Food> {
+    override fun loadList(context: Context): List<Food> {
         return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
     }
-    fun remove(context: Context) {
+
+    fun load(context: Context, id: String): Food {
+        return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+            .first { it.foodNumber == id }
+    }
+
+    override fun load(context: Context, id: Any): Food {
+        return load(context,id as String)
+    }
+
+    override fun remove(context: Context): Boolean {
         try {
             val foodNutritionList = json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
                 .filter { it.foodNumber != foodNumber }
             cache.setCache(context, "Alimentos", json.toJson(foodNutritionList))
             Toast.makeText(context, context.getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
+            return true
         } catch (e: Exception) {
             Toast.makeText(context, context.getString(R.string.error_removing_food), Toast.LENGTH_SHORT).show()
             println("Erro food: $e")
+            return false
         }
     }
 

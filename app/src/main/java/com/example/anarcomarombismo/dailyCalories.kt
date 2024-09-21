@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
-import com.example.anarcomarombismo.Adapters.DailyCaloriesAdapter
+import com.example.anarcomarombismo.Controller.Adapter.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Forms.formDailyCalories
 import com.example.anarcomarombismo.Forms.formFood

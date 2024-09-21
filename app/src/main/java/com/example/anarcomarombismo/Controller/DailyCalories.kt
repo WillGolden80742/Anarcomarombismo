@@ -2,6 +2,7 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
+import com.example.anarcomarombismo.Controller.Interface.PersistentData
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -21,7 +22,7 @@ class DailyCalories (
     var calorieskcal: Double = 0.0,
     var calorieskj: Double = 0.0,
     var foodsList: List<Food> = listOf()
-) {
+) : PersistentData<DailyCalories> {
 
     init {
         if (date == "") {
@@ -48,7 +49,7 @@ class DailyCalories (
         }
     }
 
-    fun save(context: Context): Boolean {
+    override fun save(context: Context): Boolean {
         return try {
             val dailyCaloriesList = getExistingDailyCaloriesList(context)
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
@@ -60,7 +61,7 @@ class DailyCalories (
         }
     }
 
-    fun remove(context: Context):Boolean {
+    override fun remove(context: Context):Boolean {
         val currentDate = date
         val cacheKey = "dailyCalories"
         val cache = Cache()
@@ -78,7 +79,7 @@ class DailyCalories (
         return true
     }
 
-    fun load(context: Context, selectedDate: String): DailyCalories {
+     fun load(context: Context, selectedDate: String): DailyCalories {
         if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
             val json = JSON()
@@ -94,7 +95,11 @@ class DailyCalories (
         }
     }
 
-    fun loadList(context: Context): List<DailyCalories> {
+    override fun load(context: Context, id: Any): DailyCalories {
+        return load(context,id as String)
+    }
+
+    override fun loadList(context: Context): List<DailyCalories> {
         var dailyCaloriesList: List<DailyCalories> = emptyList()
 
         try {

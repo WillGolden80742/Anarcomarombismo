@@ -3,6 +3,7 @@ package com.example.anarcomarombismo.Controller
 import android.content.Context
 import android.widget.EditText
 import android.widget.Toast
+import com.example.anarcomarombismo.Controller.Interface.PersistentData
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -24,21 +25,21 @@ class Exercise(
     var load: Double = 20.0, // Carga padrão em kg
     var rest: Int = 60, // Tempo de repouso padrão em segundos
     var cadence: String = "3-1-3", // Cadência padrão
-) {
+): PersistentData<Exercise> {
     companion object {
         private val cache = Cache()
         private val json = JSON()
         fun build(
-            trainingID: Long,
-            linkVideo: String,
-            exerciseID: Long,
-            name: String,
-            muscle: String,
-            sets: Int,
-            repetitions: String,
-            load: Double,
-            rest: Int,
-            cadence: String
+            trainingID: Long = 0L,
+            linkVideo: String = "",
+            exerciseID: Long = 0L,
+            name: String = "",
+            muscle: String = "",
+            sets: Int = 0,
+            repetitions: String = "1",
+            load: Double = 0.0,
+            rest: Int = 60,
+            cadence: String = "3-1-3"
         ): Exercise {
             return Exercise().apply {
                 this.trainingID = trainingID
@@ -105,30 +106,9 @@ class Exercise(
             }
         }
 
-        fun loadList(context: Context, trainingID: Long): List<Exercise> {
-
-            val cacheKey = "Exercicios_$trainingID"
-            val exerciseArray = if (cache.hasCache(context, cacheKey)) {
-                val cachedData = cache.getCache(context, cacheKey)
-                json.fromJson(cachedData, Array<Exercise>::class.java)
-            } else {
-                val random = Random().nextInt(100)
-                val defaultExerciseArray = arrayOf(
-                    Exercise(trainingID, "", System.currentTimeMillis() + random, "Exercicio", "", 3, "10,10,10", 0.0)
-                )
-                cache.setCache(context, cacheKey, json.toJson(defaultExerciseArray))
-                defaultExerciseArray
-            }
-
-            for (exercise in exerciseArray) {
-                println("Exercício em Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
-            }
-
-            return exerciseArray.toList()
-        }
     }
 
-    fun save(context: Context): Boolean {
+    override fun save(context: Context): Boolean {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val updatedExerciseArray = updateExerciseArray(exerciseArray)
@@ -136,7 +116,7 @@ class Exercise(
         showToastMessage(context, exerciseID in exerciseArray.map { it.exerciseID })
         return true
     }
-    fun remove(context: Context):Boolean {
+    override fun remove(context: Context):Boolean {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
@@ -144,7 +124,7 @@ class Exercise(
         showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
         return true
     }
-    fun load(context: Context, trainingID: Long, exerciseID: Long): Exercise? {
+    fun load(context: Context, exerciseID: Long): Exercise? {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
             json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
@@ -152,6 +132,32 @@ class Exercise(
             arrayOf()
         }
         return exerciseArray.find { it.exerciseID == exerciseID }
+    }
+
+    override fun load(context: Context, id: Any): Exercise? {
+        return load(context,id as Long)
+    }
+
+    override fun loadList(context: Context): List<Exercise> {
+
+        val cacheKey = "Exercicios_$trainingID"
+        val exerciseArray = if (cache.hasCache(context, cacheKey)) {
+            val cachedData = cache.getCache(context, cacheKey)
+            json.fromJson(cachedData, Array<Exercise>::class.java)
+        } else {
+            val random = Random().nextInt(100)
+            val defaultExerciseArray = arrayOf(
+                Exercise(trainingID, "", System.currentTimeMillis() + random, "Exercicio", "", 3, "10,10,10", 0.0)
+            )
+            cache.setCache(context, cacheKey, json.toJson(defaultExerciseArray))
+            defaultExerciseArray
+        }
+
+        for (exercise in exerciseArray) {
+            println("Exercício em Cache: ${exercise.name} - ${exercise.sets} sets, ${exercise.repetitions} reps, ${exercise.load} kg")
+        }
+
+        return exerciseArray.toList()
     }
 
     fun formatRepetitionsAndCountSets(editTextSets: EditText, editTextRepetitions: EditText) {

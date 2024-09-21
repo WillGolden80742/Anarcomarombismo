@@ -1,4 +1,4 @@
-package com.example.anarcomarombismo.Adapters
+package com.example.anarcomarombismo.Controller.Adapter
 
 import android.content.Context
 import android.content.Intent

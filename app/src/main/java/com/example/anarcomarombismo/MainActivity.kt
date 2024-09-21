@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
-import com.example.anarcomarombismo.Adapters.TrainingAdapter
+import com.example.anarcomarombismo.Controller.Adapter.TrainingAdapter
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formTraining
 
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
 
     private fun loadTraining() {
         val adapter = TrainingAdapter(
-            this,Training.loadList(this),
+            this,Training().loadList(this),
             this)
         listView.adapter = adapter
     }

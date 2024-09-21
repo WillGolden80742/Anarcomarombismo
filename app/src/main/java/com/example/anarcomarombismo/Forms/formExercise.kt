@@ -93,7 +93,7 @@ class formExercise : AppCompatActivity() {
         }
 
         editTextRepetitions.addTextChangedListener {
-            currentExercise?.formatRepetitionsAndCountSets(editTextSets, editTextRepetitions)
+            Exercise().formatRepetitionsAndCountSets(editTextSets, editTextRepetitions)
         }
 
         // listener change editTextVideoLink focus lost
@@ -184,10 +184,11 @@ class formExercise : AppCompatActivity() {
     private fun loadExerciseIfExistInCache() {
         CoroutineScope(Dispatchers.Main).launch {
             loadSpinner()
-            currentExercise = Exercise().load(this@formExercise, trainingID, exerciseID)
-            currentExercise?.let { exercise ->
-                setUIFromExercise(exercise)
-            } ?: run {
+            val loadedExercise = Exercise.build(trainingID).load(this@formExercise, exerciseID)
+            if (loadedExercise != null) {
+                currentExercise = loadedExercise
+                setUIFromExercise(currentExercise!!)
+            } else {
                 visualizeExerciseFormButton.isVisible = false
                 removeExerciseButton.isVisible = false
             }

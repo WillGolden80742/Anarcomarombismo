@@ -3,7 +3,7 @@ package com.example.anarcomarombismo.Forms
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import com.example.anarcomarombismo.Adapters.FoodAdapter
+import com.example.anarcomarombismo.Controller.Adapter.FoodAdapter
 import com.example.anarcomarombismo.Controller.Util.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

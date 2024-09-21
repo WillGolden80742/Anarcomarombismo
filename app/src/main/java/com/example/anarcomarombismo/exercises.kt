@@ -1,6 +1,6 @@
 package com.example.anarcomarombismo
 
-import com.example.anarcomarombismo.Adapters.ExerciseAdapter
+import com.example.anarcomarombismo.Controller.Adapter.ExerciseAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -100,9 +100,8 @@ class exercises : AppCompatActivity() {
             descriptionTrainingLabel.text = it.description
         }
 
-        val exercisesArray = Exercise.loadList(this, trainingID)
+        val exercisesArray = Exercise.build(trainingID).loadList(this)
 
-        // Update UI elements if necessary
         val exerciseAdapter = ExerciseAdapter(this, exercisesArray, date)
         exerciseList.adapter = exerciseAdapter
     }
