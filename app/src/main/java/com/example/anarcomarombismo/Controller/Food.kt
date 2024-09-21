@@ -106,20 +106,16 @@ class Food (
             return false
         }
     }
-
-    override fun loadList(context: Context): List<Food> {
+    override fun fetchAll(context: Context): List<Food> {
         return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
     }
-
-    fun load(context: Context, id: String): Food {
+    private fun fetchById(context: Context, id: String): Food {
         return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
             .first { it.foodNumber == id }
     }
-
-    override fun load(context: Context, id: Any): Food {
-        return load(context,id as String)
+    override fun fetchById(context: Context, id: Any): Food {
+        return fetchById(context,id as String)
     }
-
     override fun remove(context: Context): Boolean {
         try {
             val foodNutritionList = json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()

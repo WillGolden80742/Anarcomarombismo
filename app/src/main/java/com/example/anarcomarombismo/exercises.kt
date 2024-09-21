@@ -94,16 +94,15 @@ class exercises : AppCompatActivity() {
     }
 
     private fun loadExercises(trainingID: Long, date: String) {
-
-        Training().load(this, trainingID).also {
+        Training().fetchById(this, trainingID).also {
             trainingName.text = it.name
             descriptionTrainingLabel.text = it.description
+            exerciseList.adapter = ExerciseAdapter(
+                this,
+                Exercise.build(trainingID).fetchAll(this),
+                date
+            )
         }
-
-        val exercisesArray = Exercise.build(trainingID).loadList(this)
-
-        val exerciseAdapter = ExerciseAdapter(this, exercisesArray, date)
-        exerciseList.adapter = exerciseAdapter
     }
 
 

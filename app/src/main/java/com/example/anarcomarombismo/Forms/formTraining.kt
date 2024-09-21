@@ -45,7 +45,7 @@ class formTraining : AppCompatActivity() {
         }
 
         // Load training data if it exists
-        Training().load(this, trainingID).also {
+        Training().fetchById(this, trainingID).also {
             name.setText(it.name)
             description.setText(it.description)
         }

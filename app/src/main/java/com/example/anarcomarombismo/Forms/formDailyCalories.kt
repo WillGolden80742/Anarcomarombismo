@@ -161,7 +161,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun getDailyCaloriesByDate(selectedDate: String) {
         dailyCalories = DailyCalories.build(
             selectedDate
-        ).load(this, selectedDate)
+        ).fetchById(this, selectedDate)
         dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
         totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
         seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
@@ -229,7 +229,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun searchFood(query: String) {
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                val foodList = Food().loadList(this@formDailyCalories)
+                val foodList = Food().fetchAll(this@formDailyCalories)
                 val filteredList = filterFoodList(foodList, query)
                 updateListView(filteredList)
                 searchFoodAsync(query)

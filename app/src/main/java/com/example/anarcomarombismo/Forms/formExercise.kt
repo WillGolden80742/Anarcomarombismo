@@ -1,6 +1,5 @@
 package com.example.anarcomarombismo.Forms
 
-import com.example.anarcomarombismo.Controller.Util.JSON
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebSettings
@@ -15,7 +14,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
@@ -181,7 +179,7 @@ class formExercise : AppCompatActivity() {
     private fun loadExerciseIfExistInCache() {
         CoroutineScope(Dispatchers.Main).launch {
             loadSpinner()
-            val loadedExercise = Exercise.build(trainingID).load(this@formExercise, exerciseID)
+            val loadedExercise = Exercise.build(trainingID).fetchById(this@formExercise, exerciseID)
             if (loadedExercise != null) {
                 currentExercise = loadedExercise
                 setUIFromExercise(currentExercise!!)

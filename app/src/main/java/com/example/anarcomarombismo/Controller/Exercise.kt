@@ -124,7 +124,7 @@ class Exercise(
         showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
         return true
     }
-    fun load(context: Context, exerciseID: Long): Exercise? {
+    fun fetchById(context: Context, exerciseID: Long): Exercise? {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
             json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
@@ -133,12 +133,10 @@ class Exercise(
         }
         return exerciseArray.find { it.exerciseID == exerciseID }
     }
-
-    override fun load(context: Context, id: Any): Exercise? {
-        return load(context,id as Long)
+    override fun fetchById(context: Context, id: Any): Exercise? {
+        return fetchById(context,id as Long)
     }
-
-    override fun loadList(context: Context): List<Exercise> {
+    override fun fetchAll(context: Context): List<Exercise> {
 
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
@@ -307,6 +305,6 @@ class Exercise(
     }
 
     override fun toString(): String {
-        return "Muscle: $muscle, \nsets: $sets, \nrepetitions: $repetitions, \nload:$load, \nrest: $rest, \ncadence: '$cadence'"
+        return "Muscle: $muscle, \nsets: $sets, \nrepetitions: $repetitions, \nfetchById:$load, \nrest: $rest, \ncadence: '$cadence'"
     }
 }

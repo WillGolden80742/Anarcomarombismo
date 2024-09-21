@@ -78,7 +78,7 @@ class Training(
         return false
     }
 
-    fun load(context: Context, trainingID: Long):Training {
+    fun fetchById(context: Context, trainingID: Long):Training {
         val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
         val training = trainingArray.find { it.trainingID == trainingID }
         if (training != null) {
@@ -89,10 +89,10 @@ class Training(
         }
         return this
     }
-    override fun load(context: Context, id: Any): Training {
-        return load(context,id as Long)
+    override fun fetchById(context: Context, id: Any): Training {
+        return fetchById(context,id as Long)
     }
-    override fun loadList(context: Context): List<Training> {
+    override fun fetchAll(context: Context): List<Training> {
         val trainingArray: List<Training>
         if (hasTraining(context)) {
             val cachedData = cache.getCache(context, "Treinos")

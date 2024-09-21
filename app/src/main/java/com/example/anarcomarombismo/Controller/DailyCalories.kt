@@ -79,7 +79,7 @@ class DailyCalories (
         return true
     }
 
-     fun load(context: Context, selectedDate: String): DailyCalories {
+     fun fetchById(context: Context,selectedDate: String): DailyCalories {
         if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
             val json = JSON()
@@ -95,13 +95,12 @@ class DailyCalories (
         }
     }
 
-    override fun load(context: Context, id: Any): DailyCalories {
-        return load(context,id as String)
+    override fun fetchById(context: Context, id: Any): DailyCalories {
+        return fetchById(context,id as String)
     }
 
-    override fun loadList(context: Context): List<DailyCalories> {
+    override fun fetchAll(context: Context): List<DailyCalories> {
         var dailyCaloriesList: List<DailyCalories> = emptyList()
-
         try {
             if (cache.hasCache(context, "dailyCalories")) {
                 val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
@@ -112,17 +111,13 @@ class DailyCalories (
                 println("Lista de calorias diárias: $dailyCaloriesListJson")
                 dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
             }
-
-            // Sort the list by date (year -> month -> day)
             dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
                 val dateParts = dailyCalories.date.split("/")
                 "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt()
             }
-
         } catch (e: Exception) {
             println("Erro ao carregar a lista de calorias diárias: $e")
         }
-
         return dailyCaloriesList.toList()
     }
 
