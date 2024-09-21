@@ -7,5 +7,4 @@ interface PersistentData<T> {
     fun remove(context: Context): Boolean
     fun load(context: Context,id:Any): T?
     fun loadList(context: Context): List<T>
-
 }
