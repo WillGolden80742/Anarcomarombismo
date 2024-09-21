@@ -88,21 +88,18 @@ class dailyCaloriesFoods : AppCompatActivity() {
         val adapter = FoodAdapter(this, foodList,"dailyCaloriesFoods")
         listView.adapter = adapter
         if (foodList.isEmpty()) {
-            val dailyCalories = createDailyCalories()
-            dailyCalories.remove(this)
+            buildDailyCalories().remove(this)
             finish()
         } else {
-            val dailyCalories = createDailyCalories()
-            dailyCalories.save(this)
+            buildDailyCalories().save(this)
         }
     }
 
-    private fun createDailyCalories(): DailyCalories {
-        return DailyCalories().apply {
-            date = dailyCaloriesDate
-            foodsList = foodList
-            recalculateCalories()
-        }
+    private fun buildDailyCalories(): DailyCalories {
+        return DailyCalories.build(
+            dailyCaloriesDate,
+            foodList
+        )
     }
 
 }

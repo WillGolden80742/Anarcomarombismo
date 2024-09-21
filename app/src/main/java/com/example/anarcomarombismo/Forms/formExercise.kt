@@ -55,9 +55,6 @@ class formExercise : AppCompatActivity() {
     // Constants
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
-    // Helpers
-    private val cache = Cache()
-    private val json = JSON()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_exercise)
