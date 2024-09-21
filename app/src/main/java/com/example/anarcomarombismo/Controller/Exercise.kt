@@ -163,8 +163,9 @@ class Exercise(
     fun formatRepetitionsAndCountSets(editTextSets: EditText, editTextRepetitions: EditText) {
         CoroutineScope(Dispatchers.Main).launch {
             val text = editTextRepetitions.text.toString()
-            val newText = text.replace(Regex("[^0-9Xx*,]"), "")
-            if (text.contains("X") || text.contains("x") || text.contains("*")) {
+            // Incluindo o sinal '×' na expressão regular
+            val newText = text.replace(Regex("[^0-9Xx×*,]"), "")
+            if (text.contains("X") || text.contains("x") || text.contains("*") || text.contains("×")) {
                 handleXFormat(editTextSets, editTextRepetitions, text)
             } else if (text.contains(",")) {
                 handleCommaFormat(editTextSets, editTextRepetitions, text)
@@ -177,10 +178,11 @@ class Exercise(
     private fun handleXFormat(editTextSets: EditText, editTextRepetitions: EditText, text: String) {
         CoroutineScope(Dispatchers.Default).launch {
             val newText = async {
-                text.replace(Regex("[^0-9Xx*]|X{2,}|x{2,}|\\*{2,}"), "")
+                // Incluindo o sinal '×' na expressão regular
+                text.replace(Regex("[^0-9Xx×*]|X{2,}|x{2,}|×{2,}|\\*{2,}"), "")
             }
             val processedText = async {
-                val xCount = newText.await().count { it == 'X' || it == 'x' || it == '*' }
+                val xCount = newText.await().count { it == 'X' || it == 'x' || it == '*' || it == '×' }
                 if (xCount > 1) {
                     newText.await().dropLast(1)
                 } else {
@@ -188,7 +190,8 @@ class Exercise(
                 }
             }
             val numbers = async {
-                processedText.await().split(Regex("[Xx*]")).filter { it.isNotEmpty() }
+                // Incluindo o sinal '×' na expressão regular de split
+                processedText.await().split(Regex("[Xx×*]")).filter { it.isNotEmpty() }
             }
             withContext(Dispatchers.Main) {
                 try {
@@ -204,6 +207,7 @@ class Exercise(
             }
         }
     }
+
 
     private fun handleCommaFormat(editTextSets: EditText, editTextRepetitions: EditText, text: String) {
         CoroutineScope(Dispatchers.Default).launch {
