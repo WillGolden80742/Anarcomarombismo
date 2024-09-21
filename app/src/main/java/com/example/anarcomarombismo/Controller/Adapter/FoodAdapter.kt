@@ -130,7 +130,8 @@ class FoodAdapter(
 
     private fun removeFood(food: Food) {
         try {
-            Toast.makeText(context, "${food.foodDescription} removed", Toast.LENGTH_SHORT).show()
+            val removed = context.getString(R.string.removed)
+            Toast.makeText(context, "${food.foodDescription} $removed", Toast.LENGTH_SHORT).show()
             val dailyCalories = context as? dailyCaloriesFoods
             dailyCalories?.removeFood(food)
         } catch (e: Exception) {
