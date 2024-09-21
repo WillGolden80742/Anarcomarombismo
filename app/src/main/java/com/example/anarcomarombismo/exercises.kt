@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-import com.example.anarcomarombismo.Controller.Util.Calendaries
+import com.example.anarcomarombismo.Controller.Util.Calendars
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formExercise
@@ -65,7 +65,7 @@ class exercises : AppCompatActivity() {
     private fun selectDate() {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-        Calendaries.selectDate(this, dateTextView, maxDate) {
+        Calendars.selectDate(this, dateTextView, maxDate) {
             loadExercises(trainingID, it)
         }
     }

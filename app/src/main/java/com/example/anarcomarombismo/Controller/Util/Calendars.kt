@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class Calendaries {
+class Calendars {
 
     companion object {
         fun selectDate(

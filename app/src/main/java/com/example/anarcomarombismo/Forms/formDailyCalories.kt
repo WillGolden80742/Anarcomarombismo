@@ -18,7 +18,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.FoodSearch
-import com.example.anarcomarombismo.Controller.Util.Calendaries
+import com.example.anarcomarombismo.Controller.Util.Calendars
 import com.example.anarcomarombismo.Controller.Util.StringHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCaloriesFoods
@@ -136,7 +136,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun selectDate () {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis
-        Calendaries.selectDate(this, editTextDate, maxDate) {
+        Calendars.selectDate(this, editTextDate, maxDate) {
             getDailyCaloriesByDate(editTextDate.text.toString())
         }
     }
