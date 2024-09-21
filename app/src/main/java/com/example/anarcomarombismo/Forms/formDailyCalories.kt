@@ -27,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -52,8 +51,6 @@ class formDailyCalories : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_daily_calories)
-
-        // Inicializar os elementos do layout
         searchEditText = findViewById(R.id.searchEditText)
         searchButton = findViewById(R.id.searchButton)
         listFoodsView = findViewById(R.id.listFoodsView)
@@ -64,11 +61,8 @@ class formDailyCalories : AppCompatActivity() {
         addFoodButton = findViewById(R.id.addFoodButton)
         seeFoodsButton = findViewById(R.id.seeFoodsButton)
         removeDailyCaloriesButton = findViewById(R.id.removeDailyCaloriesButton)
-
         loading()
-        //getInputExtra
         getDailyCalories()
-
         searchButton.setOnClickListener {
             searchFood(searchEditText.text.toString())
             hideKeyboard(this.currentFocus ?: View(this))
@@ -89,8 +83,8 @@ class formDailyCalories : AppCompatActivity() {
 
 
         gramsEditText.addTextChangedListener {
-            // get gramsEditText value and calculate the total calories
-            calculeTotalCalories(it)
+            val grams = it.toString().toDoubleOrNull() ?: 0.0
+            calculateAndDisplayCalories(grams, currentFood?.energyKcal)
         }
 
 
@@ -197,33 +191,27 @@ class formDailyCalories : AppCompatActivity() {
         searchFood(searchEditText.text.toString())
     }
 
-    private fun calculeTotalCalories(it: CharSequence?) {
-        try {
-            val grams = it.toString().toDoubleOrNull().let { it ?: 0.0 }
-            val currentCalorie = currentFood?.energyKcal?.replace(",", ".")?.toDouble().let { it?: 0.0 }
-            val temporaryCalcule = currentCalorie * (grams!! / 100.0)
-            val temporaryTotal = temporaryCalcule + dailyCalories.calorieskcal
-            totalCaloriesLabel.text = "Total: ${String.format("%.1f", temporaryTotal)} kcal"
-        } catch (e: Exception) {
-            println(RuntimeException("Error calculating total calories: $e"))
-            totalCaloriesLabel.text = "Total: Erro kcal"
-        }
-    }
     fun selectedFood(food: Food) {
         try {
             addFoodButton.isEnabled = true
             currentFood = food
-
             val grams = gramsEditText.text.toString().toDoubleOrNull() ?: 0.0
-            val energy = currentFood?.energyKcal?.toDouble() ?: 0.0
-            val temporaryCalcule = energy * (grams / 100)
-            val temporaryTotal = temporaryCalcule + dailyCalories.calorieskcal
-
-            totalCaloriesLabel.text = "Total: ${String.format("%.1f", temporaryTotal)} kcal"
+            calculateAndDisplayCalories(grams, currentFood?.energyKcal)
             nameFoodLabel.text = currentFood?.foodDescription ?: "Unknown food"
             gramsEditText.isEnabled = true
         } catch (e: Exception) {
             println("Error handling food click: ${e.message}")
+        }
+    }
+    private fun calculateAndDisplayCalories(grams: Double, energyKcal: String?) {
+        try {
+            val currentCalorie = energyKcal?.replace(",", ".")?.toDoubleOrNull() ?: 0.0
+            val calculatedCalories = currentCalorie * (grams / 100.0)
+            val temporaryTotal = calculatedCalories + dailyCalories.calorieskcal
+            totalCaloriesLabel.text = "Total: ${String.format("%.1f", temporaryTotal)} kcal"
+        } catch (e: Exception) {
+            println(RuntimeException("Error calculating total calories: $e"))
+            totalCaloriesLabel.text = "Total: Error kcal"
         }
     }
 

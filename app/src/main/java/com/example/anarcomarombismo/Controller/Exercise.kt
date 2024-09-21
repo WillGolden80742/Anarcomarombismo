@@ -3,7 +3,7 @@ package com.example.anarcomarombismo.Controller
 import android.content.Context
 import android.widget.EditText
 import android.widget.Toast
-import com.example.anarcomarombismo.Controller.Interface.PersistentData
+import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -25,7 +25,7 @@ class Exercise(
     var load: Double = 20.0, // Carga padrão em kg
     var rest: Int = 60, // Tempo de repouso padrão em segundos
     var cadence: String = "3-1-3", // Cadência padrão
-): PersistentData<Exercise> {
+): DataHandler<Exercise> {
     companion object {
         private val cache = Cache()
         private val json = JSON()
@@ -124,17 +124,14 @@ class Exercise(
         showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
         return true
     }
-    fun fetchById(context: Context, exerciseID: Long): Exercise? {
+    override fun fetchById(context: Context, id: Any): Exercise? {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
             json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
         } else {
             arrayOf()
         }
-        return exerciseArray.find { it.exerciseID == exerciseID }
-    }
-    override fun fetchById(context: Context, id: Any): Exercise? {
-        return fetchById(context,id as Long)
+        return exerciseArray.find { it.exerciseID == id as Long }
     }
     override fun fetchAll(context: Context): List<Exercise> {
 

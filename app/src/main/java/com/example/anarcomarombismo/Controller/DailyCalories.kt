@@ -2,7 +2,7 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
-import com.example.anarcomarombismo.Controller.Interface.PersistentData
+import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -22,7 +22,7 @@ class DailyCalories (
     var calorieskcal: Double = 0.0,
     var calorieskj: Double = 0.0,
     var foodsList: List<Food> = listOf()
-) : PersistentData<DailyCalories> {
+) : DataHandler<DailyCalories> {
 
     init {
         if (date == "") {
@@ -79,24 +79,20 @@ class DailyCalories (
         return true
     }
 
-     fun fetchById(context: Context,selectedDate: String): DailyCalories {
+    override fun fetchById(context: Context, id: Any): DailyCalories {
         if (cache.hasCache(context, "dailyCalories")) {
             val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
             val json = JSON()
             val dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-            val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == selectedDate }
+            val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == id as String }
             return if (dailyCaloriesListFiltered.isNotEmpty()) {
                 dailyCaloriesListFiltered[0]
             } else {
-                DailyCalories().apply { date = selectedDate }
+                DailyCalories().apply { date = id as String}
             }
         } else {
-            return DailyCalories().apply { date = selectedDate }
+            return DailyCalories().apply { date = id as String}
         }
-    }
-
-    override fun fetchById(context: Context, id: Any): DailyCalories {
-        return fetchById(context,id as String)
     }
 
     override fun fetchAll(context: Context): List<DailyCalories> {

@@ -2,7 +2,7 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
-import com.example.anarcomarombismo.Controller.Interface.PersistentData
+import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -12,7 +12,7 @@ class Training(
     var trainingID: Long = 0,
     var name: String = "",
     var description: String = ""
-): PersistentData<Training> {
+): DataHandler<Training> {
     private var randomTrainingID = 0L
     companion object {
         private val cache = Cache()
@@ -78,9 +78,9 @@ class Training(
         return false
     }
 
-    fun fetchById(context: Context, trainingID: Long):Training {
+    override fun fetchById(context: Context, id: Any):Training {
         val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
-        val training = trainingArray.find { it.trainingID == trainingID }
+        val training = trainingArray.find { it.trainingID == id as Long }
         if (training != null) {
             this.name = training.name
             this.description = training.description
@@ -88,9 +88,6 @@ class Training(
             this.name = context.getString(R.string.training)
         }
         return this
-    }
-    override fun fetchById(context: Context, id: Any): Training {
-        return fetchById(context,id as Long)
     }
     override fun fetchAll(context: Context): List<Training> {
         val trainingArray: List<Training>

@@ -2,7 +2,7 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.widget.Toast
-import com.example.anarcomarombismo.Controller.Interface.PersistentData
+import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -39,7 +39,7 @@ class Food (
     var pyridoxine: String = "0.0",
     var niacin: String = "0.0",
     var vitaminC: String = ""
-): PersistentData<Food> {
+): DataHandler<Food> {
     init {
         if (grams == null) {
             grams = 100.00
@@ -109,12 +109,9 @@ class Food (
     override fun fetchAll(context: Context): List<Food> {
         return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
     }
-    private fun fetchById(context: Context, id: String): Food {
-        return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
-            .first { it.foodNumber == id }
-    }
     override fun fetchById(context: Context, id: Any): Food {
-        return fetchById(context,id as String)
+        return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+            .first { it.foodNumber == id as String }
     }
     override fun remove(context: Context): Boolean {
         try {
