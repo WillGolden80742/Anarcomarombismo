@@ -141,8 +141,7 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
             cholesterol = formatNutrientValue(nutrients["Colesterol"], grams),
             carbohydrate = formatNutrientValue(nutrients["Carboidratos"], grams),
             dietaryFiber = formatNutrientValue(nutrients["Fibras"], grams),
-            sodium = formatNutrientValue(nutrients["Sódio"], grams),
-            potassium = formatNutrientValue(nutrients["Potássio"], grams)
+            sodium = formatNutrientValue(nutrients["Sódio"], grams)
         )
     }
     private fun formatNutrientValue(nutrientValue: String?, grams: Double): String {

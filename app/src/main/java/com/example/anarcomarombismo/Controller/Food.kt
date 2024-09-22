@@ -13,7 +13,6 @@ class Food (
     var foodNumber: String = "",
     var grams: Double = 100.0,
     var foodDescription: String = "NO_DESCRIPTION",
-    var moisture: String = "0.0",
     var energyKcal: String = "0.0",
     var energyKj: String = "0.0",
     var protein: String = "0.0",
@@ -21,24 +20,7 @@ class Food (
     var cholesterol: String = "0.0",
     var carbohydrate: String = "0.0",
     var dietaryFiber: String = "0.0",
-    var ash: String = "0.0",
-    var calcium: String = "0.0",
-    var magnesium: String = "0.0",
-    var manganese: String = "0.0",
-    var phosphorus: String = "0.0",
-    var iron: String = "0.0",
     var sodium: String = "0.0",
-    var potassium: String = "0.0",
-    var copper: String = "0.0",
-    var zinc: String = "0.0",
-    var retinol: String = "0.0",
-    var re: String = "0.0",
-    var rae: String = "0.0",
-    var thiamine: String = "0.0",
-    var riboflavin: String = "0.0",
-    var pyridoxine: String = "0.0",
-    var niacin: String = "0.0",
-    var vitaminC: String = ""
 ): DataHandler<Food> {
     init {
         if (grams == null) {
