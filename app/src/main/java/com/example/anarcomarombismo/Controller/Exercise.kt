@@ -54,8 +54,8 @@ class Exercise(
             val exerciseIds = listOf(R.raw.training_1, R.raw.training_2, R.raw.training_3, R.raw.training_4)
             exerciseIds.forEach { exerciseId ->
                 val trainingData = context.resources.openRawResource(exerciseId).bufferedReader().use { it.readText() }
-                val exerciseRecoveryList = json.fromJson(trainingData, Array<ContextualExercise>::class.java)
-                val exerciseList = ContextualExercise.getExercise(context,exerciseRecoveryList).toList()
+                val contextualExerciseList = json.fromJson(trainingData, Array<ContextualExercise>::class.java)
+                val exerciseList = ContextualExercise.getExercise(context,contextualExerciseList).toList()
                 cache.setCache(context, "Exercicios_${exerciseList[0].trainingID}", json.toJson(exerciseList))
             }
         }

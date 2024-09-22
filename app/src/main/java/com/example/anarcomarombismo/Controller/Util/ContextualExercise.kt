@@ -18,10 +18,10 @@ class ContextualExercise(
     companion object {
         fun getExercise(
             context: Context,
-            exerciseRecoveryList: Array<ContextualExercise>
+            contextualExerciseList: Array<ContextualExercise>
         ): List<Exercise> {
             val exerciseList = mutableListOf<Exercise>()
-            for (exercise in exerciseRecoveryList) {
+            for (exercise in contextualExerciseList) {
                 exerciseList.add(
                     exercise.toExercise(context)
                 )
