@@ -69,7 +69,6 @@ class DailyCalories (
         cache.getCache(context, cacheKey)?.let { dailyCaloriesListJson ->
             val dailyCaloriesList = parseDailyCaloriesList(dailyCaloriesListJson)
             val updatedCaloriesList = removeCaloriesForDate(dailyCaloriesList, currentDate)
-
             if (updatedCaloriesList.size != dailyCaloriesList.size) {
                 cache.setCache(context, cacheKey, toJson(updatedCaloriesList))
                 showToast(context, R.string.daily_calories_removed_successfully)
