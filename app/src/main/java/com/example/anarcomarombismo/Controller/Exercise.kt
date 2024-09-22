@@ -69,7 +69,7 @@ class Exercise(
         showToastMessage(context, exerciseID in exerciseArray.map { it.exerciseID })
         return true
     }
-    override fun remove(context: Context):Boolean {
+    override fun remove(context: Context): Boolean {
         val cacheKey = "Exercicios_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
