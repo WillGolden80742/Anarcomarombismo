@@ -22,11 +22,6 @@ class Food (
     var dietaryFiber: String = "0.0",
     var sodium: String = "0.0",
 ): DataHandler<Food> {
-    init {
-        if (grams == null) {
-            grams = 100.00
-        }
-    }
     companion object {
         private var json = JSON()
         private var cache = Cache()
