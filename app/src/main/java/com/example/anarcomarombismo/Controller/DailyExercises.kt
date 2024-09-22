@@ -14,6 +14,7 @@ class DailyExercises(context: Context) {
     private val cacheManager = Cache()
     private val dateInputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private val dateStorageFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    data class ExerciseByDate(val date: String,val exercise: Exercise,val count: Int=0)
 
     private fun getCurrentFormattedDate(): String = dateStorageFormat.format(Date())
 
