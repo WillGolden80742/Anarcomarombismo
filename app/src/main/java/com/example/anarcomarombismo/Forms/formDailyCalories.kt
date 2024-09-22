@@ -17,7 +17,7 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
-import com.example.anarcomarombismo.Controller.FoodSearch
+import com.example.anarcomarombismo.Controller.Util.FoodDataFetcher
 import com.example.anarcomarombismo.Controller.Util.Calendars
 import com.example.anarcomarombismo.Controller.Util.StringHandler
 import com.example.anarcomarombismo.R
@@ -299,7 +299,7 @@ class formDailyCalories : AppCompatActivity() {
     private fun searchFoodAsync(query: String) {
         if (query.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
-                val result = FoodSearch().searchFood(this@formDailyCalories, query)
+                val result = FoodDataFetcher().searchFood(this@formDailyCalories, query)
                 withContext(Dispatchers.Main) {
                     for (foodSearch in result) {
                         getFoodByURLAsync(
@@ -314,7 +314,7 @@ class formDailyCalories : AppCompatActivity() {
 
     private fun getFoodByURLAsync (url: String, grams:Double) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = FoodSearch().getFoodByURL(this@formDailyCalories,url,grams)
+            val result = FoodDataFetcher().getFoodByURL(this@formDailyCalories,url,grams)
             withContext(Dispatchers.Main) {
                 if (result.foodDescription != "NO_DESCRIPTION") {
                     appendListView(result)

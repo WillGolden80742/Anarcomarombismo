@@ -1,10 +1,7 @@
-package com.example.anarcomarombismo.Controller
+package com.example.anarcomarombismo.Controller.Util
 
 import android.content.Context
-import com.example.anarcomarombismo.Controller.Util.Cache
-import com.example.anarcomarombismo.Controller.Util.HtmlHandler
-import com.example.anarcomarombismo.Controller.Util.JSON
-import com.example.anarcomarombismo.Controller.Util.StringHandler
+import com.example.anarcomarombismo.Controller.Food
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -16,10 +13,10 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.DecimalFormat
 
-class FoodSearch (var name:String = "", var href:String = "",var smallText:String = "", var grams:String = "") {
+class FoodDataFetcher(var name: String = "", var href: String = "", var grams: String = "") {
     private val cache = Cache()
     private val json = JSON()
-    fun searchFood(context: Context, query: String): List<FoodSearch> {
+    fun searchFood(context: Context, query: String): List<FoodDataFetcher> {
         val queryHash = getKey(query)
         if (cache.hasCache(context, queryHash)) {
             println("CACHE HIT for queryHash: $queryHash")
@@ -27,13 +24,13 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         }
         return fetchAndCacheOfFoodSearch(context, query, queryHash)
     }
-    private fun getCachedOfFoodSearch(context: Context, queryHash: String): List<FoodSearch> {
+    private fun getCachedOfFoodSearch(context: Context, queryHash: String): List<FoodDataFetcher> {
         val cachedJson = cache.getCache(context, queryHash)
-        return json.fromJson(cachedJson, Array<FoodSearch>::class.java).toList()
+        return json.fromJson(cachedJson, Array<FoodDataFetcher>::class.java).toList()
     }
-    private fun fetchAndCacheOfFoodSearch(context: Context, query: String, queryHash: String): List<FoodSearch> {
+    private fun fetchAndCacheOfFoodSearch(context: Context, query: String, queryHash: String): List<FoodDataFetcher> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
-        val items = mutableListOf<FoodSearch>()
+        val items = mutableListOf<FoodDataFetcher>()
         for (i in 0..1) {
             val url =
                 "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
@@ -56,17 +53,16 @@ class FoodSearch (var name:String = "", var href:String = "",var smallText:Strin
         cache.setCache(context, queryHash, json.toJson(items))
         return items
     }
-    private fun parseFoodSearch(link: Element, smallTextDivs: Elements): FoodSearch? {
+    private fun parseFoodSearch(link: Element, smallTextDivs: Elements): FoodDataFetcher? {
         val href = link.attr("href")
         val name = link.text().trim()
         val smallTextContent = findSmallTextContent(link, smallTextDivs)
         val smallTextBeforeDash = smallTextContent.split("-")[0]
         val grams = extractGrams(smallTextBeforeDash)
         return if (grams != null) {
-            FoodSearch(
+            FoodDataFetcher(
                 name = name,
                 href = "https://www.fatsecret.com.br$href",
-                smallText = smallTextBeforeDash,
                 grams = grams.replace("g", "")
             )
         } else {
