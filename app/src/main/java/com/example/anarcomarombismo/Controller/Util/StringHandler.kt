@@ -4,11 +4,6 @@ import java.text.Normalizer
 
 class StringHandler {
     companion object {
-        private fun normalizeString(text: String): String {
-            return Normalizer.normalize(text, Normalizer.Form.NFD)
-                .replace("\\p{InCombiningDiacriticalMarks}".toRegex(), "")
-        }
-
         fun containsQuery(text: String, query: String): Boolean {
             if (query.isEmpty()) {
                 return true
@@ -21,6 +16,10 @@ class StringHandler {
                 }
             }
             return false
+        }
+        private fun normalizeString(text: String): String {
+            return Normalizer.normalize(text, Normalizer.Form.NFD)
+                .replace("\\p{InCombiningDiacriticalMarks}".toRegex(), "")
         }
     }
 }
