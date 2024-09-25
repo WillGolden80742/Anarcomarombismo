@@ -41,8 +41,11 @@ class dailyCalories : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        val adapter = DailyCaloriesAdapter(this, DailyCalories().fetchAll(this) )
-        caloriesFoodList.adapter = adapter
+        caloriesFoodList.adapter = DailyCaloriesAdapter(this,
+            DailyCalories().fetchAll(this).ifEmpty {
+                listOf(DailyCalories())
+            }
+        )
     }
 
     private fun callFormDailyCalories() {

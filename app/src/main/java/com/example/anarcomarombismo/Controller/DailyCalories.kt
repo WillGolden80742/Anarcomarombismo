@@ -87,9 +87,7 @@ class DailyCalories(
         val dailyCaloriesList = if (cache.hasCache(context, contextualKey)) {
             cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
         } else {
-            listOf(
-                DailyCalories()
-            )
+            emptyList()
         }
         return dailyCaloriesList.sortedByDescending { it.date.split("/").let { dateParts -> "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt() } }
     }
