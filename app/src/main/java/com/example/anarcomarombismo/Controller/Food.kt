@@ -88,7 +88,7 @@ class Food(
     }
 
     override fun fetchAll(context: Context): List<Food> {
-        return cache.getCache(context, context.getString(R.string.foods), Array<Food>::class.java).toList()
+        return loadJSONCache(context)
     }
 
     override fun fetchById(context: Context, id: Any): Food {
