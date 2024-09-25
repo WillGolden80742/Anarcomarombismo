@@ -87,7 +87,9 @@ class DailyCalories(
         val dailyCaloriesList = if (cache.hasCache(context, contextualKey)) {
             cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
         } else {
-            emptyList()
+            listOf(
+                DailyCalories()
+            )
         }
         return dailyCaloriesList.sortedByDescending { it.date.split("/").let { dateParts -> "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt() } }
     }
@@ -158,15 +160,26 @@ class DailyCalories(
     }
 
     fun toString(context: Context): String {
-        val decimalFormat = DecimalFormat("#.##")
-        return buildString {
-            append(context.getString(R.string.energy_kcal)).append(" : ").append(decimalFormat.format(calorieskcal)).append(", \n")
-            append(context.getString(R.string.energy_kj)).append(" : ").append(decimalFormat.format(calorieskj)).append(", \n")
-            append(context.getString(R.string.protein)).append(" : ").append(decimalFormat.format(protein)).append(", \n")
-            append(context.getString(R.string.lipids)).append(" : ").append(decimalFormat.format(lipids)).append(", \n")
-            append(context.getString(R.string.carbohydrate)).append(" : ").append(decimalFormat.format(carbohydrate)).append(", \n")
-            append(context.getString(R.string.dietary_fiber)).append(" : ").append(decimalFormat.format(dietaryFiber)).append(", \n")
-            append(context.getString(R.string.sodium)).append(" : ").append(decimalFormat.format(sodium))
+        if (foodsList.isEmpty()) {
+            return context.getString(R.string.no_calories_added_yet)
+        } else {
+            val decimalFormat = DecimalFormat("#.##")
+            return buildString {
+                append(context.getString(R.string.energy_kcal)).append(" : ")
+                    .append(decimalFormat.format(calorieskcal)).append(", \n")
+                append(context.getString(R.string.energy_kj)).append(" : ")
+                    .append(decimalFormat.format(calorieskj)).append(", \n")
+                append(context.getString(R.string.protein)).append(" : ")
+                    .append(decimalFormat.format(protein)).append(", \n")
+                append(context.getString(R.string.lipids)).append(" : ")
+                    .append(decimalFormat.format(lipids)).append(", \n")
+                append(context.getString(R.string.carbohydrate)).append(" : ")
+                    .append(decimalFormat.format(carbohydrate)).append(", \n")
+                append(context.getString(R.string.dietary_fiber)).append(" : ")
+                    .append(decimalFormat.format(dietaryFiber)).append(", \n")
+                append(context.getString(R.string.sodium)).append(" : ")
+                    .append(decimalFormat.format(sodium))
+            }
         }
     }
 }
