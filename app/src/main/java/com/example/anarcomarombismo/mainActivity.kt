@@ -9,7 +9,7 @@ import com.example.anarcomarombismo.Controller.Adapter.TrainingAdapter
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formTraining
 
-class MainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
+class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
 
     private lateinit var addTrainingButton: Button
     private lateinit var trainingList: ListView
