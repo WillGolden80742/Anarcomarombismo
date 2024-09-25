@@ -1,27 +1,27 @@
 # Anarcomarombismo
 
-Anarcomarombismo is an Android application designed to assist users in tracking their daily calorie intake and managing their exercise routines. The app provides a user-friendly interface for logging food consumption and workouts, making it easier for users to achieve their fitness goals.
+Anarcomarombismo is an Android application designed to help users track their daily calorie intake and manage their exercise routines. The app features a user-friendly interface for logging food consumption and workouts, making it easier for users to achieve their fitness goals.
 
 ## Features
 
-### 1. Daily Calorie Tracking
-- Users can log their daily food intake, including calories and nutritional information.
-- The app calculates total calories consumed and displays them in an easy-to-read format.
+1. **Daily Calorie Tracking**
+   - Users can log their daily food intake, including calories and nutritional information.
+   - The app calculates total calories consumed and displays them in an easy-to-read format.
 
-### 2. Food Database
-- Access a comprehensive list of foods with detailed nutritional values, including protein, carbohydrates, fats, and more.
-- Users can search for foods and add them to their daily log.
+2. **Food Database**
+   - Access a comprehensive list of foods with detailed nutritional values, including protein, carbohydrates, fats, and more.
+   - Users can search for foods and add them to their daily log.
 
-### 3. Exercise Management
-- Users can create, edit, and delete exercise routines.
-- The app allows users to log exercises and track their progress over time.
+3. **Exercise Management**
+   - Users can create, edit, and delete exercise routines.
+   - The app allows users to log exercises and track their progress over time.
 
-### 4. User-Friendly Interface
-- Intuitive design for easy navigation and data entry.
-- Responsive layout that adapts to different screen sizes.
+4. **User-Friendly Interface**
+   - Intuitive design for easy navigation and data entry.
+   - Responsive layout that adapts to different screen sizes.
 
-### 5. Data Persistence
-- All user data is saved locally using JSON, allowing for offline access and data retention.
+5. **Data Persistence**
+   - All user data is saved locally using JSON, allowing for offline access and data retention.
 
 ## Technologies Used
 
@@ -39,11 +39,8 @@ To run the Anarcomarombismo app on your local machine, follow these steps:
    ```bash
    git clone https://github.com/WillGolden80742/Anarcomarombismo.git
    ```
-
 2. Open the project in Android Studio.
-
 3. Build the project to download the necessary dependencies.
-
 4. Run the app on an Android emulator or a physical device.
 
 ## Usage
