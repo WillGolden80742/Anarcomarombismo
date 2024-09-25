@@ -169,9 +169,9 @@
     <string name="upper_limbs">Membros Superiores</string>
     <string name="video_link">Link de Vídeo</string>
     <string name="video_link_hint">Insira o link de video (Youtube apenas)</string>
-    <string name="exercises">exercicios</string>
-    <string name="dailycalories">caloriasdiarias</string>
-    <string name="emptydailycalories">caloriasdiariasvazias</string>
-    <string name="foods">alimento</string>
-    <string name="trainings">treinos</string>
+    <string name="exercises">exercises</string>
+    <string name="dailycalories">dailyCalories</string>
+    <string name="emptydailycalories">emptyDailyCalories</string>
+    <string name="foods">foods</string>
+    <string name="trainings">trainings</string>
 </resources>
