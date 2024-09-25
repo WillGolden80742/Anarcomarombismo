@@ -26,7 +26,6 @@ class formFood : AppCompatActivity() {
     private lateinit var addFoodFormButton: Button
     private lateinit var removeFoodFormButton: Button
     private lateinit var currentFood: Food
-    private var json = JSON()
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,7 +79,7 @@ class formFood : AppCompatActivity() {
 
     private fun loadFoodData() {
         intent.getStringExtra("foodObject")?.let {
-            currentFood = json.fromJson(it, Food::class.java)
+            currentFood = JSON.fromJson(it, Food::class.java)
             if (currentFood.foodNumber.contains("web")) {
                 editable(false)
             }

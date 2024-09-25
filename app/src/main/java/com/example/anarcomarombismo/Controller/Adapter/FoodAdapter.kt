@@ -86,7 +86,7 @@ class FoodAdapter(
     private fun navigateToFormFoods(food: Food) {
         val intent = Intent(context, formFood::class.java).apply {
             putExtra("foodID", food.foodNumber)
-            putExtra("foodObject", JSON().toJson(food))
+            putExtra("foodObject", JSON.toJson(food))
         }
         context.startActivity(intent)
     }

@@ -2,7 +2,6 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import com.example.anarcomarombismo.Controller.Util.Cache
-import com.example.anarcomarombismo.Controller.Util.JSON
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -10,11 +9,11 @@ import java.util.Locale
 
 class DailyExercises(context: Context) {
     private val context = context
-    private val jsonConverter = JSON()
     private val cacheManager = Cache()
     private val dateInputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private val dateStorageFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-    data class ExerciseByDate(val date: String,val exercise: Exercise,val count: Int=0)
+
+    data class ExerciseByDate(val date: String, val exercise: Exercise, val count: Int = 0)
 
     private fun getCurrentFormattedDate(): String = dateStorageFormat.format(Date())
 
@@ -106,8 +105,7 @@ class DailyExercises(context: Context) {
     private fun getExerciseHistory(exercise: Exercise): Set<ExerciseByDate> {
         val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
         return if (cacheManager.hasCache(context, cacheKey)) {
-            val cachedJson = cacheManager.getCache(context, cacheKey)
-            jsonConverter.fromJson(cachedJson, Array<ExerciseByDate>::class.java).toSet()
+            cacheManager.getCache(context, cacheKey, Array<ExerciseByDate>::class.java).toSet()
         } else {
             emptySet()
         }
@@ -115,6 +113,6 @@ class DailyExercises(context: Context) {
 
     private fun updateExerciseCache(exercise: Exercise, exerciseHistory: List<ExerciseByDate>) {
         val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
-        cacheManager.setCache(context, cacheKey, jsonConverter.toJson(exerciseHistory))
+        cacheManager.setCache(context, cacheKey, exerciseHistory)
     }
 }

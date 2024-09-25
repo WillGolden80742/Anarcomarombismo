@@ -4,14 +4,13 @@ import android.content.Context
 import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
-import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DailyCalories (
+class DailyCalories(
     var date: String = "",
     var protein: Double = 0.0,
     var carbohydrate: Double = 0.0,
@@ -25,27 +24,23 @@ class DailyCalories (
 ) : DataHandler<DailyCalories> {
 
     init {
-        if (date == "") {
+        if (date.isEmpty()) {
             val currentDate = Date().time
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val formattedDate = dateFormat.format(currentDate)
-            date = formattedDate
+            date = dateFormat.format(currentDate)
         }
     }
 
     companion object {
         private val cache = Cache()
-        private val json = JSON()
+
         fun build(
             date: String = "",
             foodsList: List<Food> = listOf()
         ): DailyCalories {
-            val dailyCalories = DailyCalories().apply {
-                this.date = date
-                this.foodsList = foodsList
+            return DailyCalories(date = date, foodsList = foodsList).apply {
+                recalculateCalories()
             }
-            dailyCalories.recalculateCalories()
-            return dailyCalories
         }
     }
 
@@ -54,26 +49,24 @@ class DailyCalories (
         return try {
             val dailyCaloriesList = getExistingDailyCaloriesList(context)
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
-            cache.setCache(context, contextualKey, json.toJson(updatedCaloriesList))
+            cache.setCache(context, contextualKey, updatedCaloriesList)
             true
         } catch (e: Exception) {
-            println(RuntimeException("Error saving daily calories: $e"))
+            println("Error saving daily calories: $e")
             false
         }
     }
 
-    override fun remove(context: Context):Boolean {
-        val currentDate = date
+    override fun remove(context: Context): Boolean {
         val contextualKey = context.getString(R.string.dailycalories)
-        val cache = Cache()
+        val existingList = cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
 
-        cache.getCache(context, contextualKey)?.let { dailyCaloriesListJson ->
-            val dailyCaloriesList = parseDailyCaloriesList(dailyCaloriesListJson)
-            val updatedCaloriesList = removeCaloriesForDate(dailyCaloriesList, currentDate)
-            if (updatedCaloriesList.size != dailyCaloriesList.size) {
-                cache.setCache(context, contextualKey, json.toJson(updatedCaloriesList))
+        existingList?.let {
+            val updatedCaloriesList = removeCaloriesForDate(it, date)
+            if (updatedCaloriesList.size !=  it.size) {
+                cache.setCache(context, contextualKey, updatedCaloriesList)
                 Toast.makeText(context, context.getString(R.string.daily_calories_removed_successfully), Toast.LENGTH_SHORT).show()
-                resetDailyCalories(currentDate)
+                resetDailyCalories(date)
             }
         }
         return true
@@ -81,59 +74,32 @@ class DailyCalories (
 
     override fun fetchById(context: Context, id: Any): DailyCalories {
         val contextualKey = context.getString(R.string.dailycalories)
-        if (cache.hasCache(context, contextualKey)) {
-            val dailyCaloriesListJson = cache.getCache(context, contextualKey)
-            val json = JSON()
-            val dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-            val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == id as String }
-            return if (dailyCaloriesListFiltered.isNotEmpty()) {
-                dailyCaloriesListFiltered[0]
-            } else {
-                DailyCalories().apply { date = id as String}
-            }
+        return if (cache.hasCache(context, contextualKey)) {
+            val dailyCaloriesList = cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
+            dailyCaloriesList.find { it.date == id as String } ?: DailyCalories().apply { date = id as String }
         } else {
-            return DailyCalories().apply { date = id as String}
+            DailyCalories().apply { date = id as String }
         }
     }
 
     override fun fetchAll(context: Context): List<DailyCalories> {
         val contextualKey = context.getString(R.string.dailycalories)
-        val emptyContextualKey = context.getString(R.string.emptydailycalories)
-        var dailyCaloriesList: List<DailyCalories> = emptyList()
-        try {
-            if (cache.hasCache(context, contextualKey)) {
-                val dailyCaloriesListJson = cache.getCache(context, contextualKey)
-                println("Lista de calorias diárias: $dailyCaloriesListJson")
-                dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-            } else {
-                val dailyCaloriesListJson = cache.getCache(context, emptyContextualKey)
-                println("Lista de calorias diárias: $dailyCaloriesListJson")
-                dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
-            }
-            dailyCaloriesList = dailyCaloriesList.sortedByDescending { dailyCalories ->
-                val dateParts = dailyCalories.date.split("/")
-                "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt()
-            }
-        } catch (e: Exception) {
-            println("Erro ao carregar a lista de calorias diárias: $e")
+        val dailyCaloriesList = if (cache.hasCache(context, contextualKey)) {
+            cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
+        } else {
+            emptyList()
         }
-        return dailyCaloriesList.toList()
+        return dailyCaloriesList.sortedByDescending { it.date.split("/").let { dateParts -> "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt() } }
     }
 
     private fun getExistingDailyCaloriesList(context: Context): List<DailyCalories> {
         val contextualKey = context.getString(R.string.dailycalories)
         return if (cache.hasCache(context, contextualKey)) {
-            val dailyCaloriesListJson = cache.getCache(context, contextualKey)
-            json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
+            cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
         } else {
             emptyList()
         }
     }
-
-    private fun parseDailyCaloriesList(json: String): List<DailyCalories> {
-        return JSON().fromJson(json, Array<DailyCalories>::class.java).toList()
-    }
-
     private fun removeCaloriesForDate(
         dailyCaloriesList: List<DailyCalories>,
         date: String
@@ -143,11 +109,11 @@ class DailyCalories (
 
     private fun resetDailyCalories(date: String) {
         this.date = date
-        this.foodsList = listOf() // Reset food list if needed
+        this.foodsList = emptyList() // Reset food list if needed
     }
 
     fun addFood(food: Food) {
-        foodsList = foodsList.plus(food)
+        foodsList = foodsList + food
         calculateCalories(food, "add")
     }
 
@@ -160,64 +126,47 @@ class DailyCalories (
         dietaryFiber = 0.0
         sodium = 0.0
         for (food in foodsList) {
-            calculateCalories( food, "add")
+            calculateCalories(food, "add")
         }
     }
-    private fun calculateCalories(food: Food, operation: String) {
-        val energyKcalFormatted = formatNutrientValue(food.energyKcal)
-        val energyKjFormatted = formatNutrientValue(food.energyKj)
-        val proteinFormatted = formatNutrientValue(food.protein)
-        val carbohydrateFormatted = formatNutrientValue(food.carbohydrate)
-        val lipidsFormatted = formatNutrientValue(food.lipids)
-        val cholesterolFormatted = formatNutrientValue(food.cholesterol)
-        val dietaryFiberFormatted = formatNutrientValue(food.dietaryFiber)
-        val sodiumFormatted = formatNutrientValue(food.sodium)
 
+    private fun calculateCalories(food: Food, operation: String) {
         val calorieMultiplier = (food.grams / 100.0)
 
         when (operation.lowercase()) {
             "add" -> {
-                calorieskcal += (energyKcalFormatted.toDouble() * calorieMultiplier)
-                calorieskj += (energyKjFormatted.toDouble() * calorieMultiplier)
-                protein += (proteinFormatted.toDouble() * calorieMultiplier)
-                carbohydrate += (carbohydrateFormatted.toDouble() * calorieMultiplier)
-                lipids += (lipidsFormatted.toDouble() * calorieMultiplier)
-                cholesterol += (cholesterolFormatted.toDouble() * calorieMultiplier)
-                dietaryFiber += (dietaryFiberFormatted.toDouble() * calorieMultiplier)
-                sodium += (sodiumFormatted.toDouble() * calorieMultiplier)
+                calorieskcal += (food.energyKcal.toDouble() * calorieMultiplier)
+                calorieskj += (food.energyKj.toDouble() * calorieMultiplier)
+                protein += (food.protein.toDouble() * calorieMultiplier)
+                carbohydrate += (food.carbohydrate.toDouble() * calorieMultiplier)
+                lipids += (food.lipids.toDouble() * calorieMultiplier)
+                cholesterol += (food.cholesterol.toDouble() * calorieMultiplier)
+                dietaryFiber += (food.dietaryFiber.toDouble() * calorieMultiplier)
+                sodium += (food.sodium.toDouble() * calorieMultiplier)
             }
             "subtract" -> {
-                calorieskcal -= (energyKcalFormatted.toDouble() * calorieMultiplier)
-                calorieskj -= (energyKjFormatted.toDouble() * calorieMultiplier)
-                protein -= (proteinFormatted.toDouble() * calorieMultiplier)
-                carbohydrate -= (carbohydrateFormatted.toDouble() * calorieMultiplier)
-                lipids -= (lipidsFormatted.toDouble() * calorieMultiplier)
-                cholesterol -= (cholesterolFormatted.toDouble() * calorieMultiplier)
-                dietaryFiber -= (dietaryFiberFormatted.toDouble() * calorieMultiplier)
-                sodium -= (sodiumFormatted.toDouble() * calorieMultiplier)
+                calorieskcal -= (food.energyKcal.toDouble() * calorieMultiplier)
+                calorieskj -= (food.energyKj.toDouble() * calorieMultiplier)
+                protein -= (food.protein.toDouble() * calorieMultiplier)
+                carbohydrate -= (food.carbohydrate.toDouble() * calorieMultiplier)
+                lipids -= (food.lipids.toDouble() * calorieMultiplier)
+                cholesterol -= (food.cholesterol.toDouble() * calorieMultiplier)
+                dietaryFiber -= (food.dietaryFiber.toDouble() * calorieMultiplier)
+                sodium -= (food.sodium.toDouble() * calorieMultiplier)
             }
         }
-    }
-    private fun formatNutrientValue(nutrientValue: String): String {
-        return nutrientValue.replace(Regex("(?i)[natr*]"), "0")
     }
 
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
-        val energyKcalLabel = context.getString(R.string.energy_kcal)
-        val energyKjLabel = context.getString(R.string.energy_kj)
-        val proteinLabel = context.getString(R.string.protein)
-        val lipidsLabel = context.getString(R.string.lipids)
-        val carbohydrateLabel = context.getString(R.string.carbohydrate)
-        val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
-        val sodiumLabel = context.getString(R.string.sodium)
-
-        return  energyKcalLabel + " : " + decimalFormat.format(calorieskcal) + ", \n" +
-                energyKjLabel + " : " + decimalFormat.format(calorieskj) + ", \n" +
-                proteinLabel + " : " + decimalFormat.format(protein) + ", \n" +
-                lipidsLabel + " : " + decimalFormat.format(lipids) + ", \n" +
-                carbohydrateLabel + " : " + decimalFormat.format(carbohydrate) + ", \n" +
-                dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber) + ", \n" +
-                sodiumLabel + " : " + decimalFormat.format(sodium)
+        return buildString {
+            append(context.getString(R.string.energy_kcal)).append(" : ").append(decimalFormat.format(calorieskcal)).append(", \n")
+            append(context.getString(R.string.energy_kj)).append(" : ").append(decimalFormat.format(calorieskj)).append(", \n")
+            append(context.getString(R.string.protein)).append(" : ").append(decimalFormat.format(protein)).append(", \n")
+            append(context.getString(R.string.lipids)).append(" : ").append(decimalFormat.format(lipids)).append(", \n")
+            append(context.getString(R.string.carbohydrate)).append(" : ").append(decimalFormat.format(carbohydrate)).append(", \n")
+            append(context.getString(R.string.dietary_fiber)).append(" : ").append(decimalFormat.format(dietaryFiber)).append(", \n")
+            append(context.getString(R.string.sodium)).append(" : ").append(decimalFormat.format(sodium))
+        }
     }
 }

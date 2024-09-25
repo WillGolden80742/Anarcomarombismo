@@ -9,7 +9,7 @@ import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
 import java.util.UUID
 
-class Food (
+class Food(
     var foodNumber: String = "",
     var grams: Double = 100.0,
     var foodDescription: String = "NO_DESCRIPTION",
@@ -23,8 +23,8 @@ class Food (
     var sodium: String = "0.0",
 ): DataHandler<Food> {
     companion object {
-        private var json = JSON()
         private var cache = Cache()
+
         fun build(
             foodNumber: String = "",
             grams: Double = 100.0,
@@ -40,19 +40,21 @@ class Food (
                 this.foodNumber = foodNumber.ifEmpty { generateFoodNumber() }
                 this.foodDescription = foodDescription
                 this.protein = normalizeNutrient(protein, grams)
-                this.carbohydrate = normalizeNutrient(carbohydrate,grams)
-                this.lipids = normalizeNutrient(lipids,grams)
-                this.dietaryFiber = normalizeNutrient(dietaryFiber,grams)
-                this.sodium = normalizeNutrient(sodium,grams)
-                this.energyKcal = normalizeNutrient(energyKcal,grams)
+                this.carbohydrate = normalizeNutrient(carbohydrate, grams)
+                this.lipids = normalizeNutrient(lipids, grams)
+                this.dietaryFiber = normalizeNutrient(dietaryFiber, grams)
+                this.sodium = normalizeNutrient(sodium, grams)
+                this.energyKcal = normalizeNutrient(energyKcal, grams)
                 this.energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
                 this.grams = 100.0
             }
         }
     }
+
     override fun save(context: Context): Boolean {
         return save(this, context)
     }
+
     private fun save(food: Food, context: Context): Boolean {
         val contextualKey = context.getString(R.string.foods)
         try {
@@ -63,12 +65,12 @@ class Food (
                 return false
             }
 
-            val isUpdate = food.foodNumber.isNotEmpty() && foodCache.contains(food.foodNumber)
+            val isUpdate = food.foodNumber.isNotEmpty() && foodCache.any { it.foodNumber == food.foodNumber }
 
             val foodNutritionList = if (isUpdate) {
-                updateFoodInList(food, foodCache)
+                foodCache.map { if (it.foodNumber == food.foodNumber) food else it }
             } else {
-                createFoodInList(food, foodCache)
+                foodCache + food
             }
 
             showToast(
@@ -76,7 +78,7 @@ class Food (
                 else context.getString(R.string.successful_target_food),
                 context
             )
-            cache.setCache(context, contextualKey, json.toJson(foodNutritionList))
+            cache.setCache(context, contextualKey, foodNutritionList)
             return true
 
         } catch (e: Exception) {
@@ -84,51 +86,42 @@ class Food (
             return false
         }
     }
+
     override fun fetchAll(context: Context): List<Food> {
-        return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
+        return cache.getCache(context, context.getString(R.string.foods), Array<Food>::class.java).toList()
     }
+
     override fun fetchById(context: Context, id: Any): Food {
-        return json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
-            .first { it.foodNumber == id as String }
+        return fetchAll(context).first { it.foodNumber == id as String }
     }
+
     override fun remove(context: Context): Boolean {
         val contextualKey = context.getString(R.string.foods)
         try {
-            val foodNutritionList = json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
-                .filter { it.foodNumber != foodNumber }
-            cache.setCache(context, contextualKey, json.toJson(foodNutritionList))
-            Toast.makeText(context, context.getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
+            val foodNutritionList = fetchAll(context).filter { it.foodNumber != foodNumber }
+            cache.setCache(context, contextualKey, foodNutritionList)
+            showToast(context.getString(R.string.successfully_removed_food), context)
             return true
         } catch (e: Exception) {
-            Toast.makeText(context, context.getString(R.string.error_removing_food), Toast.LENGTH_SHORT).show()
+            showToast(context.getString(R.string.error_removing_food), context)
             println("Erro food: $e")
             return false
         }
     }
 
-    private fun loadJSONCache (context: Context): String {
+    private fun loadJSONCache(context: Context): List<Food> {
         val contextualKey = context.getString(R.string.foods)
-        var foodCache: String
-        if (cache.hasCache(context, contextualKey)) {
-            foodCache = cache.getCache(context, contextualKey)
+        return if (cache.hasCache(context, contextualKey)) {
+            cache.getCache(context, contextualKey, Array<Food>::class.java).toList()
         } else {
             val rawFoodData = context.resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-            cache.setCache(context, contextualKey, rawFoodData)
-            foodCache = rawFoodData
+            val foodList = JSON.fromJson(rawFoodData, Array<Food>::class.java).toList()
+            cache.setCache(context, contextualKey, foodList)
+            foodList
         }
-        return foodCache
     }
 
-    private fun updateFoodInList(food: Food, foodCache: String): List<Food> {
-        return json.fromJson(foodCache, Array<Food>::class.java).toList()
-            .map { if (it.foodNumber == food.foodNumber) food else it }
-    }
-
-    private fun createFoodInList(food: Food, foodCache: String): List<Food> {
-        return json.fromJson(foodCache, Array<Food>::class.java).toList() + food
-    }
-
-    private fun showToast(message: String,context: Context) {
+    private fun showToast(message: String, context: Context) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
@@ -136,7 +129,7 @@ class Food (
         return formatDoubleNumber(nutrient.toDouble() / grams * 100.0)
     }
 
-    private fun formatDoubleNumber(value: Double):String {
+    private fun formatDoubleNumber(value: Double): String {
         return "%.2f".format(value).replace(",", ".")
     }
 
@@ -144,7 +137,6 @@ class Food (
         val random = UUID.randomUUID().toString()
         return "${System.currentTimeMillis()}$random"
     }
-
 
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
@@ -159,22 +151,22 @@ class Food (
 
         return if (grams > 0.0) {
             gramsLabel + " : " + decimalFormat.format(grams) + ",\n" +
-            energyKcalLabel + " : " + decimalFormat.format((energyKcal!!.toDouble() * grams) / 100.0) + ",\n" +
-            energyKjLabel + " : " + decimalFormat.format((energyKj!!.toDouble() * grams) / 100.0) + ",\n" +
-            proteinLabel + " : " + decimalFormat.format((protein!!.toDouble() * grams) / 100.0) + ",\n" +
-            lipidsLabel + " : " + decimalFormat.format((lipids!!.toDouble() * grams) / 100.0) + ",\n" +
-            carbohydrateLabel + " : " + decimalFormat.format((carbohydrate!!.toDouble() * grams) / 100.0) + ",\n" +
-            dietaryFiberLabel + " : " + decimalFormat.format((dietaryFiber!!.toDouble() * grams) / 100.0) + ",\n" +
-            sodiumLabel + " : " + decimalFormat.format((sodium!!.toDouble() * grams) / 100.0)
+                    energyKcalLabel + " : " + decimalFormat.format((energyKcal.toDouble() * grams) / 100.0) + ",\n" +
+                    energyKjLabel + " : " + decimalFormat.format((energyKj.toDouble() * grams) / 100.0) + ",\n" +
+                    proteinLabel + " : " + decimalFormat.format((protein.toDouble() * grams) / 100.0) + ",\n" +
+                    lipidsLabel + " : " + decimalFormat.format((lipids.toDouble() * grams) / 100.0) + ",\n" +
+                    carbohydrateLabel + " : " + decimalFormat.format((carbohydrate.toDouble() * grams) / 100.0) + ",\n" +
+                    dietaryFiberLabel + " : " + decimalFormat.format((dietaryFiber.toDouble() * grams) / 100.0) + ",\n" +
+                    sodiumLabel + " : " + decimalFormat.format((sodium.toDouble() * grams) / 100.0)
         } else {
             gramsLabel + " : " + decimalFormat.format(grams) + ",\n" +
-            energyKcalLabel + " : " + decimalFormat.format(energyKcal!!.toDouble()) + ",\n" +
-            energyKjLabel + " : " + decimalFormat.format(energyKj!!.toDouble()) + ",\n" +
-            proteinLabel + " : " + decimalFormat.format(protein!!.toDouble()) + ",\n" +
-            lipidsLabel + " : " + decimalFormat.format(lipids!!.toDouble()) + ",\n" +
-            carbohydrateLabel + " : " + decimalFormat.format(carbohydrate!!.toDouble()) + ",\n" +
-            dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber!!.toDouble()) + ",\n" +
-            sodiumLabel + " : " + decimalFormat.format(sodium!!.toDouble())
+                    energyKcalLabel + " : " + decimalFormat.format(energyKcal.toDouble()) + ",\n" +
+                    energyKjLabel + " : " + decimalFormat.format(energyKj.toDouble()) + ",\n" +
+                    proteinLabel + " : " + decimalFormat.format(protein.toDouble()) + ",\n" +
+                    lipidsLabel + " : " + decimalFormat.format(lipids.toDouble()) + ",\n" +
+                    carbohydrateLabel + " : " + decimalFormat.format(carbohydrate.toDouble()) + ",\n" +
+                    dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber.toDouble()) + ",\n" +
+                    sodiumLabel + " : " + decimalFormat.format(sodium.toDouble())
         }
     }
 }

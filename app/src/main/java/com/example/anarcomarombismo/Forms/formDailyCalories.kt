@@ -180,7 +180,7 @@ class formDailyCalories : AppCompatActivity() {
         try {
             var dailyCaloriesFoods = Intent(this, dailyCaloriesFoods::class.java)
             var json = JSON()
-            dailyCaloriesFoods.putExtra("foodsList", dailyCalories.foodsList.let { json.toJson(it) })
+            dailyCaloriesFoods.putExtra("foodsList", dailyCalories.foodsList.let { JSON.toJson(it) })
             dailyCaloriesFoods.putExtra("dailyCaloriesDate", dailyCalories.date)
             startActivity(dailyCaloriesFoods)
         } catch (e: Exception) {

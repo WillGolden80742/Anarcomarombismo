@@ -21,13 +21,12 @@ class Exercise(
     var muscle: String = "",
     var sets: Int = 3,
     var repetitions: String = "10,10,10",
-    var load: Double = 20.0, // Carga padrão em kg
-    var rest: Int = 60, // Tempo de repouso padrão em segundos
-    var cadence: String = "3-1-3", // Cadência padrão
+    var load: Double = 20.0,
+    var rest: Int = 60,
+    var cadence: String = "3-1-3",
 ): DataHandler<Exercise> {
     companion object {
         private val cache = Cache()
-        private val json = JSON()
 
         fun build(
             trainingID: Long = 0L,
@@ -54,14 +53,15 @@ class Exercise(
                 this.cadence = cadence
             }
         }
+
         fun dumpExercise(context: Context) {
             val contextualKey = context.getString(R.string.exercises)
             val exerciseIds = listOf(R.raw.training_1, R.raw.training_2, R.raw.training_3, R.raw.training_4)
             exerciseIds.forEach { exerciseId ->
                 val trainingData = context.resources.openRawResource(exerciseId).bufferedReader().use { it.readText() }
-                val contextualExerciseList = json.fromJson(trainingData, Array<ContextualExercise>::class.java)
+                val contextualExerciseList = JSON.fromJson(trainingData, Array<ContextualExercise>::class.java)
                 val exerciseList = ContextualExercise.getExercise(context,contextualExerciseList).toList()
-                cache.setCache(context, "${contextualKey}_${exerciseList[0].trainingID}", json.toJson(exerciseList))
+                cache.setCache(context, "${contextualKey}_${exerciseList[0].trainingID}", exerciseList)
             }
         }
     }
@@ -75,6 +75,7 @@ class Exercise(
         showToastMessage(context, exerciseID in exerciseArray.map { it.exerciseID })
         return true
     }
+
     override fun remove(context: Context): Boolean {
         val contextualKey = context.getString(R.string.exercises)
         val cacheKey = "${contextualKey}_$trainingID"
@@ -84,28 +85,25 @@ class Exercise(
         showToastMessage(context, false, R.string.remove_exercise_successful, R.string.remove_exercise_successful)
         return true
     }
+
     override fun fetchById(context: Context, id: Any): Exercise? {
         val contextualKey = context.getString(R.string.exercises)
         val cacheKey = "${contextualKey}_$trainingID"
-        val exerciseArray = if (cache.hasCache(context, cacheKey)) {
-            json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
-        } else {
-            arrayOf()
-        }
+        val exerciseArray = getExerciseArray(context, cacheKey)
         return exerciseArray.find { it.exerciseID == id as Long }
     }
+
     override fun fetchAll(context: Context): List<Exercise> {
         val contextualKey = context.getString(R.string.exercises)
         val cacheKey = "${contextualKey}_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
-            val cachedData = cache.getCache(context, cacheKey)
-            json.fromJson(cachedData, Array<Exercise>::class.java)
+            cache.getCache(context, cacheKey, Array<Exercise>::class.java)
         } else {
             val random = Random().nextInt(100)
             val defaultExerciseArray = arrayOf(
                 Exercise(trainingID, "", System.currentTimeMillis() + random, "Exercicio", "", 3, "10,10,10", 0.0)
             )
-            cache.setCache(context, cacheKey, json.toJson(defaultExerciseArray))
+            cache.setCache(context, cacheKey, defaultExerciseArray)
             defaultExerciseArray
         }
 
@@ -115,9 +113,10 @@ class Exercise(
 
         return exerciseArray.toList()
     }
+
     private fun getExerciseArray(context: Context, cacheKey: String): Array<Exercise> {
         return if (cache.hasCache(context, cacheKey)) {
-            json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
+            cache.getCache(context, cacheKey,Array<Exercise>::class.java)
         } else {
             arrayOf()
         }
@@ -135,7 +134,7 @@ class Exercise(
     }
 
     private fun saveExerciseArray(context: Context, cacheKey: String, exerciseArray: Array<Exercise>) {
-        cache.setCache(context, cacheKey, json.toJson(exerciseArray))
+        cache.setCache(context, cacheKey, exerciseArray)
     }
 
     private fun showToastMessage(context: Context, isUpdate: Boolean) {
@@ -147,6 +146,7 @@ class Exercise(
         val messageResId = if (isUpdate) updateMessageId else addMessageId
         Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
     }
+
 
     fun generateYouTubeEmbedLink(text: String): String {
         val trimmedText = text.trim()
@@ -209,6 +209,7 @@ class Exercise(
         builder.append(value, StyleSpan(Typeface.BOLD), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         builder.append("\n")
     }
+
     private fun formatRepetitions(repetitions: String): String {
         val repetitionsList = repetitions.split(",")
         return if (repetitionsList.all { it == repetitionsList[0] }) {
@@ -217,6 +218,4 @@ class Exercise(
             repetitions
         }
     }
-
-
 }

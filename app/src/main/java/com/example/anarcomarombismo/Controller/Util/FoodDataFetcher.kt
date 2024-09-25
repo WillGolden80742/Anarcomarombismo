@@ -55,13 +55,9 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         val queryHash = getKey(query)
         if (cache.hasCache(context, queryHash)) {
             println("CACHE HIT for queryHash: $queryHash")
-            return getCachedOfFoodSearch(context, queryHash)
+            return cache.getCache(context, queryHash,Array<FoodDataFetcher>::class.java).toList()
         }
         return fetchAndCacheOfFoodSearch(context, query, queryHash)
-    }
-    private fun getCachedOfFoodSearch(context: Context, queryHash: String): List<FoodDataFetcher> {
-        val cachedJson = cache.getCache(context, queryHash)
-        return json.fromJson(cachedJson, Array<FoodDataFetcher>::class.java).toList()
     }
     private fun fetchAndCacheOfFoodSearch(context: Context, query: String, queryHash: String): List<FoodDataFetcher> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
@@ -85,7 +81,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
                 return emptyList()
             }
         }
-        cache.setCache(context, queryHash, json.toJson(items))
+        cache.setCache(context, queryHash,items)
         return items
     }
     private fun parseFoodSearch(link: Element, smallTextDivs: Elements): FoodDataFetcher? {
@@ -119,7 +115,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         val foodNumber = getKey(url)
         if (cache.hasCache(context, foodNumber)) {
             println("CACHE HIT for foodNumber: $foodNumber")
-            return json.fromJson(cache.getCache(context, foodNumber), Food::class.java)
+            return cache.getCache(context, foodNumber, Food::class.java)
         }
         return try {
             val html = HtmlHandler.fetchHtmlContent(url)
@@ -128,8 +124,8 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
             val foodDescription = extractFoodDescription(doc)
             val nutrients = extractNutrients(doc)
             val food = build(foodNumber, grams, foodDescription, nutrients)
-            cache.setCache(context, foodNumber, json.toJson(food))
-            println(JSON().toJson(food))
+            cache.setCache(context, foodNumber, food)
+            println(JSON.toJson(food))
             food
         } catch (e: Exception) {
             println("Error Food: ${e.message}")
