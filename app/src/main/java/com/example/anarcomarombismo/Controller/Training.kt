@@ -30,14 +30,16 @@ class Training(
             }
         }
         private fun hasTraining(context: Context): Boolean {
-            return cache.hasCache(context, "Treinos")
+            val contextualKey = context.getString(R.string.trainings)
+            return cache.hasCache(context, contextualKey)
         }
     }
     private fun generateTrainingID(): Long {
         return Random().nextInt(100)+System.currentTimeMillis()
     }
     override fun save(context: Context): Boolean {
-        val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
+        val contextualKey = context.getString(R.string.trainings)
+        val trainingArray = json.fromJson(cache.getCache(context, contextualKey), Array<Training>::class.java)
         val updatedTrainingArray = if (trainingID > 0) {
             trainingArray.map {
                 if (it.trainingID == trainingID) {
@@ -56,7 +58,7 @@ class Training(
                 )
             )
         }
-        cache.setCache(context, "Treinos", json.toJson(updatedTrainingArray))
+        cache.setCache(context, contextualKey, json.toJson(updatedTrainingArray))
         val message = if (trainingID > 0) {
             context.getString(R.string.update_training_successful)
         } else {
@@ -67,10 +69,11 @@ class Training(
     }
 
     override fun remove(context: Context): Boolean {
-        val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
+        val contextualKey = context.getString(R.string.trainings)
+        val trainingArray = json.fromJson(cache.getCache(context, contextualKey), Array<Training>::class.java)
         val updatedTrainingArray = trainingArray.filter { it.trainingID != trainingID }
         if (updatedTrainingArray.size < trainingArray.size) {
-            cache.setCache(context, "Treinos", json.toJson(updatedTrainingArray))
+            cache.setCache(context, contextualKey, json.toJson(updatedTrainingArray))
             Toast.makeText(context, context.getString(R.string.remove_training_successful), Toast.LENGTH_SHORT).show()
             return true
         }
@@ -79,7 +82,8 @@ class Training(
     }
 
     override fun fetchById(context: Context, id: Any):Training {
-        val trainingArray = json.fromJson(cache.getCache(context, "Treinos"), Array<Training>::class.java)
+        val contextualKey = context.getString(R.string.trainings)
+        val trainingArray = json.fromJson(cache.getCache(context, contextualKey), Array<Training>::class.java)
         val training = trainingArray.find { it.trainingID == id as Long }
         if (training != null) {
             this.name = training.name
@@ -90,9 +94,10 @@ class Training(
         return this
     }
     override fun fetchAll(context: Context): List<Training> {
+        val contextualKey = context.getString(R.string.trainings)
         val trainingArray: List<Training>
         if (hasTraining(context)) {
-            val cachedData = cache.getCache(context, "Treinos")
+            val cachedData = cache.getCache(context, contextualKey)
             trainingArray = json.fromJson(cachedData, Array<Training>::class.java).toList()
             for (training in trainingArray) {
                 println("Treino em Cache: ${training.trainingID} - ${training.name} - ${training.description}")
@@ -104,7 +109,7 @@ class Training(
                 Training(3, context.getString(R.string.training_c), context.getString(R.string.shoulder_and_triceps)),
                 Training(4, context.getString(R.string.training_d), context.getString(R.string.calf_and_legs))
             )
-            cache.setCache(context, "Treinos", json.toJson(trainingArray))
+            cache.setCache(context, contextualKey, json.toJson(trainingArray))
             Exercise.dumpExercise(context)
         }
         return trainingArray.toList()

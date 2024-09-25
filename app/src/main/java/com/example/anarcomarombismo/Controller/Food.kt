@@ -54,6 +54,7 @@ class Food (
         return save(this, context)
     }
     private fun save(food: Food, context: Context): Boolean {
+        val contextualKey = context.getString(R.string.foods)
         try {
             val foodCache = loadJSONCache(context)
 
@@ -75,7 +76,7 @@ class Food (
                 else context.getString(R.string.successful_target_food),
                 context
             )
-            cache.setCache(context, "Alimentos", json.toJson(foodNutritionList))
+            cache.setCache(context, contextualKey, json.toJson(foodNutritionList))
             return true
 
         } catch (e: Exception) {
@@ -91,10 +92,11 @@ class Food (
             .first { it.foodNumber == id as String }
     }
     override fun remove(context: Context): Boolean {
+        val contextualKey = context.getString(R.string.foods)
         try {
             val foodNutritionList = json.fromJson(loadJSONCache(context), Array<Food>::class.java).toList()
                 .filter { it.foodNumber != foodNumber }
-            cache.setCache(context, "Alimentos", json.toJson(foodNutritionList))
+            cache.setCache(context, contextualKey, json.toJson(foodNutritionList))
             Toast.makeText(context, context.getString(R.string.successfully_removed_food), Toast.LENGTH_SHORT).show()
             return true
         } catch (e: Exception) {
@@ -105,12 +107,13 @@ class Food (
     }
 
     private fun loadJSONCache (context: Context): String {
+        val contextualKey = context.getString(R.string.foods)
         var foodCache: String
-        if (cache.hasCache(context, "Alimentos")) {
-            foodCache = cache.getCache(context, "Alimentos")
+        if (cache.hasCache(context, contextualKey)) {
+            foodCache = cache.getCache(context, contextualKey)
         } else {
             val rawFoodData = context.resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-            cache.setCache(context, "Alimentos", rawFoodData)
+            cache.setCache(context, contextualKey, rawFoodData)
             foodCache = rawFoodData
         }
         return foodCache

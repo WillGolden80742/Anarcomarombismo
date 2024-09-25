@@ -50,10 +50,11 @@ class DailyCalories (
     }
 
     override fun save(context: Context): Boolean {
+        val contextualKey = context.getString(R.string.dailycalories)
         return try {
             val dailyCaloriesList = getExistingDailyCaloriesList(context)
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
-            cache.setCache(context, "dailyCalories", json.toJson(updatedCaloriesList))
+            cache.setCache(context, contextualKey, json.toJson(updatedCaloriesList))
             true
         } catch (e: Exception) {
             handleError(e, "Error saving daily calories")
@@ -63,14 +64,14 @@ class DailyCalories (
 
     override fun remove(context: Context):Boolean {
         val currentDate = date
-        val cacheKey = "dailyCalories"
+        val contextualKey = context.getString(R.string.dailycalories)
         val cache = Cache()
 
-        cache.getCache(context, cacheKey)?.let { dailyCaloriesListJson ->
+        cache.getCache(context, contextualKey)?.let { dailyCaloriesListJson ->
             val dailyCaloriesList = parseDailyCaloriesList(dailyCaloriesListJson)
             val updatedCaloriesList = removeCaloriesForDate(dailyCaloriesList, currentDate)
             if (updatedCaloriesList.size != dailyCaloriesList.size) {
-                cache.setCache(context, cacheKey, toJson(updatedCaloriesList))
+                cache.setCache(context, contextualKey, toJson(updatedCaloriesList))
                 showToast(context, R.string.daily_calories_removed_successfully)
                 resetDailyCalories(currentDate)
             }
@@ -79,8 +80,9 @@ class DailyCalories (
     }
 
     override fun fetchById(context: Context, id: Any): DailyCalories {
-        if (cache.hasCache(context, "dailyCalories")) {
-            val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+        val contextualKey = context.getString(R.string.dailycalories)
+        if (cache.hasCache(context, contextualKey)) {
+            val dailyCaloriesListJson = cache.getCache(context, contextualKey)
             val json = JSON()
             val dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
             val dailyCaloriesListFiltered = dailyCaloriesList.filter { it.date == id as String }
@@ -95,14 +97,16 @@ class DailyCalories (
     }
 
     override fun fetchAll(context: Context): List<DailyCalories> {
+        val contextualKey = context.getString(R.string.dailycalories)
+        val emptyContextualKey = context.getString(R.string.emptydailycalories)
         var dailyCaloriesList: List<DailyCalories> = emptyList()
         try {
-            if (cache.hasCache(context, "dailyCalories")) {
-                val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+            if (cache.hasCache(context, contextualKey)) {
+                val dailyCaloriesListJson = cache.getCache(context, contextualKey)
                 println("Lista de calorias diárias: $dailyCaloriesListJson")
                 dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
             } else {
-                val dailyCaloriesListJson = cache.getCache(context, "emptyDailyCalories")
+                val dailyCaloriesListJson = cache.getCache(context, emptyContextualKey)
                 println("Lista de calorias diárias: $dailyCaloriesListJson")
                 dailyCaloriesList = json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
             }
@@ -117,8 +121,9 @@ class DailyCalories (
     }
 
     private fun getExistingDailyCaloriesList(context: Context): List<DailyCalories> {
-        return if (cache.hasCache(context, "dailyCalories")) {
-            val dailyCaloriesListJson = cache.getCache(context, "dailyCalories")
+        val contextualKey = context.getString(R.string.dailycalories)
+        return if (cache.hasCache(context, contextualKey)) {
+            val dailyCaloriesListJson = cache.getCache(context, contextualKey)
             json.fromJson(dailyCaloriesListJson, Array<DailyCalories>::class.java).toList()
         } else {
             emptyList()

@@ -51,18 +51,20 @@ class Exercise(
             }
         }
         fun dumpExercise(context: Context) {
+            val contextualKey = context.getString(R.string.exercises)
             val exerciseIds = listOf(R.raw.training_1, R.raw.training_2, R.raw.training_3, R.raw.training_4)
             exerciseIds.forEach { exerciseId ->
                 val trainingData = context.resources.openRawResource(exerciseId).bufferedReader().use { it.readText() }
                 val contextualExerciseList = json.fromJson(trainingData, Array<ContextualExercise>::class.java)
                 val exerciseList = ContextualExercise.getExercise(context,contextualExerciseList).toList()
-                cache.setCache(context, "Exercicios_${exerciseList[0].trainingID}", json.toJson(exerciseList))
+                cache.setCache(context, "${contextualKey}_${exerciseList[0].trainingID}", json.toJson(exerciseList))
             }
         }
     }
 
     override fun save(context: Context): Boolean {
-        val cacheKey = "Exercicios_$trainingID"
+        val contextualKey = context.getString(R.string.exercises)
+        val cacheKey = "${contextualKey}_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val updatedExerciseArray = updateExerciseArray(exerciseArray)
         saveExerciseArray(context, cacheKey, updatedExerciseArray)
@@ -70,7 +72,8 @@ class Exercise(
         return true
     }
     override fun remove(context: Context): Boolean {
-        val cacheKey = "Exercicios_$trainingID"
+        val contextualKey = context.getString(R.string.exercises)
+        val cacheKey = "${contextualKey}_$trainingID"
         val exerciseArray = getExerciseArray(context, cacheKey)
         val newExerciseArray = exerciseArray.filter { it.exerciseID != exerciseID }.toTypedArray()
         saveExerciseArray(context, cacheKey, newExerciseArray)
@@ -78,7 +81,8 @@ class Exercise(
         return true
     }
     override fun fetchById(context: Context, id: Any): Exercise? {
-        val cacheKey = "Exercicios_$trainingID"
+        val contextualKey = context.getString(R.string.exercises)
+        val cacheKey = "${contextualKey}_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
             json.fromJson(cache.getCache(context, cacheKey), Array<Exercise>::class.java)
         } else {
@@ -87,8 +91,8 @@ class Exercise(
         return exerciseArray.find { it.exerciseID == id as Long }
     }
     override fun fetchAll(context: Context): List<Exercise> {
-
-        val cacheKey = "Exercicios_$trainingID"
+        val contextualKey = context.getString(R.string.exercises)
+        val cacheKey = "${contextualKey}_$trainingID"
         val exerciseArray = if (cache.hasCache(context, cacheKey)) {
             val cachedData = cache.getCache(context, cacheKey)
             json.fromJson(cachedData, Array<Exercise>::class.java)

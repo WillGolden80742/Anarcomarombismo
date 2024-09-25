@@ -4,16 +4,16 @@ import android.content.Context
 import com.example.anarcomarombismo.Controller.Exercise
 
 class ContextualExercise(
-    val trainingID: Long = 0,
-    val linkVideo: String = "",
-    val exerciseID: Long = 0,
-    val name: Int = 0,
-    val muscle: Int = 0,
-    val sets: Int = 3,
-    val repetitions: String = "10,10,10",
-    val load: Double = 20.0,
-    val rest: Int = 60,
-    val cadence: String = "3-1-3"
+    private val trainingID: Long = 0,
+    private val linkVideo: String = "",
+    private val exerciseID: Long = 0,
+    private val name: Int = 0,
+    private val muscle: Int = 0,
+    private val sets: Int = 3,
+    private val repetitions: String = "10,10,10",
+    private val load: Double = 20.0,
+    private val rest: Int = 60,
+    private val cadence: String = "3-1-3"
 ) {
     companion object {
         fun getExercise(

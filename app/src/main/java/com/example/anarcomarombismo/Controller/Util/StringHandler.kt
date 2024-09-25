@@ -5,17 +5,17 @@ import java.text.Normalizer
 class StringHandler {
     companion object {
         fun containsQuery(text: String, query: String): Boolean {
-            if (query.isEmpty()) {
-                return true
-            }
+            if (query.isBlank()) return true
+
             val normalizedText = normalizeString(text)
             val normalizedQuery = normalizeString(query)
-            for (word in normalizedQuery.split(" ")) {
-                if (normalizedText.contains(word, ignoreCase = true) && word.length > 2) {
-                    return true
-                }
+
+            val queryWords = normalizedQuery.split(" ").filter { it.length > 2 }
+            return if (queryWords.isNotEmpty()) {
+                queryWords.any { word -> normalizedText.contains(word, ignoreCase = true) }
+            } else {
+                normalizedText.contains(normalizedQuery, ignoreCase = true)
             }
-            return false
         }
         private fun normalizeString(text: String): String {
             return Normalizer.normalize(text, Normalizer.Form.NFD)
