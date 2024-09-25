@@ -16,6 +16,41 @@ import java.text.DecimalFormat
 class FoodDataFetcher(var name: String = "", var href: String = "", var grams: String = "") {
     private val cache = Cache()
     private val json = JSON()
+    companion object {
+        private fun build(
+            foodNumber: String,
+            grams: Double,
+            foodDescription: String,
+            nutrients: MutableMap<String, String>
+        ): Food {
+            val energyKj = nutrients["Energia"]?.replace(Regex("[^0-9,.]"), "")?.replace(',', '.')
+                ?.toDoubleOrNull() ?: 0.0
+            val energyKcal = convertKjToKcal(energyKj)
+            return Food(
+                foodNumber = "web$foodNumber",
+                grams = 100.0,
+                foodDescription = "$foodDescription ᯤ",
+                energyKcal = formatNutrientValue(energyKcal, grams),
+                energyKj = formatNutrientValue(energyKj, grams),
+                protein = formatNutrientValue(nutrients["Proteínas"], grams),
+                lipids = formatNutrientValue(nutrients["Gorduras"], grams),
+                cholesterol = formatNutrientValue(nutrients["Colesterol"], grams),
+                carbohydrate = formatNutrientValue(nutrients["Carboidratos"], grams),
+                dietaryFiber = formatNutrientValue(nutrients["Fibras"], grams),
+                sodium = formatNutrientValue(nutrients["Sódio"], grams)
+            )
+        }
+        private fun convertKjToKcal(kj: Double): Double {
+            return kj / 4.184
+        }
+        private fun formatNutrientValue(nutrientValue: String?, grams: Double): String {
+            val value = nutrientValue?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0
+            return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
+        }
+        private fun formatNutrientValue(value: Double, grams: Double): String {
+            return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
+        }
+    }
     fun searchFood(context: Context, query: String): List<FoodDataFetcher> {
         val queryHash = getKey(query)
         if (cache.hasCache(context, queryHash)) {
@@ -92,7 +127,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
 
             val foodDescription = extractFoodDescription(doc)
             val nutrients = extractNutrients(doc)
-            val food = buildFood(foodNumber, grams, foodDescription, nutrients)
+            val food = build(foodNumber, grams, foodDescription, nutrients)
             cache.setCache(context, foodNumber, json.toJson(food))
             println(JSON().toJson(food))
             food
@@ -113,39 +148,6 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
             nutrients[keyText] = value
         }
         return nutrients
-    }
-    private fun convertKjToKcal(kj: Double): Double {
-        return kj / 4.184
-    }
-    private fun buildFood(
-        foodNumber: String,
-        grams: Double,
-        foodDescription: String,
-        nutrients: MutableMap<String, String>
-    ): Food {
-        val energyKj = nutrients["Energia"]?.replace(Regex("[^0-9,.]"), "")?.replace(',', '.')
-            ?.toDoubleOrNull() ?: 0.0
-        val energyKcal = convertKjToKcal(energyKj)
-        return Food(
-            foodNumber = "web$foodNumber",
-            grams = 100.0,
-            foodDescription = "$foodDescription ᯤ",
-            energyKcal = formatNutrientValue(energyKcal, grams),
-            energyKj = formatNutrientValue(energyKj, grams),
-            protein = formatNutrientValue(nutrients["Proteínas"], grams),
-            lipids = formatNutrientValue(nutrients["Gorduras"], grams),
-            cholesterol = formatNutrientValue(nutrients["Colesterol"], grams),
-            carbohydrate = formatNutrientValue(nutrients["Carboidratos"], grams),
-            dietaryFiber = formatNutrientValue(nutrients["Fibras"], grams),
-            sodium = formatNutrientValue(nutrients["Sódio"], grams)
-        )
-    }
-    private fun formatNutrientValue(nutrientValue: String?, grams: Double): String {
-        val value = nutrientValue?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0
-        return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
-    }
-    private fun formatNutrientValue(value: Double, grams: Double): String {
-        return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
     }
     private fun getKey(value: String): String {
         return try {
