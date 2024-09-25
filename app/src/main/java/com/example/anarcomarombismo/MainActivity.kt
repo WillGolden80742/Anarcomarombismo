@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_training)
+        setContentView(R.layout.main_activity)
         addTrainingButton = findViewById(R.id.addTrainingButton)
         dailyCaloriesButton = findViewById(R.id.dailyCaloriesButton)
         trainingList = findViewById(R.id.trainingList)
