@@ -87,7 +87,7 @@
     <string name="lateral_elevation">Elevación Lateral</string>
     <string name="leg_press_45">Prensa de Piernas 45º</string>
     <string name="lipids">Lípidos (g)</string>
-    <string name="load">Carga (kg)</string>
+    <string name="load">Carga</string>
     <string name="load_hint">Ingrese la carga en kilogramos</string>
     <string name="loading">Cargando ...</string>
     <string name="low_stroke">Remo Bajo</string>
@@ -117,7 +117,7 @@
     <string name="remover">remover</string>
     <string name="reps">Repeticiones</string>
     <string name="reps_hint">Ingrese el número de repeticiones</string>
-    <string name="rest">Descanso (segundos)</string>
+    <string name="rest">Descanso</string>
     <string name="rhomboids">Romboides</string>
     <string name="save">guardar</string>
     <string name="save_exercise_successful">¡Ejercicio guardado con éxito!</string>

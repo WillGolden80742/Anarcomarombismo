@@ -2,6 +2,7 @@ package com.example.anarcomarombismo.Controller.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,7 @@ class ExerciseAdapter(
         val nameTextView = listItemView.findViewById<TextView>(R.id.titleTextViewItem)
         nameTextView.text = currentExercise.name
         val descriptionTextView = listItemView.findViewById<TextView>(R.id.textViewItem)
-        descriptionTextView.text = currentExercise.toString(context)
+        descriptionTextView.text = Html.fromHtml(currentExercise.toString(context), Html.FROM_HTML_MODE_COMPACT)
         val checkItem = listItemView.findViewById<FloatingActionButton>(R.id.checkBoxItem)
         val floatingEditExerciseActionButton = listItemView.findViewById<FloatingActionButton>(R.id.floatingEditExerciseActionButton)
 

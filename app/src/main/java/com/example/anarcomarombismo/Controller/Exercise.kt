@@ -189,12 +189,22 @@ class Exercise(
         return time?.let { "?t=$it" } ?: ""
     }
 
-
-    fun toString(context: Context): String {
-        return "${context.getString(R.string.muscle)}: $muscle, \n${context.getString(R.string.sets)}: $sets,\n${context.getString(R.string.reps)}: $repetitions, \n${context.getString(R.string.load)}: $load, \n${context.getString(R.string.rest)}: $rest, \n${context.getString(R.string.cadence)}: $cadence"
+    private fun formatRepetitions(repetitions: String): String {
+        val repetitionsList = repetitions.split(",")
+        return if (repetitionsList.all { it == repetitionsList[0] }) {
+            repetitionsList[0]
+        } else {
+            repetitions
+        }
     }
-
-    override fun toString(): String {
-        return "Muscle: $muscle, \nsets: $sets, \nrepetitions: $repetitions, \nfetchById:$load, \nrest: $rest, \ncadence: '$cadence'"
+    fun toString(context: Context): String {
+        return """
+        <b>${context.getString(R.string.muscle)}</b>: $muscle,<br/> 
+        <b>${context.getString(R.string.sets)}</b>: $sets,<br/> 
+        <b>${context.getString(R.string.reps)}</b>: ${formatRepetitions(repetitions)},<br/> 
+        <b>${context.getString(R.string.load)}</b>: ${load}kg,<br/> 
+        <b>${context.getString(R.string.rest)}</b>: ${rest}s,<br/> 
+        <b>${context.getString(R.string.cadence)}</b>: $cadence
+    """.trimIndent()
     }
 }
