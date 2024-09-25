@@ -1,6 +1,10 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
@@ -189,6 +193,22 @@ class Exercise(
         return time?.let { "?t=$it" } ?: ""
     }
 
+    fun toString(context: Context): SpannableStringBuilder {
+        val builder = SpannableStringBuilder()
+        appendBoldText(builder, context.getString(R.string.muscle), muscle)
+        appendBoldText(builder, context.getString(R.string.sets), sets.toString())
+        appendBoldText(builder, context.getString(R.string.reps), formatRepetitions(repetitions))
+        appendBoldText(builder, context.getString(R.string.load), "${load}kg")
+        appendBoldText(builder, context.getString(R.string.rest), "${rest}s")
+        appendBoldText(builder, context.getString(R.string.cadence), cadence)
+        return builder
+    }
+
+    private fun appendBoldText(builder: SpannableStringBuilder, label: String, value: String) {
+        builder.append("$label: ")
+        builder.append(value, StyleSpan(Typeface.BOLD), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        builder.append("\n")
+    }
     private fun formatRepetitions(repetitions: String): String {
         val repetitionsList = repetitions.split(",")
         return if (repetitionsList.all { it == repetitionsList[0] }) {
@@ -197,14 +217,6 @@ class Exercise(
             repetitions
         }
     }
-    fun toString(context: Context): String {
-        return """
-        <b>${context.getString(R.string.muscle)}</b>: $muscle,<br/> 
-        <b>${context.getString(R.string.sets)}</b>: $sets,<br/> 
-        <b>${context.getString(R.string.reps)}</b>: ${formatRepetitions(repetitions)},<br/> 
-        <b>${context.getString(R.string.load)}</b>: ${load}kg,<br/> 
-        <b>${context.getString(R.string.rest)}</b>: ${rest}s,<br/> 
-        <b>${context.getString(R.string.cadence)}</b>: $cadence
-    """.trimIndent()
-    }
+
+
 }

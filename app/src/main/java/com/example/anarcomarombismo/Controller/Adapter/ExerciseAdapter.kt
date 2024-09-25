@@ -39,7 +39,7 @@ class ExerciseAdapter(
         val nameTextView = listItemView.findViewById<TextView>(R.id.titleTextViewItem)
         nameTextView.text = currentExercise.name
         val descriptionTextView = listItemView.findViewById<TextView>(R.id.textViewItem)
-        descriptionTextView.text = Html.fromHtml(currentExercise.toString(context), Html.FROM_HTML_MODE_COMPACT)
+        descriptionTextView.text = currentExercise.toString(context)
         val checkItem = listItemView.findViewById<FloatingActionButton>(R.id.checkBoxItem)
         val floatingEditExerciseActionButton = listItemView.findViewById<FloatingActionButton>(R.id.floatingEditExerciseActionButton)
 
