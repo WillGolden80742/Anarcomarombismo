@@ -145,24 +145,6 @@ class DailyCalories (
         this.date = date
         this.foodsList = listOf() // Reset food list if needed
     }
-    fun toString(context: Context): String {
-        val decimalFormat = DecimalFormat("#.##")
-        val energyKcalLabel = context.getString(R.string.energy_kcal)
-        val energyKjLabel = context.getString(R.string.energy_kj)
-        val proteinLabel = context.getString(R.string.protein)
-        val lipidsLabel = context.getString(R.string.lipids)
-        val carbohydrateLabel = context.getString(R.string.carbohydrate)
-        val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
-        val sodiumLabel = context.getString(R.string.sodium)
-
-        return  energyKcalLabel + " : " + decimalFormat.format(calorieskcal) + ", \n" +
-                energyKjLabel + " : " + decimalFormat.format(calorieskj) + ", \n" +
-                proteinLabel + " : " + decimalFormat.format(protein) + ", \n" +
-                lipidsLabel + " : " + decimalFormat.format(lipids) + ", \n" +
-                carbohydrateLabel + " : " + decimalFormat.format(carbohydrate) + ", \n" +
-                dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber) + ", \n" +
-                sodiumLabel + " : " + decimalFormat.format(sodium)
-    }
 
     fun addFood(food: Food) {
         foodsList = foodsList.plus(food)
@@ -218,5 +200,24 @@ class DailyCalories (
     }
     private fun formatNutrientValue(nutrientValue: String): String {
         return nutrientValue.replace(Regex("(?i)[natr*]"), "0")
+    }
+
+    fun toString(context: Context): String {
+        val decimalFormat = DecimalFormat("#.##")
+        val energyKcalLabel = context.getString(R.string.energy_kcal)
+        val energyKjLabel = context.getString(R.string.energy_kj)
+        val proteinLabel = context.getString(R.string.protein)
+        val lipidsLabel = context.getString(R.string.lipids)
+        val carbohydrateLabel = context.getString(R.string.carbohydrate)
+        val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
+        val sodiumLabel = context.getString(R.string.sodium)
+
+        return  energyKcalLabel + " : " + decimalFormat.format(calorieskcal) + ", \n" +
+                energyKjLabel + " : " + decimalFormat.format(calorieskj) + ", \n" +
+                proteinLabel + " : " + decimalFormat.format(protein) + ", \n" +
+                lipidsLabel + " : " + decimalFormat.format(lipids) + ", \n" +
+                carbohydrateLabel + " : " + decimalFormat.format(carbohydrate) + ", \n" +
+                dietaryFiberLabel + " : " + decimalFormat.format(dietaryFiber) + ", \n" +
+                sodiumLabel + " : " + decimalFormat.format(sodium)
     }
 }
