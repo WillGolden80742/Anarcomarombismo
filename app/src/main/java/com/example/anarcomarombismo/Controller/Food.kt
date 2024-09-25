@@ -58,7 +58,7 @@ class Food(
     private fun save(food: Food, context: Context): Boolean {
         val contextualKey = context.getString(R.string.foods)
         try {
-            val foodCache = loadJSONCache(context)
+            val foodCache = fetchAll(context)
 
             if (food.foodDescription == context.getString(R.string.food_name)) {
                 showToast(context.getString(R.string.fill_in_the_food_name), context)
@@ -88,7 +88,15 @@ class Food(
     }
 
     override fun fetchAll(context: Context): List<Food> {
-        return loadJSONCache(context)
+        val contextualKey = context.getString(R.string.foods)
+        return if (cache.hasCache(context, contextualKey)) {
+            cache.getCache(context, contextualKey, Array<Food>::class.java).toList()
+        } else {
+            val rawFoodData = context.resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
+            val foodList = JSON.fromJson(rawFoodData, Array<Food>::class.java).toList()
+            cache.setCache(context, contextualKey, foodList)
+            foodList
+        }
     }
 
     override fun fetchById(context: Context, id: Any): Food {
@@ -106,18 +114,6 @@ class Food(
             showToast(context.getString(R.string.error_removing_food), context)
             println("Erro food: $e")
             return false
-        }
-    }
-
-    private fun loadJSONCache(context: Context): List<Food> {
-        val contextualKey = context.getString(R.string.foods)
-        return if (cache.hasCache(context, contextualKey)) {
-            cache.getCache(context, contextualKey, Array<Food>::class.java).toList()
-        } else {
-            val rawFoodData = context.resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-            val foodList = JSON.fromJson(rawFoodData, Array<Food>::class.java).toList()
-            cache.setCache(context, contextualKey, foodList)
-            foodList
         }
     }
 
