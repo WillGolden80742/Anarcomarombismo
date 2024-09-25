@@ -39,7 +39,7 @@ class formDailyCalories : AppCompatActivity() {
     private lateinit var totalCaloriesLabel: TextView
     private lateinit var nameFoodLabel: TextView
     private var dailyCalories: DailyCalories = DailyCalories()
-    private lateinit var editTextDate: TextView
+    private lateinit var editTextDate: Button
     private lateinit var seeFoodsButton: Button
     private lateinit var removeDailyCaloriesButton: Button
     private lateinit var gramsEditText: EditText
@@ -56,7 +56,7 @@ class formDailyCalories : AppCompatActivity() {
         listFoodsView = findViewById(R.id.listFoodsView)
         totalCaloriesLabel = findViewById(R.id.totalCaloriesLabel)
         nameFoodLabel = findViewById(R.id.nameFoodLabel)
-        editTextDate = findViewById(R.id.editTextDate)
+        editTextDate = findViewById(R.id.editTextDateButton)
         gramsEditText = findViewById(R.id.gramsEditText)
         addFoodButton = findViewById(R.id.addFoodButton)
         seeFoodsButton = findViewById(R.id.seeFoodsButton)

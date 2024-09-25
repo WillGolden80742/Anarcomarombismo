@@ -68,28 +68,30 @@
             android:layout_marginEnd="10dp"
             android:text="@string/select_food"
             android:textSize="22dp"
-            app:layout_constraintBottom_toTopOf="@+id/editTextDate"
+            app:layout_constraintBottom_toTopOf="@+id/editTextDateButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/totalCaloriesLabel" />
 
-        <TextView
-            android:id="@+id/editTextDate"
+
+        <Button
+            android:id="@+id/editTextDateButton"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="#000000"
+            android:backgroundTint="@color/button_color"
             android:ems="10"
-            android:inputType="date"
             android:text="00/00/0000"
-            android:textSize="32dp"
+            android:textColor="@color/yellow"
+            android:textSize="24dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayoutInput"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameFoodLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/nameFoodLabel"
+            tools:gravity="center_horizontal" />
 
         <LinearLayout
             android:id="@+id/linearLayoutInput"
@@ -102,7 +104,7 @@
             app:layout_constraintBottom_toTopOf="@+id/linearLayoutButtons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDate">
+            app:layout_constraintTop_toBottomOf="@+id/editTextDateButton">
 
             <EditText
                 android:id="@+id/gramsEditText"
