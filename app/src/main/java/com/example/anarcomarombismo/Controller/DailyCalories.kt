@@ -57,7 +57,7 @@ class DailyCalories (
             cache.setCache(context, contextualKey, json.toJson(updatedCaloriesList))
             true
         } catch (e: Exception) {
-            handleError(e, "Error saving daily calories")
+            println(RuntimeException("Error saving daily calories: $e"))
             false
         }
     }
@@ -71,8 +71,8 @@ class DailyCalories (
             val dailyCaloriesList = parseDailyCaloriesList(dailyCaloriesListJson)
             val updatedCaloriesList = removeCaloriesForDate(dailyCaloriesList, currentDate)
             if (updatedCaloriesList.size != dailyCaloriesList.size) {
-                cache.setCache(context, contextualKey, toJson(updatedCaloriesList))
-                showToast(context, R.string.daily_calories_removed_successfully)
+                cache.setCache(context, contextualKey, json.toJson(updatedCaloriesList))
+                Toast.makeText(context, context.getString(R.string.daily_calories_removed_successfully), Toast.LENGTH_SHORT).show()
                 resetDailyCalories(currentDate)
             }
         }
@@ -141,21 +141,9 @@ class DailyCalories (
         return dailyCaloriesList.filterNot { it.date == date }
     }
 
-    private fun toJson(dailyCaloriesList: List<DailyCalories>): String {
-        return JSON().toJson(dailyCaloriesList)
-    }
-
-    private fun showToast(context: Context, messageResId: Int) {
-        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
-    }
-
     private fun resetDailyCalories(date: String) {
         this.date = date
         this.foodsList = listOf() // Reset food list if needed
-    }
-
-    private fun handleError(e: Exception, message: String) {
-        println(RuntimeException("$message: $e"))
     }
     fun toString(context: Context): String {
         val decimalFormat = DecimalFormat("#.##")
