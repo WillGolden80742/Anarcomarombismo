@@ -15,7 +15,6 @@ import java.text.DecimalFormat
 
 class FoodDataFetcher(var name: String = "", var href: String = "", var grams: String = "") {
     private val cache = Cache()
-    private val json = JSON()
     companion object {
         private fun build(
             foodNumber: String,
