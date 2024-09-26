@@ -1,8 +1,6 @@
 <resources>
     <string name="abs">Abdominales</string>
-    <string name="add_calories">Calorías +</string>
     <string name="add_exercise">Agregar Ejercicio</string>
-    <string name="add_food">Alimento +</string>
     <string name="add_food_error">Error al agregar alimento</string>
     <string name="add_nutrition_info">Agregar Información Nutricional</string>
     <string name="adduction_leg_on_machine">Aducción de Piernas en Máquina</string>
@@ -22,11 +20,9 @@
     <string name="calories_kcal">Calorías (kcal)</string>
     <string name="calves">Pantorrillas</string>
     <string name="carbohydrate">Carbohidrato (g)</string>
-    <string name="carbohydrate_b">carboidrato</string>
     <string name="chest_and_triceps">Pecho y Tríceps</string>
     <string name="daily_calories">Calorías Diarias</string>
     <string name="daily_calories_removed_successfully">Calorías diarias eliminadas con éxito</string>
-    <string name="daily_calories_saved_successfully">Daily calories saved successfully</string>
     <string name="dailycalories">dailyCalories</string>
     <string name="day">dia</string>
     <string name="days">dias</string>
@@ -35,19 +31,15 @@
     <string name="default_rest">60</string>
     <string name="default_sets">3</string>
     <string name="default_training_name">Entrenamiento</string>
-    <string name="delete">eliminar</string>
     <string name="deltoids">Deltoides</string>
     <string name="description">Descripción</string>
     <string name="description_hint">Ingrese la descripción</string>
     <string name="development_with_halter">Press de Hombros con Mancuernas</string>
     <string name="dietary_fiber">Fibra Dietética (g)</string>
-    <string name="dietary_fiber_b">fibra dietética</string>
     <string name="double_click_fast_for_exclusion">Clic doble para excluir</string>
-    <string name="double_click_to_open_food_details">Doble click para abrir detalles de comida</string>
     <string name="dumbbell_press">Press con Mancuernas</string>
     <string name="dumbbell_press_30">Press con Mancuernas 30º</string>
     <string name="dumbbell_press_less30">Press con Mancuernas -30º</string>
-    <string name="emptydailycalories">emptyDailyCalories</string>
     <string name="energy_kcal">Calorías (kcal)</string>
     <string name="energy_kj">Calorías (kj)</string>
     <string name="enter_calories_kcal">Ingrese las calorías (kcal)</string>
@@ -57,9 +49,7 @@
     <string name="enter_protein">Ingrese la proteína</string>
     <string name="enter_sodium">Ingrese el sodio</string>
     <string name="error_removing_food">No se pudo eliminar el alimento</string>
-    <string name="exercise_finished">Ejercicio finalizado</string>
     <string name="exercise_hint">Ingrese el nombre del ejercicio</string>
-    <string name="exercise_id_is_invalid">ID del ejercicio es inválido</string>
     <string name="exercise_name">Nombre del Ejercicio</string>
     <string name="exercises">exercises</string>
     <string name="extension_chair">Máquina de Extensión de Piernas</string>
@@ -82,7 +72,6 @@
     <string name="insert_grams">Ingrese Gramos</string>
     <string name="insert_the_food_description">Ingrese la descripción de la comida</string>
     <string name="it_was_not_possible_to_load_the_food">No se pudo cargar el alimento</string>
-    <string name="last_7_days">Últimos 7 días</string>
     <string name="lateral_deltoids">Deltoides Laterales</string>
     <string name="lateral_elevation">Elevación Lateral</string>
     <string name="leg_press_45">Prensa de Piernas 45º</string>
@@ -99,11 +88,9 @@
     <string name="nutritional_information">Información Nutricional</string>
     <string name="oblique_external">Oblicuos Externos</string>
     <string name="oblique_internal">Oblicuos Internos</string>
-    <string name="opening_food_details">Abriendo detalles de comida</string>
     <string name="please_wait">Por favor espere ...</string>
     <string name="posterior_deltoids">Deltoides Posteriores</string>
     <string name="protein">Proteína (g)</string>
-    <string name="protein_b">proteina</string>
     <string name="pulley_front_bar">Jalón al Pecho con Barra</string>
     <string name="pullover_with_halter_on_the_black_bench">Pullover con Mancuerna Acostado en Banco Plano</string>
     <string name="quadriceps">Cuádriceps</string>
@@ -129,7 +116,6 @@
     <string name="select_food">seleccione alimento</string>
     <string name="select_muscle">Seleccione el músculo</string>
     <string name="selected">seleccionado</string>
-    <string name="selected_food">Alimentos Seleccionados</string>
     <string name="serratil_anterior">Serrato Anterior</string>
     <string name="sets">Series</string>
     <string name="sets_hint">Ingrese el número de series</string>
@@ -140,7 +126,6 @@
     <string name="side_lift_on_inclined_bench">Elevación Lateral en Banco Inclinado</string>
     <string name="sitting_lateral_elevation">Elevación Lateral Sentado</string>
     <string name="sodium">Sodio (mg)</string>
-    <string name="sodium_b">sodio</string>
     <string name="spine_erectors">Erectores de la Columna</string>
     <string name="squat_stiff">Peso Muerto Rumano</string>
     <string name="straight_thread_on_rope">Curl Directo en Cuerda</string>
@@ -149,7 +134,6 @@
     <string name="thigh_back">Isquiotibiales</string>
     <string name="thighs">Muslos</string>
     <string name="thread_spider">Curl Spider</string>
-    <string name="todos_os_campos_s_o_obrigat_rios">Todos los campos son obligatorios</string>
     <string name="torso">Tronco</string>
     <string name="tr_ceps_pulley">Tríceps en Polea</string>
     <string name="tr_ceps_testa">Tríceps Frontal</string>
