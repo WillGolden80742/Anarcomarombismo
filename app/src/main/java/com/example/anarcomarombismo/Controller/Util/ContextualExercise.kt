@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.R
 
-class ContextualExercise() {
+class ContextualExercise {
     companion object {
         fun getExercises(
             context: Context
