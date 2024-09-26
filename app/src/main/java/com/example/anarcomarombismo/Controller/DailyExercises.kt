@@ -92,10 +92,10 @@ class DailyExercises(context: Context) {
     }
 
     fun getExerciseCount(exercise: Exercise): Int {
-        val exerciseHistory = getExerciseHistory(exercise)
+        val exerciseHistory= getExerciseHistory(exercise)
         if (exerciseHistory.isEmpty()) return 0
 
-        val lastExercise = exerciseHistory.maxByOrNull {
+        val lastExercise= exerciseHistory.maxByOrNull {
             dateStorageFormat.parse(it.date)?.time ?: 0
         }
 
