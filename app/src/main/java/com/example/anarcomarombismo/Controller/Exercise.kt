@@ -55,9 +55,8 @@ class Exercise(
         }
 
         fun dumpExercise(context: Context) {
-            val trainingExercisesMap = ContextualExercise.getExercises(context)
             val contextualKey = context.getString(R.string.exercises)
-            for ((trainingId, exercises) in trainingExercisesMap) {
+            for ((trainingId, exercises) in ContextualExercise.getExercises(context)) {
                 cache.setCache(context, "${contextualKey}_$trainingId", exercises)
             }
         }
