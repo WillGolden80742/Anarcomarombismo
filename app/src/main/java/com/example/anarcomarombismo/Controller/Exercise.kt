@@ -9,7 +9,6 @@ import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.ContextualExercise
-import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import java.util.Random
 
