@@ -13,7 +13,7 @@ class MacroTarget (
 
     companion object {
         private var cache = Cache();
-        private const val cacheKey: String = "MacroTarget"
+        private const val cacheKey = "MacroTarget"
         fun build (calories: Double = 2000.0, lipids: Double = 44.44, carbs: Double = 250.0, protein: Double = 150.0): MacroTarget {
             return MacroTarget(calories, lipids, carbs, protein)
         }
@@ -29,7 +29,11 @@ class MacroTarget (
     }
 
     override fun fetchById(context: Context, id: Any): MacroTarget? {
-       return fetchAll(context).first()
+        return if (cache.hasCache(context,cacheKey)) {
+            fetchAll(context).first()
+        } else {
+            MacroTarget()
+        }
     }
 
     fun fetchById(context: Context): MacroTarget? {
