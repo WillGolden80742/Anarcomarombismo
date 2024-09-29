@@ -167,4 +167,9 @@
     <string name="sodium_b">Sodio</string>
     <string name="g">g</string>
     <string name="mg">mg</string>
+    <string name="enter_your_daily_fat_meta">Introduce tu meta diaria de grasa</string>
+    <string name="enter_your_daily_protein_meta">Introduce tu meta diaria de proteína</string>
+    <string name="enter_your_diary_carbohydrate_meta">Introduce tu meta diaria de carbohidratos</string>
+    <string name="enter_your_caloric_meta">Introduce tu meta calórica</string>
+    <string name="save_target">Guardar Objetivo</string>
 </resources>
