@@ -80,20 +80,22 @@ class DailyCalories(
         carbsProgressBar: ProgressBar,
         fatsProgressBar: ProgressBar,
         proteinsProgressBar: ProgressBar,
+        dietaryFiberProgressBar: ProgressBar,
         caloriesLabel: TextView,
         carbsLabel: TextView,
         fatsLabel: TextView,
         proteinsLabel: TextView,
+        dietaryFiberLabel: TextView,
         miniVersion: Boolean = false
     ) {
         MacroTarget().fetchById(context)?.let { macroTarget ->
             val dailyCalories = macroNutrients(context)
-            updateProgressBars(dailyCalories, macroTarget, caloriesProgressBar, carbsProgressBar, fatsProgressBar, proteinsProgressBar)
-            updateLabels(dailyCalories, macroTarget, context, caloriesLabel, carbsLabel, fatsLabel, proteinsLabel,miniVersion)
+            updateProgressBars(dailyCalories, macroTarget, caloriesProgressBar, carbsProgressBar, fatsProgressBar, proteinsProgressBar,dietaryFiberProgressBar)
+            updateLabels(dailyCalories, macroTarget, context, caloriesLabel, carbsLabel, fatsLabel, proteinsLabel,dietaryFiberLabel,miniVersion)
         }
     }
 
-    fun macroNutrients(context: Context): Map<String, Double> {
+    private fun macroNutrients(context: Context): Map<String, Double> {
         var dailyCaloriesList = fetchAll(context)
         var size = dailyCaloriesList.size
         val macroNutrients = mutableMapOf<String, Double>()
@@ -101,6 +103,7 @@ class DailyCalories(
         macroNutrients["Protein"] = dailyCaloriesList.sumOf { it.protein }/size
         macroNutrients["Carbohydrates"] = dailyCaloriesList.sumOf { it.carbohydrate }/size
         macroNutrients["Lipids"] = dailyCaloriesList.sumOf { it.lipids }/size
+        macroNutrients["DietaryFiber"] = dailyCaloriesList.sumOf { it.dietaryFiber }/size
         return macroNutrients
     }
     private fun updateProgressBars(
@@ -109,16 +112,19 @@ class DailyCalories(
         caloriesProgressBar: ProgressBar,
         carbsProgressBar: ProgressBar,
         fatsProgressBar: ProgressBar,
-        proteinsProgressBar: ProgressBar
+        proteinsProgressBar: ProgressBar,
+        dietaryFiberProgressBar: ProgressBar,
     ) {
         val calories = dailyCalories["Calories"] ?: 0.0
         val carbs = dailyCalories["Carbohydrates"] ?: 0.0
         val lipids = dailyCalories["Lipids"] ?: 0.0
         val protein = dailyCalories["Protein"] ?: 0.0
+        val dietaryFiber = dailyCalories["DietaryFiber"] ?: 0.0
         caloriesProgressBar.progress = calculateProgress(caloriesProgressBar, calories, macroTarget.calories)
         carbsProgressBar.progress = calculateProgress(carbsProgressBar, carbs, macroTarget.carbs)
         fatsProgressBar.progress = calculateProgress(fatsProgressBar, lipids, macroTarget.lipids)
         proteinsProgressBar.progress = calculateProgress(proteinsProgressBar, protein, macroTarget.protein)
+        dietaryFiberProgressBar.progress = calculateProgress(dietaryFiberProgressBar, dietaryFiber, macroTarget.dietaryFiber)
     }
 
     private fun calculateProgress(progressBar: ProgressBar, currentValue: Double, targetValue: Double): Int {
@@ -136,6 +142,9 @@ class DailyCalories(
             }
             R.id.proteinsProgressBar -> {
                 if (exceeded) progressBar.context.getDrawable(R.drawable.progress_exceed_bar_red) else progressBar.context.getDrawable(R.drawable.progress_bar_red)
+            }
+            R.id.dietaryFiberProgressBar -> {
+                if (exceeded) progressBar.context.getDrawable(R.drawable.progress_exceed_bar_green) else progressBar.context.getDrawable(R.drawable.progress_bar_green)
             }
             else -> progressBar.progressDrawable
         }
@@ -155,6 +164,7 @@ class DailyCalories(
         carbsLabel: TextView,
         fatsLabel: TextView,
         proteinsLabel: TextView,
+        dietaryFiberLabel: TextView,
         miniVersion: Boolean
     ) {
         val decimalFormat = DecimalFormat("#.#")
@@ -163,6 +173,7 @@ class DailyCalories(
         val percentageCarbs = ((dailyCalories["Carbohydrates"] ?: 0.0) / macroTarget.carbs * 100).toInt()
         val percentageFats = ((dailyCalories["Lipids"] ?: 0.0) / macroTarget.lipids * 100).toInt()
         val percentageProteins = ((dailyCalories["Protein"] ?: 0.0) / macroTarget.protein * 100).toInt()
+        val percentageDietaryFiber = ((dailyCalories["DietaryFiber"] ?: 0.0) / macroTarget.dietaryFiber * 100).toInt()
         if (!miniVersion) {
             caloriesLabel.text =
                 "${context.getString(R.string.calories_b)} ${decimalFormat.format(dailyCalories["Calories"] ?: 0.0)}kcal/$dia ($percentageCalories%)"
@@ -172,6 +183,8 @@ class DailyCalories(
                 "${context.getString(R.string.lipids_b)} ${decimalFormat.format(dailyCalories["Lipids"] ?: 0.0)}g/$dia ($percentageFats%)"
             proteinsLabel.text =
                 "${context.getString(R.string.proteins_b)} ${decimalFormat.format(dailyCalories["Protein"] ?: 0.0)}g/$dia ($percentageProteins%)"
+            dietaryFiberLabel.text =
+                "${context.getString(R.string.dietary_fiber_b)} ${decimalFormat.format(dailyCalories["DietaryFiber"] ?: 0.0)}g/$dia ($percentageDietaryFiber%)"
         } else {
             caloriesLabel.text =
                 "${context.getString(R.string.calories_b)} $percentageCalories%"
@@ -181,6 +194,8 @@ class DailyCalories(
                 "${context.getString(R.string.lipids_b)} $percentageFats%"
             proteinsLabel.text =
                 "${context.getString(R.string.proteins_b)} $percentageProteins%"
+            dietaryFiberLabel.text =
+                "${context.getString(R.string.dietary_fiber_b)} $percentageDietaryFiber%"
         }
     }
 

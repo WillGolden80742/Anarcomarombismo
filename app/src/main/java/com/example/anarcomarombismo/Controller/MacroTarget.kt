@@ -8,14 +8,15 @@ class MacroTarget (
     var calories: Double = 2000.0,
     var lipids: Double = 44.44,
     var carbs: Double = 250.0,
-    val protein: Double = 150.0
+    val protein: Double = 150.0,
+    val dietaryFiber: Double = 20.0,
 ) : DataHandler<MacroTarget> {
 
     companion object {
         private var cache = Cache();
         private const val cacheKey = "MacroTarget"
-        fun build (calories: Double = 2000.0, lipids: Double = 44.44, carbs: Double = 250.0, protein: Double = 150.0): MacroTarget {
-            return MacroTarget(calories, lipids, carbs, protein)
+        fun build (calories: Double = 2000.0, lipids: Double = 44.44, carbs: Double = 250.0, protein: Double = 150.0,dietaryFiber: Double = 20.0): MacroTarget {
+            return MacroTarget(calories, lipids, carbs, protein, dietaryFiber)
         }
     }
     override fun save(context: Context): Boolean {

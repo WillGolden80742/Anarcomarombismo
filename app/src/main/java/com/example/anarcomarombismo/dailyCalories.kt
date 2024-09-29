@@ -13,22 +13,23 @@ import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Forms.formDailyCalories
 import com.example.anarcomarombismo.Forms.formFood
 import com.example.anarcomarombismo.Forms.formMacros
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class dailyCalories : AppCompatActivity() {
     private lateinit var caloriesFoodList: ListView
     private lateinit var addCaloriesButton: Button
     private lateinit var addNewFoodButton: Button
     private lateinit var progressContainer: LinearLayout
-    private lateinit var editStatisticsButton: FloatingActionButton
+    private lateinit var editStatisticsButton: Button
     private lateinit var caloriesProgressBar: ProgressBar
     private lateinit var carbsProgressBar: ProgressBar
     private lateinit var fatsProgressBar: ProgressBar
     private lateinit var proteinsProgressBar: ProgressBar
+    private lateinit var dietaryFiberProgressBar: ProgressBar
     private lateinit var caloriesLabel: TextView
     private lateinit var carbsLabel: TextView
     private lateinit var lipidsLabel: TextView
     private lateinit var proteinsLabel: TextView
+    private lateinit var dietaryFiberLabel: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_calories)
@@ -41,11 +42,12 @@ class dailyCalories : AppCompatActivity() {
         carbsProgressBar = findViewById(R.id.carbsProgressBar)
         fatsProgressBar = findViewById(R.id.fatsProgressBar)
         proteinsProgressBar = findViewById(R.id.proteinsProgressBar)
+        dietaryFiberProgressBar = findViewById(R.id.dietaryFiberProgressBar)
         caloriesLabel = findViewById(R.id.caloriesLabel)
         carbsLabel = findViewById(R.id.carbsLabel)
         lipidsLabel = findViewById(R.id.lipidsLabel)
         proteinsLabel = findViewById(R.id.proteinsLabel)
-
+        dietaryFiberLabel = findViewById(R.id.dietaryFiberLabel)
 
         addCaloriesButton.setOnClickListener {
             callFormDailyCalories()
@@ -108,10 +110,12 @@ class dailyCalories : AppCompatActivity() {
             carbsProgressBar,
             fatsProgressBar,
             proteinsProgressBar,
+            dietaryFiberProgressBar,
             caloriesLabel,
             carbsLabel,
             lipidsLabel,
             proteinsLabel,
+            dietaryFiberLabel,
             true
         )
     }

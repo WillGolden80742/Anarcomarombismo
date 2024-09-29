@@ -45,24 +45,6 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <LinearLayout
-            android:id="@+id/buttonsContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/editStatisticsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:backgroundTint="@color/button_color"
-                app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
-                app:tint="@color/yellow" />
-
-        </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -100,14 +82,14 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="@string/calories_b"
-                        android:textSize="16sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <ProgressBar
                         android:id="@+id/caloriesProgressBar"
                         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="7dp"
+                        android:layout_height="12dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
                         android:progress="50"
@@ -126,14 +108,14 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:text="@string/carbohydrates_b"
-                        android:textSize="16sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <ProgressBar
                         android:id="@+id/carbsProgressBar"
                         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="7dp"
+                        android:layout_height="12dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
                         android:progress="50"
@@ -151,14 +133,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/lipids_b"
-                        android:textSize="16sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <ProgressBar
                         android:id="@+id/fatsProgressBar"
                         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="7dp"
+                        android:layout_height="12dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
                         android:progress="30"
@@ -176,14 +158,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/proteins_b"
-                        android:textSize="16sp"
+                        android:textSize="18dp"
                         android:textStyle="bold" />
 
                     <ProgressBar
                         android:id="@+id/proteinsProgressBar"
                         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="7dp"
+                        android:layout_height="12dp"
                         android:layout_marginTop="5dp"
                         android:max="100"
                         android:progress="70"
@@ -191,7 +173,50 @@
                         tools:layout_gravity="bottom" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/dietaryFiberLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dietary_fiber_b"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <ProgressBar
+                        android:id="@+id/dietaryFiberProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="70"
+                        android:progressDrawable="@drawable/progress_bar_green"
+                        tools:layout_gravity="bottom" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/editStatisticsButton"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:backgroundTint="@color/button_color"
+                    android:textColor="#FFFFFF"
+                    app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
+                    app:iconGravity="textStart"
+                    app:iconSize="22dp"
+                    app:iconTint="#FFD700" />
+
             </LinearLayout>
+
+
         </HorizontalScrollView>
     </LinearLayout>
 
