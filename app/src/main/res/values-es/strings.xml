@@ -159,4 +159,12 @@
     <string name="upper_limbs">Miembros Superiores</string>
     <string name="video_link">Enlace de Video</string>
     <string name="video_link_hint">Ingrese el enlace del video (Solo Youtube)</string>
+    <string name="calories_b">Calorías</string>
+    <string name="proteins_b">Proteínas</string>
+    <string name="carbohydrates_b">Carbohidratos</string>
+    <string name="dietary_fiber_b">Fibra Dietética</string>
+    <string name="lipids_b">Lípidos</string>
+    <string name="sodium_b">Sodio</string>
+    <string name="g">g</string>
+    <string name="mg">mg</string>
 </resources>
