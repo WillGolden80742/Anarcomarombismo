@@ -1,6 +1,8 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
@@ -72,6 +74,117 @@ class DailyCalories(
         return true
     }
 
+    fun loadMacroTarget(
+        context: Context,
+        caloriesProgressBar: ProgressBar,
+        carbsProgressBar: ProgressBar,
+        fatsProgressBar: ProgressBar,
+        proteinsProgressBar: ProgressBar,
+        caloriesLabel: TextView,
+        carbsLabel: TextView,
+        fatsLabel: TextView,
+        proteinsLabel: TextView,
+        miniVersion: Boolean = false
+    ) {
+        MacroTarget().fetchById(context)?.let { macroTarget ->
+            val dailyCalories = macroNutrients(context)
+            updateProgressBars(dailyCalories, macroTarget, caloriesProgressBar, carbsProgressBar, fatsProgressBar, proteinsProgressBar)
+            updateLabels(dailyCalories, macroTarget, context, caloriesLabel, carbsLabel, fatsLabel, proteinsLabel,miniVersion)
+        }
+    }
+
+    fun macroNutrients(context: Context): Map<String, Double> {
+        var dailyCaloriesList = fetchAll(context)
+        var size = dailyCaloriesList.size
+        val macroNutrients = mutableMapOf<String, Double>()
+        macroNutrients["Calories"] = dailyCaloriesList.sumOf { it.calorieskcal }/size
+        macroNutrients["Protein"] = dailyCaloriesList.sumOf { it.protein }/size
+        macroNutrients["Carbohydrates"] = dailyCaloriesList.sumOf { it.carbohydrate }/size
+        macroNutrients["Lipids"] = dailyCaloriesList.sumOf { it.lipids }/size
+        return macroNutrients
+    }
+    private fun updateProgressBars(
+        dailyCalories: Map<String, Double>,
+        macroTarget: MacroTarget,
+        caloriesProgressBar: ProgressBar,
+        carbsProgressBar: ProgressBar,
+        fatsProgressBar: ProgressBar,
+        proteinsProgressBar: ProgressBar
+    ) {
+        val calories = dailyCalories["Calories"] ?: 0.0
+        val carbs = dailyCalories["Carbohydrates"] ?: 0.0
+        val lipids = dailyCalories["Lipids"] ?: 0.0
+        val protein = dailyCalories["Protein"] ?: 0.0
+        caloriesProgressBar.progress = calculateProgress(caloriesProgressBar, calories, macroTarget.calories)
+        carbsProgressBar.progress = calculateProgress(carbsProgressBar, carbs, macroTarget.carbs)
+        fatsProgressBar.progress = calculateProgress(fatsProgressBar, lipids, macroTarget.lipids)
+        proteinsProgressBar.progress = calculateProgress(proteinsProgressBar, protein, macroTarget.protein)
+    }
+
+    private fun calculateProgress(progressBar: ProgressBar, currentValue: Double, targetValue: Double): Int {
+        val progress: Int
+        val exceeded = currentValue > targetValue
+        progressBar.progressDrawable = when (progressBar.id) {
+            R.id.caloriesProgressBar -> {
+                if (exceeded) progressBar.context.getDrawable(R.drawable.progress_exceed_bar_purple) else progressBar.context.getDrawable(R.drawable.progress_bar_purple)
+            }
+            R.id.carbsProgressBar -> {
+                if (exceeded) progressBar.context.getDrawable(R.drawable.progress_exceed_bar_white) else progressBar.context.getDrawable(R.drawable.progress_bar_white)
+            }
+            R.id.fatsProgressBar -> {
+                if (exceeded) progressBar.context.getDrawable(R.drawable.progress_exceed_bar_yellow) else progressBar.context.getDrawable(R.drawable.progress_bar_yellow)
+            }
+            R.id.proteinsProgressBar -> {
+                if (exceeded) progressBar.context.getDrawable(R.drawable.progress_exceed_bar_red) else progressBar.context.getDrawable(R.drawable.progress_bar_red)
+            }
+            else -> progressBar.progressDrawable
+        }
+        progress = if (exceeded) {
+            (((currentValue % targetValue).toInt()).toDouble() / targetValue * 100).toInt()
+        } else {
+            ((currentValue / targetValue) * 100).toInt()
+        }
+        return progress
+    }
+
+    private fun updateLabels(
+        dailyCalories: Map<String, Double>,
+        macroTarget: MacroTarget,
+        context: Context,
+        caloriesLabel: TextView,
+        carbsLabel: TextView,
+        fatsLabel: TextView,
+        proteinsLabel: TextView,
+        miniVersion: Boolean
+    ) {
+        val decimalFormat = DecimalFormat("#.#")
+        val dia = context.getString(R.string.day)
+        val percentageCalories = ((dailyCalories["Calories"] ?: 0.0) / macroTarget.calories * 100).toInt()
+        val percentageCarbs = ((dailyCalories["Carbohydrates"] ?: 0.0) / macroTarget.carbs * 100).toInt()
+        val percentageFats = ((dailyCalories["Lipids"] ?: 0.0) / macroTarget.lipids * 100).toInt()
+        val percentageProteins = ((dailyCalories["Protein"] ?: 0.0) / macroTarget.protein * 100).toInt()
+        if (!miniVersion) {
+            caloriesLabel.text =
+                "${context.getString(R.string.calories_b)} ${decimalFormat.format(dailyCalories["Calories"] ?: 0.0)}kcal/$dia ($percentageCalories%)"
+            carbsLabel.text =
+                "${context.getString(R.string.carbohydrates_b)} ${decimalFormat.format(dailyCalories["Carbohydrates"] ?: 0.0)}g/$dia ($percentageCarbs%)"
+            fatsLabel.text =
+                "${context.getString(R.string.lipids_b)} ${decimalFormat.format(dailyCalories["Lipids"] ?: 0.0)}g/$dia ($percentageFats%)"
+            proteinsLabel.text =
+                "${context.getString(R.string.proteins_b)} ${decimalFormat.format(dailyCalories["Protein"] ?: 0.0)}g/$dia ($percentageProteins%)"
+        } else {
+            caloriesLabel.text =
+                "${context.getString(R.string.calories_b)} $percentageCalories%"
+            carbsLabel.text =
+                "${context.getString(R.string.carbohydrates_b)} $percentageCarbs%"
+            fatsLabel.text =
+                "${context.getString(R.string.lipids_b)} $percentageFats%"
+            proteinsLabel.text =
+                "${context.getString(R.string.proteins_b)} $percentageProteins%"
+        }
+    }
+
+
     override fun fetchById(context: Context, id: Any): DailyCalories {
         val contextualKey = context.getString(R.string.dailycalories)
         return if (cache.hasCache(context, contextualKey)) {
@@ -81,6 +194,8 @@ class DailyCalories(
             DailyCalories().apply { date = id as String }
         }
     }
+
+
 
     override fun fetchAll(context: Context): List<DailyCalories> {
         val contextualKey = context.getString(R.string.dailycalories)

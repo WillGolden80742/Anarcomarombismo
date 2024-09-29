@@ -7,159 +7,197 @@
     android:layout_height="match_parent"
     tools:context=".exercises">
 
-    <TextView
-        android:id="@+id/dailyCaloriesTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/topContainer"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/daily_calories"
-        android:textColor="@color/title_color"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/progressContainer"
-        app:layout_constraintEnd_toStartOf="@+id/buttonsContainer"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/buttonsContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/dailyCaloriesTitle"
+        app:layout_constraintBottom_toTopOf="@+id/progressContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/dailyCaloriesTitle"
-        app:layout_constraintTop_toTopOf="@+id/dailyCaloriesTitle">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <HorizontalScrollView
+            android:id="@+id/scrollView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/editStatisticsButton"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/dailyCaloriesTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/daily_calories"
+                    android:textColor="@color/title_color"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:id="@+id/buttonsContainer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            app:backgroundTint="@color/button_color"
-            app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
-            app:tint="@color/yellow" />
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/showStatisticsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
-            android:clickable="true"
-            app:backgroundTint="@color/button_color"
-            app:srcCompat="@drawable/ic_fluent_arrow_growth_24_filled"
-            app:tint="@color/yellow" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/editStatisticsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/button_color"
+                app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
+                app:tint="@color/yellow" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/progressContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:clickable="true"
         android:orientation="vertical"
-        android:padding="20dp"
         app:layout_constraintBottom_toTopOf="@+id/caloriesFoodList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dailyCaloriesTitle">
+        app:layout_constraintTop_toBottomOf="@+id/topContainer">
 
-        <LinearLayout
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:scrollbars="none">
 
-
-            <TextView
-                android:id="@+id/caloriesLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/calories_b"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <ProgressBar
-                android:id="@+id/caloriesProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="7dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="12dp"
-                android:max="100"
-                android:progress="50"
-                android:progressDrawable="@drawable/progress_bar" />
-
-            <!-- Carbs -->
-            <TextView
-                android:id="@+id/carbsLabel"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/carbohydrates_b"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-            <ProgressBar
-                android:id="@+id/carbsProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="7dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="12dp"
-                android:max="100"
-                android:progress="50"
-                android:progressDrawable="@drawable/progress_bar" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <!-- Fats -->
-            <TextView
-                android:id="@+id/fatsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lipids_b"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/caloriesLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/calories_b"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-            <ProgressBar
-                android:id="@+id/fatsProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="7dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="12dp"
-                android:max="100"
-                android:progress="30"
-                android:progressDrawable="@drawable/progress_bar" />
+                    <ProgressBar
+                        android:id="@+id/caloriesProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="7dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_bar_purple" />
+                </LinearLayout>
 
-            <!-- Proteins -->
-            <TextView
-                android:id="@+id/proteinsLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/proteins_b"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/proteinsProgressBar"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="7dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="12dp"
-                android:max="100"
-                android:progress="70"
-                android:progressDrawable="@drawable/progress_bar" />
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/carbsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/carbohydrates_b"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
+                    <ProgressBar
+                        android:id="@+id/carbsProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="7dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/progress_bar_white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lipidsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lipids_b"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ProgressBar
+                        android:id="@+id/fatsProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="7dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="30"
+                        android:progressDrawable="@drawable/progress_bar_yellow" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/proteinsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/proteins_b"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <ProgressBar
+                        android:id="@+id/proteinsProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="7dp"
+                        android:layout_marginTop="5dp"
+                        android:max="100"
+                        android:progress="70"
+                        android:progressDrawable="@drawable/progress_bar_red"
+                        tools:layout_gravity="bottom" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
     <ListView
         android:id="@+id/caloriesFoodList"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -169,9 +207,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressContainer" >
-
-    </ListView>
+        app:layout_constraintTop_toBottomOf="@+id/progressContainer" />
 
     <Button
         android:id="@+id/addFoodFormButton"

@@ -5,4 +5,8 @@
     <color name="text_primary">#FFF</color>
     <color name="title_color">#FFD700</color>
     <color name="background_color">#000</color>
+    <color name="purple">#FF800080</color>
+    <color name="red">#FFD32F2F</color>
+    <color name="green">#FF32CD32</color>
+    <color name="blue">#FF0000FF</color>
 </resources>

@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ListView
+import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.view.isVisible
 import com.example.anarcomarombismo.Controller.Adapter.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Forms.formDailyCalories
@@ -20,9 +20,15 @@ class dailyCalories : AppCompatActivity() {
     private lateinit var addCaloriesButton: Button
     private lateinit var addNewFoodButton: Button
     private lateinit var progressContainer: LinearLayout
-    private lateinit var showStatisticsButton: FloatingActionButton
     private lateinit var editStatisticsButton: FloatingActionButton
-
+    private lateinit var caloriesProgressBar: ProgressBar
+    private lateinit var carbsProgressBar: ProgressBar
+    private lateinit var fatsProgressBar: ProgressBar
+    private lateinit var proteinsProgressBar: ProgressBar
+    private lateinit var caloriesLabel: TextView
+    private lateinit var carbsLabel: TextView
+    private lateinit var lipidsLabel: TextView
+    private lateinit var proteinsLabel: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_calories)
@@ -30,21 +36,19 @@ class dailyCalories : AppCompatActivity() {
         addCaloriesButton = findViewById(R.id.addFoodFormButton)
         addNewFoodButton = findViewById(R.id.addNewFoodButton)
         progressContainer = findViewById(R.id.progressContainer)
-        showStatisticsButton = findViewById(R.id.showStatisticsButton)
         editStatisticsButton = findViewById(R.id.editStatisticsButton)
+        caloriesProgressBar = findViewById(R.id.caloriesProgressBar)
+        carbsProgressBar = findViewById(R.id.carbsProgressBar)
+        fatsProgressBar = findViewById(R.id.fatsProgressBar)
+        proteinsProgressBar = findViewById(R.id.proteinsProgressBar)
+        caloriesLabel = findViewById(R.id.caloriesLabel)
+        carbsLabel = findViewById(R.id.carbsLabel)
+        lipidsLabel = findViewById(R.id.lipidsLabel)
+        proteinsLabel = findViewById(R.id.proteinsLabel)
+
+
         addCaloriesButton.setOnClickListener {
             callFormDailyCalories()
-        }
-        showStatisticsButton.setOnClickListener {
-            if (!progressContainer.isVisible) {
-                progressContainer.isVisible = true
-                editStatisticsButton.isVisible = true
-                showStatisticsButton.setImageResource(R.drawable.ic_fluent_dismiss_24_filled)
-            } else {
-                progressContainer.isVisible = false
-                editStatisticsButton.isVisible = false
-                showStatisticsButton.setImageResource(R.drawable.ic_fluent_arrow_growth_24_filled)
-            }
         }
 
         progressContainer.setOnClickListener {
@@ -73,10 +77,8 @@ class dailyCalories : AppCompatActivity() {
         }
     }
     override fun onResume() {
-        progressContainer.isVisible = false
-        editStatisticsButton.isVisible = false
-        showStatisticsButton.setImageResource(R.drawable.ic_fluent_arrow_growth_24_filled)
         super.onResume()
+        loadMacroTarget()
         caloriesFoodList.adapter = DailyCaloriesAdapter(this,
             DailyCalories().fetchAll(this).ifEmpty {
                 listOf(DailyCalories())
@@ -99,6 +101,19 @@ class dailyCalories : AppCompatActivity() {
         }
     }
 
-
+    private fun loadMacroTarget() {
+        DailyCalories().loadMacroTarget(
+            this,
+            caloriesProgressBar,
+            carbsProgressBar,
+            fatsProgressBar,
+            proteinsProgressBar,
+            caloriesLabel,
+            carbsLabel,
+            lipidsLabel,
+            proteinsLabel,
+            true
+        )
+    }
 
 }

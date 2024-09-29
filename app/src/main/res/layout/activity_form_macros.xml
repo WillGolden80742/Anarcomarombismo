@@ -10,14 +10,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -29,7 +29,7 @@
                 android:layout_marginBottom="16dp"
                 android:text="Metas Diarias"
                 android:textColor="@color/title_color"
-                android:textSize="32dp"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -55,7 +55,7 @@
                     android:layout_marginBottom="12dp"
                     android:max="100"
                     android:progress="50"
-                    android:progressDrawable="@drawable/progress_bar" />
+                    android:progressDrawable="@drawable/progress_bar_purple" />
 
                 <!-- Carbs -->
                 <TextView
@@ -75,11 +75,11 @@
                     android:layout_marginBottom="12dp"
                     android:max="100"
                     android:progress="50"
-                    android:progressDrawable="@drawable/progress_bar" />
+                    android:progressDrawable="@drawable/progress_bar_white" />
 
                 <!-- Fats -->
                 <TextView
-                    android:id="@+id/fatsLabel"
+                    android:id="@+id/lipidsLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/lipids_b"
@@ -95,7 +95,7 @@
                     android:layout_marginBottom="12dp"
                     android:max="100"
                     android:progress="30"
-                    android:progressDrawable="@drawable/progress_bar" />
+                    android:progressDrawable="@drawable/progress_bar_yellow" />
 
                 <!-- Proteins -->
                 <TextView
@@ -115,72 +115,71 @@
                     android:layout_marginBottom="12dp"
                     android:max="100"
                     android:progress="70"
-                    android:progressDrawable="@drawable/progress_bar" />
+                    android:progressDrawable="@drawable/progress_bar_red" />
             </LinearLayout>
 
             <!-- Input fields -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    android:layout_marginBottom="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCalories"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_your_caloric_meta"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    android:layout_marginBottom="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCarbs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_your_diary_carbohydrate_meta"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    android:layout_marginBottom="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextFats"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_your_daily_fat_meta"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    android:layout_marginBottom="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextProteins"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/enter_your_daily_protein_meta"
-                        android:inputType="number"/>
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
-
 
                 <Button
                     android:id="@+id/saveTargetButton"
