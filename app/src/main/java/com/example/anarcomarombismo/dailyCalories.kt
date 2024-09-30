@@ -18,7 +18,7 @@ class dailyCalories : AppCompatActivity() {
     private lateinit var caloriesFoodList: ListView
     private lateinit var addCaloriesButton: Button
     private lateinit var addNewFoodButton: Button
-    private lateinit var progressContainer: LinearLayout
+    private lateinit var progressBarContainer: LinearLayout
     private lateinit var editStatisticsButton: Button
     private lateinit var caloriesProgressBar: ProgressBar
     private lateinit var carbsProgressBar: ProgressBar
@@ -36,7 +36,7 @@ class dailyCalories : AppCompatActivity() {
         caloriesFoodList = findViewById(R.id.caloriesFoodList)
         addCaloriesButton = findViewById(R.id.addFoodFormButton)
         addNewFoodButton = findViewById(R.id.addNewFoodButton)
-        progressContainer = findViewById(R.id.progressContainer)
+        progressBarContainer = findViewById(R.id.progressBarContainer)
         editStatisticsButton = findViewById(R.id.editStatisticsButton)
         caloriesProgressBar = findViewById(R.id.caloriesProgressBar)
         carbsProgressBar = findViewById(R.id.carbsProgressBar)
@@ -53,7 +53,7 @@ class dailyCalories : AppCompatActivity() {
             callFormDailyCalories()
         }
 
-        progressContainer.setOnClickListener {
+        progressBarContainer.setOnClickListener {
             val intent = Intent(this, formMacros::class.java)
             startActivity(intent)
         }
