@@ -246,7 +246,7 @@
                         android:layout_marginBottom="10dp"
                         android:backgroundTint="@color/button_color"
                         android:padding="12dp"
-                        android:text="@string/profile"
+                        android:text="@string/configure"
                         android:textColor="@color/yellow"
                         app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
                         app:iconGravity="textStart"
