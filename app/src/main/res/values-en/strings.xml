@@ -173,4 +173,6 @@
     <string name="enter_your_caloric_meta">Enter your caloric meta</string>
     <string name="save_target">Save Target</string>
     <string name="enter_your_dietary_fiber_meta">Enter your daily dietary fiber meta</string>
+    <string name="profile">Profile</string>
+    <string name="basal_charge">Basal Charge</string>
 </resources>
