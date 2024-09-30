@@ -12,7 +12,7 @@ import com.example.anarcomarombismo.Controller.Adapter.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Forms.formDailyCalories
 import com.example.anarcomarombismo.Forms.formFood
-import com.example.anarcomarombismo.Forms.formMacros
+import com.example.anarcomarombismo.Forms.formMacroTarget
 
 class dailyCalories : AppCompatActivity() {
     private lateinit var caloriesFoodList: ListView
@@ -54,12 +54,12 @@ class dailyCalories : AppCompatActivity() {
         }
 
         progressBarContainer.setOnClickListener {
-            val intent = Intent(this, formMacros::class.java)
+            val intent = Intent(this, formMacroTarget::class.java)
             startActivity(intent)
         }
 
         editStatisticsButton.setOnClickListener {
-            val intent = Intent(this, formMacros::class.java)
+            val intent = Intent(this, formMacroTarget::class.java)
             startActivity(intent)
         }
 

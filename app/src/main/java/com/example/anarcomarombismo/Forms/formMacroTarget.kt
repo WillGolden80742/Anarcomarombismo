@@ -10,7 +10,7 @@ import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.MacroTarget
 import com.example.anarcomarombismo.R
 
-class formMacros : AppCompatActivity() {
+class formMacroTarget : AppCompatActivity() {
 
     // Atributos para os campos de entrada e barras de progresso
     private lateinit var editTextCalories: EditText
