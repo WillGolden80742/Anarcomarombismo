@@ -14,7 +14,6 @@
     <string name="back">Back</string>
     <string name="back_">Back</string>
     <string name="back_and_biceps">Back and Biceps</string>
-    <string name="basal_charge">Insert Basal Charge</string>
     <string name="basal_metabolism_calculated_successfully">Basal Metabolism calculated successfully</string>
     <string name="biceps">Biceps</string>
     <string name="biceps_bar_w">W Bar Curl</string>
@@ -22,7 +21,6 @@
     <string name="cadence">Cadence</string>
     <string name="cadence_hint">Enter the cadence</string>
     <string name="calculate_basal_metabolic_rate">Calculate Basal Metabolic Rate</string>
-    <string name="calculate_basal_metabolism">Calculate Basal Metabolism</string>
     <string name="calf_and_legs">Legs and Calves</string>
     <string name="calories_b">Calories</string>
     <string name="calories_kcal">Calories (kcal)</string>
@@ -30,7 +28,6 @@
     <string name="carbohydrate">Carbohydrate (g)</string>
     <string name="carbohydrates_b">Carbohydrates</string>
     <string name="chest_and_triceps">Chest and Triceps</string>
-    <string name="configure">Configure</string>
     <string name="daily_calories">Daily Calories</string>
     <string name="daily_calories_removed_successfully">Daily calories removed successfully</string>
     <string name="daily_goals">Daily Goals</string>
@@ -143,7 +140,6 @@
     <string name="save_exercise_successful">Exercise saved successfully!</string>
     <string name="save_food_error">Save food error</string>
     <string name="save_metabolic_profile">Save Metabolic Profile</string>
-    <string name="save_profile">Save Profile</string>
     <string name="save_target">Save Target</string>
     <string name="save_training_successful">Training saved successfully!</string>
     <string name="seconds_hint">Enter the rest time in seconds</string>

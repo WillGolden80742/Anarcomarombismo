@@ -14,7 +14,6 @@
     <string name="back">Dorsal</string>
     <string name="back_">Costas</string>
     <string name="back_and_biceps">Costas e Bíceps</string>
-    <string name="basal_charge">Inserir Taxa Basal</string>
     <string name="basal_metabolism_calculated_successfully">Metabolismo Basal calculado com sucesso</string>
     <string name="biceps">Bíceps</string>
     <string name="biceps_bar_w">Bíceps Barra W</string>
@@ -22,7 +21,6 @@
     <string name="cadence">Cadência</string>
     <string name="cadence_hint">Insira a cadência</string>
     <string name="calculate_basal_metabolic_rate">Calcular Taxa Metabólica Basal</string>
-    <string name="calculate_basal_metabolism">Calcular Metabolismo Basal</string>
     <string name="calf_and_legs">Pernas e Panturrilha</string>
     <string name="calories_b">Calorias</string>
     <string name="calories_kcal">Calorias (kcal)</string>
@@ -30,7 +28,6 @@
     <string name="carbohydrate">Carboidrato (g)</string>
     <string name="carbohydrates_b">Carboidratos</string>
     <string name="chest_and_triceps">Peito e Tríceps</string>
-    <string name="configure">Configurar</string>
     <string name="daily_calories">Calorias Diárias</string>
     <string name="daily_calories_removed_successfully">Calorias Diárias removidas com sucesso</string>
     <string name="daily_goals">Metas Diarias</string>
@@ -143,7 +140,6 @@
     <string name="save_exercise_successful">Exercício salvo com sucesso!</string>
     <string name="save_food_error">Erro ao salvar o alimento</string>
     <string name="save_metabolic_profile">Salvar Perfil Metabólico</string>
-    <string name="save_profile">Salvar perfil</string>
     <string name="save_target">Salvar meta</string>
     <string name="save_training_successful">Treino salvo com sucesso!</string>
     <string name="seconds_hint">Insira o tempo de descanso em segundos</string>
