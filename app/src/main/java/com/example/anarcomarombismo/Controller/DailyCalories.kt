@@ -9,6 +9,7 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -95,16 +96,36 @@ class DailyCalories(
         }
     }
 
-    private fun macroNutrients(context: Context): Map<String, Double> {
-        var dailyCaloriesList = fetchAll(context)
-        var size = dailyCaloriesList.size
-        val macroNutrients = mutableMapOf<String, Double>()
-        macroNutrients["Calories"] = dailyCaloriesList.sumOf { it.calorieskcal }/size
-        macroNutrients["Protein"] = dailyCaloriesList.sumOf { it.protein }/size
-        macroNutrients["Carbohydrates"] = dailyCaloriesList.sumOf { it.carbohydrate }/size
-        macroNutrients["Lipids"] = dailyCaloriesList.sumOf { it.lipids }/size
-        macroNutrients["DietaryFiber"] = dailyCaloriesList.sumOf { it.dietaryFiber }/size
-        return macroNutrients
+    private fun macroNutrients(context: Context,days:Int=7): Map<String, Double> {
+        val dailyCaloriesList = fetchAll(context)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, -(days+1)) // Get date 7 days ago
+        val sevenDaysAgo = calendar.time
+
+        val last7DaysCalories = dailyCaloriesList.filter { dailyCalories ->
+            val dailyCaloriesDate = dateFormat.parse(dailyCalories.date)
+            dailyCaloriesDate != null && !dailyCaloriesDate.before(sevenDaysAgo)
+        }
+
+        val size = last7DaysCalories.size
+        if (size == 0) {
+            return mapOf(
+                "Calories" to 0.0,
+                "Protein" to 0.0,
+                "Carbohydrates" to 0.0,
+                "Lipids" to 0.0,
+                "DietaryFiber" to 0.0
+            )
+        }
+
+        return mapOf(
+            "Calories" to last7DaysCalories.sumOf { it.calorieskcal } / size,
+            "Protein" to last7DaysCalories.sumOf { it.protein } / size,
+            "Carbohydrates" to last7DaysCalories.sumOf { it.carbohydrate } / size,
+            "Lipids" to last7DaysCalories.sumOf { it.lipids } / size,
+            "DietaryFiber" to last7DaysCalories.sumOf { it.dietaryFiber } / size
+        )
     }
     private fun updateProgressBars(
         dailyCalories: Map<String, Double>,
@@ -169,35 +190,42 @@ class DailyCalories(
     ) {
         val decimalFormat = DecimalFormat("#.#")
         val dia = context.getString(R.string.day)
-        val percentageCalories = ((dailyCalories["Calories"] ?: 0.0) / macroTarget.calories * 100).toInt()
-        val percentageCarbs = ((dailyCalories["Carbohydrates"] ?: 0.0) / macroTarget.carbs * 100).toInt()
-        val percentageFats = ((dailyCalories["Lipids"] ?: 0.0) / macroTarget.lipids * 100).toInt()
-        val percentageProteins = ((dailyCalories["Protein"] ?: 0.0) / macroTarget.protein * 100).toInt()
-        val percentageDietaryFiber = ((dailyCalories["DietaryFiber"] ?: 0.0) / macroTarget.dietaryFiber * 100).toInt()
-        if (!miniVersion) {
-            caloriesLabel.text =
-                "${context.getString(R.string.calories_b)} ${decimalFormat.format(dailyCalories["Calories"] ?: 0.0)}kcal/$dia ($percentageCalories%)"
-            carbsLabel.text =
-                "${context.getString(R.string.carbohydrates_b)} ${decimalFormat.format(dailyCalories["Carbohydrates"] ?: 0.0)}g/$dia ($percentageCarbs%)"
-            fatsLabel.text =
-                "${context.getString(R.string.lipids_b)} ${decimalFormat.format(dailyCalories["Lipids"] ?: 0.0)}g/$dia ($percentageFats%)"
-            proteinsLabel.text =
-                "${context.getString(R.string.proteins_b)} ${decimalFormat.format(dailyCalories["Protein"] ?: 0.0)}g/$dia ($percentageProteins%)"
-            dietaryFiberLabel.text =
-                "${context.getString(R.string.dietary_fiber_b)} ${decimalFormat.format(dailyCalories["DietaryFiber"] ?: 0.0)}g/$dia ($percentageDietaryFiber%)"
-        } else {
-            caloriesLabel.text =
-                "${context.getString(R.string.calories_b)} $percentageCalories%"
-            carbsLabel.text =
-                "${context.getString(R.string.carbohydrates_b)} $percentageCarbs%"
-            fatsLabel.text =
-                "${context.getString(R.string.lipids_b)} $percentageFats%"
-            proteinsLabel.text =
-                "${context.getString(R.string.proteins_b)} $percentageProteins%"
-            dietaryFiberLabel.text =
-                "${context.getString(R.string.dietary_fiber_b)} $percentageDietaryFiber%"
+
+        // Create a list of labels and their corresponding targets
+        val nutrients = listOf(
+            Pair("Calories", caloriesLabel) to macroTarget.calories,
+            Pair("Carbohydrates", carbsLabel) to macroTarget.carbs,
+            Pair("Lipids", fatsLabel) to macroTarget.lipids,
+            Pair("Protein", proteinsLabel) to macroTarget.protein,
+            Pair("DietaryFiber", dietaryFiberLabel) to macroTarget.dietaryFiber
+        )
+
+        nutrients.forEach { (nutrientLabel, target) ->
+            val nutrientValue = dailyCalories[nutrientLabel.first] ?: 0.0
+            val percentage = (nutrientValue / target * 100).toInt()
+
+            if (!miniVersion) {
+                nutrientLabel.second.text =
+                    "${context.getString(getLabelResource(nutrientLabel.first))} ${decimalFormat.format(nutrientValue)}${if (nutrientLabel.first == "Calories") "kcal" else "g"}/$dia ($percentage%)"
+            } else {
+                nutrientLabel.second.text =
+                    "${context.getString(getLabelResource(nutrientLabel.first))} $percentage%"
+            }
         }
     }
+
+    // Helper function to get label resource ID
+    private fun getLabelResource(nutrient: String): Int {
+        return when (nutrient) {
+            "Calories" -> R.string.calories_b
+            "Carbohydrates" -> R.string.carbohydrates_b
+            "Lipids" -> R.string.lipids_b
+            "Protein" -> R.string.proteins_b
+            "DietaryFiber" -> R.string.dietary_fiber_b
+            else -> throw IllegalArgumentException("Unknown nutrient: $nutrient")
+        }
+    }
+
 
 
     override fun fetchById(context: Context, id: Any): DailyCalories {

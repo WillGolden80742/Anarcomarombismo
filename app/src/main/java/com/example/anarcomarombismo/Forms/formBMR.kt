@@ -44,28 +44,28 @@ class formBMR : AppCompatActivity() {
                 editTextAge.setText(it!!.age.toString())
                 when (it.gender) {
                     "M" -> {
-                        spinnerGender.setSelection(0)
+                        spinnerGender.setSelection(1)
                     }
                     "F" -> {
-                        spinnerGender.setSelection(1)
+                        spinnerGender.setSelection(2)
                     }
 
                 }
                 when (it.activityLevel) {
                     1.2 -> {
-                        spinnerActivityLevel.setSelection(0)
-                    }
-                    1.375 -> {
                         spinnerActivityLevel.setSelection(1)
                     }
-                    1.55 -> {
+                    1.375 -> {
                         spinnerActivityLevel.setSelection(2)
                     }
-                    1.725 -> {
+                    1.55 -> {
                         spinnerActivityLevel.setSelection(3)
                     }
-                    1.9 -> {
+                    1.725 -> {
                         spinnerActivityLevel.setSelection(4)
+                    }
+                    1.9 -> {
+                        spinnerActivityLevel.setSelection(5)
                     }
                 }
 
@@ -73,7 +73,6 @@ class formBMR : AppCompatActivity() {
         }
     }
     private fun saveBMRProfile() {
-        // Verificar se o campo de peso está preenchido
         val weightInput = editTextWeight.text.toString()
         if (weightInput.isEmpty()) {
             Toast.makeText(this, getString(R.string.mandatory_weight), Toast.LENGTH_SHORT).show()
@@ -84,7 +83,6 @@ class formBMR : AppCompatActivity() {
             return
         }
 
-        // Verificar se o campo de altura está preenchido
         val heightInput = editTextHeight.text.toString()
         if (heightInput.isEmpty()) {
             Toast.makeText(this, getString(R.string.mandatory_height), Toast.LENGTH_SHORT).show()
@@ -95,7 +93,6 @@ class formBMR : AppCompatActivity() {
             return
         }
 
-        // Verificar se o campo de idade está preenchido
         val ageInput = editTextAge.text.toString()
         if (ageInput.isEmpty()) {
             Toast.makeText(this, getString(R.string.mandatory_age), Toast.LENGTH_SHORT).show()
@@ -108,28 +105,26 @@ class formBMR : AppCompatActivity() {
 
         // Verificar o gênero selecionado
         val genderMultiplier = when (spinnerGender.selectedItemId) {
-            0L -> "M"
-            1L -> "F"
+            1L -> "M"
+            2L -> "F"
             else -> {
-                // Gênero não selecionado
+                Toast.makeText(this, getString(R.string.mandatory_gender), Toast.LENGTH_SHORT).show()
                 return
             }
         }
 
         // Verificar o nível de atividade selecionado
         val activityLevel = when (spinnerActivityLevel.selectedItemId) {
-            0L -> 1.2
-            1L -> 1.375
-            2L -> 1.55
-            3L -> 1.725
-            4L -> 1.9
+            1L -> 1.2
+            2L -> 1.375
+            3L -> 1.55
+            4L -> 1.725
+            5L -> 1.9
             else -> {
-                // Nível de atividade não selecionado
+                Toast.makeText(this, getString(R.string.mandatory_activity_level), Toast.LENGTH_SHORT).show()
                 return
             }
         }
-
-        // Construir e salvar o perfil BMR
         val bmr = BasalMetabolicRate.build(
             weight = weight,
             height = height,
@@ -138,7 +133,6 @@ class formBMR : AppCompatActivity() {
             activityLevel = activityLevel
         )
 
-        // Salvar o perfil BMR e fechar a atividade se for bem-sucedido
         if (bmr.save(this)) {
             finish()
         }

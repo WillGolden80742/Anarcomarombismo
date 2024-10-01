@@ -105,7 +105,9 @@
     <string name="low_stroke">Remo Bajo</string>
     <string name="lower_members">Miembros Inferiores</string>
     <string name="machine_leg_abduction">Abducción de Piernas en Máquina</string>
+    <string name="mandatory_activity_level">Fator de atividade é obrigatório</string>
     <string name="mandatory_age">La edad es obligatoria</string>
+    <string name="mandatory_gender">Gênero é obrigatório</string>
     <string name="mandatory_height">La altura es obligatoria</string>
     <string name="mandatory_weight">El peso es obligatorio</string>
     <string name="metabolic_profile">Perfil Metabolico</string>
@@ -194,10 +196,12 @@
     <string name="weight">Peso</string>
     <string name="weight_hint">Digite seu peso</string>
     <string-array name="gender_array">
+        <item>Seleccionar género</item>
         <item>Masculino</item>
         <item>Femenino</item>
     </string-array>
     <string-array name="activity_level_array">
+        <item>Seleccionar fator de atividade</item>
         <item>Sedentario (poco o ningún ejercicio)</item>
         <item>Ligeramente activo (ejercicio ligero/deportes 1-3 días a la semana)</item>
         <item>Moderadamente activo (ejercicio moderado/deportes 3-5 días a la semana)</item>

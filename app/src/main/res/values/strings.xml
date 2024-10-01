@@ -105,7 +105,9 @@
     <string name="low_stroke">Remada Baixa</string>
     <string name="lower_members">Membros Inferiores</string>
     <string name="machine_leg_abduction">Abdução de Perna na Máquina</string>
+    <string name="mandatory_activity_level">Fator de atividade é obrigatório</string>
     <string name="mandatory_age">Idade é obrigatória</string>
+    <string name="mandatory_gender">Gênero é obrigatório</string>
     <string name="mandatory_height">Altura é obrigatória</string>
     <string name="mandatory_weight">Peso é obrigatório</string>
     <string name="metabolic_profile">Perfil Metabólico</string>
@@ -194,10 +196,12 @@
     <string name="weight">Peso</string>
     <string name="weight_hint">Digite seu peso</string>
     <string-array name="gender_array">
+        <item>Selecione Gênero</item>
         <item>Masculino</item>
         <item>Feminino</item>
     </string-array>
     <string-array name="activity_level_array">
+        <item>Selecione Fator de Atividade</item>
         <item>Sedentário (pouco ativo)</item>
         <item>Levemente ativo (pouco ativo, exercício moderado)</item>
         <item>Moderadamente ativo (exercício moderado, pouca intensidade)</item>
