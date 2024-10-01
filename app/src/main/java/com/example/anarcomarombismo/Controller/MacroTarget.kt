@@ -37,7 +37,7 @@ class MacroTarget (
         }
     }
 
-    fun fetchById(context: Context): MacroTarget? {
+    fun fetch(context: Context): MacroTarget? {
         return fetchById(context,0)
     }
     override fun fetchAll(context: Context): List<MacroTarget> {

@@ -88,7 +88,7 @@ class DailyCalories(
         dietaryFiberLabel: TextView,
         miniVersion: Boolean = false
     ) {
-        MacroTarget().fetchById(context)?.let { macroTarget ->
+        MacroTarget().fetch(context)?.let { macroTarget ->
             val dailyCalories = macroNutrients(context)
             updateProgressBars(dailyCalories, macroTarget, caloriesProgressBar, carbsProgressBar, fatsProgressBar, proteinsProgressBar,dietaryFiberProgressBar)
             updateLabels(dailyCalories, macroTarget, context, caloriesLabel, carbsLabel, fatsLabel, proteinsLabel,dietaryFiberLabel,miniVersion)

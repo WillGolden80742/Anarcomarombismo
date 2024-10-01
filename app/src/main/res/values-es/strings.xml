@@ -174,5 +174,38 @@
     <string name="save_target">Guardar Objetivo</string>
     <string name="enter_your_dietary_fiber_meta">Introduce tu meta diaria de fibra dietética</string>
     <string name="configure">Configurar</string>
-    <string name="basal_charge">Calorías Basal</string>
+    <string name="basal_charge">Ingreso Calorías Basal</string>
+    <string name="weight">Peso</string>
+    <string name="weight_hint">Digite seu peso</string>
+    <string name="height">Altura (cm)</string>
+    <string name="height_hint">Digite sua altura</string>
+    <string name="age">Idade</string>
+    <string name="age_hint">Digite sua idade</string>
+    <string name="gender">Gênero</string>
+    <string name="activity_level">Fator de Atividade</string>
+    <string name="save_profile">Salvar perfil</string>
+    <string name="calculate_basal_metabolic_rate">Calcular Metabolizacao Basal</string>
+    <string name="metabolic_profile">Perfil Metabolico</string>
+    <string name="calculate_basal_metabolism">Calcular Metabolizacao Basal</string>
+    <string name="daily_goals">Metabolizacao Diaria</string>
+    <string name="define_your_metabolic_profile_first">Defina seu perfil metabolico primeiro</string>
+    <string name="basal_metabolism_calculated_successfully">Metabolizacao Basal calculada com sucesso</string>
+    <string name="mandatory_weight">El peso es obligatorio</string>
+    <string name="invalid_weight">Peso inválido</string>
+    <string name="mandatory_height">La altura es obligatoria</string>
+    <string name="height_invalid">Altura inválida</string>
+    <string name="mandatory_age">La edad es obligatoria</string>
+    <string name="invalid_age">Edad inválida</string>
+    <string name="save_metabolic_profile">Salvar perfil metabolico</string>
+    <string-array name="gender_array">
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
+    <string-array name="activity_level_array">
+        <item>Sedentario (poco o ningún ejercicio)</item>
+        <item>Ligeramente activo (ejercicio ligero/deportes 1-3 días a la semana)</item>
+        <item>Moderadamente activo (ejercicio moderado/deportes 3-5 días a la semana)</item>
+        <item>Activo (ejercicio intenso/deportes 6-7 días a la semana)</item>
+        <item>Súper activo (atleta profesional)</item>
+    </string-array>
 </resources>

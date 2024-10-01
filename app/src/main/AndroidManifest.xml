@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Anarcomarombismo"
         tools:targetApi="31">
         <activity
+            android:name=".Forms.formBMR"
+            android:exported="false" />
+        <activity
             android:name=".Forms.formMacroTarget"
             android:exported="false" />
         <activity

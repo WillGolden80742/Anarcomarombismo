@@ -1,14 +1,19 @@
 package com.example.anarcomarombismo.Forms
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.anarcomarombismo.Controller.BasalMetabolicRate
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.MacroTarget
 import com.example.anarcomarombismo.R
+import com.example.anarcomarombismo.dailyCalories
+import java.text.DecimalFormat
 
 class formMacroTarget : AppCompatActivity() {
 
@@ -29,6 +34,8 @@ class formMacroTarget : AppCompatActivity() {
     private lateinit var lipidsLabel: TextView
     private lateinit var proteinsLabel: TextView
     private lateinit var dietaryFiberLabel: TextView
+    private lateinit var calculateBasalButton: Button
+    private lateinit var editBasalButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,9 +58,40 @@ class formMacroTarget : AppCompatActivity() {
         lipidsLabel = findViewById(R.id.lipidsLabel)
         proteinsLabel = findViewById(R.id.proteinsLabel)
         dietaryFiberLabel = findViewById(R.id.dietaryFiberLabel)
+        calculateBasalButton = findViewById(R.id.calculateBasalButton)
+        editBasalButton = findViewById(R.id.editBasalButton)
         saveTargetButton.setOnClickListener {
             saveMacroTarget()
         }
+        editBasalButton.setOnClickListener {
+            val intent = Intent(this, formBMR::class.java)
+            startActivity(intent)
+        }
+        calculateBasalButton.setOnClickListener {
+            val basalMetabolicRate = BasalMetabolicRate()
+
+            if (basalMetabolicRate.hasBasalMetabolicRate(this)) {
+                val bmr = basalMetabolicRate.fetch(this)!!.getBasalMetabolicRate()
+                val decimalFormat = DecimalFormat("#.##")
+
+                editTextCalories.setText(bmr.toString())
+
+                val bmrCarbs = decimalFormat.format(bmr * 0.125).replace(",", ".")
+                val bmrFats = decimalFormat.format(bmr * 0.02222).replace(",", ".")
+                val bmrProteins = decimalFormat.format(bmr * 0.075).replace(",", ".")
+                val bmrDietaryFiber = decimalFormat.format(bmr * 0.020).replace(",", ".")
+
+                editTextCarbs.setText(bmrCarbs)
+                editTextFats.setText(bmrFats)
+                editTextProteins.setText(bmrProteins)
+                editTextDietaryFiber.setText(bmrDietaryFiber)
+                Toast.makeText(this,
+                    getString(R.string.basal_metabolism_calculated_successfully), Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     override fun onResume() {
@@ -75,7 +113,7 @@ class formMacroTarget : AppCompatActivity() {
             proteinsLabel,
             dietaryFiberLabel
         )
-        MacroTarget().fetchById(this)?.let {
+        MacroTarget().fetch(this)?.let {
             editTextCalories.setText(it.calories.toString())
             editTextCarbs.setText(it.carbs.toString())
             editTextFats.setText(it.lipids.toString())
@@ -97,7 +135,8 @@ class formMacroTarget : AppCompatActivity() {
                 protein = protein,
                 dietaryFiber = dietaryFiber
         ).save(this)) {
-            finish()
+            val intent = Intent(this,dailyCalories::class.java)
+            startActivity(intent)
         }
     }
 
