@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.BasalMetabolicRate
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.MacroTarget
@@ -91,12 +92,49 @@ class formMacroTarget : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
             }
         }
-
+        editTextCalories.addTextChangedListener {
+            val basalMetabolicRate = BasalMetabolicRate()
+            if (basalMetabolicRate.hasBasalMetabolicRate(this)) {
+                val bmr = basalMetabolicRate.fetch(this)!!.getBasalMetabolicRate()
+                if (editTextCalories.text.toString().toDoubleOrNull()?:0.0 > bmr) {
+                    editTextCalories.setTextColor(getColor(R.color.red))
+                } else {
+                    editTextCalories.setTextColor(getColor(R.color.text_primary))
+                }
+            }
+        }
+        setupCaloriesCalculation()
     }
 
     override fun onResume() {
         super.onResume()
         loadMacroTarget()
+    }
+
+    private fun setupCaloriesCalculation() {
+        calcCalories(listOf(editTextCarbs, editTextFats, editTextProteins))
+    }
+    private fun calcCalories(editText:List<EditText>) {
+        editText.forEach { e ->
+            e.addTextChangedListener {
+                val protein = editTextProteins.text.toString()
+                val carbohydrate = editTextCarbs.text.toString()
+                val lipids = editTextFats.text.toString()
+
+                if (protein.isNotEmpty() && carbohydrate.isNotEmpty() && lipids.isNotEmpty()) {
+                    val proteinValue = protein.toDouble()
+                    val carbohydrateValue = carbohydrate.toDouble()
+                    val lipidsValue = lipids.toDouble()
+                    val calories = (proteinValue * 4 + carbohydrateValue * 4 + lipidsValue * 9)
+                    // round to 2 decimal places
+                    editTextCalories.setText(formatDoubleNumber(calories))
+                }
+            }
+        }
+    }
+
+    private fun formatDoubleNumber(value: Double):String {
+        return "%.2f".format(value).replace(",", ".")
     }
 
     private fun loadMacroTarget() {
