@@ -186,7 +186,9 @@ class formMacro : AppCompatActivity() {
 
     private fun calculateCarbs(bmr: Double, proteins: Double, lipids: Double): Double {
         val remainingCalories = bmr - (proteins * 4 + lipids * 9)
-        return remainingCalories / 4
+        return if (remainingCalories <= 0) {
+            0.0
+        } else remainingCalories / 4
     }
 
     private fun calculateDietaryFiber(bmr: Double): Double {
