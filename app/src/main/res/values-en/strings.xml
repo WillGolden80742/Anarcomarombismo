@@ -197,6 +197,7 @@
     <string name="weight_hint">Enter your weight</string>
     <string name="fat_by_weight">Fat/Weight</string>
     <string name="protein_by_weight">Protein/Weight</string>
+    <string name="decrease_the_value_of_protein_in_or_fats">Reduce the amount of protein or fat to reduce calories</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>
