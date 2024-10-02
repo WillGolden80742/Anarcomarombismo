@@ -159,12 +159,14 @@ class formMacro : AppCompatActivity() {
                 val lipidsPerKg = lipids / weight
                 editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg, 2))
             }
-            editTextCarbs.setText(
-                formatDoubleNumber(
-                    calculateCarbs(calories, proteins, lipids),
-                    2
+            if (!isUpdatingCalories) {
+                editTextCarbs.setText(
+                    formatDoubleNumber(
+                        calculateCarbs(calories, proteins, lipids),
+                        2
+                    )
                 )
-            )
+            }
             minimumCalorieValue = proteins * 4 + lipids * 9
             isUpdatingFats = false
         }
@@ -179,12 +181,14 @@ class formMacro : AppCompatActivity() {
                 val proteinPerKg = proteins/weight
                 editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg,2))
             }
-            editTextCarbs.setText(
-                formatDoubleNumber(
-                    calculateCarbs(calories, proteins, lipids),
-                    2
+            if (!isUpdatingCalories) {
+                editTextCarbs.setText(
+                    formatDoubleNumber(
+                        calculateCarbs(calories, proteins, lipids),
+                        2
+                    )
                 )
-            )
+            }
             minimumCalorieValue = proteins * 4 + lipids * 9
             isUpdatingProteins = false
         }
