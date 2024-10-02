@@ -92,7 +92,7 @@ class formMacro : AppCompatActivity() {
             }
         }
         editTextCalories.addTextChangedListener {
-            val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: return@addTextChangedListener
+            val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?:0.0
             val bmr = basalMetabolicRate.fetch(this)!!.getBasalMetabolicRate()
             if (caloriesInput > bmr+1) editTextCalories.setTextColor(getColor(R.color.red)) else editTextCalories.setTextColor(getColor(R.color.text_primary))
             if (!isUpdatingCalories) {
@@ -133,7 +133,14 @@ class formMacro : AppCompatActivity() {
                 val lipidsPerKg = lipids / weight
                 editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg,2))
             }
-            editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
+            if (!isUpdatingCalories) {
+                editTextCarbs.setText(
+                    formatDoubleNumber(
+                        calculateCarbs(calories, proteins, lipids),
+                        2
+                    )
+                )
+            }
             isUpdatingFats= false
         }
         editTextProteins.addTextChangedListener {
@@ -147,7 +154,14 @@ class formMacro : AppCompatActivity() {
                 val proteinPerKg = proteins/weight
                 editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg,2))
             }
-            editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
+            if (!isUpdatingCalories) {
+                editTextCarbs.setText(
+                    formatDoubleNumber(
+                        calculateCarbs(calories, proteins, lipids),
+                        2
+                    )
+                )
+            }
             isUpdatingProteins = false
         }
     }
