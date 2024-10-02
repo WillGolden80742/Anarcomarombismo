@@ -6,6 +6,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.anarcomarombismo.Controller.BasalMetabolicRate
+import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.R
 
 class formBMR : AppCompatActivity() {
@@ -34,6 +35,7 @@ class formBMR : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadBMRProfile()
+        Cache().setCache(this,"accessedFormBMR",true)
     }
 
     private fun loadBMRProfile() {

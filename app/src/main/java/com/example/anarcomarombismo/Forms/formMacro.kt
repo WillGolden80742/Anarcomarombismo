@@ -13,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.BasalMetabolicRate
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Macro
+import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
 
@@ -122,30 +123,32 @@ class formMacro : AppCompatActivity() {
             }
         }
         editTextFats.addTextChangedListener {
+            isUpdatingFats = true
+            val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+            var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
+            val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
             if (hasMetabolicRate && !isUpdatingFatsPerKg) {
-                isUpdatingFats = true
+                calories = basalMetabolicRate.getBasalMetabolicRate()
                 val weight = basalMetabolicRate.weight
-                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-                val calories = basalMetabolicRate.getBasalMetabolicRate()
-                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
                 val lipidsPerKg = lipids / weight
                 editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg,2))
-                editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
-                isUpdatingFats= false
             }
+            editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
+            isUpdatingFats= false
         }
         editTextProteins.addTextChangedListener {
+            isUpdatingProteins = true
+            val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+            var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
+            val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
             if (hasMetabolicRate && !isUpdatingProteinsPerKg) {
-                isUpdatingProteins = true
+                calories = basalMetabolicRate.getBasalMetabolicRate()
                 val weight = basalMetabolicRate.weight
-                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-                val calories = basalMetabolicRate.getBasalMetabolicRate()
-                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
                 val proteinPerKg = proteins/weight
                 editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg,2))
-                editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
-                isUpdatingProteins = false
             }
+            editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
+            isUpdatingProteins = false
         }
     }
 
@@ -155,10 +158,17 @@ class formMacro : AppCompatActivity() {
         hasMetabolicRate = basalMetabolicRate.hasBasalMetabolicRate(this)
         editTextLipidsPerKg.isEnabled = hasMetabolicRate
         editTextProteinsPerKg.isEnabled = hasMetabolicRate
+        val cache = Cache()
         if (!hasMetabolicRate) {
-            val intent = Intent(this, formBMR::class.java)
-            startActivity(intent)
-            Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
+            if (!cache.hasCache(this,"accessedFormBMR")) {
+                val intent = Intent(this, formBMR::class.java)
+                startActivity(intent)
+                Toast.makeText(
+                    this,
+                    getString(R.string.define_your_metabolic_profile_first),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
         fetchMacroTarget()
         setupCaloriesCalculation(listOf(editTextCarbs, editTextFats,editTextLipidsPerKg))
