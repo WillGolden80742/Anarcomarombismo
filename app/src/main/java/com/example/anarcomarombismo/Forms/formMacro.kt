@@ -95,14 +95,14 @@ class formMacro : AppCompatActivity() {
             val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?:0.0
             val bmr = basalMetabolicRate.fetch(this)!!.getBasalMetabolicRate()
             if (caloriesInput > bmr+1) editTextCalories.setTextColor(getColor(R.color.red)) else editTextCalories.setTextColor(getColor(R.color.text_primary))
-            if (!isUpdatingCalories) {
+            if (!isUpdatingCalories && !isUpdatingFats && !isUpdatingProteins) {
                 val weight = basalMetabolicRate.weight
                 calculateAndDisplayMacros(caloriesInput, weight,false)
             }
         }
         editTextLipidsPerKg.addTextChangedListener {
             val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: return@addTextChangedListener
-            if (hasMetabolicRate && !isUpdatingFats) {
+            if (hasMetabolicRate && !isUpdatingFats && !isUpdatingCalories) {
                 val weight = basalMetabolicRate.weight
                 isUpdatingFatsPerKg = true
                 calculateAndDisplayMacros(caloriesInput, weight,false)
@@ -113,7 +113,7 @@ class formMacro : AppCompatActivity() {
         }
         editTextProteinsPerKg.addTextChangedListener {
             val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: return@addTextChangedListener
-            if (hasMetabolicRate && !isUpdatingProteins) {
+            if (hasMetabolicRate && !isUpdatingProteins && !isUpdatingCalories) {
                 val weight = basalMetabolicRate.weight
                 isUpdatingProteinsPerKg = true
                 calculateAndDisplayMacros(caloriesInput, weight,false)
@@ -125,13 +125,13 @@ class formMacro : AppCompatActivity() {
         editTextFats.addTextChangedListener {
             isUpdatingFats = true
             val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-            var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
             val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+            var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
             if (hasMetabolicRate && !isUpdatingFatsPerKg) {
                 calories = basalMetabolicRate.getBasalMetabolicRate()
                 val weight = basalMetabolicRate.weight
                 val lipidsPerKg = lipids / weight
-                editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg,2))
+                editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg, 2))
             }
             if (!isUpdatingCalories) {
                 editTextCarbs.setText(
@@ -141,8 +141,9 @@ class formMacro : AppCompatActivity() {
                     )
                 )
             }
-            isUpdatingFats= false
+            isUpdatingFats = false
         }
+
         editTextProteins.addTextChangedListener {
             isUpdatingProteins = true
             val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
