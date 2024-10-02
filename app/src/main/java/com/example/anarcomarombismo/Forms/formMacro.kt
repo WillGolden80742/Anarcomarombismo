@@ -126,8 +126,11 @@ class formMacro : AppCompatActivity() {
                 isUpdatingFats = true
                 val weight = basalMetabolicRate.weight
                 val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                val calories = basalMetabolicRate.getBasalMetabolicRate()
+                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
                 val lipidsPerKg = lipids / weight
                 editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg,2))
+                editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
                 isUpdatingFats= false
             }
         }
@@ -136,8 +139,11 @@ class formMacro : AppCompatActivity() {
                 isUpdatingProteins = true
                 val weight = basalMetabolicRate.weight
                 val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+                val calories = basalMetabolicRate.getBasalMetabolicRate()
+                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
                 val proteinPerKg = proteins/weight
                 editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg,2))
+                editTextCarbs.setText(formatDoubleNumber(calculateCarbs(calories,proteins,lipids),2))
                 isUpdatingProteins = false
             }
         }
