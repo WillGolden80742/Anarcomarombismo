@@ -34,11 +34,11 @@ class formBMR : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        loadBMRProfile()
+        fetchBMRProfile()
         Cache().setCache(this,"accessedFormBMR",true)
     }
 
-    private fun loadBMRProfile() {
+    private fun fetchBMRProfile() {
         if (BasalMetabolicRate().hasBasalMetabolicRate(this)) {
             BasalMetabolicRate().fetch(this).let {
                 editTextWeight.setText(it!!.weight.toString())
