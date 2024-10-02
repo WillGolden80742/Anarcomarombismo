@@ -21,7 +21,7 @@
             android:name=".Forms.formBMR"
             android:exported="false" />
         <activity
-            android:name=".Forms.formMacroTarget"
+            android:name=".Forms.formMacro"
             android:exported="false" />
         <activity
             android:name=".bodyStatistics"

@@ -195,6 +195,8 @@
     <string name="video_link_hint">Insira o link de video (Youtube apenas)</string>
     <string name="weight">Peso</string>
     <string name="weight_hint">Digite seu peso</string>
+    <string name="fat_by_weight">Gordura/Peso</string>
+    <string name="protein_by_weight">Proteína/Peso</string>
     <string-array name="gender_array">
         <item>Selecione Gênero</item>
         <item>Masculino</item>

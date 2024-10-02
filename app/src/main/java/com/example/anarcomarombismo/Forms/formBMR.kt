@@ -113,7 +113,6 @@ class formBMR : AppCompatActivity() {
             }
         }
 
-        // Verificar o nível de atividade selecionado
         val activityLevel = when (spinnerActivityLevel.selectedItemId) {
             1L -> 1.2
             2L -> 1.375

@@ -89,7 +89,7 @@ class DailyCalories(
         dietaryFiberLabel: TextView,
         miniVersion: Boolean = false
     ) {
-        MacroTarget().fetch(context)?.let { macroTarget ->
+        Macro().fetch(context)?.let { macroTarget ->
             val dailyCalories = macroNutrients(context)
             updateProgressBars(dailyCalories, macroTarget, caloriesProgressBar, carbsProgressBar, fatsProgressBar, proteinsProgressBar,dietaryFiberProgressBar)
             updateLabels(dailyCalories, macroTarget, context, caloriesLabel, carbsLabel, fatsLabel, proteinsLabel,dietaryFiberLabel,miniVersion)
@@ -129,7 +129,7 @@ class DailyCalories(
     }
     private fun updateProgressBars(
         dailyCalories: Map<String, Double>,
-        macroTarget: MacroTarget,
+        macro: Macro,
         caloriesProgressBar: ProgressBar,
         carbsProgressBar: ProgressBar,
         fatsProgressBar: ProgressBar,
@@ -141,11 +141,11 @@ class DailyCalories(
         val lipids = dailyCalories["Lipids"] ?: 0.0
         val protein = dailyCalories["Protein"] ?: 0.0
         val dietaryFiber = dailyCalories["DietaryFiber"] ?: 0.0
-        caloriesProgressBar.progress = calculateProgress(caloriesProgressBar, calories, macroTarget.calories)
-        carbsProgressBar.progress = calculateProgress(carbsProgressBar, carbs, macroTarget.carbs)
-        fatsProgressBar.progress = calculateProgress(fatsProgressBar, lipids, macroTarget.lipids)
-        proteinsProgressBar.progress = calculateProgress(proteinsProgressBar, protein, macroTarget.protein)
-        dietaryFiberProgressBar.progress = calculateProgress(dietaryFiberProgressBar, dietaryFiber, macroTarget.dietaryFiber)
+        caloriesProgressBar.progress = calculateProgress(caloriesProgressBar, calories, macro.calories)
+        carbsProgressBar.progress = calculateProgress(carbsProgressBar, carbs, macro.carbs)
+        fatsProgressBar.progress = calculateProgress(fatsProgressBar, lipids, macro.lipids)
+        proteinsProgressBar.progress = calculateProgress(proteinsProgressBar, protein, macro.protein)
+        dietaryFiberProgressBar.progress = calculateProgress(dietaryFiberProgressBar, dietaryFiber, macro.dietaryFiber)
     }
 
     private fun calculateProgress(progressBar: ProgressBar, currentValue: Double, targetValue: Double): Int {
@@ -179,7 +179,7 @@ class DailyCalories(
 
     private fun updateLabels(
         dailyCalories: Map<String, Double>,
-        macroTarget: MacroTarget,
+        macro: Macro,
         context: Context,
         caloriesLabel: TextView,
         carbsLabel: TextView,
@@ -193,11 +193,11 @@ class DailyCalories(
 
         // Create a list of labels and their corresponding targets
         val nutrients = listOf(
-            Pair("Calories", caloriesLabel) to macroTarget.calories,
-            Pair("Carbohydrates", carbsLabel) to macroTarget.carbs,
-            Pair("Lipids", fatsLabel) to macroTarget.lipids,
-            Pair("Protein", proteinsLabel) to macroTarget.protein,
-            Pair("DietaryFiber", dietaryFiberLabel) to macroTarget.dietaryFiber
+            Pair("Calories", caloriesLabel) to macro.calories,
+            Pair("Carbohydrates", carbsLabel) to macro.carbs,
+            Pair("Lipids", fatsLabel) to macro.lipids,
+            Pair("Protein", proteinsLabel) to macro.protein,
+            Pair("DietaryFiber", dietaryFiberLabel) to macro.dietaryFiber
         )
 
         nutrients.forEach { (nutrientLabel, target) ->

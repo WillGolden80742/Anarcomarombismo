@@ -195,6 +195,8 @@
     <string name="video_link_hint">Enter the video link (Youtube only)</string>
     <string name="weight">Weight</string>
     <string name="weight_hint">Enter your weight</string>
+    <string name="fat_by_weight">Fat/Weight</string>
+    <string name="protein_by_weight">Protein/Weight</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>
