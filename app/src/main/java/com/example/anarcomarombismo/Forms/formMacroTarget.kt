@@ -73,23 +73,11 @@ class formMacroTarget : AppCompatActivity() {
 
             if (basalMetabolicRate.hasBasalMetabolicRate(this)) {
                 val bmr = basalMetabolicRate.fetch(this)!!.getBasalMetabolicRate()
-                val decimalFormat = DecimalFormat("#.##")
+                val weight = basalMetabolicRate.weight
 
-                editTextCalories.setText(bmr.toString())
-
-                val bmrCarbs = decimalFormat.format(bmr * 0.125).replace(",", ".")
-                val bmrFats = decimalFormat.format(bmr * 0.02222).replace(",", ".")
-                val bmrProteins = decimalFormat.format(bmr * 0.075).replace(",", ".")
-                val bmrDietaryFiber = decimalFormat.format(bmr * 0.020).replace(",", ".")
-
-                editTextCarbs.setText(bmrCarbs)
-                editTextFats.setText(bmrFats)
-                editTextProteins.setText(bmrProteins)
-                editTextDietaryFiber.setText(bmrDietaryFiber)
-                Toast.makeText(this,
-                    getString(R.string.basal_metabolism_calculated_successfully), Toast.LENGTH_SHORT).show()
+                calculateAndDisplayMacros(bmr, weight)
             } else {
-                Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
             }
         }
         editTextCalories.addTextChangedListener {
@@ -111,22 +99,55 @@ class formMacroTarget : AppCompatActivity() {
         loadMacroTarget()
     }
 
+    private fun calculateAndDisplayMacros(bmr: Double, weight: Double) {
+        val proteins = calculateProteins(weight)
+        val lipids = calculateLipids(bmr)
+        val carbs = calculateCarbs(bmr, proteins, lipids)
+        val dietaryFiber = bmr * 0.02
+        updateFields(bmr, proteins, lipids, carbs,dietaryFiber)
+        Toast.makeText(this, getString(R.string.basal_metabolism_calculated_successfully), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun calculateProteins(weight: Double): Double {
+        val proteinPerKg = 2.2
+        return weight * proteinPerKg
+    }
+
+
+    private fun calculateLipids(bmr: Double): Double {
+        val lipidPercentage = 0.30
+        val caloriesPerGramOfFat = 9.0
+        return (bmr * lipidPercentage) / caloriesPerGramOfFat
+    }
+
+    private fun calculateCarbs(bmr: Double, proteins: Double, lipids: Double): Double {
+        val remainingCalories = bmr - (proteins * 4 + lipids * 9)
+        return remainingCalories / 4
+    }
+
+    private fun updateFields(bmr: Double, proteins: Double, lipids: Double, carbs: Double,dietaryFiber:Double) {
+        val decimalFormat = DecimalFormat("#.##")
+        editTextCalories.setText(bmr.toString())
+        editTextCarbs.setText(decimalFormat.format(carbs).replace(",", "."))
+        editTextFats.setText(decimalFormat.format(lipids).replace(",", "."))
+        editTextProteins.setText(decimalFormat.format(proteins).replace(",", "."))
+        editTextDietaryFiber.setText(decimalFormat.format(dietaryFiber).replace(",", "."))
+    }
+
     private fun setupCaloriesCalculation() {
         calcCalories(listOf(editTextCarbs, editTextFats, editTextProteins))
     }
     private fun calcCalories(editText:List<EditText>) {
         editText.forEach { e ->
             e.addTextChangedListener {
-                val protein = editTextProteins.text.toString()
                 val carbohydrate = editTextCarbs.text.toString()
                 val lipids = editTextFats.text.toString()
-
+                val protein = editTextProteins.text.toString()
                 if (protein.isNotEmpty() && carbohydrate.isNotEmpty() && lipids.isNotEmpty()) {
                     val proteinValue = protein.toDouble()
                     val carbohydrateValue = carbohydrate.toDouble()
                     val lipidsValue = lipids.toDouble()
                     val calories = (proteinValue * 4 + carbohydrateValue * 4 + lipidsValue * 9)
-                    // round to 2 decimal places
                     editTextCalories.setText(formatDoubleNumber(calories))
                 }
             }
@@ -134,7 +155,7 @@ class formMacroTarget : AppCompatActivity() {
     }
 
     private fun formatDoubleNumber(value: Double):String {
-        return "%.2f".format(value).replace(",", ".")
+        return "%.0f".format(value).replace(",", ".")
     }
 
     private fun loadMacroTarget() {

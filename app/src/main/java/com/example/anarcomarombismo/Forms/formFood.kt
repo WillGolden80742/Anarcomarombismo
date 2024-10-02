@@ -169,10 +169,9 @@ class formFood : AppCompatActivity() {
     private fun calcCalories(editText:List<EditText>) {
         editText.forEach { e ->
             e.addTextChangedListener {
-                val protein = editTextProtein.text.toString()
                 val carbohydrate = editTextCarbohydrate.text.toString()
+                val protein = editTextProtein.text.toString()
                 val lipids = editTextLipids.text.toString()
-
                 if (protein.isNotEmpty() && carbohydrate.isNotEmpty() && lipids.isNotEmpty()) {
                     val proteinValue = protein.toDouble()
                     val carbohydrateValue = carbohydrate.toDouble()
@@ -184,6 +183,7 @@ class formFood : AppCompatActivity() {
             }
         }
     }
+
 
     private fun formatDoubleNumber(value: Double):String {
         return "%.2f".format(value).replace(",", ".")
