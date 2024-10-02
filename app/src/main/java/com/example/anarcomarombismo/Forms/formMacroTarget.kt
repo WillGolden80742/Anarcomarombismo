@@ -103,7 +103,7 @@ class formMacroTarget : AppCompatActivity() {
         val proteins = calculateProteins(weight)
         val lipids = calculateLipids(bmr)
         val carbs = calculateCarbs(bmr, proteins, lipids)
-        val dietaryFiber = bmr * 0.02
+        val dietaryFiber = bmr * 0.01
         updateFields(bmr, proteins, lipids, carbs,dietaryFiber)
         Toast.makeText(this, getString(R.string.basal_metabolism_calculated_successfully), Toast.LENGTH_SHORT).show()
     }
