@@ -10,12 +10,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.BasalMetabolicRate
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Macro
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.R
+import com.google.android.material.textfield.TextInputLayout
 import java.text.DecimalFormat
 
 class formMacro : AppCompatActivity() {
@@ -24,8 +26,10 @@ class formMacro : AppCompatActivity() {
     private lateinit var editTextCarbs: EditText
     private lateinit var editTextFats: EditText
     private lateinit var editTextLipidsPerKg: EditText
+    private lateinit var textInputLayoutLipidsPerKg: TextInputLayout
     private lateinit var editTextProteins: EditText
     private lateinit var editTextProteinsPerKg: EditText
+    private lateinit var textInputLayoutProteinsPerKg: TextInputLayout
     private lateinit var editTextDietaryFiber: EditText
     private lateinit var caloriesProgressBar: ProgressBar
     private lateinit var carbsProgressBar: ProgressBar
@@ -58,8 +62,10 @@ class formMacro : AppCompatActivity() {
         editTextCarbs = findViewById(R.id.editTextCarbs)
         editTextFats = findViewById(R.id.editTextFats)
         editTextLipidsPerKg = findViewById(R.id.editTextLipidsPerKg)
+        textInputLayoutLipidsPerKg = findViewById(R.id.textInputLayoutLipidsPerKg)
         editTextProteins = findViewById(R.id.editTextProteins)
         editTextProteinsPerKg = findViewById(R.id.editTextProteinsPerKg)
+        textInputLayoutProteinsPerKg = findViewById(R.id.textInputLayoutProteinsPerKg)
         editTextDietaryFiber = findViewById(R.id.editTextDietaryFiber)
         caloriesProgressBar = findViewById(R.id.caloriesProgressBar)
         carbsProgressBar = findViewById(R.id.carbsProgressBar)
@@ -110,8 +116,10 @@ class formMacro : AppCompatActivity() {
         super.onResume()
         basalMetabolicRate = basalMetabolicRate.fetch(this)!!
         hasMetabolicRate = basalMetabolicRate.hasBasalMetabolicRate(this)
-        editTextLipidsPerKg.isEnabled = hasMetabolicRate
-        editTextProteinsPerKg.isEnabled = hasMetabolicRate
+        editTextLipidsPerKg.isVisible = hasMetabolicRate
+        textInputLayoutLipidsPerKg.isVisible = hasMetabolicRate
+        editTextProteinsPerKg.isVisible = hasMetabolicRate
+        textInputLayoutProteinsPerKg.isVisible = hasMetabolicRate
         val cache = Cache()
         if (!hasMetabolicRate) {
             if (!cache.hasCache(this,"accessedFormBMR")) {

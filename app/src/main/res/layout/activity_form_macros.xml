@@ -224,7 +224,6 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -236,9 +235,11 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayoutLipidsPerKg"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -246,7 +247,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/fat_by_weight"
-                            android:inputType="number|numberDecimal" />
+                            android:inputType="number|numberDecimal"
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -261,7 +262,6 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -273,9 +273,11 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/textInputLayoutProteinsPerKg"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
