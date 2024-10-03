@@ -132,6 +132,17 @@ class formMacro : AppCompatActivity() {
                 val weight = basalMetabolicRate.weight
                 isUpdatingFatsPerKg = true
                 calculateAndDisplayMacros(caloriesInput, weight,false)
+                if (!isUpdatingCalories) {
+                    val input = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
+                    val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+                    val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                    editTextCarbs.setText(
+                        formatDoubleNumber(
+                            calculateCarbs(input, proteins, lipids),
+                            2
+                        )
+                    )
+                }
                 isUpdatingFatsPerKg = false
             } else if (!hasMetabolicRate && isInitActivity) {
                 Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
@@ -143,6 +154,17 @@ class formMacro : AppCompatActivity() {
                 val weight = basalMetabolicRate.weight
                 isUpdatingProteinsPerKg = true
                 calculateAndDisplayMacros(caloriesInput, weight,false)
+                if (!isUpdatingCalories) {
+                    val input = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
+                    val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+                    val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                    editTextCarbs.setText(
+                        formatDoubleNumber(
+                            calculateCarbs(input, proteins, lipids),
+                            2
+                        )
+                    )
+                }
                 isUpdatingProteinsPerKg = false
             } else if (!hasMetabolicRate && isInitActivity) {
                 Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
