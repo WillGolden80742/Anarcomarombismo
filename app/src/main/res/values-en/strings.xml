@@ -34,6 +34,7 @@
     <string name="dailycalories">dailyCalories</string>
     <string name="day">day</string>
     <string name="days">days</string>
+    <string name="decrease_the_value_of_protein_in_or_fats">Reduce the amount of protein or fat to reduce calories</string>
     <string name="default_cadence">3-1-3</string>
     <string name="default_reps">10,10,10</string>
     <string name="default_rest">60</string>
@@ -68,6 +69,7 @@
     <string name="exercise_name">Exercise Name</string>
     <string name="exercises">exercises</string>
     <string name="extension_chair">Leg Extension Machine</string>
+    <string name="fat_by_weight">Fat/Weight</string>
     <string name="fill_all_fields">Fill all fields</string>
     <string name="fill_in_the_food_name">Fill in the food name</string>
     <string name="finished">finished</string>
@@ -121,6 +123,7 @@
     <string name="please_wait">Please wait ...</string>
     <string name="posterior_deltoids">Posterior Deltoids</string>
     <string name="protein">Protein (g)</string>
+    <string name="protein_by_weight">Protein/Weight</string>
     <string name="proteins_b">Proteins</string>
     <string name="pulley_front_bar">Triceps Pushdown with Bar</string>
     <string name="pullover_with_halter_on_the_black_bench">Dumbbell Pullover on Flat Bench</string>
@@ -195,9 +198,6 @@
     <string name="video_link_hint">Enter the video link (Youtube only)</string>
     <string name="weight">Weight</string>
     <string name="weight_hint">Enter your weight</string>
-    <string name="fat_by_weight">Fat/Weight</string>
-    <string name="protein_by_weight">Protein/Weight</string>
-    <string name="decrease_the_value_of_protein_in_or_fats">Reduce the amount of protein or fat to reduce calories</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>
