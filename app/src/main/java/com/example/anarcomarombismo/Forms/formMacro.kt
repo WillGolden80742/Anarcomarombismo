@@ -241,7 +241,6 @@ class formMacro : AppCompatActivity() {
         val lipidsPerKg = editTextLipidsPerKg.text.toString().toDoubleOrNull() ?: 0.0
         return weight * lipidsPerKg
     }
-
     private fun calculateCarbs(bmr: Double, proteins: Double, lipids: Double): Double {
         val remainingCalories = bmr - (proteins * 4 + lipids * 9)
         return if (remainingCalories <= 0) {
