@@ -277,7 +277,7 @@ class formMacro : AppCompatActivity() {
         )
     }
     private fun calculateMinimumCalorieValue(proteins: Double, lipids: Double): Double {
-        return proteins * 4 + lipids * 9
+        return proteins * proteinCals + lipids * lipidsCals
     }
 
 
@@ -306,13 +306,13 @@ class formMacro : AppCompatActivity() {
         return weight * lipidsPerKg
     }
     private fun calculateCarbs(bmr: Double, proteins: Double, lipids: Double): Double {
-        val remainingCalories = bmr - (proteins * 4 + lipids * 9)
+        val remainingCalories = bmr - (proteins * proteinCals + lipids * lipidsCals)
         return if (remainingCalories <= 0) {
             isUpdatingCalories = true
-            editTextCalories.setText(formatDoubleNumber(proteins * 4 + lipids * 9 + 4, 2))
+            editTextCalories.setText(formatDoubleNumber(proteins * proteinCals + lipids * lipidsCals, 2))
             isUpdatingCalories = false
             0.0
-        } else remainingCalories / 4
+        } else remainingCalories / carbsCals
     }
 
 
@@ -345,7 +345,7 @@ class formMacro : AppCompatActivity() {
                         val proteinValue = protein.toDouble()
                         val carbohydrateValue = carbohydrate.toDouble()
                         val lipidsValue = lipids.toDouble()
-                        val calories = (proteinValue * 4 + carbohydrateValue * 4 + lipidsValue * 9)
+                        val calories = (proteinValue * proteinCals + carbohydrateValue * carbsCals + lipidsValue * lipidsCals)
                         isUpdatingCalories = true
                         isUpdatingFats = true
                         isUpdatingProteins = true
@@ -408,5 +408,11 @@ class formMacro : AppCompatActivity() {
             ).save(this)) {
             finish()
         }
+    }
+
+    companion object {
+        private const val proteinCals = 4
+        private const val carbsCals = 4
+        private const val lipidsCals = 9
     }
 }
