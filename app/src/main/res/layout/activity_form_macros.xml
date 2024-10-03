@@ -247,7 +247,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/fat_by_weight"
-                            android:inputType="number|numberDecimal"
+                            android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
