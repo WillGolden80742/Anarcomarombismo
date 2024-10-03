@@ -97,7 +97,7 @@ class formMacro : AppCompatActivity() {
             val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?:0.0
             val bmr = basalMetabolicRate.fetch(this)!!.getBasalMetabolicRate()
             if (caloriesInput > bmr+1) editTextCalories.setTextColor(getColor(R.color.red)) else editTextCalories.setTextColor(getColor(R.color.text_primary))
-            if (!isUpdatingCalories && !isUpdatingFats && !isUpdatingProteins) {
+            if (!isUpdatingCalories) {
                 val weight = basalMetabolicRate.weight
                 calculateAndDisplayMacros(caloriesInput, weight,false)
             }
@@ -245,9 +245,13 @@ class formMacro : AppCompatActivity() {
     private fun calculateCarbs(bmr: Double, proteins: Double, lipids: Double): Double {
         val remainingCalories = bmr - (proteins * 4 + lipids * 9)
         return if (remainingCalories <= 0) {
+            isUpdatingCalories = true
+            editTextCalories.setText(formatDoubleNumber(proteins * 4 + lipids * 9 + 4, 2))
+            isUpdatingCalories = false
             0.0
         } else remainingCalories / 4
     }
+
 
     private fun calculateDietaryFiber(bmr: Double): Double {
         return bmr * 0.01
