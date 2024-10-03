@@ -116,8 +116,8 @@ class formMacro : AppCompatActivity() {
         super.onResume()
         basalMetabolicRate = basalMetabolicRate.fetch(this)!!
         hasMetabolicRate = basalMetabolicRate.hasBasalMetabolicRate(this)
-        editTextLipidsPerKg.isVisible = hasMetabolicRate
-        editTextProteinsPerKg.isVisible = hasMetabolicRate
+        textInputLayoutLipidsPerKg.isVisible = hasMetabolicRate
+        textInputLayoutProteinsPerKg.isVisible = hasMetabolicRate
         val cache = Cache()
         if (!hasMetabolicRate) {
             if (!cache.hasCache(this,"accessedFormBMR")) {

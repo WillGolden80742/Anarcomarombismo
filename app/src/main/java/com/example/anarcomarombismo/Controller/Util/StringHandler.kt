@@ -12,7 +12,7 @@ class StringHandler {
 
             val queryWords = normalizedQuery.split(" ").filter { it.length > 2 }
             return if (queryWords.isNotEmpty()) {
-                queryWords.any { word -> normalizedText.contains(word, ignoreCase = true) }
+                queryWords.all { word -> normalizedText.contains(word, ignoreCase = true) }
             } else {
                 normalizedText.contains(normalizedQuery, ignoreCase = true)
             }
