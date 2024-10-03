@@ -93,127 +93,17 @@ class formMacro : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
             }
         }
-        editTextCalories.addTextChangedListener {
-            val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?:0.0
-            val bmr = basalMetabolicRate.fetch(this)!!.getBasalMetabolicRate()
-            if (caloriesInput > bmr+1) editTextCalories.setTextColor(getColor(R.color.red)) else editTextCalories.setTextColor(getColor(R.color.text_primary))
-            if (!isUpdatingCalories) {
-                val weight = basalMetabolicRate.weight
-                calculateAndDisplayMacros(caloriesInput, weight,false)
-            }
-        }
         editTextCalories.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                val isNotUpdatingFields = !isUpdatingFats && !isUpdatingProteins
-                if (isNotUpdatingFields) {
-                    s?.let {
-                        val inputValue = it.toString().toIntOrNull()
-                        if (inputValue != null && inputValue < minimumCalorieValue) {
-                            isUpdatingCalories = true
-                            Toast.makeText(
-                                this@formMacro,
-                                getString(R.string.decrease_the_value_of_protein_in_or_fats),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            editTextCalories.setText(formatDoubleNumber(minimumCalorieValue+1))
-                            isUpdatingCalories = false
-                        }
-                    }
-                }
+                handleCaloriesInput(s)
             }
         })
-        editTextLipidsPerKg.addTextChangedListener {
-            val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: return@addTextChangedListener
-            if (hasMetabolicRate && !isUpdatingFats && !isUpdatingCalories) {
-                val weight = basalMetabolicRate.weight
-                isUpdatingFatsPerKg = true
-                calculateAndDisplayMacros(caloriesInput, weight,false)
-                if (!isUpdatingCalories) {
-                    val input = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
-                    val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-                    val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-                    editTextCarbs.setText(
-                        formatDoubleNumber(
-                            calculateCarbs(input, proteins, lipids),
-                            2
-                        )
-                    )
-                }
-                isUpdatingFatsPerKg = false
-            } else if (!hasMetabolicRate && isInitActivity) {
-                Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
-            }
-        }
-        editTextProteinsPerKg.addTextChangedListener {
-            val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: return@addTextChangedListener
-            if (hasMetabolicRate && !isUpdatingProteins && !isUpdatingCalories) {
-                val weight = basalMetabolicRate.weight
-                isUpdatingProteinsPerKg = true
-                calculateAndDisplayMacros(caloriesInput, weight,false)
-                if (!isUpdatingCalories) {
-                    val input = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
-                    val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-                    val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-                    editTextCarbs.setText(
-                        formatDoubleNumber(
-                            calculateCarbs(input, proteins, lipids),
-                            2
-                        )
-                    )
-                }
-                isUpdatingProteinsPerKg = false
-            } else if (!hasMetabolicRate && isInitActivity) {
-                Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
-            }
-        }
-        editTextFats.addTextChangedListener {
-            isUpdatingFats = true
-            val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-            val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-            var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
-            if (hasMetabolicRate && !isUpdatingFatsPerKg) {
-                calories = basalMetabolicRate.getBasalMetabolicRate()
-                val weight = basalMetabolicRate.weight
-                val lipidsPerKg = lipids / weight
-                editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg, 2))
-            }
-            if (!isUpdatingCalories) {
-                editTextCarbs.setText(
-                    formatDoubleNumber(
-                        calculateCarbs(calories, proteins, lipids),
-                        2
-                    )
-                )
-            }
-            minimumCalorieValue = proteins * 4 + lipids * 9
-            isUpdatingFats = false
-        }
-        editTextProteins.addTextChangedListener {
-            isUpdatingProteins = true
-            val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-            var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
-            val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-            if (hasMetabolicRate && !isUpdatingProteinsPerKg) {
-                calories = basalMetabolicRate.getBasalMetabolicRate()
-                val weight = basalMetabolicRate.weight
-                val proteinPerKg = proteins/weight
-                editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg,2))
-            }
-            if (!isUpdatingCalories) {
-                editTextCarbs.setText(
-                    formatDoubleNumber(
-                        calculateCarbs(calories, proteins, lipids),
-                        2
-                    )
-                )
-            }
-            minimumCalorieValue = proteins * 4 + lipids * 9
-            isUpdatingProteins = false
-        }
+        editTextLipidsPerKg.addTextChangedListener { onLipidsPerKgTextChanged() }
+        editTextProteinsPerKg.addTextChangedListener { onProteinsPerKgTextChanged() }
+        editTextFats.addTextChangedListener(createTextWatcherForFats())
+        editTextProteins.addTextChangedListener(createTextWatcherForProteins())
     }
 
     override fun onResume() {
@@ -238,6 +128,158 @@ class formMacro : AppCompatActivity() {
         setupCaloriesCalculation(listOf(editTextCarbs, editTextFats,editTextLipidsPerKg))
         isInitActivity=true
     }
+
+    private fun handleCaloriesInput(s: Editable?) {
+        val caloriesInput = s.toString().toDoubleOrNull() ?: 0.0
+        val bmr = basalMetabolicRate.fetch(this)?.getBasalMetabolicRate() ?: return
+
+        updateCaloriesColor(caloriesInput, bmr)
+
+        if (!isUpdatingCalories) {
+            val weight = basalMetabolicRate.weight
+            calculateAndDisplayMacros(caloriesInput, weight, false)
+        }
+
+        validateCaloriesAgainstMinimum(s)
+    }
+
+    private fun updateCaloriesColor(caloriesInput: Double, bmr: Double) {
+        val color = if (caloriesInput > bmr + 1) {
+            getColor(R.color.red)
+        } else {
+            getColor(R.color.text_primary)
+        }
+        editTextCalories.setTextColor(color)
+    }
+
+    private fun validateCaloriesAgainstMinimum(s: Editable?) {
+        val isNotUpdatingFields = !isUpdatingFats && !isUpdatingProteins
+        if (isNotUpdatingFields) {
+            s?.let {
+                val inputValue = it.toString().toDoubleOrNull()
+                if (inputValue != null && inputValue < minimumCalorieValue) {
+                    isUpdatingCalories = true
+                    Toast.makeText(
+                        this@formMacro,
+                        getString(R.string.decrease_the_value_of_protein_in_or_fats),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    editTextCalories.setText(formatDoubleNumber(minimumCalorieValue + 1))
+                    isUpdatingCalories = false
+                }
+            }
+        }
+    }
+
+    private fun onLipidsPerKgTextChanged() {
+        val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: return
+        if (hasMetabolicRate && !isUpdatingFats && !isUpdatingCalories) {
+            val weight = basalMetabolicRate.weight
+            isUpdatingFatsPerKg = true
+            calculateAndDisplayMacros(caloriesInput, weight, false)
+            if (!isUpdatingCalories) {
+                val inputBMR = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
+                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                updateCarbs(inputBMR, proteins, lipids)
+            }
+            isUpdatingFatsPerKg = false
+        } else if (!hasMetabolicRate && isInitActivity) {
+            Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun onProteinsPerKgTextChanged() {
+        val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: return
+        if (hasMetabolicRate && !isUpdatingProteins && !isUpdatingCalories) {
+            val weight = basalMetabolicRate.weight
+            isUpdatingProteinsPerKg = true
+            calculateAndDisplayMacros(caloriesInput, weight, false)
+            if (!isUpdatingCalories) {
+                val inputBMR = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
+                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                updateCarbs(inputBMR, proteins, lipids)
+            }
+            isUpdatingProteinsPerKg = false
+        } else if (!hasMetabolicRate && isInitActivity) {
+            Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun createTextWatcherForFats(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (isUpdatingFats) return
+                isUpdatingFats = true
+
+                val lipids = s.toString().toDoubleOrNull() ?: 0.0
+                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+                var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
+
+                if (hasMetabolicRate && !isUpdatingFatsPerKg) {
+                    calories = basalMetabolicRate.getBasalMetabolicRate()
+                    val weight = basalMetabolicRate.weight
+                    val lipidsPerKg = lipids / weight
+                    editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg, 2))
+                }
+
+                if (!isUpdatingCalories) {
+                    updateCarbs(calories, proteins, lipids)
+                }
+
+                minimumCalorieValue = calculateMinimumCalorieValue(proteins, lipids)
+                isUpdatingFats = false
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+    }
+
+    private fun createTextWatcherForProteins(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (isUpdatingProteins) return
+                isUpdatingProteins = true
+
+                val proteins = s.toString().toDoubleOrNull() ?: 0.0
+                var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
+                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+
+                if (hasMetabolicRate && !isUpdatingProteinsPerKg) {
+                    calories = basalMetabolicRate.getBasalMetabolicRate()
+                    val weight = basalMetabolicRate.weight
+                    val proteinPerKg = proteins / weight
+                    editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg, 2))
+                }
+
+                if (!isUpdatingCalories) {
+                    updateCarbs(calories, proteins, lipids)
+                }
+
+                minimumCalorieValue = calculateMinimumCalorieValue(proteins, lipids)
+                isUpdatingProteins = false
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+    }
+    private fun updateCarbs(calories: Double, proteins: Double, lipids: Double) {
+        editTextCarbs.setText(
+            formatDoubleNumber(
+                calculateCarbs(calories, proteins, lipids),
+                2
+            )
+        )
+    }
+    private fun calculateMinimumCalorieValue(proteins: Double, lipids: Double): Double {
+        return proteins * 4 + lipids * 9
+    }
+
 
     private fun calculateAndDisplayMacros(bmr: Double, weight: Double,updateCalories: Boolean = true) {
         val proteins = calculateProteins(weight)
