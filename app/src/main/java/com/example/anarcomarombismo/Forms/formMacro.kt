@@ -396,7 +396,6 @@ class formMacro : AppCompatActivity() {
         val protein = editTextProteins.text.toString().toDoubleOrNull() ?: Macro().protein
         val proteinPerKg = editTextProteinsPerKg.text.toString().toDoubleOrNull() ?: Macro().proteinByWeight
         val dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNull() ?: Macro().dietaryFiber
-        // class Macro ( var calories: Double = 2000.0, var lipids: Double = 44.44, val lipidsByWeight: Double = 1.0, var carbs: Double = 250.0, val protein: Double = 150.0, val proteinByWeight: Double = 2.0, val dietaryFiber: Double = 20.0, )
         if (Macro.build(
                 calories,
                 lipids,
