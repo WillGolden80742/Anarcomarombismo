@@ -51,6 +51,7 @@ class formMacro : AppCompatActivity() {
     private var isUpdatingFatsPerKg = false
     private var isUpdatingProteins = false
     private var isUpdatingProteinsPerKg = false
+    private var isupdatingMetaCheckbox = false
     private var hasMetabolicRate = false
     private var isInitActivity = false
     private var basalMetabolicRate = BasalMetabolicRate()
@@ -99,22 +100,22 @@ class formMacro : AppCompatActivity() {
                 editTextLipidsPerKg.setText(Macro().lipidsByWeight.toString())
                 editTextProteinsPerKg.setText(Macro().proteinByWeight.toString())
                 calculateAndDisplayMacros(bmrValue, weight?:0.0)
-                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-                val remainingCalories = (bmrValue - (proteins * proteinCals + lipids * lipidsCals))/ carbsCals
-                editTextCarbs.setText(formatDoubleNumber(remainingCalories,2))
                 updateMetaCheckbox.isVisible = true
+                isupdatingMetaCheckbox = true
                 updateMetaCheckbox.isChecked = false
+                isupdatingMetaCheckbox = false
             } else {
                 Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
             }
         }
         updateMetaCheckbox.setOnCheckedChangeListener { _, _ ->
-            updateMetaCalories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
-            updateMetaCheckbox.isVisible = false
-            saveMacroTarget(false)
-            updateCaloriesColor()
-            Toast.makeText(this,"Meta atualizada", Toast.LENGTH_SHORT).show()
+            if (!isupdatingMetaCheckbox) {
+                updateMetaCalories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
+                updateMetaCheckbox.isVisible = false
+                saveMacroTarget(false)
+                updateCaloriesColor()
+                Toast.makeText(this,"Meta atualizada", Toast.LENGTH_SHORT).show()
+            }
         }
         editTextCalories.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -170,7 +171,9 @@ class formMacro : AppCompatActivity() {
         val calories = Macro().fetch(this@formMacro)!!.calories
         val color = if (caloriesInput > calories + 1) {
             updateMetaCheckbox.isVisible = true
+            isupdatingMetaCheckbox = true
             updateMetaCheckbox.isChecked = false
+            isupdatingMetaCheckbox = false
             getColor(R.color.red)
         } else {
             updateMetaCheckbox.isVisible = false
@@ -306,7 +309,7 @@ class formMacro : AppCompatActivity() {
         val proteins = calculateProteins(weight)
         val lipids = calculateLipids(weight)
         val dietaryFiber = calculateDietaryFiber(bmr)
-        val carbs = calculateCarbs(proteins, lipids)
+        val carbs = calculateCarbs(proteins, lipids,bmr)
         updateFields(bmr, proteins, lipids, carbs, dietaryFiber,updateCalories)
         if (updateCalories) {
             Toast.makeText(
@@ -326,8 +329,8 @@ class formMacro : AppCompatActivity() {
         val lipidsPerKg = editTextLipidsPerKg.text.toString().toDoubleOrNull() ?: 0.0
         return weight * lipidsPerKg
     }
-    private fun calculateCarbs(proteins: Double, lipids: Double): Double {
-        val remainingCalories = Macro().fetch(this@formMacro)!!.calories - (proteins * proteinCals + lipids * lipidsCals)
+    private fun calculateCarbs(proteins: Double, lipids: Double,calories: Double = Macro().fetch(this@formMacro)!!.calories): Double {
+        val remainingCalories = calories - (proteins * proteinCals + lipids * lipidsCals)
         return if (remainingCalories <= 0) {
             isUpdatingCalories = true
             editTextCalories.setText(
