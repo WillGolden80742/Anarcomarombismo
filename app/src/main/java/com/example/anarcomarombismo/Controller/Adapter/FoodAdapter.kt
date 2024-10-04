@@ -30,7 +30,6 @@ class FoodAdapter(
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val listItemView = convertView ?: inflater.inflate(R.layout.food_list_item, parent, false)
         val currentItem = getItem(position) ?: return listItemView
-
         bindViews(listItemView, currentItem)
         return listItemView
     }

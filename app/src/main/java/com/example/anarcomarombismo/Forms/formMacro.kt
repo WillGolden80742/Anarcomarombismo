@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -23,6 +24,7 @@ import java.text.DecimalFormat
 class formMacro : AppCompatActivity() {
 
     private lateinit var editTextCalories: EditText
+    private lateinit var updateMetaCheckbox: CheckBox
     private lateinit var editTextCarbs: EditText
     private lateinit var editTextFats: EditText
     private lateinit var editTextLipidsPerKg: EditText
@@ -54,11 +56,13 @@ class formMacro : AppCompatActivity() {
     private var basalMetabolicRate = BasalMetabolicRate()
     private var macro = Macro()
     private var minimumCalorieValue:Double = 0.0
+    private var updateMetaCalories:Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_macros)
         editTextCalories = findViewById(R.id.editTextCalories)
+        updateMetaCheckbox = findViewById(R.id.updateMetaCheckbox)
         editTextCarbs = findViewById(R.id.editTextCarbs)
         editTextFats = findViewById(R.id.editTextFats)
         editTextLipidsPerKg = findViewById(R.id.editTextLipidsPerKg)
@@ -95,9 +99,22 @@ class formMacro : AppCompatActivity() {
                 editTextLipidsPerKg.setText(Macro().lipidsByWeight.toString())
                 editTextProteinsPerKg.setText(Macro().proteinByWeight.toString())
                 calculateAndDisplayMacros(bmrValue, weight?:0.0)
+                val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
+                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                val remainingCalories = (bmrValue - (proteins * proteinCals + lipids * lipidsCals))/ carbsCals
+                editTextCarbs.setText(formatDoubleNumber(remainingCalories,2))
+                updateMetaCheckbox.isVisible = true
+                updateMetaCheckbox.isChecked = false
             } else {
                 Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
             }
+        }
+        updateMetaCheckbox.setOnCheckedChangeListener { _, _ ->
+            updateMetaCalories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
+            updateMetaCheckbox.isVisible = false
+            saveMacroTarget(false)
+            updateCaloriesColor()
+            Toast.makeText(this,"Meta atualizada", Toast.LENGTH_SHORT).show()
         }
         editTextCalories.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -137,9 +154,8 @@ class formMacro : AppCompatActivity() {
 
     private fun handleCaloriesInput(s: Editable?) {
         val caloriesInput = s.toString().toDoubleOrNull() ?: 0.0
-        val bmr = basalMetabolicRate.fetch(this)?.getBasalMetabolicRate() ?: return
 
-        updateCaloriesColor(caloriesInput, bmr)
+        updateCaloriesColor()
 
         if (!isUpdatingCalories) {
             val weight = basalMetabolicRate.weight
@@ -149,10 +165,15 @@ class formMacro : AppCompatActivity() {
         validateCaloriesAgainstMinimum(s)
     }
 
-    private fun updateCaloriesColor(caloriesInput: Double, bmr: Double) {
-        val color = if (caloriesInput > bmr + 1) {
+    private fun updateCaloriesColor() {
+        val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
+        val calories = Macro().fetch(this@formMacro)!!.calories
+        val color = if (caloriesInput > calories + 1) {
+            updateMetaCheckbox.isVisible = true
+            updateMetaCheckbox.isChecked = false
             getColor(R.color.red)
         } else {
+            updateMetaCheckbox.isVisible = false
             getColor(R.color.text_primary)
         }
         editTextCalories.setTextColor(color)
@@ -184,10 +205,9 @@ class formMacro : AppCompatActivity() {
             isUpdatingFatsPerKg = true
             calculateAndDisplayMacros(caloriesInput, weight, false)
             if (!isUpdatingCalories) {
-                val inputBMR = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
                 val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
                 val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-                updateCarbs(inputBMR, proteins, lipids)
+                updateCarbs(proteins, lipids)
             }
             isUpdatingFatsPerKg = false
         } else if (!hasMetabolicRate && isInitActivity) {
@@ -202,10 +222,9 @@ class formMacro : AppCompatActivity() {
             isUpdatingProteinsPerKg = true
             calculateAndDisplayMacros(caloriesInput, weight, false)
             if (!isUpdatingCalories) {
-                val inputBMR = BasalMetabolicRate().fetch(this)!!.getBasalMetabolicRate()
                 val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
                 val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
-                updateCarbs(inputBMR, proteins, lipids)
+                updateCarbs(proteins, lipids)
             }
             isUpdatingProteinsPerKg = false
         } else if (!hasMetabolicRate && isInitActivity) {
@@ -223,17 +242,15 @@ class formMacro : AppCompatActivity() {
 
                 val lipids = s.toString().toDoubleOrNull() ?: 0.0
                 val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-                var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
 
                 if (hasMetabolicRate && !isUpdatingFatsPerKg) {
-                    calories = basalMetabolicRate.getBasalMetabolicRate()
                     val weight = basalMetabolicRate.weight
                     val lipidsPerKg = lipids / weight
                     editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg, 2))
                 }
 
                 if (!isUpdatingCalories) {
-                    updateCarbs(calories, proteins, lipids)
+                    updateCarbs(proteins, lipids)
                 }
 
                 minimumCalorieValue = calculateMinimumCalorieValue(proteins, lipids)
@@ -253,18 +270,16 @@ class formMacro : AppCompatActivity() {
                 isUpdatingProteins = true
 
                 val proteins = s.toString().toDoubleOrNull() ?: 0.0
-                var calories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
                 val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
 
                 if (hasMetabolicRate && !isUpdatingProteinsPerKg) {
-                    calories = basalMetabolicRate.getBasalMetabolicRate()
                     val weight = basalMetabolicRate.weight
                     val proteinPerKg = proteins / weight
                     editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg, 2))
                 }
 
                 if (!isUpdatingCalories) {
-                    updateCarbs(calories, proteins, lipids)
+                    updateCarbs(proteins, lipids)
                 }
 
                 minimumCalorieValue = calculateMinimumCalorieValue(proteins, lipids)
@@ -274,10 +289,10 @@ class formMacro : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         }
     }
-    private fun updateCarbs(calories: Double, proteins: Double, lipids: Double) {
+    private fun updateCarbs(proteins: Double, lipids: Double) {
         editTextCarbs.setText(
             formatDoubleNumber(
-                calculateCarbs(calories, proteins, lipids),
+                calculateCarbs(proteins, lipids),
                 2
             )
         )
@@ -290,8 +305,8 @@ class formMacro : AppCompatActivity() {
     private fun calculateAndDisplayMacros(bmr: Double, weight: Double,updateCalories: Boolean = true) {
         val proteins = calculateProteins(weight)
         val lipids = calculateLipids(weight)
-        val carbs = calculateCarbs(bmr, proteins, lipids)
         val dietaryFiber = calculateDietaryFiber(bmr)
+        val carbs = calculateCarbs(proteins, lipids)
         updateFields(bmr, proteins, lipids, carbs, dietaryFiber,updateCalories)
         if (updateCalories) {
             Toast.makeText(
@@ -311,16 +326,20 @@ class formMacro : AppCompatActivity() {
         val lipidsPerKg = editTextLipidsPerKg.text.toString().toDoubleOrNull() ?: 0.0
         return weight * lipidsPerKg
     }
-    private fun calculateCarbs(bmr: Double, proteins: Double, lipids: Double): Double {
-        val remainingCalories = bmr - (proteins * proteinCals + lipids * lipidsCals)
+    private fun calculateCarbs(proteins: Double, lipids: Double): Double {
+        val remainingCalories = Macro().fetch(this@formMacro)!!.calories - (proteins * proteinCals + lipids * lipidsCals)
         return if (remainingCalories <= 0) {
             isUpdatingCalories = true
-            editTextCalories.setText(formatDoubleNumber(proteins * proteinCals + lipids * lipidsCals, 2))
+            editTextCalories.setText(
+                formatDoubleNumber(
+                    proteins * proteinCals + lipids * lipidsCals,
+                    2
+                )
+            )
             isUpdatingCalories = false
             0.0
         } else remainingCalories / carbsCals
     }
-
 
     private fun calculateDietaryFiber(bmr: Double): Double {
         return bmr * 0.01
@@ -394,7 +413,7 @@ class formMacro : AppCompatActivity() {
         }
     }
 
-    private fun saveMacroTarget() {
+    private fun saveMacroTarget(closeActivity: Boolean = true) {
         val calories = editTextCalories.text.toString().toDoubleOrNull() ?: Macro().calories
         val carbs = editTextCarbs.text.toString().toDoubleOrNull() ?: Macro().carbs
         val lipids = editTextFats.text.toString().toDoubleOrNull() ?: Macro().lipids
@@ -411,7 +430,9 @@ class formMacro : AppCompatActivity() {
                 proteinPerKg,
                 dietaryFiber
             ).save(this)) {
-            finish()
+            if (closeActivity) {
+                finish()
+            }
         }
     }
 

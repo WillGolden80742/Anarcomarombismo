@@ -189,6 +189,7 @@
     <string name="triceps_french_on_low_poly">Overhead Triceps Extension with Rope</string>
     <string name="update_exercise">Update Exercise</string>
     <string name="update_exercise_successful">Exercise updated successfully!</string>
+    <string name="update_meta">Update Meta</string>
     <string name="update_nutrition_info">Update Nutrition Info</string>
     <string name="update_nutrition_sucessful">Nutrition Info updated successfully!</string>
     <string name="update_training">Update</string>
