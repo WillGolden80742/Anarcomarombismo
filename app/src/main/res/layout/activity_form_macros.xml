@@ -202,7 +202,7 @@
                             android:id="@+id/editTextCalories"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/calories_b"
+                            android:hint="@string/calories_kcal"
                             android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -226,7 +226,7 @@
                         android:id="@+id/editTextCarbs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/carbohydrates_b"
+                        android:hint="@string/carbohydrates"
                         android:inputType="number|numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -246,7 +246,7 @@
                             android:id="@+id/editTextFats"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/lipids_b"
+                            android:hint="@string/lipids"
                             android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -284,7 +284,7 @@
                             android:id="@+id/editTextProteins"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/proteins_b"
+                            android:hint="@string/proteins"
                             android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 

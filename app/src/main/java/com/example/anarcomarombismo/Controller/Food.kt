@@ -139,9 +139,9 @@ class Food(
         val gramsLabel = context.getString(R.string.grams)
         val energyKcalLabel = context.getString(R.string.energy_kcal)
         val energyKjLabel = context.getString(R.string.energy_kj)
-        val proteinLabel = context.getString(R.string.protein)
+        val proteinLabel = context.getString(R.string.proteins)
         val lipidsLabel = context.getString(R.string.lipids)
-        val carbohydrateLabel = context.getString(R.string.carbohydrate)
+        val carbohydrateLabel = context.getString(R.string.carbohydrates)
         val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
         val sodiumLabel = context.getString(R.string.sodium)
 

@@ -25,7 +25,7 @@
     <string name="calories_b">Calorias</string>
     <string name="calories_kcal">Calorias (kcal)</string>
     <string name="calves">Panturrilhas</string>
-    <string name="carbohydrate">Carboidrato (g)</string>
+    <string name="carbohydrates">Carboidratos (g)</string>
     <string name="carbohydrates_b">Carboidratos</string>
     <string name="chest_and_triceps">Peito e Tríceps</string>
     <string name="daily_calories">Calorias Diárias</string>
@@ -122,7 +122,7 @@
     <string name="oblique_internal">Oblíquos Internos</string>
     <string name="please_wait">Por favor, aguarde ...</string>
     <string name="posterior_deltoids">Deltóides Posterior</string>
-    <string name="protein">Proteína (g)</string>
+    <string name="proteins">Proteínas (g)</string>
     <string name="protein_by_weight">Proteína/Peso</string>
     <string name="proteins_b">Proteínas</string>
     <string name="pulley_front_bar">Pulley Frente Barra</string>
