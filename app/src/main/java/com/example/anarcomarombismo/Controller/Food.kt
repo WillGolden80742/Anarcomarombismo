@@ -142,7 +142,7 @@ class Food(
         val proteinLabel = context.getString(R.string.proteins)
         val lipidsLabel = context.getString(R.string.lipids)
         val carbohydrateLabel = context.getString(R.string.carbohydrates)
-        val dietaryFiberLabel = context.getString(R.string.dietary_fiber)
+        val dietaryFiberLabel = context.getString(R.string.dietary_fibers)
         val sodiumLabel = context.getString(R.string.sodium)
 
         return if (grams > 0.0) {

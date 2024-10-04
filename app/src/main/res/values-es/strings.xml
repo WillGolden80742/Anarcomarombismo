@@ -45,7 +45,7 @@
     <string name="description">Descripción</string>
     <string name="description_hint">Ingrese la descripción</string>
     <string name="development_with_halter">Press de Hombros con Mancuernas</string>
-    <string name="dietary_fiber">Fibra Dietética (g)</string>
+    <string name="dietary_fibers">Fibras Dietéticas (g)</string>
     <string name="dietary_fiber_b">Fibra Dietética</string>
     <string name="double_click_fast_for_exclusion">Clic doble para excluir</string>
     <string name="dumbbell_press">Press con Mancuernas</string>

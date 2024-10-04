@@ -45,7 +45,7 @@
     <string name="description">Descrição</string>
     <string name="description_hint">Insira a descrição</string>
     <string name="development_with_halter">Desenvolvimento com Halteres</string>
-    <string name="dietary_fiber">Fibra Dietética (g)</string>
+    <string name="dietary_fibers">Fibra Dietéticas (g)</string>
     <string name="dietary_fiber_b">Fibras Dietéticas</string>
     <string name="double_click_fast_for_exclusion">Clique duas vez rápido para exclusão</string>
     <string name="dumbbell_press">Dumbbell Press</string>
