@@ -51,7 +51,7 @@ class formMacro : AppCompatActivity() {
     private var isUpdatingFatsPerKg = false
     private var isUpdatingProteins = false
     private var isUpdatingProteinsPerKg = false
-    private var isupdatingMetaCheckbox = false
+    private var isUpdatingMetaCheckbox = false
     private var hasMetabolicRate = false
     private var isInitActivity = false
     private var basalMetabolicRate = BasalMetabolicRate()
@@ -101,15 +101,15 @@ class formMacro : AppCompatActivity() {
                 editTextProteinsPerKg.setText(Macro().proteinByWeight.toString())
                 calculateAndDisplayMacros(bmrValue, weight?:0.0)
                 updateMetaCheckbox.isVisible = true
-                isupdatingMetaCheckbox = true
+                isUpdatingMetaCheckbox = true
                 updateMetaCheckbox.isChecked = false
-                isupdatingMetaCheckbox = false
+                isUpdatingMetaCheckbox = false
             } else {
                 Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
             }
         }
         updateMetaCheckbox.setOnCheckedChangeListener { _, _ ->
-            if (!isupdatingMetaCheckbox) {
+            if (!isUpdatingMetaCheckbox) {
                 updateMetaCalories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
                 updateMetaCheckbox.isVisible = false
                 saveMacroTarget(false)
@@ -155,9 +155,13 @@ class formMacro : AppCompatActivity() {
 
     private fun handleCaloriesInput(s: Editable?) {
         val caloriesInput = s.toString().toDoubleOrNull() ?: 0.0
-
         updateCaloriesColor()
-
+        if (!isUpdatingCalories && isInitActivity) {
+            updateMetaCheckbox.isVisible = true
+            isUpdatingMetaCheckbox = true
+            updateMetaCheckbox.isChecked = false
+            isUpdatingMetaCheckbox = false
+        }
         if (!isUpdatingCalories) {
             val weight = basalMetabolicRate.weight
             calculateAndDisplayMacros(caloriesInput, weight, false)
@@ -171,9 +175,9 @@ class formMacro : AppCompatActivity() {
         val calories = Macro().fetch(this@formMacro)!!.calories
         val color = if (caloriesInput > calories + 1) {
             updateMetaCheckbox.isVisible = true
-            isupdatingMetaCheckbox = true
+            isUpdatingMetaCheckbox = true
             updateMetaCheckbox.isChecked = false
-            isupdatingMetaCheckbox = false
+            isUpdatingMetaCheckbox = false
             getColor(R.color.red)
         } else {
             updateMetaCheckbox.isVisible = false
