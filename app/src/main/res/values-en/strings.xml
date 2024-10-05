@@ -45,8 +45,8 @@
     <string name="description">Description</string>
     <string name="description_hint">Enter the description</string>
     <string name="development_with_halter">Dumbbell Shoulder Press</string>
-    <string name="dietary_fibers">Dietary Fibers (g)</string>
     <string name="dietary_fiber_b">Dietary Fiber</string>
+    <string name="dietary_fibers">Dietary Fibers (g)</string>
     <string name="double_click_fast_for_exclusion">Double click fast for exclusion</string>
     <string name="dumbbell_press">Dumbbell Press</string>
     <string name="dumbbell_press_30">Dumbbell Press 30º</string>
@@ -118,12 +118,13 @@
     <string name="muscles">Muscles</string>
     <string name="no_calories_added_yet">No calories added yet</string>
     <string name="nutritional_information">Nutritional Information</string>
+    <string name="objective_saved">Objective saved successfully</string>
     <string name="oblique_external">External Obliques</string>
     <string name="oblique_internal">Internal Obliques</string>
     <string name="please_wait">Please wait ...</string>
     <string name="posterior_deltoids">Posterior Deltoids</string>
-    <string name="proteins">Proteins (g)</string>
     <string name="protein_by_weight">Protein/Weight</string>
+    <string name="proteins">Proteins (g)</string>
     <string name="proteins_b">Proteins</string>
     <string name="pulley_front_bar">Triceps Pushdown with Bar</string>
     <string name="pullover_with_halter_on_the_black_bench">Dumbbell Pullover on Flat Bench</string>

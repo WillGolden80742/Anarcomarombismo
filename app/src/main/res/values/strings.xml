@@ -45,8 +45,8 @@
     <string name="description">Descrição</string>
     <string name="description_hint">Insira a descrição</string>
     <string name="development_with_halter">Desenvolvimento com Halteres</string>
-    <string name="dietary_fibers">Fibra Dietéticas (g)</string>
     <string name="dietary_fiber_b">Fibras Dietéticas</string>
+    <string name="dietary_fibers">Fibra Dietéticas (g)</string>
     <string name="double_click_fast_for_exclusion">Clique duas vez rápido para exclusão</string>
     <string name="dumbbell_press">Dumbbell Press</string>
     <string name="dumbbell_press_30">Dumbbell Press 30º</string>
@@ -118,12 +118,13 @@
     <string name="muscles">Músculos</string>
     <string name="no_calories_added_yet">Nenhuma caloria adicionada ainda</string>
     <string name="nutritional_information">Informações Nutricionais</string>
+    <string name="objective_saved">Objetivo salvo com sucesso</string>
     <string name="oblique_external">Oblíquos Externos</string>
     <string name="oblique_internal">Oblíquos Internos</string>
     <string name="please_wait">Por favor, aguarde ...</string>
     <string name="posterior_deltoids">Deltóides Posterior</string>
-    <string name="proteins">Proteínas (g)</string>
     <string name="protein_by_weight">Proteína/Peso</string>
+    <string name="proteins">Proteínas (g)</string>
     <string name="proteins_b">Proteínas</string>
     <string name="pulley_front_bar">Pulley Frente Barra</string>
     <string name="pullover_with_halter_on_the_black_bench">Pullover com Halter Deitado no Banco Reto</string>

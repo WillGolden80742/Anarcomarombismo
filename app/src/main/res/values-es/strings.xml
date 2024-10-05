@@ -45,8 +45,8 @@
     <string name="description">Descripción</string>
     <string name="description_hint">Ingrese la descripción</string>
     <string name="development_with_halter">Press de Hombros con Mancuernas</string>
-    <string name="dietary_fibers">Fibras Dietéticas (g)</string>
     <string name="dietary_fiber_b">Fibra Dietética</string>
+    <string name="dietary_fibers">Fibras Dietéticas (g)</string>
     <string name="double_click_fast_for_exclusion">Clic doble para excluir</string>
     <string name="dumbbell_press">Press con Mancuernas</string>
     <string name="dumbbell_press_30">Press con Mancuernas 30º</string>
@@ -118,12 +118,13 @@
     <string name="muscles">Músculos</string>
     <string name="no_calories_added_yet">Aún no se han agregado calorías</string>
     <string name="nutritional_information">Información Nutricional</string>
+    <string name="objective_saved">Objetivo guardado con éxito</string>
     <string name="oblique_external">Oblicuos Externos</string>
     <string name="oblique_internal">Oblicuos Internos</string>
     <string name="please_wait">Por favor espere ...</string>
     <string name="posterior_deltoids">Deltoides Posteriores</string>
-    <string name="proteins">Proteínas (g)</string>
     <string name="protein_by_weight">Proteina/Peso</string>
+    <string name="proteins">Proteínas (g)</string>
     <string name="proteins_b">Proteínas</string>
     <string name="pulley_front_bar">Jalón al Pecho con Barra</string>
     <string name="pullover_with_halter_on_the_black_bench">Pullover con Mancuerna Acostado en Banco Plano</string>

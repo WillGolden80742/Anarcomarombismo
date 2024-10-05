@@ -470,6 +470,7 @@ class formMacro : AppCompatActivity() {
                 dietaryFiber
             ).save(this)) {
             if (closeActivity) {
+                Toast.makeText(this, getString(R.string.objective_saved), Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
