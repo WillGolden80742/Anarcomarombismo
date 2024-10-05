@@ -19,6 +19,7 @@ import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
 import com.example.anarcomarombismo.Controller.Util.FoodDataFetcher
 import com.example.anarcomarombismo.Controller.Util.Calendars
+import com.example.anarcomarombismo.Controller.Util.NumberFormatter
 import com.example.anarcomarombismo.Controller.Util.StringHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCaloriesFoods
@@ -163,12 +164,9 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     private fun formatTotalCalories(value: Double): String {
-        return "Total: ${formatDoubleNumber(value)} kcal"
+        return "Total: ${NumberFormatter.formatDoubleNumber(value)} kcal"
     }
 
-    private fun formatDoubleNumber(value: Double,numDecimalPlaces: Int = 0): String {
-        return "%.${numDecimalPlaces}f".format(value).replace(",", ".")
-    }
 
     private fun getDailyCalories() {
         if (intent.hasExtra("dailyCaloriesDate")) {

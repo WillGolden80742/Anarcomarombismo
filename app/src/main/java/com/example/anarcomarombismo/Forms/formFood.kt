@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.Food
+import com.example.anarcomarombismo.Controller.Util.NumberFormatter
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCalories
@@ -178,16 +179,12 @@ class formFood : AppCompatActivity() {
                     val lipidsValue = lipids.toDouble()
                     val calories = (proteinValue * 4 + carbohydrateValue * 4 + lipidsValue * 9)
                     // round to 2 decimal places
-                    editTextCaloriesKcal.setText(formatDoubleNumber(calories))
+                    editTextCaloriesKcal.setText(NumberFormatter.formatDoubleNumber(calories))
                 }
             }
         }
     }
 
-
-    private fun formatDoubleNumber(value: Double):String {
-        return "%.2f".format(value).replace(",", ".")
-    }
 
 
     private fun String.toDoubleOrNullOrZero(): Double {

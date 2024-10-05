@@ -21,5 +21,6 @@ class StringHandler {
             return Normalizer.normalize(text, Normalizer.Form.NFD)
                 .replace("\\p{InCombiningDiacriticalMarks}".toRegex(), "")
         }
+
     }
 }

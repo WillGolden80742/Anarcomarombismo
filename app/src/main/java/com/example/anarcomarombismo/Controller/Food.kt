@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.NumberFormatter
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import java.text.DecimalFormat
@@ -45,7 +46,7 @@ class Food(
                 this.dietaryFiber = normalizeNutrient(dietaryFiber, grams)
                 this.sodium = normalizeNutrient(sodium, grams)
                 this.energyKcal = normalizeNutrient(energyKcal, grams)
-                this.energyKj = formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
+                this.energyKj = NumberFormatter.formatDoubleNumber((energyKcal.toDouble() / grams * 100.0) * 4.184)
                 this.grams = 100.0
             }
         }
@@ -122,11 +123,7 @@ class Food(
     }
 
     private fun normalizeNutrient(nutrient: String, grams: Double): String {
-        return formatDoubleNumber(nutrient.toDouble() / grams * 100.0)
-    }
-
-    private fun formatDoubleNumber(value: Double): String {
-        return "%.2f".format(value).replace(",", ".")
+        return NumberFormatter.formatDoubleNumber(nutrient.toDouble() / grams * 100.0)
     }
 
     private fun generateFoodNumber(): String {

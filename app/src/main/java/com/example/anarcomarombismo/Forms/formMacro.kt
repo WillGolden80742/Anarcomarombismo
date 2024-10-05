@@ -17,6 +17,7 @@ import com.example.anarcomarombismo.Controller.BasalMetabolicRate
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Macro
 import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.NumberFormatter
 import com.example.anarcomarombismo.R
 import com.google.android.material.textfield.TextInputLayout
 import java.text.DecimalFormat
@@ -162,7 +163,7 @@ class formMacro : AppCompatActivity() {
         var caloriesInput = s.toString().toDoubleOrNull() ?: 0.0
         updateCaloriesColor()
         if (!isUpdatingCalories && isInitActivity) {
-            val currentLength = formatDoubleNumber(caloriesInput).length
+            val currentLength = NumberFormatter.formatDoubleNumber(caloriesInput).length
             val currentCursor = editTextCalories.selectionStart
             if (currentLength > 5) {
                 isUpdatingCalories = true
@@ -172,7 +173,7 @@ class formMacro : AppCompatActivity() {
                     caloriesInput = (s.toString().toDoubleOrNull() ?: 0.0) / (10)
                     minOf(currentCursor, currentLength-1)
                 }
-                editTextCalories.setText(formatDoubleNumber(caloriesInput))
+                editTextCalories.setText(NumberFormatter.formatDoubleNumber(caloriesInput))
                 editTextCalories.setSelection(indexCursor)
                 isUpdatingCalories = false
             } else {
@@ -225,7 +226,7 @@ class formMacro : AppCompatActivity() {
                         getString(R.string.decrease_the_value_of_protein_in_or_fats),
                         Toast.LENGTH_SHORT
                     ).show()
-                    editTextCalories.setText(formatDoubleNumber(minimumCalorieValue + 1))
+                    editTextCalories.setText(NumberFormatter.formatDoubleNumber(minimumCalorieValue + 1))
                     isUpdatingCalories = false
                 }
             }
@@ -280,7 +281,7 @@ class formMacro : AppCompatActivity() {
                 if (hasMetabolicRate && !isUpdatingFatsPerKg) {
                     val weight = basalMetabolicRate.weight
                     val lipidsPerKg = lipids / weight
-                    editTextLipidsPerKg.setText(formatDoubleNumber(lipidsPerKg, 2))
+                    editTextLipidsPerKg.setText(NumberFormatter.formatDoubleNumber(lipidsPerKg, 2))
                 }
 
                 if (!isUpdatingCalories) {
@@ -309,7 +310,7 @@ class formMacro : AppCompatActivity() {
                 if (hasMetabolicRate && !isUpdatingProteinsPerKg) {
                     val weight = basalMetabolicRate.weight
                     val proteinPerKg = proteins / weight
-                    editTextProteinsPerKg.setText(formatDoubleNumber(proteinPerKg, 2))
+                    editTextProteinsPerKg.setText(NumberFormatter.formatDoubleNumber(proteinPerKg, 2))
                 }
 
                 if (!isUpdatingCalories) {
@@ -325,7 +326,7 @@ class formMacro : AppCompatActivity() {
     }
     private fun updateCarbs(proteins: Double, lipids: Double) {
         editTextCarbs.setText(
-            formatDoubleNumber(
+            NumberFormatter.formatDoubleNumber(
                 calculateCarbs(proteins, lipids),
                 2
             )
@@ -365,7 +366,7 @@ class formMacro : AppCompatActivity() {
         return if (remainingCalories <= 0) {
             isUpdatingCalories = true
             editTextCalories.setText(
-                formatDoubleNumber(
+                NumberFormatter.formatDoubleNumber(
                     proteins * proteinCals + lipids * lipidsCals,
                     2
                 )
@@ -406,7 +407,7 @@ class formMacro : AppCompatActivity() {
                         val lipidsValue = lipids.toDouble()
                         val calories = (proteinValue * proteinCals + carbohydrateValue * carbsCals + lipidsValue * lipidsCals)
                         setIsUpdatingMacros(true)
-                        editTextCalories.setText(formatDoubleNumber(calories))
+                        editTextCalories.setText(NumberFormatter.formatDoubleNumber(calories))
                         setIsUpdatingMacros(false)
                     }
                 }
@@ -421,10 +422,6 @@ class formMacro : AppCompatActivity() {
         isUpdatingCalories = calories
         isUpdatingFats = fats
         isUpdatingProteins = proteins
-    }
-
-    private fun formatDoubleNumber(value: Double,numDecimalPlaces: Int = 0): String {
-        return "%.${numDecimalPlaces}f".format(value).replace(",", ".")
     }
 
     private fun fetchMacroTarget() {
