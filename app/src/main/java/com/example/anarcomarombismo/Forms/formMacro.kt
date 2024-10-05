@@ -205,7 +205,9 @@ class formMacro : AppCompatActivity() {
             }
             getColor(R.color.red)
         } else {
-            updateMetaCheckbox.isVisible = false
+            updateMetaCheckbox.apply {
+                isVisible = false
+            }
             getColor(R.color.text_primary)
         }
         editTextCalories.setTextColor(color)
