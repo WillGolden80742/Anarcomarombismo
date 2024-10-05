@@ -125,7 +125,7 @@ class formDailyCalories : AppCompatActivity() {
         if (dailyCaloriesFoods.getFoodList().size !== dailyCalories.foodsList.size) {
             dailyCalories.foodsList = dailyCaloriesFoods.getFoodList()
             dailyCalories.recalculateCalories()
-            totalCaloriesLabel.text = "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
+            totalCaloriesLabel.text = "Total: ${formatDoubleNumber(dailyCalories.calorieskcal)} kcal"
             if (dailyCalories.foodsList.isEmpty()) {
                 seeFoodsButton.isEnabled = false
             }
