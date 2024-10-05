@@ -405,17 +405,22 @@ class formMacro : AppCompatActivity() {
                         val carbohydrateValue = carbohydrate.toDouble()
                         val lipidsValue = lipids.toDouble()
                         val calories = (proteinValue * proteinCals + carbohydrateValue * carbsCals + lipidsValue * lipidsCals)
-                        isUpdatingCalories = true
-                        isUpdatingFats = true
-                        isUpdatingProteins = true
+                        setIsUpdatingMacros(true)
                         editTextCalories.setText(formatDoubleNumber(calories))
-                        isUpdatingCalories = false
-                        isUpdatingFats = false
-                        isUpdatingProteins = false
+                        setIsUpdatingMacros(false)
                     }
                 }
             }
         }
+    }
+
+    private fun setIsUpdatingMacros (b: Boolean) {
+        setIsUpdatingMacros(b,b,b)
+    }
+    private fun setIsUpdatingMacros(calories:Boolean,fats:Boolean,proteins:Boolean) {
+        isUpdatingCalories = calories
+        isUpdatingFats = fats
+        isUpdatingProteins = proteins
     }
 
     private fun formatDoubleNumber(value: Double,numDecimalPlaces: Int = 0): String {
