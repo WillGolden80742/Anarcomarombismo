@@ -58,6 +58,8 @@ class formMacro : AppCompatActivity() {
     private var macro = Macro()
     private var minimumCalorieValue:Double = 0.0
     private var updateMetaCalories:Double = 0.0
+    private var isBackspacePressed = false
+    private var indexCursor = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,8 +120,11 @@ class formMacro : AppCompatActivity() {
             }
         }
         editTextCalories.addTextChangedListener(object : TextWatcher {
+            private var previousTextLength = 0
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                isBackspacePressed = (previousTextLength > (s?.length ?: 0))
+            }
             override fun afterTextChanged(s: Editable?) {
                 handleCaloriesInput(s)
             }
@@ -154,9 +159,25 @@ class formMacro : AppCompatActivity() {
     }
 
     private fun handleCaloriesInput(s: Editable?) {
-        val caloriesInput = s.toString().toDoubleOrNull() ?: 0.0
+        var caloriesInput = s.toString().toDoubleOrNull() ?: 0.0
         updateCaloriesColor()
         if (!isUpdatingCalories && isInitActivity) {
+            val currentLength = formatDoubleNumber(caloriesInput).length
+            val currentCursor = editTextCalories.selectionStart
+            if (currentLength > 5) {
+                isUpdatingCalories = true
+                indexCursor = if (isBackspacePressed) {
+                    maxOf(currentCursor, 0)
+                } else {
+                    caloriesInput = (s.toString().toDoubleOrNull() ?: 0.0) / (10)
+                    minOf(currentCursor, currentLength-1)
+                }
+                editTextCalories.setText(formatDoubleNumber(caloriesInput))
+                editTextCalories.setSelection(indexCursor)
+                isUpdatingCalories = false
+            } else {
+                indexCursor = currentCursor
+            }
             updateMetaCheckbox.isVisible = true
             isUpdatingMetaCheckbox = true
             updateMetaCheckbox.isChecked = false
@@ -166,8 +187,8 @@ class formMacro : AppCompatActivity() {
             val weight = basalMetabolicRate.weight
             calculateAndDisplayMacros(caloriesInput, weight, false)
         }
-
         validateCaloriesAgainstMinimum(s)
+        isBackspacePressed = false
     }
 
     private fun updateCaloriesColor() {
