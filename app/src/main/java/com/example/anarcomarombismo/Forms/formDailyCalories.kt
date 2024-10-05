@@ -125,7 +125,7 @@ class formDailyCalories : AppCompatActivity() {
         if (dailyCaloriesFoods.getFoodList().size !== dailyCalories.foodsList.size) {
             dailyCalories.foodsList = dailyCaloriesFoods.getFoodList()
             dailyCalories.recalculateCalories()
-            totalCaloriesLabel.text = "Total: ${formatDoubleNumber(dailyCalories.calorieskcal)} kcal"
+            totalCaloriesLabel.text = formatTotalCalories(dailyCalories.calorieskcal)
             if (dailyCalories.foodsList.isEmpty()) {
                 seeFoodsButton.isEnabled = false
             }
@@ -158,8 +158,12 @@ class formDailyCalories : AppCompatActivity() {
             selectedDate
         ).fetchById(this, selectedDate)
         dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
-        totalCaloriesLabel.text = "Total: ${formatDoubleNumber(dailyCalories.calorieskcal)} kcal"
+        totalCaloriesLabel.text = formatTotalCalories(dailyCalories.calorieskcal)
         seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
+    }
+
+    private fun formatTotalCalories(value: Double): String {
+        return "Total: ${formatDoubleNumber(value)} kcal"
     }
 
     private fun formatDoubleNumber(value: Double,numDecimalPlaces: Int = 0): String {
@@ -211,7 +215,7 @@ class formDailyCalories : AppCompatActivity() {
             val currentCalorie = energyKcal?.replace(",", ".")?.toDoubleOrNull() ?: 0.0
             val calculatedCalories = currentCalorie * (grams / 100.0)
             val temporaryTotal = calculatedCalories + dailyCalories.calorieskcal
-            totalCaloriesLabel.text = "Total: ${formatDoubleNumber(temporaryTotal)} kcal"
+            totalCaloriesLabel.text = formatTotalCalories(temporaryTotal)
         } catch (e: Exception) {
             println(RuntimeException("Error calculating total calories: $e"))
             totalCaloriesLabel.text = "Total: Error kcal"
@@ -291,7 +295,7 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     private fun updateTotalCaloriesUI() {
-        totalCaloriesLabel.text = "Total: ${formatDoubleNumber(dailyCalories.calorieskcal)} kcal"
+        totalCaloriesLabel.text = formatTotalCalories(dailyCalories.calorieskcal)
     }
 
     private fun showFoodError() {
