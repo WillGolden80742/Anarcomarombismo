@@ -397,9 +397,9 @@ class formMacro : AppCompatActivity() {
         editText.forEach { e ->
             e.addTextChangedListener {
                 if (!isUpdatingCalories) {
+                    val protein = editTextProteins.text.toString()
                     val carbohydrate = editTextCarbs.text.toString()
                     val lipids = editTextFats.text.toString()
-                    val protein = editTextProteins.text.toString()
                     if (protein.isNotEmpty() && carbohydrate.isNotEmpty() && lipids.isNotEmpty()) {
                         val proteinValue = protein.toDouble()
                         val carbohydrateValue = carbohydrate.toDouble()
