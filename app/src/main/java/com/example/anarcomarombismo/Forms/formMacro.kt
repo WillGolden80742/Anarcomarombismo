@@ -178,10 +178,12 @@ class formMacro : AppCompatActivity() {
             } else {
                 indexCursor = currentCursor
             }
-            updateMetaCheckbox.isVisible = true
-            isUpdatingMetaCheckbox = true
-            updateMetaCheckbox.isChecked = false
-            isUpdatingMetaCheckbox = false
+            updateMetaCheckbox.apply {
+                isVisible = true
+                isUpdatingMetaCheckbox = true
+                isChecked = false
+                isUpdatingMetaCheckbox = false
+            }
         }
         if (!isUpdatingCalories) {
             val weight = basalMetabolicRate.weight
@@ -195,10 +197,12 @@ class formMacro : AppCompatActivity() {
         val caloriesInput = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
         val calories = Macro().fetch(this@formMacro)!!.calories
         val color = if (caloriesInput > calories + 1) {
-            updateMetaCheckbox.isVisible = true
-            isUpdatingMetaCheckbox = true
-            updateMetaCheckbox.isChecked = false
-            isUpdatingMetaCheckbox = false
+            updateMetaCheckbox.apply {
+                isVisible = true
+                isUpdatingMetaCheckbox = true
+                isChecked = false
+                isUpdatingMetaCheckbox = false
+            }
             getColor(R.color.red)
         } else {
             updateMetaCheckbox.isVisible = false
