@@ -158,8 +158,12 @@ class formDailyCalories : AppCompatActivity() {
             selectedDate
         ).fetchById(this, selectedDate)
         dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
-        totalCaloriesLabel.text = "Total: ${dailyCalories.calorieskcal} kcal"
+        totalCaloriesLabel.text = "Total: ${formatDoubleNumber(dailyCalories.calorieskcal)} kcal"
         seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
+    }
+
+    private fun formatDoubleNumber(value: Double,numDecimalPlaces: Int = 0): String {
+        return "%.${numDecimalPlaces}f".format(value).replace(",", ".")
     }
 
     private fun getDailyCalories() {
@@ -179,7 +183,6 @@ class formDailyCalories : AppCompatActivity() {
     private fun callDailyCaloriesFoods() {
         try {
             var dailyCaloriesFoods = Intent(this, dailyCaloriesFoods::class.java)
-            var json = JSON()
             dailyCaloriesFoods.putExtra("foodsList", dailyCalories.foodsList.let { JSON.toJson(it) })
             dailyCaloriesFoods.putExtra("dailyCaloriesDate", dailyCalories.date)
             startActivity(dailyCaloriesFoods)
@@ -208,7 +211,7 @@ class formDailyCalories : AppCompatActivity() {
             val currentCalorie = energyKcal?.replace(",", ".")?.toDoubleOrNull() ?: 0.0
             val calculatedCalories = currentCalorie * (grams / 100.0)
             val temporaryTotal = calculatedCalories + dailyCalories.calorieskcal
-            totalCaloriesLabel.text = "Total: ${String.format("%.1f", temporaryTotal)} kcal"
+            totalCaloriesLabel.text = "Total: ${formatDoubleNumber(temporaryTotal)} kcal"
         } catch (e: Exception) {
             println(RuntimeException("Error calculating total calories: $e"))
             totalCaloriesLabel.text = "Total: Error kcal"
@@ -288,7 +291,7 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     private fun updateTotalCaloriesUI() {
-        totalCaloriesLabel.text = "Total: ${String.format("%.1f", dailyCalories.calorieskcal)} kcal"
+        totalCaloriesLabel.text = "Total: ${formatDoubleNumber(dailyCalories.calorieskcal)} kcal"
     }
 
     private fun showFoodError() {

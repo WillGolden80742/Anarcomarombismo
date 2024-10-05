@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Search Section -->
         <EditText
             android:id="@+id/searchEditText"
             android:layout_width="0dp"
@@ -26,8 +26,7 @@
             app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
             app:layout_constraintEnd_toStartOf="@+id/searchButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/searchButton"
@@ -44,22 +43,42 @@
             app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/searchEditText"
-            app:layout_constraintTop_toTopOf="@id/searchEditText"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="@id/searchEditText" />
 
+        <!-- List of Foods -->
         <ListView
             android:id="@+id/listFoodsView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
             android:layout_marginEnd="10dp"
             android:divider="@drawable/list_divider"
-            app:layout_constraintBottom_toTopOf="@id/totalCaloriesLabel"
+            app:layout_constraintBottom_toTopOf="@id/horizontalScrollView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchEditText" />
 
+        <!-- Total Calories Label -->
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toTopOf="@id/nameFoodLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/listFoodsView">
+
+            <TextView
+                android:id="@+id/totalCaloriesLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:text="Total: 0000"
+                android:textSize="32dp" />
+        </HorizontalScrollView>
+
+        <!-- Food Selection Section -->
         <TextView
             android:id="@+id/nameFoodLabel"
             android:layout_width="0dp"
@@ -70,10 +89,8 @@
             android:textSize="22dp"
             app:layout_constraintBottom_toTopOf="@+id/editTextDateButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/totalCaloriesLabel" />
-
+            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
 
         <Button
             android:id="@+id/editTextDateButton"
@@ -82,17 +99,16 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:backgroundTint="@color/button_color"
-            android:ems="10"
-            android:text="00/00/0000"
+            android:text="29/09/2024"
             android:textColor="@color/yellow"
             android:textSize="24dp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayoutInput"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameFoodLabel"
             tools:gravity="center_horizontal" />
 
+        <!-- Input Section -->
         <LinearLayout
             android:id="@+id/linearLayoutInput"
             android:layout_width="0dp"
@@ -100,6 +116,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/linearLayoutButtons"
             app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +129,6 @@
                 android:layout_height="46dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:enabled="false"
                 android:inputType="number"
                 android:text="100" />
 
@@ -131,29 +147,14 @@
                 android:layout_height="46dp"
                 android:layout_marginStart="10dp"
                 android:backgroundTint="@color/button_color"
-                android:enabled="false"
                 android:textColor="@color/yellow"
                 app:icon="@drawable/ic_fluent_save_24_regular"
                 app:iconGravity="textStart"
                 app:iconSize="32dp"
                 app:iconTint="@color/yellow" />
-
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/totalCaloriesLabel"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:text="Total: 0000"
-            android:textSize="32dp"
-            app:layout_constraintBottom_toTopOf="@id/nameFoodLabel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/listFoodsView" />
-
+        <!-- Action Buttons Section -->
         <LinearLayout
             android:id="@+id/linearLayoutButtons"
             android:layout_width="0dp"
@@ -173,7 +174,6 @@
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/button_color"
-                android:enabled="false"
                 android:text="@string/see"
                 android:textColor="@color/yellow"
                 app:icon="@drawable/ic_fluent_eye_show_24_filled"
@@ -182,6 +182,7 @@
                 app:iconTint="@color/yellow" />
         </LinearLayout>
 
+        <!-- Remove Button -->
         <Button
             android:id="@+id/removeDailyCaloriesButton"
             android:layout_width="0dp"
@@ -195,9 +196,10 @@
             app:iconGravity="textStart"
             app:iconSize="24dp"
             app:iconTint="@color/yellow"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutButtons"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutButtons" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
