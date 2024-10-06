@@ -131,12 +131,10 @@ class formMacro : AppCompatActivity() {
         hasMetabolicRate = basalMetabolicRate.hasBasalMetabolicRate(this)
         textInputLayoutLipidsPerKg.isVisible = hasMetabolicRate
         textInputLayoutProteinsPerKg.isVisible = hasMetabolicRate
-        if (!hasMetabolicRate) {
-            if (!isAccessedFormBMR()) {
-                val intent = Intent(this, formBMR::class.java)
-                startActivity(intent)
-                showMetabolicProfileRequiredMessage()
-            }
+        if (!hasMetabolicRate && !isAccessedFormBMR()) {
+            val intent = Intent(this, formBMR::class.java)
+            startActivity(intent)
+            showMetabolicProfileRequiredMessage()
         }
         loadAndUpdateMacroUI()
         setupCaloriesCalculation(listOf(editTextCarbs, editTextLipids,editTextLipidsByWeight))
