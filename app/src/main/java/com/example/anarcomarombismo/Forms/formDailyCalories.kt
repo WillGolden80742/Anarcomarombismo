@@ -44,14 +44,12 @@ class formDailyCalories : AppCompatActivity() {
     private lateinit var seeFoodsButton: Button
     private lateinit var removeDailyCaloriesButton: Button
     private lateinit var gramsEditText: EditText
-    private lateinit var addFoodButton: Button
+    private lateinit var saveFoodButton: Button
     private var currentFood: Food? = null
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_form_daily_calories)
+
+    private fun initializeUIComponents () {
         searchEditText = findViewById(R.id.searchEditText)
         searchButton = findViewById(R.id.searchButton)
         listFoodsView = findViewById(R.id.listFoodsView)
@@ -59,24 +57,32 @@ class formDailyCalories : AppCompatActivity() {
         nameFoodLabel = findViewById(R.id.nameFoodLabel)
         editTextDate = findViewById(R.id.editTextDateButton)
         gramsEditText = findViewById(R.id.gramsEditText)
-        addFoodButton = findViewById(R.id.addFoodButton)
+        saveFoodButton = findViewById(R.id.saveFoodButton)
         seeFoodsButton = findViewById(R.id.seeFoodsButton)
         removeDailyCaloriesButton = findViewById(R.id.removeDailyCaloriesButton)
+    }
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_form_daily_calories)
+        initializeUIComponents()
         loading()
         getDailyCalories()
+
         searchButton.setOnClickListener {
             searchFood(searchEditText.text.toString())
             hideKeyboard(this.currentFocus ?: View(this))
         }
 
-        addFoodButton.setOnClickListener {
+        saveFoodButton.setOnClickListener {
             try {
                 addFoodToDailyList()
                 if(dailyCalories.save(this)) {
-                    addFoodButton.isEnabled = false
+                    saveFoodButton.isEnabled = false
                     nameFoodLabel.text = getString(R.string.select_food)
                     gramsEditText.isEnabled = false
                 }
+                searchFood(searchEditText.text.toString())
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
             }
@@ -198,7 +204,7 @@ class formDailyCalories : AppCompatActivity() {
 
     fun selectedFood(food: Food) {
         try {
-            addFoodButton.isEnabled = true
+            saveFoodButton.isEnabled = true
             currentFood = food
             val grams = gramsEditText.text.toString().toDoubleOrNull() ?: 0.0
             calculateAndDisplayCalories(grams, currentFood?.energyKcal)

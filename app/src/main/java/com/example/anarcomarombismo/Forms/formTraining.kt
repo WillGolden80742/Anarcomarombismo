@@ -20,16 +20,16 @@ class formTraining : AppCompatActivity() {
     private var trainingID: Long = 0
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300 // Time interval for double click detection in milliseconds
     private var lastClickTime: Long = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_form_training)
-
+    private fun initializeUIComponents() {
         name = findViewById(R.id.name)
         description = findViewById(R.id.description)
         save = findViewById(R.id.save)
         removeTraining = findViewById(R.id.removeTraining)
-
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_form_training)
+        initializeUIComponents()
         trainingID = intent.getLongExtra("trainingID", 0)
 
         save.setOnClickListener {

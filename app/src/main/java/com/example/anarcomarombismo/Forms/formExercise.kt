@@ -54,12 +54,32 @@ class formExercise : AppCompatActivity() {
     // Constants
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
+    private fun initializeUIComponents() {
+        webView = findViewById(R.id.webView)
+        val webSettings: WebSettings = webView.settings
+        webSettings.javaScriptEnabled = true
+        webView.webViewClient = WebViewClient()
+        embedVideo("")
+        webView.setBackgroundColor(0x00000000)
+        textViewVideoLink = findViewById(R.id.textViewVideoLink)
+        editTextVideoLink = findViewById(R.id.editTextVideoLink)
+        editTextExerciseName = findViewById(R.id.editTextExerciseName)
+        spinnerMuscleGroup = findViewById(R.id.spinnerMuscleGroup)
+        editTextSets = findViewById(R.id.editTextSets)
+        editTextRepetitions = findViewById(R.id.editTextRepetitions)
+        editTextLoad = findViewById(R.id.editTextLoad)
+        editTextRest = findViewById(R.id.editTextRest) // Inicialização do novo campo para repouso
+        editTextCadence = findViewById(R.id.editTextCadence) // Inicialização do novo campo para cadência
+        addExerciseButton = findViewById(R.id.addExerciseFormButton)
+        removeExerciseButton = findViewById(R.id.removeExerciseFormButton)
+        visualizeExerciseFormButton = findViewById(R.id.visualizeExerciseFormButton)
+        checkExerciseFormButton = findViewById(R.id.checkExerciseFormButton)
+        editExerciseFormButton = findViewById(R.id.editExerciseFormButton)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_exercise)
-
-        instantiateFields()
-
+        initializeUIComponents()
         trainingID = intent.getLongExtra("trainingID", 0)
         exerciseID = intent.getLongExtra("exerciseID", 0)
         exerciseDate = intent.getStringExtra("exerciseDate") ?: ""
@@ -151,30 +171,6 @@ class formExercise : AppCompatActivity() {
         editTextVideoLink.isVisible = enable
         textViewVideoLink.isVisible = enable
         visualizeExerciseFormButton.isVisible = !enable
-    }
-
-
-    private fun instantiateFields() {
-        webView = findViewById(R.id.webView)
-        val webSettings: WebSettings = webView.settings
-        webSettings.javaScriptEnabled = true
-        webView.webViewClient = WebViewClient()
-        embedVideo("")
-        webView.setBackgroundColor(0x00000000)
-        textViewVideoLink = findViewById(R.id.textViewVideoLink)
-        editTextVideoLink = findViewById(R.id.editTextVideoLink)
-        editTextExerciseName = findViewById(R.id.editTextExerciseName)
-        spinnerMuscleGroup = findViewById(R.id.spinnerMuscleGroup)
-        editTextSets = findViewById(R.id.editTextSets)
-        editTextRepetitions = findViewById(R.id.editTextRepetitions)
-        editTextLoad = findViewById(R.id.editTextLoad)
-        editTextRest = findViewById(R.id.editTextRest) // Inicialização do novo campo para repouso
-        editTextCadence = findViewById(R.id.editTextCadence) // Inicialização do novo campo para cadência
-        addExerciseButton = findViewById(R.id.addExerciseFormButton)
-        removeExerciseButton = findViewById(R.id.removeExerciseFormButton)
-        visualizeExerciseFormButton = findViewById(R.id.visualizeExerciseFormButton)
-        checkExerciseFormButton = findViewById(R.id.checkExerciseFormButton)
-        editExerciseFormButton = findViewById(R.id.editExerciseFormButton)
     }
 
     private fun loadExerciseIfExistInCache() {

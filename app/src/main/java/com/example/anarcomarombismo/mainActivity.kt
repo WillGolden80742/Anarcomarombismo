@@ -15,14 +15,16 @@ class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
     private lateinit var trainingList: ListView
     private lateinit var dailyCaloriesButton: Button
     private val listView: ListView by lazy { findViewById(R.id.trainingList) }
-
+    private fun initializeUIComponents() {
+        addTrainingButton = findViewById(R.id.addTrainingButton)
+        dailyCaloriesButton = findViewById(R.id.dailyCaloriesButton)
+        trainingList = findViewById(R.id.trainingList)
+    }
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
-        addTrainingButton = findViewById(R.id.addTrainingButton)
-        dailyCaloriesButton = findViewById(R.id.dailyCaloriesButton)
-        trainingList = findViewById(R.id.trainingList)
+        initializeUIComponents()
         addTrainingButton.setOnClickListener {
             callTraining()
         }

@@ -65,9 +65,7 @@ class formMacro : AppCompatActivity() {
         private const val carbsCals = 4
         private const val lipidsCals = 9
     }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_form_macros)
+    private fun initializeUIComponents() {
         editTextCalories = findViewById(R.id.editTextCalories)
         updateMetaCheckbox = findViewById(R.id.updateMetaCheckbox)
         editTextCarbs = findViewById(R.id.editTextCarbs)
@@ -91,7 +89,11 @@ class formMacro : AppCompatActivity() {
         dietaryFiberLabel = findViewById(R.id.dietaryFiberLabel)
         calculateBasalButton = findViewById(R.id.calculateBasalButton)
         editBasalButton = findViewById(R.id.editBasalButton)
-
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_form_macros)
+        initializeUIComponents()
         saveTargetButton.setOnClickListener {
             saveAndUpdateMacroUI()
         }

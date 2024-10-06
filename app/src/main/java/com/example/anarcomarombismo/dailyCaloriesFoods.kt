@@ -28,41 +28,34 @@ class dailyCaloriesFoods : AppCompatActivity() {
             foodList = list
         }
     }
-
+    private fun initializeUIComponents() {
+        searchFoodListEditText = findViewById(R.id.searchFoodListEditText)
+        searchFoodListButton = findViewById(R.id.searchFoodListButton)
+        listView = findViewById(R.id.listFoodsView)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_calories_foods)
-        searchFoodListEditText = findViewById(R.id.searchFoodListEditText)
-        searchFoodListButton = findViewById(R.id.searchFoodListButton)
-
-        // Initialize views from layout
-        listView = findViewById(R.id.listFoodsView)
-
+        initializeUIComponents()
         try {
-            // Get the food list from the intent
             if (intent.hasExtra("foodsList")) {
                 loadFoodList()
             }
         } catch (e: Exception) {
             println("Error loading food list: $e")
         }
-
         searchFoodListEditText.setOnEditorActionListener { _, _, _ ->
             val value = searchFoodListEditText.text.toString()
             searchFoodList(value)
             true
         }
-
         searchFoodListEditText.setOnClickListener {
             searchFoodListEditText.setText("")
         }
-
         searchFoodListButton.setOnClickListener {
             val value = searchFoodListEditText.text.toString()
             searchFoodList(value)
         }
-
-
     }
 
     private fun loadFoodList() {

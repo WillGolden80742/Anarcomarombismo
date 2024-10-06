@@ -17,16 +17,18 @@ class formBMR : AppCompatActivity() {
     private lateinit var spinnerGender: Spinner
     private lateinit var spinnerActivityLevel: Spinner
     private lateinit var saveProfileButton: Button
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_form_bmr)
+    private fun initializeUIComponents () {
         editTextWeight = findViewById(R.id.editTextWeight)
         editTextHeight = findViewById(R.id.editTextHeight)
         editTextAge = findViewById(R.id.editTextAge)
         spinnerGender = findViewById(R.id.spinnerGender)
         spinnerActivityLevel = findViewById(R.id.spinnerActivityLevel)
         saveProfileButton = findViewById(R.id.addBMRFormButton)
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_form_bmr)
+        initializeUIComponents()
         saveProfileButton.setOnClickListener {
             saveBMRProfile()
         }

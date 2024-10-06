@@ -31,9 +31,8 @@ class dailyCalories : AppCompatActivity() {
     private lateinit var lipidsLabel: TextView
     private lateinit var proteinsLabel: TextView
     private lateinit var dietaryFiberLabel: TextView
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_daily_calories)
+
+    private fun initializeUIComponents() {
         caloriesFoodList = findViewById(R.id.caloriesFoodList)
         addCaloriesButton = findViewById(R.id.addFoodFormButton)
         addNewFoodButton = findViewById(R.id.addNewFoodButton)
@@ -49,7 +48,11 @@ class dailyCalories : AppCompatActivity() {
         lipidsLabel = findViewById(R.id.lipidsLabel)
         proteinsLabel = findViewById(R.id.proteinsLabel)
         dietaryFiberLabel = findViewById(R.id.dietaryFiberLabel)
-
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_daily_calories)
+        initializeUIComponents()
         addCaloriesButton.setOnClickListener {
             callFormDailyCalories()
         }

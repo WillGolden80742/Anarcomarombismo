@@ -27,24 +27,26 @@ class exercises : AppCompatActivity() {
     private lateinit var descriptionTrainingLabel: TextView
     private var trainingID: Long = 0
     private val dateFormatStored = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private fun initializeUIComponents() {
+        dateTextView = findViewById(R.id.dateTextView)
+        addExerciseButton = findViewById(R.id.addFoodFormButton)
+        exerciseList = findViewById(R.id.caloriesFoodList)
+        editTraining = findViewById(R.id.removeFoodFormButton)
+        descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
+        trainingName = findViewById(R.id.dailyCaloriesTitle)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
-
+        initializeUIComponents()
         trainingID = intent.getLongExtra("trainingID", 0)
-
-        instantiateFields()
-
         dateTextView.text = getCurrentDate()
-
         addExerciseButton.setOnClickListener {
             callAddExercise()
         }
-
         editTraining.setOnClickListener {
             editTraining()
         }
-
         dateTextView.setOnClickListener {
             selectDate()
         }
@@ -52,15 +54,6 @@ class exercises : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadExercises(trainingID,dateTextView.text.toString())
-    }
-
-    private fun instantiateFields() {
-        dateTextView = findViewById(R.id.dateTextView)
-        addExerciseButton = findViewById(R.id.addFoodFormButton)
-        exerciseList = findViewById(R.id.caloriesFoodList)
-        editTraining = findViewById(R.id.removeFoodFormButton)
-        descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
-        trainingName = findViewById(R.id.dailyCaloriesTitle)
     }
     private fun selectDate() {
         val calendar = Calendar.getInstance()

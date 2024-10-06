@@ -29,12 +29,22 @@ class formFood : AppCompatActivity() {
     private lateinit var currentFood: Food
     private val DOUBLE_CLICK_TIME_DELTA: Long = 300
     private var lastClickTime: Long = 0
+    private fun initializeUIComponents() {
+        editTextName = findViewById(R.id.editTextName)
+        editTextGrams = findViewById(R.id.editTextGrams)
+        editTextProtein = findViewById(R.id.editTextProtein)
+        editTextCarbohydrate = findViewById(R.id.editTextCarbohydrate)
+        editTextLipids = findViewById(R.id.editTextLipids)
+        editTextDietaryFiber = findViewById(R.id.editTextDietaryFiber)
+        editTextSodium = findViewById(R.id.editTextSodium)
+        editTextCaloriesKcal = findViewById(R.id.editTextCaloriesKcal)
+        addFoodFormButton = findViewById(R.id.addFoodFormButton)
+        removeFoodFormButton = findViewById(R.id.removeFoodFormButton)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_foods)
-
         initializeUIComponents()
-
         val foodID = intent.getStringExtra("foodID")
 
         if (foodID != null) {
@@ -53,20 +63,6 @@ class formFood : AppCompatActivity() {
 
         setupCaloriesCalculation()
     }
-
-    private fun initializeUIComponents() {
-        editTextName = findViewById(R.id.editTextName)
-        editTextGrams = findViewById(R.id.editTextGrams)
-        editTextProtein = findViewById(R.id.editTextProtein)
-        editTextCarbohydrate = findViewById(R.id.editTextCarbohydrate)
-        editTextLipids = findViewById(R.id.editTextLipids)
-        editTextDietaryFiber = findViewById(R.id.editTextDietaryFiber)
-        editTextSodium = findViewById(R.id.editTextSodium)
-        editTextCaloriesKcal = findViewById(R.id.editTextCaloriesKcal)
-        addFoodFormButton = findViewById(R.id.addFoodFormButton)
-        removeFoodFormButton = findViewById(R.id.removeFoodFormButton)
-    }
-
     private fun setupForFoodUpdate() {
         addFoodFormButton.text = getString(R.string.update_nutrition_info)
 
