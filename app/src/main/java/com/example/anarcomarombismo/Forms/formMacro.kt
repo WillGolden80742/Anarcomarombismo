@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.BasalMetabolicRate
-import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Macro
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.NumberFormatter
@@ -27,11 +26,11 @@ class formMacro : AppCompatActivity() {
     private lateinit var editTextCalories: EditText
     private lateinit var updateMetaCheckbox: CheckBox
     private lateinit var editTextCarbs: EditText
-    private lateinit var editTextFats: EditText
-    private lateinit var editTextLipidsPerKg: EditText
+    private lateinit var editTextLipids: EditText
+    private lateinit var editTextLipidsByWeight: EditText
     private lateinit var textInputLayoutLipidsPerKg: TextInputLayout
     private lateinit var editTextProteins: EditText
-    private lateinit var editTextProteinsPerKg: EditText
+    private lateinit var editTextProteinsByWeight: EditText
     private lateinit var textInputLayoutProteinsPerKg: TextInputLayout
     private lateinit var editTextDietaryFiber: EditText
     private lateinit var caloriesProgressBar: ProgressBar
@@ -68,11 +67,11 @@ class formMacro : AppCompatActivity() {
         editTextCalories = findViewById(R.id.editTextCalories)
         updateMetaCheckbox = findViewById(R.id.updateMetaCheckbox)
         editTextCarbs = findViewById(R.id.editTextCarbs)
-        editTextFats = findViewById(R.id.editTextFats)
-        editTextLipidsPerKg = findViewById(R.id.editTextLipidsPerKg)
+        editTextLipids = findViewById(R.id.editTextLipids)
+        editTextLipidsByWeight = findViewById(R.id.editTextLipidsByWeight)
         textInputLayoutLipidsPerKg = findViewById(R.id.textInputLayoutLipidsPerKg)
         editTextProteins = findViewById(R.id.editTextProteins)
-        editTextProteinsPerKg = findViewById(R.id.editTextProteinsPerKg)
+        editTextProteinsByWeight = findViewById(R.id.editTextProteinsByWeight)
         textInputLayoutProteinsPerKg = findViewById(R.id.textInputLayoutProteinsPerKg)
         editTextDietaryFiber = findViewById(R.id.editTextDietaryFiber)
         caloriesProgressBar = findViewById(R.id.caloriesProgressBar)
@@ -100,8 +99,8 @@ class formMacro : AppCompatActivity() {
             if (hasMetabolicRate) {
                 val bmrValue = basalMetabolicRate?.getBasalMetabolicRate() ?: 0.0
                 val weight = basalMetabolicRate?.weight
-                editTextLipidsPerKg.setText(Macro().lipidsByWeight.toString())
-                editTextProteinsPerKg.setText(Macro().proteinByWeight.toString())
+                editTextLipidsByWeight.setText(Macro().lipidsByWeight.toString())
+                editTextProteinsByWeight.setText(Macro().proteinByWeight.toString())
                 calculateAndDisplayMacros(bmrValue, weight?:0.0)
                 updateMetaCheckbox.isVisible = true
                 isUpdatingMetaCheckbox = true
@@ -115,7 +114,7 @@ class formMacro : AppCompatActivity() {
             if (!isUpdatingMetaCheckbox) {
                 updateMetaCalories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
                 updateMetaCheckbox.isVisible = false
-                saveMacroTarget(false)
+                saveMacroTarget()
                 updateCaloriesColor()
                 Toast.makeText(this,"Meta atualizada", Toast.LENGTH_SHORT).show()
             }
@@ -130,9 +129,9 @@ class formMacro : AppCompatActivity() {
                 handleCaloriesInput(s)
             }
         })
-        editTextLipidsPerKg.addTextChangedListener { onLipidsPerKgTextChanged() }
-        editTextProteinsPerKg.addTextChangedListener { onProteinsPerKgTextChanged() }
-        editTextFats.addTextChangedListener(createTextWatcherForFats())
+        editTextLipidsByWeight.addTextChangedListener { onLipidsPerKgTextChanged() }
+        editTextProteinsByWeight.addTextChangedListener { onProteinsPerKgTextChanged() }
+        editTextLipids.addTextChangedListener(createTextWatcherForFats())
         editTextProteins.addTextChangedListener(createTextWatcherForProteins())
     }
 
@@ -154,8 +153,8 @@ class formMacro : AppCompatActivity() {
                 ).show()
             }
         }
-        fetchMacroTarget()
-        setupCaloriesCalculation(listOf(editTextCarbs, editTextFats,editTextLipidsPerKg))
+        loadAndUpdateMacroUI()
+        setupCaloriesCalculation(listOf(editTextCarbs, editTextLipids,editTextLipidsByWeight))
         isInitActivity=true
     }
 
@@ -241,7 +240,7 @@ class formMacro : AppCompatActivity() {
             calculateAndDisplayMacros(caloriesInput, weight, false)
             if (!isUpdatingCalories) {
                 val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                val lipids = editTextLipids.text.toString().toDoubleOrNull() ?: 0.0
                 updateCarbs(proteins, lipids)
             }
             isUpdatingFatsPerKg = false
@@ -258,7 +257,7 @@ class formMacro : AppCompatActivity() {
             calculateAndDisplayMacros(caloriesInput, weight, false)
             if (!isUpdatingCalories) {
                 val proteins = editTextProteins.text.toString().toDoubleOrNull() ?: 0.0
-                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                val lipids = editTextLipids.text.toString().toDoubleOrNull() ?: 0.0
                 updateCarbs(proteins, lipids)
             }
             isUpdatingProteinsPerKg = false
@@ -281,7 +280,7 @@ class formMacro : AppCompatActivity() {
                 if (hasMetabolicRate && !isUpdatingFatsPerKg) {
                     val weight = basalMetabolicRate.weight
                     val lipidsPerKg = lipids / weight
-                    editTextLipidsPerKg.setText(NumberFormatter.formatDoubleNumber(lipidsPerKg, 2))
+                    editTextLipidsByWeight.setText(NumberFormatter.formatDoubleNumber(lipidsPerKg, 2))
                 }
 
                 if (!isUpdatingCalories) {
@@ -305,12 +304,12 @@ class formMacro : AppCompatActivity() {
                 isUpdatingProteins = true
 
                 val proteins = s.toString().toDoubleOrNull() ?: 0.0
-                val lipids = editTextFats.text.toString().toDoubleOrNull() ?: 0.0
+                val lipids = editTextLipids.text.toString().toDoubleOrNull() ?: 0.0
 
                 if (hasMetabolicRate && !isUpdatingProteinsPerKg) {
                     val weight = basalMetabolicRate.weight
                     val proteinPerKg = proteins / weight
-                    editTextProteinsPerKg.setText(NumberFormatter.formatDoubleNumber(proteinPerKg, 2))
+                    editTextProteinsByWeight.setText(NumberFormatter.formatDoubleNumber(proteinPerKg, 2))
                 }
 
                 if (!isUpdatingCalories) {
@@ -353,12 +352,12 @@ class formMacro : AppCompatActivity() {
     }
 
     private fun calculateProteins(weight: Double): Double {
-        val proteinPerKg = editTextProteinsPerKg.text.toString().toDoubleOrNull() ?: 0.0
+        val proteinPerKg = editTextProteinsByWeight.text.toString().toDoubleOrNull() ?: 0.0
         return (weight * proteinPerKg)
     }
 
     private fun calculateLipids(weight: Double): Double {
-        val lipidsPerKg = editTextLipidsPerKg.text.toString().toDoubleOrNull() ?: 0.0
+        val lipidsPerKg = editTextLipidsByWeight.text.toString().toDoubleOrNull() ?: 0.0
         return weight * lipidsPerKg
     }
     private fun calculateCarbs(proteins: Double, lipids: Double,calories: Double = Macro().fetch(this@formMacro)!!.calories): Double {
@@ -387,7 +386,7 @@ class formMacro : AppCompatActivity() {
             editTextCalories.setText(bmr.toString())
         }
         editTextCarbs.setText(decimalFormat.format(carbs).replace(",", "."))
-        editTextFats.setText(decimalFormat.format(lipids).replace(",", "."))
+        editTextLipids.setText(decimalFormat.format(lipids).replace(",", "."))
         editTextProteins.setText(decimalFormat.format(proteins).replace(",", "."))
         editTextDietaryFiber.setText(decimalFormat.format(dietaryFiber).replace(",", "."))
         isUpdatingCalories = false
@@ -400,7 +399,7 @@ class formMacro : AppCompatActivity() {
                 if (!isUpdatingCalories) {
                     val protein = editTextProteins.text.toString()
                     val carbohydrate = editTextCarbs.text.toString()
-                    val lipids = editTextFats.text.toString()
+                    val lipids = editTextLipids.text.toString()
                     if (protein.isNotEmpty() && carbohydrate.isNotEmpty() && lipids.isNotEmpty()) {
                         val proteinValue = protein.toDouble()
                         val carbohydrateValue = carbohydrate.toDouble()
@@ -424,8 +423,8 @@ class formMacro : AppCompatActivity() {
         isUpdatingProteins = proteins
     }
 
-    private fun fetchMacroTarget() {
-        DailyCalories().loadMacroTarget(
+    private fun loadAndUpdateMacroUI() {
+        macro.loadAndUpdateMacroUI(
             this,
             caloriesProgressBar,
             carbsProgressBar,
@@ -441,38 +440,44 @@ class formMacro : AppCompatActivity() {
         macro.fetch(this)?.let {
             editTextCalories.setText(it.calories.toString())
             editTextCarbs.setText(it.carbs.toString())
-            editTextFats.setText(it.lipids.toString())
-            editTextLipidsPerKg.setText(it.lipidsByWeight.toString())
+            editTextLipids.setText(it.lipids.toString())
+            editTextLipidsByWeight.setText(it.lipidsByWeight.toString())
             editTextProteins.setText(it.protein.toString())
-            editTextProteinsPerKg.setText(it.proteinByWeight.toString())
+            editTextProteinsByWeight.setText(it.proteinByWeight.toString())
             editTextDietaryFiber.setText(it.dietaryFiber.toString())
         }
     }
 
-    private fun saveMacroTarget(closeActivity: Boolean = true) {
-        val calories = editTextCalories.text.toString().toDoubleOrNull() ?: Macro().calories
-        val carbs = editTextCarbs.text.toString().toDoubleOrNull() ?: Macro().carbs
-        val lipids = editTextFats.text.toString().toDoubleOrNull() ?: Macro().lipids
-        val lipidsPerKg = editTextLipidsPerKg.text.toString().toDoubleOrNull() ?: Macro().lipidsByWeight
-        val protein = editTextProteins.text.toString().toDoubleOrNull() ?: Macro().protein
-        val proteinPerKg = editTextProteinsPerKg.text.toString().toDoubleOrNull() ?: Macro().proteinByWeight
-        val dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNull() ?: Macro().dietaryFiber
-        if (Macro.build(
-                calories,
-                lipids,
-                lipidsPerKg,
-                carbs,
-                protein,
-                proteinPerKg,
-                dietaryFiber
-            ).save(this)) {
-            if (closeActivity) {
+    private fun saveMacroTarget() {
+        Macro.build(
+            calories = editTextCalories.text.toString().toDoubleOrNull() ?: Macro().calories,
+            lipids = editTextLipids.text.toString().toDoubleOrNull() ?: Macro().lipids,
+            lipidsByWeight =  editTextLipidsByWeight.text.toString().toDoubleOrNull() ?: Macro().lipidsByWeight,
+            carbs = editTextCarbs.text.toString().toDoubleOrNull() ?: Macro().carbs,
+            protein =  editTextProteins.text.toString().toDoubleOrNull() ?: Macro().protein,
+            proteinByWeight = editTextProteinsByWeight.text.toString().toDoubleOrNull() ?: Macro().proteinByWeight,
+            dietaryFiber = editTextDietaryFiber.text.toString().toDoubleOrNull() ?: Macro().dietaryFiber
+        ).let {
+            if (it.save(this)) {
+                it.loadAndUpdateMacroUI(
+                    context = this,
+                    caloriesProgressBar = caloriesProgressBar,
+                    carbsProgressBar = carbsProgressBar,
+                    fatsProgressBar = fatsProgressBar,
+                    proteinsProgressBar = proteinsProgressBar,
+                    dietaryFiberProgressBar = dietaryFiberProgressBar,
+                    caloriesLabel = caloriesLabel,
+                    carbsLabel = carbsLabel,
+                    fatsLabel = lipidsLabel,
+                    proteinsLabel = proteinsLabel,
+                    dietaryFiberLabel = dietaryFiberLabel,
+                    miniVersion = false,
+                    macro = it
+                )
                 Toast.makeText(this, getString(R.string.objective_saved), Toast.LENGTH_SHORT).show()
-                finish()
             }
         }
     }
-
     companion object {
         private const val proteinCals = 4
         private const val carbsCals = 4

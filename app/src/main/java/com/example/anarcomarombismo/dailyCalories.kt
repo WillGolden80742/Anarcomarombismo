@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Adapter.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
+import com.example.anarcomarombismo.Controller.Macro
 import com.example.anarcomarombismo.Forms.formDailyCalories
 import com.example.anarcomarombismo.Forms.formFood
 import com.example.anarcomarombismo.Forms.formMacro
@@ -80,7 +81,7 @@ class dailyCalories : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        loadMacroTarget()
+        loadAndUpdateMacroUI()
         caloriesFoodList.adapter = DailyCaloriesAdapter(this,
             DailyCalories().fetchAll(this).ifEmpty {
                 listOf(DailyCalories())
@@ -103,20 +104,20 @@ class dailyCalories : AppCompatActivity() {
         }
     }
 
-    private fun loadMacroTarget() {
-        DailyCalories().loadMacroTarget(
-            this,
-            caloriesProgressBar,
-            carbsProgressBar,
-            fatsProgressBar,
-            proteinsProgressBar,
-            dietaryFiberProgressBar,
-            caloriesLabel,
-            carbsLabel,
-            lipidsLabel,
-            proteinsLabel,
-            dietaryFiberLabel,
-            true
+    private fun loadAndUpdateMacroUI() {
+        Macro().loadAndUpdateMacroUI(
+            context = this,
+            caloriesProgressBar = caloriesProgressBar,
+            carbsProgressBar = carbsProgressBar,
+            fatsProgressBar = fatsProgressBar,
+            proteinsProgressBar = proteinsProgressBar,
+            dietaryFiberProgressBar = dietaryFiberProgressBar,
+            caloriesLabel = caloriesLabel,
+            carbsLabel = carbsLabel,
+            fatsLabel = lipidsLabel,
+            proteinsLabel = proteinsLabel,
+            dietaryFiberLabel = dietaryFiberLabel,
+            miniVersion = false
         )
     }
 

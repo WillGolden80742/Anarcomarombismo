@@ -243,7 +243,7 @@
                         android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextFats"
+                            android:id="@+id/editTextLipids"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/lipids"
@@ -259,7 +259,7 @@
                         android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextLipidsPerKg"
+                            android:id="@+id/editTextLipidsByWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/fat_by_weight"
@@ -297,7 +297,7 @@
                         android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextProteinsPerKg"
+                            android:id="@+id/editTextProteinsByWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/protein_by_weight"
