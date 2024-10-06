@@ -112,6 +112,7 @@
     <string name="mandatory_gender">Gênero é obrigatório</string>
     <string name="mandatory_height">La altura es obligatoria</string>
     <string name="mandatory_weight">El peso es obligatorio</string>
+    <string name="meta_updated">Meta actualizada</string>
     <string name="metabolic_profile">Perfil Metabolico</string>
     <string name="mg">mg</string>
     <string name="muscle">Músculo</string>
@@ -199,7 +200,7 @@
     <string name="video_link">Enlace de Video</string>
     <string name="video_link_hint">Ingrese el enlace del video (Solo Youtube)</string>
     <string name="weight">Peso</string>
-    <string name="weight_hint">Digite seu peso</string>
+    <string name="weight_hint">Ingrese su peso</string>
     <string-array name="gender_array">
         <item>Seleccionar género</item>
         <item>Masculino</item>

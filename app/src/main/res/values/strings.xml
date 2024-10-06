@@ -112,6 +112,7 @@
     <string name="mandatory_gender">Gênero é obrigatório</string>
     <string name="mandatory_height">Altura é obrigatória</string>
     <string name="mandatory_weight">Peso é obrigatório</string>
+    <string name="meta_updated">Meta atualizada</string>
     <string name="metabolic_profile">Perfil Metabólico</string>
     <string name="mg">mg</string>
     <string name="muscle">Músculo</string>

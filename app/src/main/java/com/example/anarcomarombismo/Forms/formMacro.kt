@@ -89,7 +89,7 @@ class formMacro : AppCompatActivity() {
         editBasalButton = findViewById(R.id.editBasalButton)
 
         saveTargetButton.setOnClickListener {
-            saveMacroTarget()
+            saveAndUpdateMacroUI()
         }
         editBasalButton.setOnClickListener {
             val intent = Intent(this, formBMR::class.java)
@@ -114,9 +114,9 @@ class formMacro : AppCompatActivity() {
             if (!isUpdatingMetaCheckbox) {
                 updateMetaCalories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
                 updateMetaCheckbox.isVisible = false
-                saveMacroTarget()
+                saveAndUpdateMacroUI()
                 updateCaloriesColor()
-                Toast.makeText(this,"Meta atualizada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.meta_updated), Toast.LENGTH_SHORT).show()
             }
         }
         editTextCalories.addTextChangedListener(object : TextWatcher {
@@ -448,7 +448,7 @@ class formMacro : AppCompatActivity() {
         }
     }
 
-    private fun saveMacroTarget() {
+    private fun saveAndUpdateMacroUI() {
         Macro.build(
             calories = editTextCalories.text.toString().toDoubleOrNull() ?: Macro().calories,
             lipids = editTextLipids.text.toString().toDoubleOrNull() ?: Macro().lipids,
