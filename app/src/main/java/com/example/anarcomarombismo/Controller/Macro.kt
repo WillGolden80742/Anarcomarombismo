@@ -80,7 +80,7 @@ class Macro (
         proteinsLabel: TextView,
         dietaryFiberLabel: TextView,
         miniVersion: Boolean = false,
-        macro: Macro = getMacro(context)?: Macro()
+        macro: Macro = fetch(context)?: Macro()
     ) {
         val dailyCalories = macroNutrients(context)
         updateProgressBars(dailyCalories, macro, caloriesProgressBar, carbsProgressBar, fatsProgressBar, proteinsProgressBar,dietaryFiberProgressBar)
@@ -117,10 +117,6 @@ class Macro (
             "Lipids" to last7DaysCalories.sumOf { it.lipids } / size,
             "DietaryFiber" to last7DaysCalories.sumOf { it.dietaryFiber } / size
         )
-    }
-
-    private fun getMacro(context: Context): Macro? {
-        return Macro().fetch(context)?: Macro()
     }
     private fun updateProgressBars(
         dailyCalories: Map<String, Double>,
