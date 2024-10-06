@@ -81,8 +81,8 @@ class formDailyCalories : AppCompatActivity() {
                     saveFoodButton.isEnabled = false
                     nameFoodLabel.text = getString(R.string.select_food)
                     gramsEditText.isEnabled = false
+                    searchFood(searchEditText.text.toString())
                 }
-                searchFood(searchEditText.text.toString())
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
             }
