@@ -60,7 +60,11 @@ class formMacro : AppCompatActivity() {
     private var updateMetaCalories:Double = 0.0
     private var isBackspacePressed = false
     private var indexCursor = 0
-
+    companion object {
+        private const val proteinCals = 4
+        private const val carbsCals = 4
+        private const val lipidsCals = 9
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_form_macros)
@@ -477,10 +481,5 @@ class formMacro : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.objective_saved), Toast.LENGTH_SHORT).show()
             }
         }
-    }
-    companion object {
-        private const val proteinCals = 4
-        private const val carbsCals = 4
-        private const val lipidsCals = 9
     }
 }
