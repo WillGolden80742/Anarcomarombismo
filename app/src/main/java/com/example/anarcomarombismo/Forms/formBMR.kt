@@ -105,7 +105,6 @@ class formBMR : AppCompatActivity() {
             return
         }
 
-        // Verificar o gênero selecionado
         val genderMultiplier = when (spinnerGender.selectedItemId) {
             1L -> "M"
             2L -> "F"
