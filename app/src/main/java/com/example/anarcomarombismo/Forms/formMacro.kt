@@ -131,21 +131,19 @@ class formMacro : AppCompatActivity() {
         hasMetabolicRate = basalMetabolicRate.hasBasalMetabolicRate(this)
         textInputLayoutLipidsPerKg.isVisible = hasMetabolicRate
         textInputLayoutProteinsPerKg.isVisible = hasMetabolicRate
-        val cache = Cache()
         if (!hasMetabolicRate) {
-            if (!cache.hasCache(this,"accessedFormBMR")) {
+            if (!isAccessedFormBMR()) {
                 val intent = Intent(this, formBMR::class.java)
                 startActivity(intent)
-                Toast.makeText(
-                    this,
-                    getString(R.string.define_your_metabolic_profile_first),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showMetabolicProfileRequiredMessage()
             }
         }
         loadAndUpdateMacroUI()
         setupCaloriesCalculation(listOf(editTextCarbs, editTextLipids,editTextLipidsByWeight))
         isInitActivity=true
+    }
+    private fun isAccessedFormBMR(): Boolean {
+        return Cache().hasCache(this,"accessedFormBMR")
     }
     private fun handleBasalCalculation() {
         if (!hasMetabolicRate) {
