@@ -100,27 +100,13 @@ class formMacro : AppCompatActivity() {
             startActivity(intent)
         }
         calculateBasalButton.setOnClickListener {
-            if (hasMetabolicRate) {
-                val bmrValue = basalMetabolicRate?.getBasalMetabolicRate() ?: 0.0
-                val weight = basalMetabolicRate?.weight
-                editTextLipidsByWeight.setText(Macro().lipidsByWeight.toString())
-                editTextProteinsByWeight.setText(Macro().proteinByWeight.toString())
-                calculateAndDisplayMacros(bmrValue, weight?:0.0)
-                updateMetaCheckbox.isVisible = true
-                isUpdatingMetaCheckbox = true
-                updateMetaCheckbox.isChecked = false
-                isUpdatingMetaCheckbox = false
-            } else {
-                Toast.makeText(this, getString(R.string.define_your_metabolic_profile_first), Toast.LENGTH_SHORT).show()
-            }
+            handleBasalCalculation()
         }
         updateMetaCheckbox.setOnCheckedChangeListener { _, _ ->
             if (!isUpdatingMetaCheckbox) {
                 updateMetaCalories = editTextCalories.text.toString().toDoubleOrNull() ?: 0.0
                 updateMetaCheckbox.isVisible = false
                 saveAndUpdateMacroUI()
-                updateCaloriesColor()
-                Toast.makeText(this, getString(R.string.meta_updated), Toast.LENGTH_SHORT).show()
             }
         }
         editTextCalories.addTextChangedListener(object : TextWatcher {
@@ -160,6 +146,44 @@ class formMacro : AppCompatActivity() {
         loadAndUpdateMacroUI()
         setupCaloriesCalculation(listOf(editTextCarbs, editTextLipids,editTextLipidsByWeight))
         isInitActivity=true
+    }
+    private fun handleBasalCalculation() {
+        if (!hasMetabolicRate) {
+            showMetabolicProfileRequiredMessage()
+            return
+        }
+        updateBasalValues()
+        performBasalCalculation()
+        updateMetaCheckboxState()
+    }
+
+    private fun showMetabolicProfileRequiredMessage() {
+        Toast.makeText(
+            this,
+            getString(R.string.define_your_metabolic_profile_first),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun updateBasalValues() {
+        val defaultMacro = Macro()
+        editTextLipidsByWeight.setText(defaultMacro.lipidsByWeight.toString())
+        editTextProteinsByWeight.setText(defaultMacro.proteinByWeight.toString())
+    }
+
+    private fun performBasalCalculation() {
+        val bmrValue = basalMetabolicRate.getBasalMetabolicRate()
+        val weight = basalMetabolicRate.weight ?: 0.0
+        calculateAndDisplayMacros(bmrValue, weight)
+    }
+
+    private fun updateMetaCheckboxState() {
+        updateMetaCheckbox.apply {
+            isVisible = true
+            isUpdatingMetaCheckbox = true
+            isChecked = false
+            isUpdatingMetaCheckbox = false
+        }
     }
 
     private fun handleCaloriesInput(s: Editable?) {
@@ -479,6 +503,7 @@ class formMacro : AppCompatActivity() {
                     macro = it
                 )
                 Toast.makeText(this, getString(R.string.objective_saved), Toast.LENGTH_SHORT).show()
+                updateCaloriesColor()
             }
         }
     }
