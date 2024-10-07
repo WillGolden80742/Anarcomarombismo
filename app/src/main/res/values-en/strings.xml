@@ -149,12 +149,13 @@
     <string name="save_metabolic_profile">Save Metabolic Profile</string>
     <string name="save_target">Save Target</string>
     <string name="save_training_successful">Training saved successfully!</string>
+    <string name="search_for_food">Search for food...</string>
     <string name="seconds_hint">Enter the rest time in seconds</string>
     <string name="see">View</string>
     <string name="select_food">select food</string>
     <string name="select_muscle">Select Muscle</string>
     <string name="selected">selected</string>
-    <string name="serratil_anterior">Serratus Anterior</string>
+    <string name="serratus_anterior">Serratus Anterior</string>
     <string name="sets">Sets</string>
     <string name="sets_hint">Enter the number of sets</string>
     <string name="shoulder_and_triceps">Shoulder and Trapezius</string>

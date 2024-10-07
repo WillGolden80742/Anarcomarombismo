@@ -149,12 +149,13 @@
     <string name="save_metabolic_profile">Salvar perfil metabolico</string>
     <string name="save_target">Guardar Objetivo</string>
     <string name="save_training_successful">¡Entrenamiento guardado con éxito!</string>
+    <string name="search_for_food">Buscar Alimento...</string>
     <string name="seconds_hint">Ingrese el tiempo de descanso en segundos</string>
     <string name="see">Ver</string>
     <string name="select_food">seleccione alimento</string>
     <string name="select_muscle">Seleccione el músculo</string>
     <string name="selected">seleccionado</string>
-    <string name="serratil_anterior">Serrato Anterior</string>
+    <string name="serratus_anterior">Serrato Anterior</string>
     <string name="sets">Series</string>
     <string name="sets_hint">Ingrese el número de series</string>
     <string name="shoulder_and_triceps">Hombro y Trapecio</string>

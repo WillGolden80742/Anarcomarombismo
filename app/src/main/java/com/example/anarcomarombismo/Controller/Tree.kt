@@ -176,7 +176,7 @@ class Tree(val obj: Any = 0) {  // Changed name to obj and type to Any
         Tree(R.string.oblique_external).also { abdominais.addNode(it) }
         Tree(R.string.oblique_internal).also { abdominais.addNode(it) }
         Tree(R.string.back).also { tronco.addNode(it) }
-        Tree(R.string.serratil_anterior).also { tronco.addNode(it) }
+        Tree(R.string.serratus_anterior).also { tronco.addNode(it) }
         val costas = Tree(R.string.back_).also { tronco.addNode(it) }
         Tree(R.string.transverse_abdominal).also { abdominais.addNode(it) }
         Tree(R.string.trapezium).also { costas.addNode(it) }
