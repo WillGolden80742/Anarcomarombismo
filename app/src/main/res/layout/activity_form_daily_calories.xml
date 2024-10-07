@@ -33,7 +33,6 @@
             android:id="@+id/searchButton"
             android:layout_width="75dp"
             android:layout_height="45dp"
-            android:layout_marginStart="8dp"
             android:backgroundTint="@color/button_color"
             android:textColor="@color/yellow"
             app:icon="@drawable/ic_fluent_search_24_filled"
