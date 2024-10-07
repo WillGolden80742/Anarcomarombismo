@@ -26,7 +26,6 @@
                 android:id="@+id/dailyCaloriesTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/daily_goals"
                 android:textColor="@color/title_color"
