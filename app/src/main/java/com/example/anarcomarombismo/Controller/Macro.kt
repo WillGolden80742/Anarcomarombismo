@@ -87,6 +87,26 @@ class Macro (
         updateLabels(dailyCalories, macro, context, caloriesLabel, carbsLabel, fatsLabel, proteinsLabel,dietaryFiberLabel,miniVersion)
     }
 
+    fun loadAndUpdateMacroUI(
+        context: Context,
+        caloriesProgressBar: ProgressBar,
+        carbsProgressBar: ProgressBar,
+        fatsProgressBar: ProgressBar,
+        proteinsProgressBar: ProgressBar,
+        dietaryFiberProgressBar: ProgressBar,
+        caloriesLabel: TextView,
+        carbsLabel: TextView,
+        fatsLabel: TextView,
+        proteinsLabel: TextView,
+        dietaryFiberLabel: TextView,
+        miniVersion: Boolean = false,
+        dailyCalories: Map<String, Double>
+    ) {
+        val macro: Macro = fetch(context)?: Macro()
+        updateProgressBars(dailyCalories, macro, caloriesProgressBar, carbsProgressBar, fatsProgressBar, proteinsProgressBar,dietaryFiberProgressBar)
+        updateLabels(dailyCalories, macro, context, caloriesLabel, carbsLabel, fatsLabel, proteinsLabel,dietaryFiberLabel,miniVersion)
+    }
+
     private fun macroNutrients(context: Context,days:Int=7): Map<String, Double> {
         val dailyCaloriesList = DailyCalories().fetchAll(context)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
