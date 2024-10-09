@@ -47,7 +47,8 @@
                 android:gravity="center"
                 android:text="dd/MM/yyyy"
                 android:textColor="@color/title_color"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
