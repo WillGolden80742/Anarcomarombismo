@@ -19,9 +19,9 @@ class ContextualExercise {
                     Exercise(1, "https://www.youtube.com/watch?v=q_Qs9fdwscs", 4, context.getString(
                         R.string.pullover_with_halter_on_the_black_bench),context.getString(R.string.breastplate),4,"10,10,10,10", 50.0),
                     Exercise(1, "https://www.youtube.com/watch?v=qLtVeISKSeA&t=123s", 5, context.getString(
-                        R.string.tr_ceps_testa), context.getString(R.string.triceps),4,"10,10,10,10", 30.0),
+                        R.string.skull_crushers), context.getString(R.string.triceps),4,"10,10,10,10", 30.0),
                     Exercise(1, "https://www.youtube.com/watch?v=cQ5ae1dHTAQ", 6, context.getString(
-                        R.string.tr_ceps_pulley), context.getString(R.string.triceps),4,"10,10,10,10", 0.0),
+                        R.string.triceps_pulley), context.getString(R.string.triceps),4,"10,10,10,10", 0.0),
                     Exercise(1, "https://www.youtube.com/watch?v=XYjcAZFNPnc", 7, context.getString(
                         R.string.triceps_french_on_low_poly), context.getString(R.string.triceps),4,"10,10,10,10", 0.0),
                     Exercise(1, "https://www.youtube.com/watch?v=iZEN4DK5BFM", 8, context.getString(

@@ -138,12 +138,12 @@
     <string name="remove_training_error">Error al eliminar el entrenamiento</string>
     <string name="remove_training_successful">¡Entrenamiento eliminado con éxito!</string>
     <string name="removed">removido</string>
-    <string name="remover">remover</string>
+    <string name="remove_it">Remover</string>
     <string name="reps">Repeticiones</string>
     <string name="reps_hint">Ingrese el número de repeticiones</string>
     <string name="rest">Descanso</string>
     <string name="rhomboids">Romboides</string>
-    <string name="save">guardar</string>
+    <string name="save">Guardar</string>
     <string name="save_exercise_successful">¡Ejercicio guardado con éxito!</string>
     <string name="save_food_error">Error al guardar alimento</string>
     <string name="save_metabolic_profile">Salvar perfil metabolico</string>
@@ -175,8 +175,8 @@
     <string name="thighs">Muslos</string>
     <string name="thread_spider">Curl Spider</string>
     <string name="torso">Tronco</string>
-    <string name="tr_ceps_pulley">Tríceps en Polea</string>
-    <string name="tr_ceps_testa">Tríceps Frontal</string>
+    <string name="triceps_pulley">Tríceps en Polea</string>
+    <string name="skull_crushers">Tríceps Frontal</string>
     <string name="training">Treino</string>
     <string name="training_a">Entrenamiento A</string>
     <string name="training_b">Entrenamiento B</string>
@@ -194,7 +194,7 @@
     <string name="update_exercise_successful">¡Ejercicio actualizado con éxito!</string>
     <string name="update_meta">Actualizar Meta</string>
     <string name="update_nutrition_info">Actualizar Información Nutricional</string>
-    <string name="update_nutrition_sucessful">¡Información Nutricional actualizada con éxito!</string>
+    <string name="update_nutrition_successful">¡Información Nutricional actualizada con éxito!</string>
     <string name="update_training">Actualizar</string>
     <string name="update_training_successful">¡Entrenamiento actualizado con éxito!</string>
     <string name="upper_limbs">Miembros Superiores</string>

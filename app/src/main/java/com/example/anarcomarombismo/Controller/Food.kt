@@ -75,7 +75,7 @@ class Food(
             }
 
             showToast(
-                if (isUpdate) context.getString(R.string.update_nutrition_sucessful)
+                if (isUpdate) context.getString(R.string.update_nutrition_successful)
                 else context.getString(R.string.successful_target_food),
                 context
             )

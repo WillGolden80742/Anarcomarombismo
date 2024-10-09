@@ -120,7 +120,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:backgroundTint="@color/button_color"
-        android:text="@string/remover"
+        android:text="@string/remove_it"
         android:textColor="@color/yellow"
         app:icon="@drawable/ic_fluent_delete_24_regular"
         app:iconGravity="textStart"

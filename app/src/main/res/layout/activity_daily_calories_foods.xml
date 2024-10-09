@@ -11,28 +11,19 @@
         android:id="@+id/linearLayoutSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/listFoodsView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/searchFoodListEditText"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            android:hint="Name"
-            android:inputType="text" />
-
-        <Button
-            android:id="@+id/searchFoodListButton"
-            android:layout_width="75dp"
-            android:layout_height="45dp"
-            android:backgroundTint="@color/button_color"
-            android:textColor="@color/yellow"
-            app:icon="@drawable/ic_fluent_search_24_filled"
-            app:iconSize="32dp"
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edittext_background"
+            android:queryHint="@string/search_for_food"
             app:iconTint="@color/yellow" />
     </LinearLayout>
 

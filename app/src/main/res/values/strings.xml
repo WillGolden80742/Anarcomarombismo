@@ -138,12 +138,12 @@
     <string name="remove_training_error">Erro ao remover treino</string>
     <string name="remove_training_successful">Treino removido com sucesso!</string>
     <string name="removed">removido</string>
-    <string name="remover">remover</string>
+    <string name="remove_it">Remover</string>
     <string name="reps">Repetições</string>
     <string name="reps_hint">Insira o número de repetições</string>
     <string name="rest">Descanso</string>
     <string name="rhomboids">Romboides</string>
-    <string name="save">salvar</string>
+    <string name="save">Salvar</string>
     <string name="save_exercise_successful">Exercício salvo com sucesso!</string>
     <string name="save_food_error">Erro ao salvar o alimento</string>
     <string name="save_metabolic_profile">Salvar Perfil Metabólico</string>
@@ -175,8 +175,8 @@
     <string name="thighs">Coxas</string>
     <string name="thread_spider">Rosca Spider</string>
     <string name="torso">Tronco</string>
-    <string name="tr_ceps_pulley">Tríceps na Polia</string>
-    <string name="tr_ceps_testa">Tríceps Testa</string>
+    <string name="triceps_pulley">Tríceps na Polia</string>
+    <string name="skull_crushers">Tríceps Testa</string>
     <string name="training">Treino</string>
     <string name="training_a">Treino A</string>
     <string name="training_b">Treino B</string>
@@ -194,7 +194,7 @@
     <string name="update_exercise_successful">Exercício atualizado com sucesso!</string>
     <string name="update_meta">Atualizar Meta</string>
     <string name="update_nutrition_info">Atualizar Informações Nutricionais</string>
-    <string name="update_nutrition_sucessful">Informações Nutricionais atualizadas com sucesso!</string>
+    <string name="update_nutrition_successful">Informações Nutricionais atualizadas com sucesso!</string>
     <string name="update_training">Atualizar</string>
     <string name="update_training_successful">Treino atualizado com sucesso!</string>
     <string name="upper_limbs">Membros Superiores</string>

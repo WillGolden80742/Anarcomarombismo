@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.SearchView
 import com.example.anarcomarombismo.Controller.Adapter.FoodAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
@@ -14,8 +15,7 @@ import com.example.anarcomarombismo.Controller.Util.StringHandler
 class dailyCaloriesFoods : AppCompatActivity() {
     // Declare elements from layout
     private lateinit var listView: ListView
-    private lateinit var searchFoodListEditText: EditText
-    private lateinit var searchFoodListButton: Button
+    private lateinit var searchView: SearchView
     private lateinit var dailyCaloriesDate: String
     companion object {
         private var foodList: List<Food> = emptyList()
@@ -29,8 +29,7 @@ class dailyCaloriesFoods : AppCompatActivity() {
         }
     }
     private fun initializeUIComponents() {
-        searchFoodListEditText = findViewById(R.id.searchFoodListEditText)
-        searchFoodListButton = findViewById(R.id.searchFoodListButton)
+        searchView = findViewById(R.id.searchView)
         listView = findViewById(R.id.listFoodsView)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,17 +43,27 @@ class dailyCaloriesFoods : AppCompatActivity() {
         } catch (e: Exception) {
             println("Error loading food list: $e")
         }
-        searchFoodListEditText.setOnEditorActionListener { _, _, _ ->
-            val value = searchFoodListEditText.text.toString()
-            searchFoodList(value)
-            true
-        }
-        searchFoodListEditText.setOnClickListener {
-            searchFoodListEditText.setText("")
-        }
-        searchFoodListButton.setOnClickListener {
-            val value = searchFoodListEditText.text.toString()
-            searchFoodList(value)
+        // Set listener for search queries in the SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    searchFoodList(it)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Optionally filter the list as the user types
+                newText?.let {
+                    searchFoodList(it)
+                }
+                return true
+            }
+        })
+
+        // Set the searchView to clear the query on clicking the search bar
+        searchView.setOnClickListener {
+            searchView.isIconified = false
         }
     }
 

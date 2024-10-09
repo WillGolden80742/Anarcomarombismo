@@ -85,7 +85,7 @@ class formDailyCalories : AppCompatActivity() {
         })
 
         searchView.setOnClickListener {
-            searchView.setQuery("", false)  // Clear the current query
+            searchView.isIconified = false
         }
 
         saveFoodButton.setOnClickListener {
