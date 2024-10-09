@@ -11,8 +11,7 @@ class ContextualExercise {
         ): Map<Long, Array<Exercise>> {
             return mapOf(
                 1L to arrayOf(
-                    Exercise(1, "https://www.youtube.com/watch?v=Pw-zpREJ7xo", 1, context.getString(
-                        R.string.dumbbell_press),context.getString(R.string.breastplate),4,"10,10,10,10", 100.0),
+                    Exercise(1, "https://www.youtube.com/watch?v=Pw-zpREJ7xo", 1, context.getString(R.string.dumbbell_press),context.getString(R.string.breastplate),4,"10,10,10,10", 100.0),
                     Exercise(1, "https://www.youtube.com/watch?v=Ky_JXqloq0w", 2, context.getString(
                         R.string.dumbbell_press_30),context.getString(R.string.breastplate),4,"10,10,10,10", 90.0),
                     Exercise(1, "https://youtu.be/0hsnZxrhAY8?si=ZF0VDqFCBmpCkYwZ&t=331", 3,context.getString(
