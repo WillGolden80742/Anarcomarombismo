@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/edittext_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
     <HorizontalScrollView
@@ -27,16 +26,16 @@
         android:id="@+id/textViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/horizontalScrollViewItem"
-        android:layout_alignParentStart="true"
+        android:textSize="18sp"
         android:paddingTop="4dp"
-        android:textSize="18sp" />
+        android:layout_below="@id/horizontalScrollViewItem"
+        android:layout_alignParentStart="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
+        android:layout_centerVertical="false"
         android:layout_marginStart="16dp"
         android:orientation="vertical">
 
@@ -56,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:clickable="true"
-            app:backgroundTint="@color/black"
+            app:backgroundTint="@color/button_color"
             app:srcCompat="@drawable/ic_fluent_select_all_off_24_regular"
             app:tint="@color/yellow" />
 
@@ -66,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:clickable="true"
-            app:backgroundTint="@color/black"
+            app:backgroundTint="@color/button_color"
             app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
             app:tint="@color/yellow" />
 
