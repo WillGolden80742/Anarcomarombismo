@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/edittext_background"
     android:padding="16dp">
 
     <TextView
@@ -19,9 +20,9 @@
         android:id="@+id/trainingTextViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_below="@id/trainingTitleTextViewItem"
         android:paddingTop="4dp"
-        android:layout_below="@id/trainingTitleTextViewItem" />
+        android:textSize="18sp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -31,7 +32,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
         android:clickable="false"
-        app:backgroundTint="@color/button_color"
+        app:backgroundTint="@color/black"
         app:srcCompat="@drawable/ic_fluent_play_24_regular"
         app:tint="@color/yellow" />
 

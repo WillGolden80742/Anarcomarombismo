@@ -2,5 +2,4 @@
     android:shape="rectangle">
     <size android:height="1dp" />
     <size android:width="10dp" />
-    <solid android:color="@color/mine_shaft" />
 </shape>
