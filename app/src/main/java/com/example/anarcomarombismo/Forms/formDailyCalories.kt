@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -34,8 +35,7 @@ import java.util.Date
 import java.util.Locale
 
 class formDailyCalories : AppCompatActivity() {
-    private lateinit var searchEditText: EditText
-    private lateinit var searchButton: Button
+    private lateinit var searchView: SearchView
     private lateinit var listFoodsView: ListView
     private lateinit var totalCaloriesLabel: TextView
     private lateinit var nameFoodLabel: TextView
@@ -50,8 +50,7 @@ class formDailyCalories : AppCompatActivity() {
     private var lastClickTime: Long = 0
 
     private fun initializeUIComponents () {
-        searchEditText = findViewById(R.id.searchEditText)
-        searchButton = findViewById(R.id.searchButton)
+        searchView = findViewById(R.id.searchView)
         listFoodsView = findViewById(R.id.listFoodsView)
         totalCaloriesLabel = findViewById(R.id.totalCaloriesLabel)
         nameFoodLabel = findViewById(R.id.nameFoodLabel)
@@ -69,9 +68,24 @@ class formDailyCalories : AppCompatActivity() {
         loading()
         getDailyCalories()
 
-        searchButton.setOnClickListener {
-            searchFood(searchEditText.text.toString())
-            hideKeyboard(this.currentFocus ?: View(this))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // Perform the search when the query is submitted
+                query?.let {
+                    searchFood(it)
+                    hideKeyboard(this@formDailyCalories.currentFocus ?: View(this@formDailyCalories))
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                // Optional: Handle changes to the query text (e.g., filter results dynamically)
+                return false
+            }
+        })
+
+        searchView.setOnClickListener {
+            searchView.setQuery("", false)  // Clear the current query
         }
 
         saveFoodButton.setOnClickListener {
@@ -81,7 +95,7 @@ class formDailyCalories : AppCompatActivity() {
                     saveFoodButton.isEnabled = false
                     nameFoodLabel.text = getString(R.string.select_food)
                     gramsEditText.isEnabled = false
-                    searchFood(searchEditText.text.toString())
+                    searchFood(searchView.query.toString())
                 }
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
@@ -94,15 +108,6 @@ class formDailyCalories : AppCompatActivity() {
             calculateAndDisplayCalories(grams, currentFood?.energyKcal)
         }
 
-
-        searchEditText.setOnEditorActionListener { _, _, _ ->
-            searchFood(searchEditText.text.toString())
-            hideKeyboard(this.currentFocus ?: View(this))
-        }
-
-        searchEditText.setOnClickListener {
-            searchEditText.setText("")
-        }
 
         seeFoodsButton.setOnClickListener {
             callDailyCaloriesFoods()
@@ -199,7 +204,7 @@ class formDailyCalories : AppCompatActivity() {
         }
     }
     private fun setFoodToFoodList() {
-        searchFood(searchEditText.text.toString())
+        searchFood(searchView.query.toString())
     }
 
     fun selectedFood(food: Food) {

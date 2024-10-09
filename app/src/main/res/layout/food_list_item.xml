@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/edittext_background"
     android:padding="16dp">
 
     <!-- Horizontal ScrollView around the foodTitleTextViewItem -->
@@ -26,23 +27,23 @@
         android:id="@+id/foodTextViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:layout_below="@id/foodTitleTextViewScrollViewItem"
         android:paddingTop="4dp"
-        android:layout_below="@id/foodTitleTextViewScrollViewItem" />
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="16dp"
+        android:orientation="vertical">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/foodFloatingAddActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/button_color"
+            app:backgroundTint="@color/black"
             app:srcCompat="@drawable/ic_fluent_cursor_24_filled"
             app:tint="@color/yellow" />
 
@@ -51,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:backgroundTint="@color/button_color"
+            app:backgroundTint="@color/black"
             app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
             app:tint="@color/yellow" />
 
