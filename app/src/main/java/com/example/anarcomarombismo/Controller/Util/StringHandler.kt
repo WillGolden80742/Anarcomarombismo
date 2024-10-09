@@ -1,6 +1,7 @@
 package com.example.anarcomarombismo.Controller.Util
 
 import java.text.Normalizer
+import java.util.Locale
 
 class StringHandler {
     companion object {
@@ -18,7 +19,7 @@ class StringHandler {
             }
         }
         private fun normalizeString(text: String): String {
-            return Normalizer.normalize(text, Normalizer.Form.NFD)
+            return Normalizer.normalize(text.lowercase(Locale.getDefault()), Normalizer.Form.NFD)
                 .replace("\\p{InCombiningDiacriticalMarks}".toRegex(), "")
         }
 

@@ -12,6 +12,8 @@ import java.net.URLEncoder
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.DecimalFormat
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 class FoodDataFetcher(var name: String = "", var href: String = "", var grams: String = "") {
     private val cache = Cache()
@@ -58,12 +60,21 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         }
         return fetchAndCacheOfFoodSearch(context, query, queryHash)
     }
+
+
+    @OptIn(ExperimentalEncodingApi::class)
+    private fun getServer(): String {
+        val base64 = "aHR0cHM6Ly93d3cuZmF0c2VjcmV0LmNvbS5icg=="
+        val decodedBytes: ByteArray = Base64.decode(base64)
+        return String(decodedBytes)
+    }
+
     private fun fetchAndCacheOfFoodSearch(context: Context, query: String, queryHash: String): List<FoodDataFetcher> {
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
         val items = mutableListOf<FoodDataFetcher>()
         for (i in 0..1) {
             val url =
-                "https://www.fatsecret.com.br/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
+                "${getServer()}/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
             try {
                 val document = HtmlHandler.fetchDocument(url)
                 val links = document.select("a.prominent")
@@ -92,7 +103,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         return if (grams != null) {
             FoodDataFetcher(
                 name = name,
-                href = "https://www.fatsecret.com.br$href",
+                href = "${getServer()}$href",
                 grams = grams.replace("g", "")
             )
         } else {
