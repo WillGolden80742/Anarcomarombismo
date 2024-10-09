@@ -10,9 +10,10 @@
         android:id="@+id/trainingTitleTextViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:textColor="@color/title_color"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:paddingBottom="4dp" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/trainingTextViewItem"
