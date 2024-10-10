@@ -243,7 +243,8 @@
         app:layout_constraintBottom_toTopOf="@+id/removeFoodFormButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:cornerRadius="@dimen/corner_radius" />
 
     <Button
         android:id="@+id/removeFoodFormButton"
@@ -261,7 +262,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addFoodFormButton" />
+        app:layout_constraintTop_toBottomOf="@id/addFoodFormButton"
+        app:cornerRadius="@dimen/corner_radius" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

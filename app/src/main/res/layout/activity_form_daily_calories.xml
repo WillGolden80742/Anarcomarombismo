@@ -62,7 +62,8 @@
         android:gravity="center"
         android:text="29/09/2024"
         android:textColor="@color/yellow"
-        android:textSize="24dp" />
+        android:textSize="24dp"
+        app:cornerRadius="@dimen/corner_radius" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -97,7 +98,8 @@
             app:icon="@drawable/ic_fluent_save_24_regular"
             app:iconGravity="textStart"
             app:iconSize="32dp"
-            app:iconTint="@color/yellow" />
+            app:iconTint="@color/yellow"
+            app:cornerRadius="@dimen/corner_radius" />
     </LinearLayout>
 
     <!-- Action Buttons Section -->
@@ -112,7 +114,8 @@
         app:icon="@drawable/ic_fluent_eye_show_24_filled"
         app:iconGravity="textStart"
         app:iconSize="24dp"
-        app:iconTint="@color/yellow" />
+        app:iconTint="@color/yellow"
+        app:cornerRadius="@dimen/corner_radius" />
 
     <!-- Remove Button -->
     <Button
@@ -125,6 +128,7 @@
         app:icon="@drawable/ic_fluent_delete_24_regular"
         app:iconGravity="textStart"
         app:iconSize="24dp"
-        app:iconTint="@color/yellow" />
+        app:iconTint="@color/yellow"
+        app:cornerRadius="@dimen/corner_radius" />
 
 </LinearLayout>

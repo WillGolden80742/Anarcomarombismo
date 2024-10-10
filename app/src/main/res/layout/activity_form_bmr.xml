@@ -170,7 +170,8 @@
                 app:icon="@drawable/ic_fluent_save_24_regular"
                 app:iconGravity="textStart"
                 app:iconSize="32dp"
-                app:iconTint="@color/yellow" />
+                app:iconTint="@color/yellow"
+                app:cornerRadius="@dimen/corner_radius"/>
 
         </LinearLayout>
 

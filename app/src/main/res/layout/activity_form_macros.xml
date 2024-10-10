@@ -158,7 +158,8 @@
                     app:icon="@drawable/ic_fluent_add_subtract_circle_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/yellow" />
+                    app:iconTint="@color/yellow"
+                    app:cornerRadius="@dimen/corner_radius" />
 
                 <Button
                     android:id="@+id/editBasalButton"
@@ -174,7 +175,8 @@
                     app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/yellow" />
+                    app:iconTint="@color/yellow"
+                    app:cornerRadius="@dimen/corner_radius" />
 
             </LinearLayout>
 
@@ -331,7 +333,8 @@
                     app:icon="@drawable/ic_fluent_save_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/yellow" />
+                    app:iconTint="@color/yellow"
+                    app:cornerRadius="@dimen/corner_radius"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
