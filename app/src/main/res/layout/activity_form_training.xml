@@ -27,7 +27,6 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/edittext_background"
         android:ems="10"
@@ -44,7 +43,6 @@
         android:id="@+id/descriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/description"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -74,13 +72,14 @@
         android:id="@+id/save"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/button_color"
         android:text="@string/save"
         android:textColor="@color/yellow"
+        app:cornerRadius="@dimen/corner_radius"
         app:icon="@drawable/ic_fluent_save_24_regular"
         app:iconGravity="textStart"
         app:iconSize="36dp"
@@ -89,21 +88,21 @@
         app:layout_constraintEnd_toStartOf="@id/removeTraining"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/description"
-        app:layout_constraintVertical_bias="0.0"
-        app:cornerRadius="@dimen/corner_radius" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/removeTraining"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/button_color"
         android:text="@string/remove"
         android:textColor="@color/yellow"
         android:textStyle="bold"
+        app:cornerRadius="@dimen/corner_radius"
         app:icon="@drawable/ic_fluent_delete_24_regular"
         app:iconGravity="textStart"
         app:iconSize="36dp"
@@ -112,8 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/save"
         app:layout_constraintTop_toBottomOf="@id/description"
-        app:layout_constraintVertical_bias="0.0"
-        app:cornerRadius="@dimen/corner_radius" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView2"
