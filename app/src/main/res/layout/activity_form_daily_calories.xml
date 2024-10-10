@@ -70,7 +70,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
@@ -78,15 +78,18 @@
         <EditText
             android:id="@+id/gramsEditText"
             android:layout_width="0dp"
-            android:layout_height="46dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
+            android:background="@drawable/edittext_background"
             android:inputType="number"
+            android:padding="12dp"
             android:text="100" />
 
         <TextView
             android:id="@+id/gramsTextView"
             android:layout_width="wrap_content"
-            android:layout_height="46dp"
+            android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
             android:text="g"
             android:textAlignment="center"
@@ -95,14 +98,16 @@
         <Button
             android:id="@+id/saveFoodButton"
             android:layout_width="wrap_content"
-            android:layout_height="46dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center_vertical"
             android:backgroundTint="@color/button_color"
+            android:enabled="false"
             android:textColor="@color/yellow"
+            app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/ic_fluent_save_24_regular"
             app:iconGravity="textStart"
             app:iconSize="32dp"
-            app:iconTint="@color/yellow"
-            app:cornerRadius="@dimen/corner_radius" />
+            app:iconTint="@color/yellow" />
     </LinearLayout>
 
     <!-- Action Buttons Section -->

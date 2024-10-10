@@ -9,7 +9,7 @@
     <string name="age">Age</string>
     <string name="age_hint">Enter your age</string>
     <string name="anterior_deltoids">Anterior Deltoids</string>
-    <string name="app_name">Anarcomarombismo</string>
+    <string name="app_name">AnarcoMarombismo</string>
     <string name="articulated_pulley">Cable Pushdown</string>
     <string name="back">Back</string>
     <string name="back_">Back</string>
@@ -209,10 +209,10 @@
     </string-array>
     <string-array name="activity_level_array">
         <item>Select Activity Level</item>
-        <item>Sedentary (little or no exercise)</item>
-        <item>Lightly active (light exercise/sports 1-3 days/week)</item>
-        <item>Moderately active (moderate exercise/sports 3-5 days/week)</item>
-        <item>Active (hard exercise/sports 6-7 days a week)</item>
-        <item>Super active (professional athlete)</item>
+        <item>Sedentary</item>
+        <item>Lightly Active</item>
+        <item>Moderately Active</item>
+        <item>Active</item>
+        <item>Super Active</item>
     </string-array>
 </resources>

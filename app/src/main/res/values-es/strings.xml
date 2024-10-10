@@ -9,7 +9,7 @@
     <string name="age">Idade</string>
     <string name="age_hint">Digite sua idade</string>
     <string name="anterior_deltoids">Deltoides Anteriores</string>
-    <string name="app_name">Anarcomarombismo</string>
+    <string name="app_name">AnarcoMarombismo</string>
     <string name="articulated_pulley">Jalón al Pecho en Máquina Articulada</string>
     <string name="back">Dorsal</string>
     <string name="back_">Espalda</string>
@@ -209,10 +209,10 @@
     </string-array>
     <string-array name="activity_level_array">
         <item>Seleccionar fator de atividade</item>
-        <item>Sedentario (poco o ningún ejercicio)</item>
-        <item>Ligeramente activo (ejercicio ligero/deportes 1-3 días a la semana)</item>
-        <item>Moderadamente activo (ejercicio moderado/deportes 3-5 días a la semana)</item>
-        <item>Activo (ejercicio intenso/deportes 6-7 días a la semana)</item>
-        <item>Súper activo (atleta profesional)</item>
+        <item>Sedentario</item>
+        <item>Ligeramente activo</item>
+        <item>Moderadamente activo</item>
+        <item>Activo</item>
+        <item>Súper Activo</item>
     </string-array>
 </resources>
