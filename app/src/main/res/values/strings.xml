@@ -209,10 +209,10 @@
     </string-array>
     <string-array name="activity_level_array">
         <item>Selecione Fator de Atividade</item>
-        <item>Sedentário (pouco ativo)</item>
-        <item>Levemente ativo (pouco ativo, exercício moderado)</item>
-        <item>Moderadamente ativo (exercício moderado, pouca intensidade)</item>
-        <item>Ativo (exercício pesado, intensidade moderada)</item>
-        <item>Super ativo (exercício pesado, alta intensidade)</item>
+        <item>Sedentário</item>
+        <item>Levemente Ativo</item>
+        <item>Moderadamente Ativo</item>
+        <item>Ativo</item>
+        <item>Super Ativo</item>
     </string-array>
 </resources>
