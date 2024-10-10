@@ -166,17 +166,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/button_color"
                     android:padding="12dp"
                     android:textColor="@color/yellow"
+                    app:cornerRadius="@dimen/corner_radius"
                     app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/yellow"
-                    app:cornerRadius="@dimen/corner_radius" />
+                    app:iconTint="@color/yellow" />
 
             </LinearLayout>
 
