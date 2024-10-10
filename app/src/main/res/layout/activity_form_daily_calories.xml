@@ -20,8 +20,10 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/edittext_background"
+            android:iconifiedByDefault="false"
             android:queryHint="@string/search_for_food"
-            app:iconTint="@color/yellow" />
+            app:iconTint="@color/yellow"
+            tools:iconifiedByDefault="true" />
 
     </LinearLayout>
 
