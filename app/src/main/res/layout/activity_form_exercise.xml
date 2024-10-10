@@ -118,7 +118,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/title_color"
                 android:textSize="24dp"
-                tools:textStyle="bold" />
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editTextSets"
