@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     tools:context=".Forms.formFood">
 
 
@@ -11,13 +12,10 @@
       android:id="@+id/nutricional_label"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="20dp"
-      android:layout_marginTop="20dp"
-      android:layout_marginEnd="20dp"
       android:layout_marginBottom="20dp"
       android:text="@string/nutritional_information"
       android:textColor="@color/title_color"
-      android:textSize="32sp"
+      android:textSize="24dp"
       android:textStyle="bold"
       app:layout_constraintBottom_toTopOf="@+id/scrollView"
       app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp">
 
@@ -230,12 +227,11 @@
         android:id="@+id/addFoodFormButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="20dp"
         android:backgroundTint="@color/button_color"
         android:text="@string/add_nutrition_info"
         android:textColor="@color/yellow"
+        app:cornerRadius="@dimen/corner_radius"
         app:icon="@drawable/ic_fluent_save_24_regular"
         app:iconGravity="textStart"
         app:iconSize="32dp"
@@ -243,18 +239,16 @@
         app:layout_constraintBottom_toTopOf="@+id/removeFoodFormButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cornerRadius="@dimen/corner_radius" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/removeFoodFormButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:backgroundTint="@color/button_color"
         android:text="@string/remove_nutrition_info"
         android:textColor="@color/yellow"
+        app:cornerRadius="@dimen/corner_radius"
         app:icon="@drawable/ic_fluent_delete_24_regular"
         app:iconGravity="textStart"
         app:iconSize="32dp"
@@ -262,8 +256,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addFoodFormButton"
-        app:cornerRadius="@dimen/corner_radius" />
+        app:layout_constraintTop_toBottomOf="@id/addFoodFormButton" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 
