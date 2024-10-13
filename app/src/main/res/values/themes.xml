@@ -1,9 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Anarcomarombismo" parent="Theme.Material3.DayNight.NoActionBar">
-
         <item name="android:statusBarColor">@color/black</item>
-
         <item name="android:windowBackground">@color/white</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textColorHint">@android:color/black</item>
@@ -20,10 +17,6 @@
         <item name="colorAccent">@color/yellow</item>
         <item name="colorSecondary">@color/yellow</item>
         <item name="android:navigationBarColor">@color/button_color</item>
-
     </style>
-
     <style name="Theme.Anarcomarombismo" parent="Base.Theme.Anarcomarombismo" />
-
-
 </resources>

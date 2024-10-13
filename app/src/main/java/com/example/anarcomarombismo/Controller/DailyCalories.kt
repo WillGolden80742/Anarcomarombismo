@@ -169,8 +169,7 @@ class DailyCalories(
             val decimalFormat = DecimalFormat("#")
             return buildString {
                 append(context.getString(R.string.calories_b)).append(" : ")
-                    .append(decimalFormat.format(calorieskcal)).append("kcal").append(" - ")
-                    .append(decimalFormat.format(calorieskj)).append("kj").append(", \n")
+                    .append(decimalFormat.format(calorieskcal)).append("kcal").append(", \n")
                 append(context.getString(R.string.proteins_b)).append(" : ")
                     .append(decimalFormat.format(protein)).append(context.getString(R.string.g)).append(", \n")
                 append(context.getString(R.string.lipids_b)).append(" : ")

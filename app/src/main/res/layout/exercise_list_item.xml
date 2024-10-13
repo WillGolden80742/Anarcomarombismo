@@ -8,7 +8,7 @@
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollViewItem"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
@@ -42,16 +42,18 @@
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollViewItem2"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/labelCheckBoxItem"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
+                android:gravity="center_horizontal"
                 android:text="7 days"
                 android:textSize="18dp"
                 android:textStyle="bold" />
