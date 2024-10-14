@@ -182,7 +182,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
 
@@ -204,9 +203,9 @@
                             android:id="@+id/editTextCalories"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_background_by_macro"
                             android:hint="@string/calories_kcal"
-                            android:inputType="number|numberDecimal"
-                            android:background="@drawable/edittext_background_by_macro" />
+                            android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <CheckBox
@@ -233,9 +232,9 @@
                         android:id="@+id/editTextCarbs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background_by_macro"
                         android:hint="@string/carbohydrates"
-                        android:inputType="number|numberDecimal"
-                        android:background="@drawable/edittext_background_by_macro"/>
+                        android:inputType="number|numberDecimal" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
@@ -256,9 +255,9 @@
                             android:id="@+id/editTextLipids"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_background_by_macro"
                             android:hint="@string/lipids"
-                            android:inputType="number|numberDecimal"
-                            android:background="@drawable/edittext_background_by_macro" />
+                            android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -275,9 +274,9 @@
                             android:id="@+id/editTextLipidsByWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_background_by_macro"
                             android:hint="@string/fat_by_weight"
-                            android:inputType="number|numberDecimal"
-                            android:background="@drawable/edittext_background_by_macro" />
+                            android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -300,9 +299,9 @@
                             android:id="@+id/editTextProteins"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_background_by_macro"
                             android:hint="@string/proteins"
-                            android:inputType="number|numberDecimal"
-                            android:background="@drawable/edittext_background_by_macro" />
+                            android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -319,9 +318,9 @@
                             android:id="@+id/editTextProteinsByWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/edittext_background_by_macro"
                             android:hint="@string/protein_by_weight"
-                            android:inputType="number|numberDecimal"
-                            android:background="@drawable/edittext_background_by_macro" />
+                            android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -337,9 +336,9 @@
                         android:id="@+id/editTextDietaryFiber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background_by_macro"
                         android:hint="@string/dietary_fibers"
-                        android:inputType="number"
-                        android:background="@drawable/edittext_background_by_macro" />
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
