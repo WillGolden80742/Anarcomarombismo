@@ -74,13 +74,13 @@
         android:backgroundTint="@color/button_color"
         android:gravity="center"
         android:text="29/09/2024"
-        android:textColor="@color/yellow"
+        android:textColor="@color/title_color"
         android:textSize="24dp"
         app:cornerRadius="@dimen/corner_radius"
         app:icon="@drawable/ic_fluent_calendar_rtl_24_regular"
         app:iconGravity="textStart"
         app:iconSize="32dp"
-        app:iconTint="@color/yellow" />
+        app:iconTint="@color/title_color" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,12 +119,12 @@
             android:layout_gravity="center_vertical"
             android:backgroundTint="@color/button_color"
             android:enabled="false"
-            android:textColor="@color/yellow"
+            android:textColor="@color/title_color"
             app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/ic_fluent_save_24_regular"
             app:iconGravity="textStart"
             app:iconSize="32dp"
-            app:iconTint="@color/yellow" />
+            app:iconTint="@color/title_color" />
     </LinearLayout>
 
     <!-- Action Buttons Section -->
@@ -134,12 +134,12 @@
         android:layout_height="50dp"
         android:backgroundTint="@color/button_color"
         android:text="@string/see"
-        android:textColor="@color/yellow"
+        android:textColor="@color/title_color"
         app:cornerRadius="@dimen/corner_radius"
         app:icon="@drawable/ic_fluent_eye_show_24_filled"
         app:iconGravity="textStart"
         app:iconSize="24dp"
-        app:iconTint="@color/yellow" />
+        app:iconTint="@color/title_color" />
 
     <!-- Remove Button -->
     <Button
@@ -148,11 +148,11 @@
         android:layout_height="50dp"
         android:backgroundTint="@color/button_color"
         android:text="@string/remove_it"
-        android:textColor="@color/yellow"
+        android:textColor="@color/title_color"
         app:cornerRadius="@dimen/corner_radius"
         app:icon="@drawable/ic_fluent_delete_24_regular"
         app:iconGravity="textStart"
         app:iconSize="24dp"
-        app:iconTint="@color/yellow" />
+        app:iconTint="@color/title_color" />
 
 </LinearLayout>

@@ -154,12 +154,12 @@
                     android:backgroundTint="@color/button_color"
                     android:padding="12dp"
                     android:text="@string/calculate_basal_metabolic_rate"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/title_color"
+                    app:cornerRadius="@dimen/corner_radius"
                     app:icon="@drawable/ic_fluent_add_subtract_circle_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/yellow"
-                    app:cornerRadius="@dimen/corner_radius" />
+                    app:iconTint="@color/title_color" />
 
                 <Button
                     android:id="@+id/editBasalButton"
@@ -170,12 +170,12 @@
                     android:layout_weight="1"
                     android:backgroundTint="@color/button_color"
                     android:padding="12dp"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/title_color"
                     app:cornerRadius="@dimen/corner_radius"
                     app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/yellow" />
+                    app:iconTint="@color/title_color" />
 
             </LinearLayout>
 
@@ -349,12 +349,12 @@
                     android:backgroundTint="@color/button_color"
                     android:padding="12dp"
                     android:text="@string/save_target"
-                    android:textColor="@color/yellow"
+                    android:textColor="@color/title_color"
                     app:cornerRadius="@dimen/corner_radius"
                     app:icon="@drawable/ic_fluent_save_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="32dp"
-                    app:iconTint="@color/yellow" />
+                    app:iconTint="@color/title_color" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

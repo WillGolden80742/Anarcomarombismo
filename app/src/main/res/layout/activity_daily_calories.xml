@@ -216,7 +216,7 @@
                     app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
                     app:iconGravity="textStart"
                     app:iconSize="22dp"
-                    app:iconTint="#FFD700" />
+                    app:iconTint="@color/title_color" />
 
             </LinearLayout>
 
@@ -262,7 +262,7 @@
             app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
             app:iconGravity="textStart"
             app:iconSize="42dp"
-            app:iconTint="@color/yellow"
+            app:iconTint="@color/title_color"
             tools:iconGravity="textStart" />
 
         <Button
@@ -277,7 +277,7 @@
             app:icon="@drawable/ic_fluent_food_24_regular"
             app:iconGravity="textStart"
             app:iconSize="42dp"
-            app:iconTint="#FFD700" />
+            app:iconTint="@color/title_color" />
 
     </LinearLayout>
 
