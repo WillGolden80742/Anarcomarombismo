@@ -202,6 +202,7 @@
     <string name="video_link_hint">Insira o link de video (Youtube apenas)</string>
     <string name="weight">Peso</string>
     <string name="weight_hint">Digite seu peso</string>
+    <string name="trainings_label">Treinos</string>
     <string-array name="gender_array">
         <item>Selecione Gênero</item>
         <item>Masculino</item>
