@@ -196,14 +196,17 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@color/title_color"
+                        app:hintTextColor="@color/title_color">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextCalories"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/calories_kcal"
-                            android:inputType="number|numberDecimal" />
+                            android:inputType="number|numberDecimal"
+                            android:background="@drawable/edittext_background_by_macro" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <CheckBox
@@ -211,8 +214,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="8dp"
+                        android:buttonTint="@color/title_color"
                         android:gravity="center"
                         android:text="@string/update_meta"
+                        android:textColor="@color/title_color"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -220,14 +225,17 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    app:boxStrokeColor="@color/title_color"
+                    app:hintTextColor="@color/title_color">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCarbs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/carbohydrates"
-                        android:inputType="number|numberDecimal" />
+                        android:inputType="number|numberDecimal"
+                        android:background="@drawable/edittext_background_by_macro"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
@@ -240,14 +248,17 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@color/title_color"
+                        app:hintTextColor="@color/title_color">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextLipids"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/lipids"
-                            android:inputType="number|numberDecimal" />
+                            android:inputType="number|numberDecimal"
+                            android:background="@drawable/edittext_background_by_macro" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -256,14 +267,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@color/title_color"
+                        app:hintTextColor="@color/title_color">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextLipidsByWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/fat_by_weight"
-                            android:inputType="number|numberDecimal" />
+                            android:inputType="number|numberDecimal"
+                            android:background="@drawable/edittext_background_by_macro" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -278,14 +292,17 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@color/title_color"
+                        app:hintTextColor="@color/title_color">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextProteins"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/proteins"
-                            android:inputType="number|numberDecimal" />
+                            android:inputType="number|numberDecimal"
+                            android:background="@drawable/edittext_background_by_macro" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -294,14 +311,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        app:boxStrokeColor="@color/title_color"
+                        app:hintTextColor="@color/title_color">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextProteinsByWeight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/protein_by_weight"
-                            android:inputType="number|numberDecimal" />
+                            android:inputType="number|numberDecimal"
+                            android:background="@drawable/edittext_background_by_macro" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
@@ -309,14 +329,17 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="8dp"
+                    app:boxStrokeColor="@color/title_color"
+                    app:hintTextColor="@color/title_color">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextDietaryFiber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/dietary_fibers"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:background="@drawable/edittext_background_by_macro" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button

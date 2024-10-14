@@ -12,6 +12,7 @@
     <color name="text_primary">#000</color>
     <color name="button_color">#151515</color>
     <color name="mine_shaft">#fff</color>
+    <color name="mine_shaft_macros">#ddd</color>
     <color name="mine_shaft_border">#323232</color>
     <color name="title_color">#000</color>
 </resources>
