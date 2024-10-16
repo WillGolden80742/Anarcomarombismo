@@ -38,7 +38,7 @@ class FoodAdapter(
         val descriptionTextView = view.findViewById<TextView>(R.id.foodTitleTextViewItem)
         val detailsTextView = view.findViewById<TextView>(R.id.foodTextViewItem)
         val editButton = view.findViewById<FloatingActionButton>(R.id.foodFloatingEditActionButton)
-        val addButton = view.findViewById<FloatingActionButton>(R.id.sharedTrainings)
+        val addButton = view.findViewById<FloatingActionButton>(R.id.foodFloatingAddActionButton)
 
         descriptionTextView.text = food.foodDescription
         detailsTextView.text = food.toString(context)
