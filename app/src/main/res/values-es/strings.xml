@@ -203,6 +203,7 @@
     <string name="weight">Peso</string>
     <string name="weight_hint">Ingrese su peso</string>
     <string name="trainings_label">Treinos</string>
+    <string name="file_export_error">Error al exportar el archivo</string>
     <string-array name="gender_array">
         <item>Seleccionar género</item>
         <item>Masculino</item>

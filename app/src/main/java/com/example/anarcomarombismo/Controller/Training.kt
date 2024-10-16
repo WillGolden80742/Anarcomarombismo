@@ -1,10 +1,15 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Random
 
 class Training(
@@ -13,6 +18,7 @@ class Training(
     var description: String = ""
 ) : DataHandler<Training> {
     private var randomTrainingID = 0L
+    data class WorkoutPlan(val trainings: List<Training>,val exercises: List<Exercise>)
 
     companion object {
         private val cache = Cache()
@@ -121,5 +127,36 @@ class Training(
             Exercise.dumpExercise(context)
         }
         return trainingArray.toList()
+    }
+
+    fun export(context: Context): Boolean {
+        val trainings = fetchAll(context)
+        var exercises = listOf(Exercise())
+        for (training in trainings) {
+            val exercisesList = Exercise.build(trainingID = training.trainingID).fetchAll(context)
+            exercises = exercises.plus(exercisesList)
+        }
+        exercises = exercises.drop(1)
+        val workoutPlan = WorkoutPlan(trainings, exercises)
+        val jsonWorkoutPlan = JSON.toJson(workoutPlan)
+        val fileName = "WorkoutPlan.anarchy3"
+        try {
+            val file = File(context.filesDir, fileName)
+            val fileOutputStream = FileOutputStream(file)
+            fileOutputStream.write(jsonWorkoutPlan.toByteArray())
+            fileOutputStream.close()
+            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "application/json"
+            intent.putExtra(Intent.EXTRA_STREAM, uri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(context,
+                context.getString(R.string.file_export_error), Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
     }
 }

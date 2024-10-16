@@ -43,6 +43,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")
     implementation("org.jsoup:jsoup:1.15.3")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("androidx.core:core:1.9.0")
     implementation("androidx.activity:activity:1.9.0")
     implementation("androidx.room:room-ktx:2.6.1")
     testImplementation("junit:junit:4.13.2")

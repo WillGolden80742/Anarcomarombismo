@@ -8,17 +8,22 @@ import android.widget.ListView
 import com.example.anarcomarombismo.Controller.Adapter.TrainingAdapter
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formTraining
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
 
     private lateinit var addTrainingButton: Button
     private lateinit var trainingList: ListView
+    private lateinit var importTrainings: FloatingActionButton
+    private lateinit var exportTrainings: FloatingActionButton
     private lateinit var dailyCaloriesButton: Button
     private val listView: ListView by lazy { findViewById(R.id.trainingList) }
     private fun initializeUIComponents() {
         addTrainingButton = findViewById(R.id.addTrainingButton)
         dailyCaloriesButton = findViewById(R.id.dailyCaloriesButton)
         trainingList = findViewById(R.id.trainingList)
+        importTrainings = findViewById(R.id.importTrainings)
+        exportTrainings = findViewById(R.id.exportTrainings)
     }
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +35,9 @@ class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
         }
         dailyCaloriesButton.setOnClickListener {
             callDailyCalories()
+        }
+        exportTrainings.setOnClickListener {
+            Training().export(this)
         }
     }
 
