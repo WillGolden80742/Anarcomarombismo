@@ -59,11 +59,6 @@
     <string name="enter_lipids">Ingrese los lípidos</string>
     <string name="enter_protein">Ingrese la proteína</string>
     <string name="enter_sodium">Ingrese el sodio</string>
-    <string name="enter_your_caloric_meta">Introduce tu meta calórica</string>
-    <string name="enter_your_daily_fat_meta">Introduce tu meta diaria de grasa</string>
-    <string name="enter_your_daily_protein_meta">Introduce tu meta diaria de proteína</string>
-    <string name="enter_your_diary_carbohydrate_meta">Introduce tu meta diaria de carbohidratos</string>
-    <string name="enter_your_dietary_fiber_meta">Introduce tu meta diaria de fibra dietética</string>
     <string name="error_removing_food">No se pudo eliminar el alimento</string>
     <string name="exercise_hint">Ingrese el nombre del ejercicio</string>
     <string name="exercise_name">Nombre del Ejercicio</string>
@@ -89,12 +84,9 @@
     <string name="hammer_thread_alternate_each_side_counts_as_repeated">Curl Martillo Alterno (cada lado cuenta como ½ repetición)</string>
     <string name="height">Altura (cm)</string>
     <string name="height_hint">Digite sua altura</string>
-    <string name="height_invalid">Altura inválida</string>
     <string name="high_paddle_with_bar_w">Remo Alto con Barra W</string>
     <string name="insert_grams">Ingrese Gramos</string>
     <string name="insert_the_food_description">Ingrese la descripción de la comida</string>
-    <string name="invalid_age">Edad inválida</string>
-    <string name="invalid_weight">Peso inválido</string>
     <string name="it_was_not_possible_to_load_the_food">No se pudo cargar el alimento</string>
     <string name="lateral_deltoids">Deltoides Laterales</string>
     <string name="lateral_elevation">Elevación Lateral</string>
@@ -112,7 +104,6 @@
     <string name="mandatory_gender">Gênero é obrigatório</string>
     <string name="mandatory_height">La altura es obligatoria</string>
     <string name="mandatory_weight">El peso es obligatorio</string>
-    <string name="meta_updated">Meta actualizada</string>
     <string name="metabolic_profile">Perfil Metabolico</string>
     <string name="mg">mg</string>
     <string name="muscle">Músculo</string>
@@ -202,14 +193,14 @@
     <string name="video_link_hint">Ingrese el enlace del video (Solo Youtube)</string>
     <string name="weight">Peso</string>
     <string name="weight_hint">Ingrese su peso</string>
-    <string name="trainings_label">Treinos</string>
+    <string name="trainings_label">Entrenamientos</string>
     <string name="file_export_error">Error al exportar el archivo</string>
-    <string name="training_not_found">Treino não encontrado</string>
-    <string name="exercise_not_found">Exercício não encontrado</string>
-    <string name="error_file_empty">Arquivo vázio</string>
-    <string name="error_reading_file">Erro ao ler arquivp</string>
-    <string name="error_no_file_selected">Nenhum arquivo selecionado</string>
-    <string name="successful_imported_training">Treino importado com sucesso</string>
+    <string name="training_not_found">Ejercicio no encontrado</string>
+    <string name="exercise_not_found">Ejercicio no encontrado</string>
+    <string name="error_file_empty">Archivo vacío</string>
+    <string name="error_reading_file">Error al leer el archivo</string>
+    <string name="error_no_file_selected">No se ha seleccionado ningún archivo</string>
+    <string name="successful_imported_training">Formación importada con éxito</string>
     <string-array name="gender_array">
         <item>Seleccionar género</item>
         <item>Masculino</item>

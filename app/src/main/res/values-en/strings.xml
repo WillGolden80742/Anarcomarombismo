@@ -59,11 +59,6 @@
     <string name="enter_lipids">Enter lipids</string>
     <string name="enter_protein">Enter protein</string>
     <string name="enter_sodium">Enter sodium</string>
-    <string name="enter_your_caloric_meta">Enter your caloric meta</string>
-    <string name="enter_your_daily_fat_meta">Enter your daily fat meta</string>
-    <string name="enter_your_daily_protein_meta">Enter your daily protein meta</string>
-    <string name="enter_your_diary_carbohydrate_meta">Enter your daily carbohydrate meta</string>
-    <string name="enter_your_dietary_fiber_meta">Enter your daily dietary fiber meta</string>
     <string name="error_removing_food">Error removing food</string>
     <string name="exercise_hint">Enter the exercise name</string>
     <string name="exercise_name">Exercise Name</string>
@@ -89,12 +84,9 @@
     <string name="hammer_thread_alternate_each_side_counts_as_repeated">Alternating Hammer Curl (each side counts as ½ rep)</string>
     <string name="height">Height (cm)</string>
     <string name="height_hint">Enter your height</string>
-    <string name="height_invalid">Invalid height</string>
     <string name="high_paddle_with_bar_w">W Bar Row</string>
     <string name="insert_grams">Enter Grams</string>
     <string name="insert_the_food_description">Enter the food description</string>
-    <string name="invalid_age">Invalid age</string>
-    <string name="invalid_weight">Invalid weight</string>
     <string name="it_was_not_possible_to_load_the_food">It was not possible to load the food</string>
     <string name="lateral_deltoids">Lateral Deltoids</string>
     <string name="lateral_elevation">lateral raise</string>
@@ -112,7 +104,6 @@
     <string name="mandatory_gender">Gender is required</string>
     <string name="mandatory_height">Height is required</string>
     <string name="mandatory_weight">Weight is required</string>
-    <string name="meta_updated">Meta updated</string>
     <string name="metabolic_profile">Metabolic Profile</string>
     <string name="mg">mg</string>
     <string name="muscle">Muscle</string>
@@ -204,12 +195,12 @@
     <string name="weight_hint">Enter your weight</string>
     <string name="trainings_label">Trainings</string>
     <string name="file_export_error">File export error</string>
-    <string name="training_not_found">Treino não encontrado</string>
-    <string name="exercise_not_found">Exercício não encontrado</string>
-    <string name="error_file_empty">Arquivo vázio</string>
-    <string name="error_reading_file">Erro ao ler arquivp</string>
-    <string name="error_no_file_selected">Nenhum arquivo selecionado</string>
-    <string name="successful_imported_training">Treino importado com sucesso</string>
+    <string name="training_not_found">Training not found</string>
+    <string name="exercise_not_found">Exercise not found</string>
+    <string name="error_file_empty">Void file</string>
+    <string name="error_reading_file">Error reading file</string>
+    <string name="error_no_file_selected">No file selected</string>
+    <string name="successful_imported_training">Successfully imported training</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>
