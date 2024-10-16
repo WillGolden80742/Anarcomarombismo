@@ -59,11 +59,6 @@
     <string name="enter_lipids">Insira os lipídios</string>
     <string name="enter_protein">Insira a proteína</string>
     <string name="enter_sodium">Insira o sódio</string>
-    <string name="enter_your_caloric_meta">Digite sua meta calórica</string>
-    <string name="enter_your_daily_fat_meta">Digite sua meta de gordura diaria</string>
-    <string name="enter_your_daily_protein_meta">Digite sua meta de proteina diaria</string>
-    <string name="enter_your_diary_carbohydrate_meta">Digite sua meta de carboidrato diário</string>
-    <string name="enter_your_dietary_fiber_meta">Digite sua meta de fibra alimentar</string>
     <string name="error_removing_food">Não foi possível remover o alimento</string>
     <string name="exercise_hint">Insira o nome do exercício</string>
     <string name="exercise_name">Nome do Exercício</string>
@@ -89,12 +84,9 @@
     <string name="hammer_thread_alternate_each_side_counts_as_repeated">Rosca Martelo Alternado (cada lado conta como ½ repetição)</string>
     <string name="height">Altura (cm)</string>
     <string name="height_hint">Digite sua altura</string>
-    <string name="height_invalid">Altura inválida</string>
     <string name="high_paddle_with_bar_w">Remada Alta com Barra W</string>
     <string name="insert_grams">Insira Gramas</string>
     <string name="insert_the_food_description">Insira a descrição da comida</string>
-    <string name="invalid_age">Idade inválida</string>
-    <string name="invalid_weight">Peso inválido</string>
     <string name="it_was_not_possible_to_load_the_food">Não foi possível carregar o alimento</string>
     <string name="lateral_deltoids">Deltóides Lateral</string>
     <string name="lateral_elevation">Elevação Lateral</string>
@@ -112,7 +104,6 @@
     <string name="mandatory_gender">Gênero é obrigatório</string>
     <string name="mandatory_height">Altura é obrigatória</string>
     <string name="mandatory_weight">Peso é obrigatório</string>
-    <string name="meta_updated">Meta atualizada</string>
     <string name="metabolic_profile">Perfil Metabólico</string>
     <string name="mg">mg</string>
     <string name="muscle">Músculo</string>
@@ -206,6 +197,10 @@
     <string name="file_export_error">Erro ao exportar o arquivo</string>
     <string name="training_not_found">Treino não encontrado</string>
     <string name="exercise_not_found">Exercício não encontrado</string>
+    <string name="error_file_empty">Arquivo vázio</string>
+    <string name="error_reading_file">Erro ao ler arquivp</string>
+    <string name="error_no_file_selected">Nenhum arquivo selecionado</string>
+    <string name="successful_imported_training">Treino importado com sucesso</string>
     <string-array name="gender_array">
         <item>Selecione Gênero</item>
         <item>Masculino</item>

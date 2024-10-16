@@ -1,16 +1,20 @@
 package com.example.anarcomarombismo
-import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.example.anarcomarombismo.Controller.Adapter.TrainingAdapter
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formTraining
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickListener {
+class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickListener {
 
     private lateinit var addTrainingButton: Button
     private lateinit var trainingList: ListView
@@ -18,6 +22,9 @@ class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
     private lateinit var exportTrainings: FloatingActionButton
     private lateinit var dailyCaloriesButton: Button
     private val listView: ListView by lazy { findViewById(R.id.trainingList) }
+
+    private lateinit var launcher: ActivityResultLauncher<Array<String>> // Declare the launcher
+
     private fun initializeUIComponents() {
         addTrainingButton = findViewById(R.id.addTrainingButton)
         dailyCaloriesButton = findViewById(R.id.dailyCaloriesButton)
@@ -25,11 +32,19 @@ class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
         importTrainings = findViewById(R.id.importTrainings)
         exportTrainings = findViewById(R.id.exportTrainings)
     }
-    @SuppressLint("MissingInflatedId")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         initializeUIComponents()
+
+        // Register the ActivityResultLauncher here
+        launcher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            uri?.let {
+                Training().handleImportResult(it, this)
+            } ?: showToastMessage(this, false, R.string.error_no_file_selected, R.string.error_no_file_selected)
+        }
+
         addTrainingButton.setOnClickListener {
             callTraining()
         }
@@ -39,6 +54,21 @@ class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
         exportTrainings.setOnClickListener {
             Training().export(this)
         }
+        importTrainings.setOnClickListener {
+            // Launch file picker for .anarchy3 files
+            launcher.launch(arrayOf("application/octet-stream"))  // Assuming the content is JSON based on the name
+        }
+
+        val intent = intent
+        if (Intent.ACTION_VIEW == intent.action) {
+            val uri = intent.data
+            if (uri != null) {
+                contentResolver.openInputStream(uri)?.use { _ ->
+                    // Process the received file here
+                }
+            }
+        }
+        handleIncomingFile(intent)
     }
 
     override fun onResume() {
@@ -55,7 +85,7 @@ class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
     }
 
     override fun onItemClick(training: Training) {
-        // click
+        // Handle item click
     }
 
     private fun callTraining() {
@@ -74,4 +104,28 @@ class mainActivity : AppCompatActivity(),  TrainingAdapter.OnTrainingItemClickLi
         )
     }
 
+    private fun handleIncomingFile(intent: Intent) {
+        when (intent.action) {
+            Intent.ACTION_VIEW -> {
+                val uri = intent.data
+                if (uri != null) {
+                    when {
+                        uri.path?.endsWith(".anarchy3") == true -> {
+                            // Handle .anarchy3 file
+                            Training().handleImportResult(uri, this)
+                        }
+                        uri.path?.endsWith(".json") == true -> {
+                            // Handle .json file
+                            Training().handleImportResult(uri, this)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showToastMessage(context: Context, isUpdate: Boolean, addMessageId: Int, updateMessageId: Int) {
+        val messageResId = if (isUpdate) updateMessageId else addMessageId
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
 }

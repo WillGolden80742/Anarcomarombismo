@@ -2,6 +2,7 @@ package com.example.anarcomarombismo.Controller.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.exercises
+import com.example.anarcomarombismo.mainActivity
 
 class TrainingAdapter(context: Context, private val trainingList: List<Training>, private val listener: OnTrainingItemClickListener) : ArrayAdapter<Training>(context, 0, trainingList) {
 

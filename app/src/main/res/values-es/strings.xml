@@ -206,6 +206,10 @@
     <string name="file_export_error">Error al exportar el archivo</string>
     <string name="training_not_found">Treino não encontrado</string>
     <string name="exercise_not_found">Exercício não encontrado</string>
+    <string name="error_file_empty">Arquivo vázio</string>
+    <string name="error_reading_file">Erro ao ler arquivp</string>
+    <string name="error_no_file_selected">Nenhum arquivo selecionado</string>
+    <string name="successful_imported_training">Treino importado com sucesso</string>
     <string-array name="gender_array">
         <item>Seleccionar género</item>
         <item>Masculino</item>

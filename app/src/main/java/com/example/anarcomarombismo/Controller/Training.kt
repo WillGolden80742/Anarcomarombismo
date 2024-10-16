@@ -2,15 +2,22 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
+import com.example.anarcomarombismo.mainActivity
+import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStreamReader
 import java.util.Random
 
 class Training(
@@ -130,6 +137,18 @@ class Training(
         return trainingArray.toList()
     }
 
+    private fun showToastMessage(context: Context, isUpdate: Boolean) {
+        val messageResId = if (isUpdate) R.string.update_exercise_successful else R.string.save_exercise_successful
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showToastMessage(context: Context, isUpdate: Boolean, addMessageId: Int, updateMessageId: Int) {
+        val messageResId = if (isUpdate) updateMessageId else addMessageId
+        Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+
+
     fun export(context: Context): Boolean {
         val trainings = fetchAll(context)
         if (trainings.isEmpty()) {
@@ -152,7 +171,7 @@ class Training(
 
         val workoutPlan = WorkoutPlan(trainings, exercises)
         val jsonWorkoutPlan = JSON.toJson(workoutPlan)
-        val fileName = "WorkoutPlan.anarchy3"
+        val fileName = "WorkoutPlan.anarchy3.json"
 
         return try {
             val file = createFile(context, fileName)
@@ -188,6 +207,77 @@ class Training(
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         context.startActivity(intent)
+    }
+
+    fun import(context: Context) {
+        // Cria um ActivityResultLauncher para lidar com o resultado do seletor de arquivos
+        var launcher: ActivityResultLauncher<Array<String>>
+        try {
+            launcher =
+                (context as mainActivity).registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+                    uri?.let {
+                        handleImportResult(it, context)
+                    } ?: showToastMessage(
+                        context,
+                        false,
+                        R.string.error_no_file_selected,
+                        R.string.error_no_file_selected
+                    )
+                }
+
+            launcher.launch(arrayOf("application/octet-stream"))
+        } catch (e: Exception) {
+            println("Error activity: $e")
+        }
+    }
+
+    fun handleImportResult(uri: Uri, context: Context) {
+        try {
+            val inputStream = context.contentResolver.openInputStream(uri)
+            if (inputStream != null) {
+                val reader = BufferedReader(InputStreamReader(inputStream))
+                val content = StringBuilder()
+                reader.forEachLine { content.append(it).append("\n") }
+                reader.close()
+                val workoutPlan = parseWorkoutPlan(content.toString())
+                saveWorkoutPlan(context, workoutPlan)
+                showToastMessage(context, true,R.string.successful_imported_training, R.string.successful_imported_training)
+            } else {
+                showToastMessage(context, false, R.string.error_file_empty, R.string.error_file_empty)
+            }
+        } catch (e: Exception) {
+            Log.e("Exercise", "Error reading file", e)
+            showToastMessage(context, false, R.string.error_reading_file, R.string.error_reading_file)
+        }
+    }
+
+    // A hypothetical function to parse the file content into a WorkoutPlan object
+    private fun parseWorkoutPlan(content: String): WorkoutPlan {
+        return JSON.fromJson(content, WorkoutPlan::class.java)
+    }
+
+
+    private fun saveWorkoutPlan(context: Context, workoutPlan: WorkoutPlan) {
+        val cache = Cache()
+
+        // Salve os treinos no cache
+        val trainingKey = context.getString(R.string.trainings)
+        cache.setCache(context, trainingKey, workoutPlan.trainings)
+
+        // Salve os exercícios associados a cada treino
+        workoutPlan.trainings.forEach { training ->
+            val trainingID = training.trainingID
+
+            // Filtre os exercícios que pertencem ao treino atual (trainingID)
+            val associatedExercises = workoutPlan.exercises.filter { it.trainingID == trainingID }
+
+            // Crie uma chave de cache específica para este treino
+            val contextualKey = context.getString(R.string.exercises)
+            val cacheKey = "${contextualKey}_$trainingID"
+
+            // Salve os exercícios associados ao treino no cache
+            cache.setCache(context, cacheKey, associatedExercises)
+        }
     }
 
 }
