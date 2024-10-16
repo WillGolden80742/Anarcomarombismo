@@ -10,6 +10,7 @@ import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.util.Random
 
 class Training(
@@ -131,32 +132,62 @@ class Training(
 
     fun export(context: Context): Boolean {
         val trainings = fetchAll(context)
-        var exercises = listOf(Exercise())
-        for (training in trainings) {
-            val exercisesList = Exercise.build(trainingID = training.trainingID).fetchAll(context)
-            exercises = exercises.plus(exercisesList)
+        if (trainings.isEmpty()) {
+            Toast.makeText(context,
+                context.getString(R.string.training_not_found), Toast.LENGTH_SHORT).show()
+            return false
         }
-        exercises = exercises.drop(1)
+
+        val exercises = mutableListOf<Exercise>()
+        trainings.forEach { training ->
+            val exercisesList = Exercise.build(trainingID = training.trainingID).fetchAll(context)
+            exercises.addAll(exercisesList)
+        }
+
+        if (exercises.isEmpty()) {
+            Toast.makeText(context,
+                context.getString(R.string.exercise_not_found), Toast.LENGTH_SHORT).show()
+            return false
+        }
+
         val workoutPlan = WorkoutPlan(trainings, exercises)
         val jsonWorkoutPlan = JSON.toJson(workoutPlan)
         val fileName = "WorkoutPlan.anarchy3"
-        try {
-            val file = File(context.filesDir, fileName)
-            val fileOutputStream = FileOutputStream(file)
-            fileOutputStream.write(jsonWorkoutPlan.toByteArray())
-            fileOutputStream.close()
-            val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "application/json"
-            intent.putExtra(Intent.EXTRA_STREAM, uri)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(context,
-                context.getString(R.string.file_export_error), Toast.LENGTH_SHORT).show()
-            return false
+
+        return try {
+            val file = createFile(context, fileName)
+            writeToFile(file, jsonWorkoutPlan)
+            shareFile(context, file)
+            true
+        } catch (e: IOException) {
+            Toast.makeText(context, context.getString(R.string.file_export_error), Toast.LENGTH_SHORT).show()
+            false
         }
-        return true
     }
+
+    @Throws(IOException::class)
+    private fun createFile(context: Context, fileName: String): File {
+        return File(context.filesDir, fileName).apply {
+            if (!exists()) createNewFile()
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun writeToFile(file: File, content: String) {
+        FileOutputStream(file).use { outputStream ->
+            outputStream.write(content.toByteArray())
+        }
+    }
+
+    private fun shareFile(context: Context, file: File) {
+        val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "application/json"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+    }
+
 }

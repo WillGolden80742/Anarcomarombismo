@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Anarcomarombismo"
         tools:targetApi="31">
+
         <activity
             android:name=".Forms.formBMR"
             android:exported="false" />
@@ -49,16 +50,39 @@
             android:name=".Forms.formTraining"
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo" />
+
+        <!-- Main Activity with Intent Filter for .anarchy3 files -->
         <activity
             android:name=".mainActivity"
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- Intent filter to open .anarchy3 files -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!-- Scheme for content URIs -->
+                <data
+                    android:scheme="content"
+                    android:host="*"
+                    android:mimeType="application/octet-stream"
+                    android:pathPattern=".*\\.anarchy3" />
+
+                <!-- Scheme for file URIs -->
+                <data
+                    android:scheme="file"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.anarchy3" />
+            </intent-filter>
         </activity>
+
+        <!-- FileProvider declaration for file sharing -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -69,5 +93,4 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
 </manifest>
