@@ -171,7 +171,7 @@ class Training(
 
         val workoutPlan = WorkoutPlan(trainings, exercises)
         val jsonWorkoutPlan = JSON.toJson(workoutPlan)
-        val fileName = "WorkoutPlan.anarchy3.json"
+        val fileName = "WorkoutPlan.anarchy3"
 
         return try {
             val file = createFile(context, fileName)

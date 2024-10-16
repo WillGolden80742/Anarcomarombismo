@@ -59,15 +59,6 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
             launcher.launch(arrayOf("application/octet-stream"))  // Assuming the content is JSON based on the name
         }
 
-        val intent = intent
-        if (Intent.ACTION_VIEW == intent.action) {
-            val uri = intent.data
-            if (uri != null) {
-                contentResolver.openInputStream(uri)?.use { _ ->
-                    // Process the received file here
-                }
-            }
-        }
         handleIncomingFile(intent)
     }
 
