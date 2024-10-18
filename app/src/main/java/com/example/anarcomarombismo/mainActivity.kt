@@ -60,8 +60,8 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
 
     override fun onResume() {
         super.onResume()
-        loadTraining()
         handleIncomingFile(intent)
+        loadTraining()
     }
 
     private fun callDailyCalories() {
