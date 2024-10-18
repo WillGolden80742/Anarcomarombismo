@@ -38,7 +38,6 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
         setContentView(R.layout.main_activity)
         initializeUIComponents()
 
-        // Register the ActivityResultLauncher here
         launcher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
             uri?.let {
                 Training().handleImportResult(it, this)
@@ -55,16 +54,14 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
             Training().export(this)
         }
         importTrainings.setOnClickListener {
-            // Launch file picker for .anarchy3 files
-            launcher.launch(arrayOf("application/octet-stream"))  // Assuming the content is JSON based on the name
+            launcher.launch(arrayOf("application/octet-stream"))
         }
-
-        handleIncomingFile(intent)
     }
 
     override fun onResume() {
         super.onResume()
         loadTraining()
+        handleIncomingFile(intent)
     }
 
     private fun callDailyCalories() {
@@ -102,12 +99,8 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
                 if (uri != null) {
                     when {
                         uri.path?.endsWith(".anarchy3") == true -> {
-                            // Handle .anarchy3 file
                             Training().handleImportResult(uri, this)
-                        }
-                        uri.path?.endsWith(".json") == true -> {
-                            // Handle .json file
-                            Training().handleImportResult(uri, this)
+                            intent.action = null
                         }
                     }
                 }

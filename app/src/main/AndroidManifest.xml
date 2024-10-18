@@ -71,16 +71,6 @@
                 <data android:pathPattern=".*\\.anarchy3" />
             </intent-filter>
 
-            <!-- Intent filter for .json files -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="file" />
-                <data android:scheme="content" />
-                <data android:mimeType="application/json" />
-                <data android:pathPattern=".*\\.json" />
-            </intent-filter>
         </activity>
 
 
