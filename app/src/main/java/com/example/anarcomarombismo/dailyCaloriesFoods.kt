@@ -1,11 +1,9 @@
 package com.example.anarcomarombismo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ListView
 import android.widget.SearchView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.anarcomarombismo.Controller.Adapter.FoodAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
