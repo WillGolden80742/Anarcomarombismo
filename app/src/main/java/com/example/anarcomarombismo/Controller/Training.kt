@@ -258,8 +258,6 @@ class Training(
 
 
     private fun saveWorkoutPlan(context: Context, workoutPlan: WorkoutPlan) {
-        val cache = Cache()
-
         // Salve os treinos no cache
         val trainingKey = context.getString(R.string.trainings)
         cache.setCache(context, trainingKey, workoutPlan.trainings)
