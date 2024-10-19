@@ -98,17 +98,20 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
                 Intent.ACTION_VIEW -> {
                     val uri = safeIntent.data
                     if (uri != null) {
-                        when {
-                            uri.path?.endsWith(".anarchy3") == true  || safeIntent.type == "application/octet-stream" || safeIntent.type == "application/json" -> {
-                                Training().handleImportResult(uri, this)
-                                safeIntent.action = null
-                            }
+                        val mimeType = safeIntent.type ?: ""
+                        val filePath = uri.path ?: ""
+                        val filePattern = Regex(".*\\.anarchy3$")
+                        val validMimeTypes = Regex("application/(octet-stream|json)|")
+                        if (filePattern.containsMatchIn(filePath) || validMimeTypes.containsMatchIn(mimeType)) {
+                            Training().handleImportResult(uri, this)
+                            safeIntent.action = null
                         }
                     }
                 }
             }
         }
     }
+
 
     private fun showToastMessage(context: Context, isUpdate: Boolean, addMessageId: Int, updateMessageId: Int) {
         val messageResId = if (isUpdate) updateMessageId else addMessageId
