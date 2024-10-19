@@ -60,7 +60,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Intent filter for .anarchy3 files -->
+            <!-- Intent filter para arquivos .anarchy3 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -69,8 +69,9 @@
                 <data android:scheme="content" />
                 <data android:mimeType="*/*" />
                 <data android:pathPattern=".*\\.anarchy3" />
+                <data android:pathPattern=".*\\..*\\.anarchy3" />
+                <data android:pathPattern=".*\\..*\\..*\\.anarchy3" />
             </intent-filter>
-
         </activity>
 
 

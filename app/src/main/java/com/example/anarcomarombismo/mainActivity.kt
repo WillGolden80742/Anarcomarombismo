@@ -92,15 +92,17 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
         )
     }
 
-    private fun handleIncomingFile(intent: Intent) {
-        when (intent.action) {
-            Intent.ACTION_VIEW -> {
-                val uri = intent.data
-                if (uri != null) {
-                    when {
-                        uri.path?.endsWith(".anarchy3") == true -> {
-                            Training().handleImportResult(uri, this)
-                            intent.action = null
+    private fun handleIncomingFile(intent: Intent?) {
+        intent?.let { safeIntent ->
+            when (safeIntent.action) {
+                Intent.ACTION_VIEW -> {
+                    val uri = safeIntent.data
+                    if (uri != null) {
+                        when {
+                            uri.path?.endsWith(".anarchy3") == true  || safeIntent.type == "application/octet-stream" || safeIntent.type == "application/json" -> {
+                                Training().handleImportResult(uri, this)
+                                safeIntent.action = null
+                            }
                         }
                     }
                 }
