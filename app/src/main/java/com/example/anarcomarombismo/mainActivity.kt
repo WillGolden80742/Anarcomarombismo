@@ -98,14 +98,8 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
                 Intent.ACTION_VIEW -> {
                     val uri = safeIntent.data
                     if (uri != null) {
-                        val mimeType = safeIntent.type ?: ""
-                        val filePath = uri.path ?: ""
-                        val filePattern = Regex(".*\\.anarchy3$")
-                        val validMimeTypes = Regex("application/(octet-stream|json)|")
-                        if (filePattern.containsMatchIn(filePath) || validMimeTypes.containsMatchIn(mimeType)) {
-                            Training().handleImportResult(uri, this)
-                            safeIntent.action = null
-                        }
+                        Training().handleImportResult(uri, this)
+                        safeIntent.action = null
                     }
                 }
             }
