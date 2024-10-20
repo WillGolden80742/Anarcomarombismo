@@ -67,3 +67,7 @@ Contributions to this project are welcomed! To contribute, follow these steps:
 3. Make your changes and commit them (`git commit -m 'Add some feature'`).
 4. Push to your branch (`git push origin feature/YourFeature`).
 5. Submit a pull request for review.
+
+## License
+
+This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
