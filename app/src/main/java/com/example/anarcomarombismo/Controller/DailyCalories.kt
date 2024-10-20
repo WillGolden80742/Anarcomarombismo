@@ -12,6 +12,7 @@ import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
+import com.example.anarcomarombismo.dailyCalories
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
@@ -90,6 +91,8 @@ class DailyCalories(
                     val importedDailyCalories = JSON.fromJson(content.toString(), Array<DailyCalories>::class.java)
                     saveDailyCaloriesList(context, importedDailyCalories.toList())
                     Toast.makeText(context, context.getString(R.string.daily_calories_imported_successfully), Toast.LENGTH_SHORT).show()
+                    var intent = Intent(context,dailyCalories::class.java)
+                    context.startActivity(intent)
                 } else {
                     Toast.makeText(context, context.getString(R.string.error_file_empty), Toast.LENGTH_SHORT).show()
                 }
