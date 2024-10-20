@@ -40,7 +40,7 @@ class Calendars {
             )
 
             // Set the max date passed as a parameter
-            datePickerDialog.datePicker.maxDate = maxDate
+            // datePickerDialog.datePicker.maxDate = maxDate
             datePickerDialog.show()
         }
     }

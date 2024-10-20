@@ -36,14 +36,24 @@
                     android:id="@+id/dailyCaloriesTitle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/daily_calories"
                     android:textColor="@color/title_color"
                     android:textSize="32sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
+
         </HorizontalScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/exportDailyCalories"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:backgroundTint="@color/button_color"
+            app:srcCompat="@drawable/shared_fluent_icon"
+            app:tint="@color/title_color" />
 
     </LinearLayout>
 

@@ -1,12 +1,22 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStreamReader
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -44,6 +54,77 @@ class DailyCalories(
             return DailyCalories(date = date, foodsList = foodsList).apply {
                 recalculateCalories()
             }
+        }
+
+        fun export(context: Context): Boolean {
+            val contextualKey = context.getString(R.string.dailycalories)
+            val dailyCaloriesList = cache.getCache(context, contextualKey, Array<DailyCalories>::class.java)
+
+            if (dailyCaloriesList.isEmpty()) {
+                Toast.makeText(context, context.getString(R.string.no_daily_calories_to_export), Toast.LENGTH_SHORT).show()
+                return false
+            }
+
+            val jsonDailyCalories = JSON.toJson(dailyCaloriesList)
+            val fileName = "DailyCalories.anarchy3"
+
+            return try {
+                val file = createFile(context, fileName)
+                writeToFile(file, jsonDailyCalories)
+                shareFile(context, file)
+                true
+            } catch (e: IOException) {
+                Toast.makeText(context, context.getString(R.string.file_export_error), Toast.LENGTH_SHORT).show()
+                false
+            }
+        }
+
+        fun import(context: Context, uri: Uri) {
+            try {
+                val inputStream = context.contentResolver.openInputStream(uri)
+                if (inputStream != null) {
+                    val reader = BufferedReader(InputStreamReader(inputStream))
+                    val content = StringBuilder()
+                    reader.forEachLine { content.append(it).append("\n") }
+                    reader.close()
+                    val importedDailyCalories = JSON.fromJson(content.toString(), Array<DailyCalories>::class.java)
+                    saveDailyCaloriesList(context, importedDailyCalories.toList())
+                    Toast.makeText(context, context.getString(R.string.daily_calories_imported_successfully), Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, context.getString(R.string.error_file_empty), Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Log.e("DailyCalories", "Error reading file", e)
+                Toast.makeText(context, context.getString(R.string.error_reading_file), Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        private fun createFile(context: Context, fileName: String): File {
+            return File(context.filesDir, fileName).apply {
+                if (!exists()) createNewFile()
+            }
+        }
+
+        private fun writeToFile(file: File, content: String) {
+            FileOutputStream(file).use { outputStream ->
+                outputStream.write(content.toByteArray())
+            }
+        }
+
+        private fun shareFile(context: Context, file: File) {
+            val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/json"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        }
+
+        private fun saveDailyCaloriesList(context: Context, dailyCaloriesList: List<DailyCalories>) {
+            val contextualKey = context.getString(R.string.dailycalories)
+            cache.setCache(context, contextualKey, dailyCaloriesList)
         }
     }
 
@@ -100,7 +181,7 @@ class DailyCalories(
     private fun getExistingDailyCaloriesList(context: Context): List<DailyCalories> {
         val contextualKey = context.getString(R.string.dailycalories)
         return if (cache.hasCache(context, contextualKey)) {
-            cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
+                cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
         } else {
             emptyList()
         }

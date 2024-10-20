@@ -246,8 +246,7 @@ class Training(
                 showToastMessage(context, false, R.string.error_file_empty, R.string.error_file_empty)
             }
         } catch (e: Exception) {
-            Log.e("Exercise", "Error reading file", e)
-            showToastMessage(context, false, R.string.error_reading_file, R.string.error_reading_file)
+            DailyCalories.import(context, uri)
         }
     }
 

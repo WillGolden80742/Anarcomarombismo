@@ -14,8 +14,10 @@ import com.example.anarcomarombismo.Controller.Macro
 import com.example.anarcomarombismo.Forms.formDailyCalories
 import com.example.anarcomarombismo.Forms.formFood
 import com.example.anarcomarombismo.Forms.formMacro
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class dailyCalories : AppCompatActivity() {
+    private lateinit var exportDailyCalories: FloatingActionButton
     private lateinit var caloriesFoodList: ListView
     private lateinit var addCaloriesButton: Button
     private lateinit var addNewFoodButton: Button
@@ -33,6 +35,7 @@ class dailyCalories : AppCompatActivity() {
     private lateinit var dietaryFiberLabel: TextView
 
     private fun initializeUIComponents() {
+        exportDailyCalories = findViewById(R.id.exportDailyCalories)
         caloriesFoodList = findViewById(R.id.caloriesFoodList)
         addCaloriesButton = findViewById(R.id.addFoodFormButton)
         addNewFoodButton = findViewById(R.id.addNewFoodButton)
@@ -53,6 +56,9 @@ class dailyCalories : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_calories)
         initializeUIComponents()
+        exportDailyCalories.setOnClickListener {
+            DailyCalories.export(this)
+        }
         addCaloriesButton.setOnClickListener {
             callFormDailyCalories()
         }

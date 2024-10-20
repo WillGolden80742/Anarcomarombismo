@@ -201,6 +201,8 @@
     <string name="error_reading_file">Error reading file</string>
     <string name="error_no_file_selected">No file selected</string>
     <string name="successful_imported_training">Successfully imported training</string>
+    <string name="daily_calories_imported_successfully">Calories imported successfully</string>
+    <string name="no_daily_calories_to_export">No daily calories to export</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>
