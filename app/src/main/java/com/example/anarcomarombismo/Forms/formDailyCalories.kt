@@ -166,9 +166,7 @@ class formDailyCalories : AppCompatActivity() {
     }
 
     private fun getDailyCaloriesByDate(selectedDate: String) {
-        dailyCalories = DailyCalories.build(
-            selectedDate
-        ).fetchById(this, selectedDate)
+        dailyCalories = DailyCalories().fetchById(this, selectedDate)
         dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
         totalCaloriesLabel.text = formatTotalCalories(dailyCalories.calorieskcal)
         seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()

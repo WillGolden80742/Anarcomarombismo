@@ -51,7 +51,7 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
             callDailyCalories()
         }
         exportTrainings.setOnClickListener {
-            Training().export(this)
+            Training.export(this)
         }
         importTrainings.setOnClickListener {
             launcher.launch(arrayOf("application/octet-stream"))
@@ -98,7 +98,7 @@ class mainActivity : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickLis
                 Intent.ACTION_VIEW -> {
                     val uri = safeIntent.data
                     if (uri != null) {
-                        Training().handleImportResult(uri, this)
+                        Training.import(this,uri)
                         safeIntent.action = null
                     }
                 }

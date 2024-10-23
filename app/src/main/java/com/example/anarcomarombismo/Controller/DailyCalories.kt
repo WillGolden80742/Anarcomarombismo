@@ -11,6 +11,7 @@ import androidx.core.content.FileProvider
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
+import com.example.anarcomarombismo.Controller.Util.ShareFiles
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCalories
 import java.io.BufferedReader
@@ -67,62 +68,40 @@ class DailyCalories(
             }
 
             val jsonDailyCalories = JSON.toJson(dailyCaloriesList)
-            val fileName = "DailyCalories.anarchy3"
 
-            return try {
-                val file = createFile(context, fileName)
-                writeToFile(file, jsonDailyCalories)
-                shareFile(context, file)
-                true
-            } catch (e: IOException) {
-                Toast.makeText(context, context.getString(R.string.file_export_error), Toast.LENGTH_SHORT).show()
-                false
-            }
+            return ShareFiles.exportToFile(
+                context = context,
+                fileName = "DailyCalories.anarchy3",
+                content = jsonDailyCalories,
+                onSuccess = {
+                    // No additional action needed as Toast is handled in ShareFiles
+                },
+                onError = {
+                    Toast.makeText(context, context.getString(R.string.no_daily_calories_to_export), Toast.LENGTH_SHORT).show()
+                }
+            )
         }
 
         fun import(context: Context, uri: Uri) {
-            try {
-                val inputStream = context.contentResolver.openInputStream(uri)
-                if (inputStream != null) {
-                    val reader = BufferedReader(InputStreamReader(inputStream))
-                    val content = StringBuilder()
-                    reader.forEachLine { content.append(it).append("\n") }
-                    reader.close()
-                    val importedDailyCalories = JSON.fromJson(content.toString(), Array<DailyCalories>::class.java)
-                    saveDailyCaloriesList(context, importedDailyCalories.toList())
-                    Toast.makeText(context, context.getString(R.string.daily_calories_imported_successfully), Toast.LENGTH_SHORT).show()
-                    var intent = Intent(context,dailyCalories::class.java)
-                    context.startActivity(intent)
-                } else {
-                    Toast.makeText(context, context.getString(R.string.error_file_empty), Toast.LENGTH_SHORT).show()
+            ShareFiles.importFromFile(
+                context = context,
+                uri = uri,
+                onSuccess = { content ->
+                    try {
+                        val importedDailyCalories = JSON.fromJson(content, Array<DailyCalories>::class.java)
+                        saveDailyCaloriesList(context, importedDailyCalories.toList())
+                        Toast.makeText(context, context.getString(R.string.daily_calories_imported_successfully), Toast.LENGTH_SHORT).show()
+                        val intent = Intent(context, dailyCalories::class.java)
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        Log.e("DailyCalories", "Error parsing file", e)
+                        Toast.makeText(context, context.getString(R.string.error_reading_file), Toast.LENGTH_SHORT).show()
+                    }
+                },
+                onError = {
+                    Toast.makeText(context, context.getString(R.string.error_reading_file), Toast.LENGTH_SHORT).show()
                 }
-            } catch (e: Exception) {
-                Log.e("DailyCalories", "Error reading file", e)
-                Toast.makeText(context, context.getString(R.string.error_reading_file), Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        private fun createFile(context: Context, fileName: String): File {
-            return File(context.filesDir, fileName).apply {
-                if (!exists()) createNewFile()
-            }
-        }
-
-        private fun writeToFile(file: File, content: String) {
-            FileOutputStream(file).use { outputStream ->
-                outputStream.write(content.toByteArray())
-            }
-        }
-
-        private fun shareFile(context: Context, file: File) {
-            val uri = FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "application/json"
-                putExtra(Intent.EXTRA_STREAM, uri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            context.startActivity(intent)
+            )
         }
 
         private fun saveDailyCaloriesList(context: Context, dailyCaloriesList: List<DailyCalories>) {
