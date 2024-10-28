@@ -2,12 +2,16 @@ package com.example.anarcomarombismo.Controller.Util
 
 import android.content.Context
 import com.example.anarcomarombismo.Controller.Food
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.io.IOException
 import java.math.BigInteger
+import java.net.HttpURLConnection
+import java.net.URL
 import java.net.URLEncoder
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -17,6 +21,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 class FoodDataFetcher(var name: String = "", var href: String = "", var grams: String = "") {
     private val cache = Cache()
+
     companion object {
         private fun build(
             foodNumber: String,
@@ -41,30 +46,112 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
                 sodium = formatNutrientValue(nutrients["Sódio"], grams)
             )
         }
+
         private fun convertKjToKcal(kj: Double): Double {
             return kj / 4.184
         }
+
         private fun formatNutrientValue(nutrientValue: String?, grams: Double): String {
             val value = nutrientValue?.replace(Regex("[^0-9.]"), "")?.toDoubleOrNull() ?: 0.0
             return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
         }
+
         private fun formatNutrientValue(value: Double, grams: Double): String {
             return DecimalFormat("#.##").format((value / grams) * 100.0).replace(",", ".")
         }
     }
-    fun searchFood(context: Context, query: String): List<FoodDataFetcher> {
-        val queryHash = getKey(query)
-        if (cache.hasCache(context, queryHash)) {
-            println("CACHE HIT for queryHash: $queryHash")
-            return cache.getCache(context, queryHash,Array<FoodDataFetcher>::class.java).toList()
+
+    // Coroutine to fetch food data
+    suspend fun searchFood(context: Context, query: String): List<FoodDataFetcher> {
+        return withContext(Dispatchers.IO) {
+            val queryHash = getKey(query)
+            if (cache.hasCache(context, queryHash)) {
+                println("CACHE HIT for queryHash: $queryHash")
+                return@withContext cache.getCache(context, queryHash, Array<FoodDataFetcher>::class.java).toList()
+            }
+            val cachedData = fetchFoodSearchFromAPI(queryHash)
+            if (cachedData != null) {
+                println("CACHE HIT from API for queryHash: $queryHash")
+                cache.setCache(context, queryHash, cachedData)
+                return@withContext cachedData
+            }
+            fetchAndCacheOfFoodSearch(context, query, queryHash)
         }
-        return fetchAndCacheOfFoodSearch(context, query, queryHash)
     }
 
+    private fun fetchFoodSearchFromAPI(key: String): List<FoodDataFetcher>? {
+        return try {
+            val url = URL("${getOwnApiServer()}/getCache.php?key=$key")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                val content = connection.inputStream.bufferedReader().readText()
+                if (content.isNotEmpty()) {
+                    // Convert the obtained JSON to a list of objects
+                    JSON.fromJson(content, Array<FoodDataFetcher>::class.java)?.toList()
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        } catch (e: IOException) {
+            println("API fetch error: ${e.message}")
+            null
+        }
+    }
+
+    private fun fetchFoodFromAPI(key: String): Food? {
+        return try {
+            val url = URL("${getOwnApiServer()}/getCache.php?key=$key")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                val content = connection.inputStream.bufferedReader().readText()
+                if (content.isNotEmpty()) {
+                    JSON.fromJson(content, Food::class.java)
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        } catch (e: IOException) {
+            println("API fetch error: ${e.message}")
+            null
+        }
+    }
+
+    private fun saveToAPI(key: String, data: Any) {
+        try {
+            val url = URL("${getOwnApiServer()}/setCache.php")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "POST"
+            connection.doOutput = true
+
+            val postData = "key=$key&content=${URLEncoder.encode(JSON.toJson(data), "UTF-8")}"
+            connection.outputStream.write(postData.toByteArray())
+
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                println("Successfully saved data to API for key: $key")
+            }
+        } catch (e: IOException) {
+            println("API save error: ${e.message}")
+        }
+    }
 
     @OptIn(ExperimentalEncodingApi::class)
-    private fun getServer(): String {
+    private fun getExternalApiServer(): String {
         val base64 = "aHR0cHM6Ly93d3cuZmF0c2VjcmV0LmNvbS5icg=="
+        val decodedBytes: ByteArray = Base64.decode(base64)
+        return String(decodedBytes)
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    private fun getOwnApiServer(): String {
+        val base64 = "aHR0cHM6Ly90d29sZWFmY2hhdC5zaXRlL051dHJpdGlvbkFQSQ=="
         val decodedBytes: ByteArray = Base64.decode(base64)
         return String(decodedBytes)
     }
@@ -73,8 +160,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         val encodedQuery = URLEncoder.encode(query, "UTF-8")
         val items = mutableListOf<FoodDataFetcher>()
         for (i in 0..1) {
-            val url =
-                "${getServer()}/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
+            val url = "${getExternalApiServer()}/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
             try {
                 val document = HtmlHandler.fetchDocument(url)
                 val links = document.select("a.prominent")
@@ -82,7 +168,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
 
                 for (link in links) {
                     val foodSearch = parseFoodSearch(link, smallTextDivs)
-                    if (foodSearch != null && StringHandler.containsQuery(foodSearch.name,query)) {
+                    if (foodSearch != null && StringHandler.containsQuery(foodSearch.name, query)) {
                         items.add(foodSearch)
                     }
                 }
@@ -91,25 +177,28 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
                 return emptyList()
             }
         }
-        cache.setCache(context, queryHash,items)
+        cache.setCache(context, queryHash, items)
+        saveToAPI(queryHash, items)
         return items
     }
+
     private fun parseFoodSearch(link: Element, smallTextDivs: Elements): FoodDataFetcher? {
         val href = link.attr("href")
         val name = link.text().trim()
         val smallTextContent = findSmallTextContent(link, smallTextDivs)
-        val smallTextBeforeDash = smallTextContent.split("-")[0]
+        val smallTextBeforeDash = smallTextContent.split("-").firstOrNull() ?: ""
         val grams = extractGrams(smallTextBeforeDash)
         return if (grams != null) {
             FoodDataFetcher(
                 name = name,
-                href = "${getServer()}$href",
+                href = "${getExternalApiServer()}$href",
                 grams = grams.replace("g", "")
             )
         } else {
             null
         }
     }
+
     private fun findSmallTextContent(link: Element, smallTextDivs: Elements): String {
         for (div in smallTextDivs) {
             if (div.parent() == link.parent()) {
@@ -118,14 +207,22 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         }
         return ""
     }
+
     private fun extractGrams(text: String): String? {
         return Regex("(\\d+\\s*g|\\d+g)").find(text)?.value
     }
-    fun getFoodByURL(context: Context, url: String, grams: Double): Food {
+
+     fun getFoodByURL(context: Context, url: String, grams: Double): Food {
         val foodNumber = getKey(url)
         if (cache.hasCache(context, foodNumber)) {
             println("CACHE HIT for foodNumber: $foodNumber")
             return cache.getCache(context, foodNumber, Food::class.java)
+        }
+        val cachedData = fetchFoodFromAPI(foodNumber)
+        if (cachedData != null) {
+            println("CACHE HIT from API for foodNumber: $foodNumber")
+            cache.setCache(context, foodNumber, cachedData)
+            return cachedData
         }
         return try {
             val html = HtmlHandler.fetchHtmlContent(url)
@@ -135,17 +232,19 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
             val nutrients = extractNutrients(doc)
             val food = build(foodNumber, grams, foodDescription, nutrients)
             cache.setCache(context, foodNumber, food)
-            println(JSON.toJson(food))
+            saveToAPI(foodNumber, food)
             food
         } catch (e: Exception) {
             println("Error Food: ${e.message}")
             Food()
         }
     }
+
     private fun extractFoodDescription(doc: Document): String {
         val foodDescription = doc.select("div.summarypanelcontent h1").text().trim()
         return foodDescription.replace(Regex("\\d+g", RegexOption.IGNORE_CASE), "").replace("()", "").trim()
     }
+
     private fun extractNutrients(doc: Document): MutableMap<String, String> {
         val nutrients = mutableMapOf<String, String>()
         doc.select("div.nutrient.left").forEach { element: Element ->
@@ -155,6 +254,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         }
         return nutrients
     }
+
     private fun getKey(value: String): String {
         return try {
             val md = MessageDigest.getInstance("MD5")
