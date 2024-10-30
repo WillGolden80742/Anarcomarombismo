@@ -72,16 +72,17 @@ class ExerciseAdapter(
         }
 
         holder.checkItem.setOnLongClickListener {
-            // Marca ou desmarca o número de sets restantes
             val dailyExercises = DailyExercises(context)
-            val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
-            if (exerciseCount == 0) {
-                repeat(currentExercise.sets - dailyExercises.getExerciseCount(currentExercise)) {
+            var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
+            var exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+            var sets = currentExercise.sets
+            if (exerciseCount == 0 || countDays > 0) {
+                repeat(sets) {
                     handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
                 }
             } else {
                 unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
-                holder.labelCheckBoxItem.text = ""
+                countDays(holder.labelCheckBoxItem, currentExercise)
             }
             true
         }
@@ -172,7 +173,6 @@ class ExerciseAdapter(
         val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
         val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
         val sets = currentExercise.sets
-
         val daysText = when {
             countDays > 1 -> "$countDays ${context.getString(R.string.days)}"
             countDays == 1 -> "$countDays ${context.getString(R.string.day)}"
@@ -184,6 +184,7 @@ class ExerciseAdapter(
             scrollToNextExercise(currentExercise)
         }
     }
+
 
     private fun scrollToNextExercise (currentExercise: Exercise) {
         val nextPosition = exerciseList.indexOf(currentExercise) + 1
