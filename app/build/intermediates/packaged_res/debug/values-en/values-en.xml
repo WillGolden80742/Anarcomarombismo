@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_exercise">Add Exercise</string>
+    <string name="app_name">Anarcomarombismo</string>
+    <string name="cadence">Cadence</string>
+    <string name="cadence_hint">Enter the cadence</string>
+    <string name="default_cadence">3-1-3</string>
+    <string name="default_reps">10,10,10</string>
+    <string name="default_rest">60</string>
+    <string name="default_sets">3</string>
+    <string name="default_training_name">Training</string>
+    <string name="description">Description</string>
+    <string name="description_hint">Enter the description</string>
+    <string name="exercise_hint">Enter the exercise name</string>
+    <string name="exercise_name">Exercise Name</string>
+    <string name="load">Load (kg)</string>
+    <string name="load_hint">Enter the load in kilograms</string>
+    <string name="remove">Remove</string>
+    <string name="remove_exercise">Remove Exercise</string>
+    <string name="remove_exercise_successful">Exercise removed successfully!</string>
+    <string name="remove_training_successful">Training removed successfully!</string>
+    <string name="reps">Repetitions</string>
+    <string name="reps_hint">Enter the number of repetitions</string>
+    <string name="rest">Rest (seconds)</string>
+    <string name="save">Save</string>
+    <string name="save_exercise_successful">Exercise saved successfully!</string>
+    <string name="save_training_successful">Training saved successfully!</string>
+    <string name="seconds_hint">Enter the rest time in seconds</string>
+    <string name="sets">Sets</string>
+    <string name="sets_hint">Enter the number of sets</string>
+    <string name="training_name">Name</string>
+    <string name="training_name_hint">Enter the name</string>
+    <string name="update_exercise">Update Exercise</string>
+    <string name="update_exercise_successful">Exercise updated successfully!</string>
+    <string name="update_training">Update Training</string>
+    <string name="update_training_successful">Training updated successfully!</string>
+</resources>
