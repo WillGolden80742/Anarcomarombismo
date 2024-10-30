@@ -173,13 +173,17 @@ class ExerciseAdapter(
             countDays == 0 -> "$exerciseCount/$sets"
             else -> ""
         }
-        if (exerciseCount == sets) {
-            val nextPosition = exerciseList.indexOf(currentExercise) + 1
-            if (nextPosition < exerciseList.size) {
-                recyclerView.smoothScrollToPosition(nextPosition)
-            }
-        }
         labelCheckBoxItem.text = daysText
+        if (exerciseCount == sets) {
+            scrollToNextExercise(currentExercise)
+        }
+    }
+
+    private fun scrollToNextExercise (currentExercise: Exercise) {
+        val nextPosition = exerciseList.indexOf(currentExercise) + 1
+        if (nextPosition < exerciseList.size) {
+            recyclerView.smoothScrollToPosition(nextPosition)
+        }
     }
 
     private fun updateCheckItem(holder: ExerciseViewHolder, currentExercise: Exercise) {
