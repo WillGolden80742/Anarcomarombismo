@@ -3,86 +3,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_margin="5dp"
     android:background="@drawable/edittext_background"
     android:padding="15dp">
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollViewItem"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#000"
+        tools:ignore="WebViewLayout" />
 
-        <TextView
-            android:id="@+id/titleTextViewItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:textColor="@color/title_color"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-    </HorizontalScrollView>
+    <TextView
+        android:id="@+id/titleTextViewItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/webView"
+        android:textColor="@color/title_color"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/horizontalScrollViewItem"
-        android:layout_alignParentStart="true"
+        android:layout_below="@id/titleTextViewItem"
         android:paddingTop="4dp"
         android:textSize="18sp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="false"
-        android:layout_marginStart="16dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollViewItem2"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_horizontal">
-
-            <TextView
-                android:id="@+id/labelCheckBoxItem"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:gravity="center_horizontal"
-                android:text="7 days"
-                android:textSize="18dp"
-                android:textStyle="bold" />
-
-        </HorizontalScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/checkBoxItem"
+        <TextView
+            android:id="@+id/labelCheckBoxItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            app:backgroundTint="@color/black"
-            app:srcCompat="@drawable/ic_fluent_select_all_off_24_regular"
-            app:tint="@color/yellow" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="7 days"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingEditExerciseActionButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:clickable="true"
-            app:backgroundTint="@color/black"
-            app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
-            app:tint="@color/yellow" />
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/checkBoxItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                app:backgroundTint="@color/black"
+                app:srcCompat="@drawable/ic_fluent_select_all_off_24_regular"
+                app:tint="@color/yellow" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingEditExerciseActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                app:backgroundTint="@color/black"
+                app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
+                app:tint="@color/yellow" />
+        </LinearLayout>
 
     </LinearLayout>
 

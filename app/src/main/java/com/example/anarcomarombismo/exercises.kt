@@ -54,7 +54,7 @@ class exercises : AppCompatActivity() {
         }
 
         // Configura o RecyclerView
-        exerciseList.layoutManager = LinearLayoutManager(this)
+        exerciseList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
     override fun onResume() {
         super.onResume()
