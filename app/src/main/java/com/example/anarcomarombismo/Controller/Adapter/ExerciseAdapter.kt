@@ -5,9 +5,9 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.R
@@ -18,89 +18,67 @@ import java.util.Date
 import java.util.Locale
 
 class ExerciseAdapter(
-    context: Context,
+    private val context: Context,
     private val exerciseList: List<Exercise>,
-    private var date: String = ""
-) : ArrayAdapter<Exercise>(context, 0, exerciseList) {
+    private var date: String
+) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var listItemView = convertView
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(context).inflate(R.layout.exercise_list_item, parent, false)
-        }
+    inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val labelCheckBoxItem: TextView = itemView.findViewById(R.id.labelCheckBoxItem)
+        val nameTextView: TextView = itemView.findViewById(R.id.titleTextViewItem)
+        val descriptionTextView: TextView = itemView.findViewById(R.id.textViewItem)
+        val checkItem: FloatingActionButton = itemView.findViewById(R.id.checkBoxItem)
+        val floatingEditExerciseActionButton: FloatingActionButton = itemView.findViewById(R.id.floatingEditExerciseActionButton)
+    }
 
-        if (date.isEmpty()) {
-            this.date = getCurrentDate()
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.exercise_list_item, parent, false)
+        return ExerciseViewHolder(view)
+    }
 
+    override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val currentExercise = exerciseList[position]
-        val labelCheckBoxItem = listItemView!!.findViewById<TextView>(R.id.labelCheckBoxItem)
-        val nameTextView = listItemView.findViewById<TextView>(R.id.titleTextViewItem)
-        nameTextView.text = currentExercise.name
-        val descriptionTextView = listItemView.findViewById<TextView>(R.id.textViewItem)
-        descriptionTextView.text = currentExercise.toString(context)
-        val checkItem = listItemView.findViewById<FloatingActionButton>(R.id.checkBoxItem)
-        val floatingEditExerciseActionButton = listItemView.findViewById<FloatingActionButton>(R.id.floatingEditExerciseActionButton)
 
-        floatingEditExerciseActionButton.setOnClickListener {
-            callFormExercise("edit", currentExercise, date)
-            println("ID do exercício: ${exerciseList[position].exerciseID}")
+        holder.nameTextView.text = currentExercise.name
+        holder.descriptionTextView.text = currentExercise.toString(context)
+
+        // Atualiza o estado do checkItem com base no exercício
+        updateCheckItem(holder, currentExercise)
+
+        // Contabiliza os dias desde o último exercício
+        updateDaysLabel(holder.labelCheckBoxItem, currentExercise)
+
+        holder.floatingEditExerciseActionButton.setOnClickListener {
+            callFormExercise("edit", currentExercise)
         }
 
-        val checked = DailyExercises(context).isExerciseDone(date, currentExercise)
-
-        if (checked) {
-            checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-        } else {
-            checkItem.setImageResource(R.drawable.ic_fluent_select_all_off_24_regular)
+        holder.checkItem.setOnClickListener {
+            handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
         }
 
-        countDays(labelCheckBoxItem, currentExercise)
-
-        checkItem.setOnClickListener {
-            handleExerciseCheck(currentExercise, labelCheckBoxItem, checkItem)
-        }
-
-        checkItem.setOnLongClickListener{
+        holder.checkItem.setOnLongClickListener {
+            // Marca ou desmarca o número de sets restantes
             val dailyExercises = DailyExercises(context)
-            val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
-            repeat(currentExercise.sets - exerciseCount) {
-                handleExerciseCheck(currentExercise, labelCheckBoxItem, checkItem)
+            repeat(currentExercise.sets - dailyExercises.getExerciseCount(currentExercise)) {
+                handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
             }
             true
         }
 
-        listItemView.setOnClickListener {
-            callFormExercise("play", currentExercise, date)
-            println("ID do exercício: ${currentExercise.exerciseID}")
+        holder.itemView.setOnClickListener {
+            callFormExercise("play", currentExercise)
         }
-
-        return listItemView
     }
 
-    private fun countDays(labelCheckBoxItem: TextView, currentExercise: Exercise) {
-        val dailyExercises = DailyExercises(context)
-        val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
-        val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
-        val sets = currentExercise.sets
+    override fun getItemCount() = exerciseList.size
 
-        val daysText = when {
-            countDays > 1 -> "$countDays ${context.getString(R.string.days)}"
-            countDays == 1 -> "$countDays ${context.getString(R.string.day)}"
-            countDays == 0 -> "$exerciseCount/$sets"
-            else -> ""
+    private fun callFormExercise(action: String, exercise: Exercise) {
+        val intent = Intent(context, formExercise::class.java).apply {
+            putExtra("trainingID", exercise.trainingID)
+            putExtra("exerciseID", exercise.exerciseID)
+            putExtra("exerciseDate", date)
+            putExtra("action", action)
         }
-
-        labelCheckBoxItem.text = daysText
-    }
-
-    private fun callFormExercise(action: String, exercise: Exercise, date: String = getCurrentDate()) {
-        val intent = Intent(context, formExercise::class.java)
-        intent.putExtra("trainingID", exercise.trainingID)
-        intent.putExtra("exerciseID", exercise.exerciseID)
-        intent.putExtra("exerciseDate", date)
-        intent.putExtra("action", action)
-        println("ID do exercício: ${exercise.exerciseID}")
         context.startActivity(intent)
     }
 
@@ -140,7 +118,7 @@ class ExerciseAdapter(
             unmarkExerciseAsDone(dailyExercises, currentExercise, checkItem)
         } else {
             markExerciseAsDone(dailyExercises, currentExercise, checkItem)
-            Toast.makeText(context, "${exerciseList.find { it.exerciseID == currentExercise.exerciseID }?.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -151,5 +129,29 @@ class ExerciseAdapter(
 
     private fun updateDaysLabel(labelCheckBoxItem: TextView, currentExercise: Exercise) {
         countDays(labelCheckBoxItem, currentExercise)
+    }
+
+    private fun countDays(labelCheckBoxItem: TextView, currentExercise: Exercise) {
+        val dailyExercises = DailyExercises(context)
+        val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
+        val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+        val sets = currentExercise.sets
+
+        val daysText = when {
+            countDays > 1 -> "$countDays ${context.getString(R.string.days)}"
+            countDays == 1 -> "$countDays ${context.getString(R.string.day)}"
+            countDays == 0 -> "$exerciseCount/$sets"
+            else -> ""
+        }
+
+        labelCheckBoxItem.text = daysText
+    }
+
+    private fun updateCheckItem(holder: ExerciseViewHolder, currentExercise: Exercise) {
+        val checked = DailyExercises(context).isExerciseDone(date, currentExercise)
+        holder.checkItem.setImageResource(
+            if (checked) R.drawable.ic_fluent_select_all_on_24_filled
+            else R.drawable.ic_fluent_select_all_off_24_regular
+        )
     }
 }

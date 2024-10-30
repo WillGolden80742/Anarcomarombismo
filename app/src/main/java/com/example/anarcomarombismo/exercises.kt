@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.Util.Calendars
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
@@ -22,7 +24,7 @@ class exercises : AppCompatActivity() {
     private lateinit var dateTextView: TextView
     private lateinit var addExerciseButton: Button
     private lateinit var editTraining: Button
-    private lateinit var exerciseList: ListView
+    private lateinit var exerciseList: RecyclerView
     private lateinit var trainingName: TextView
     private lateinit var descriptionTrainingLabel: TextView
     private var trainingID: Long = 0
@@ -50,6 +52,9 @@ class exercises : AppCompatActivity() {
         dateTextView.setOnClickListener {
             selectDate()
         }
+
+        // Configura o RecyclerView
+        exerciseList.layoutManager = LinearLayoutManager(this)
     }
     override fun onResume() {
         super.onResume()
@@ -90,11 +95,7 @@ class exercises : AppCompatActivity() {
         Training().fetchById(this, trainingID).also {
             trainingName.text = it.name
             descriptionTrainingLabel.text = it.description
-            exerciseList.adapter = ExerciseAdapter(
-                this,
-                Exercise.build(trainingID).fetchAll(this),
-                date
-            )
+            exerciseList.adapter = ExerciseAdapter(this, Exercise.build(trainingID).fetchAll(this), date)
         }
     }
 
