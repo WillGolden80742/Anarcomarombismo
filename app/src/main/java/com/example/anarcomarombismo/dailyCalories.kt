@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.Adapter.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Macro
@@ -18,7 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class dailyCalories : AppCompatActivity() {
     private lateinit var exportDailyCalories: FloatingActionButton
-    private lateinit var caloriesFoodList: ListView
+    private lateinit var caloriesFoodList: RecyclerView
     private lateinit var addCaloriesButton: Button
     private lateinit var addNewFoodButton: Button
     private lateinit var progressBarContainer: LinearLayout
@@ -73,16 +75,10 @@ class dailyCalories : AppCompatActivity() {
             startActivity(intent)
         }
 
-        caloriesFoodList.setOnItemClickListener { parent, _, position, _ ->
-            val dailyCalories = parent.getItemAtPosition(position) as DailyCalories
-            val intent = Intent(this, formDailyCalories::class.java)
-            try {
-                intent.putExtra("dailyCaloriesDate", dailyCalories.date)
-                startActivity(intent)
-            } catch (e: Exception) {
-                println("Erro ao chamar a tela de calorias diárias: $e")
-            }
-        }
+        val adapter = DailyCaloriesAdapter(this, DailyCalories().fetchAll(this).ifEmpty { listOf(DailyCalories()) }, clickDailyCalories())
+        caloriesFoodList.layoutManager = LinearLayoutManager(this)
+        caloriesFoodList.adapter = adapter
+        caloriesFoodList.adapter?.notifyDataSetChanged()
 
         addNewFoodButton.setOnClickListener {
             callFoodForm()
@@ -91,12 +87,27 @@ class dailyCalories : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         loadAndUpdateMacroUI()
-        caloriesFoodList.adapter = DailyCaloriesAdapter(this,
-            DailyCalories().fetchAll(this).ifEmpty {
-                listOf(DailyCalories())
-            }
-        )
+        caloriesFoodList.adapter = DailyCaloriesAdapter(
+            this,
+            DailyCalories().fetchAll(this).ifEmpty { listOf(DailyCalories()) },
+            clickDailyCalories())
+        caloriesFoodList.adapter?.notifyDataSetChanged()
     }
+
+    fun clickDailyCalories() : OnItemClickListener {
+        return object : OnItemClickListener {
+            override fun onItemClick(dailyCalories: DailyCalories) {
+                val intent = Intent(this@dailyCalories, formDailyCalories::class.java)
+                intent.putExtra("dailyCaloriesDate", dailyCalories.date)
+                startActivity(intent)
+            }
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(dailyCalories: DailyCalories)
+    }
+
     private fun callFormDailyCalories() {
         try {
             startActivity(Intent(this, formDailyCalories::class.java))
