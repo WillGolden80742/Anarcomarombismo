@@ -5,6 +5,9 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +16,10 @@ import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.Forms.formExercise
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -20,10 +27,12 @@ import java.util.Locale
 class ExerciseAdapter(
     private val context: Context,
     private val exerciseList: List<Exercise>,
-    private var date: String
+    private var date: String,
+    private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
 
     inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val webView: WebView = itemView.findViewById(R.id.webView)
         val labelCheckBoxItem: TextView = itemView.findViewById(R.id.labelCheckBoxItem)
         val nameTextView: TextView = itemView.findViewById(R.id.titleTextViewItem)
         val descriptionTextView: TextView = itemView.findViewById(R.id.textViewItem)
@@ -41,6 +50,12 @@ class ExerciseAdapter(
 
         holder.nameTextView.text = currentExercise.name
         holder.descriptionTextView.text = currentExercise.toString(context)
+
+        val webSettings: WebSettings = holder.webView.settings
+        webSettings.javaScriptEnabled = true
+        holder.webView.webViewClient = WebViewClient()
+        embedVideo(holder,Exercise().generateYouTubeEmbedLink(currentExercise.linkVideo))
+        holder.webView.setBackgroundColor(0x00000000)
 
         // Atualiza o estado do checkItem com base no exercício
         updateCheckItem(holder, currentExercise)
@@ -67,6 +82,20 @@ class ExerciseAdapter(
 
         holder.itemView.setOnClickListener {
             callFormExercise("play", currentExercise)
+        }
+    }
+
+    private fun embedVideo(holder: ExerciseViewHolder, formattedLink: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            if (formattedLink.isNotEmpty()) {
+                holder.webView.loadUrl(formattedLink)
+            } else {
+                val text = withContext(Dispatchers.IO) {
+                    val inputStream = context.resources.openRawResource(R.raw.vector_banner)
+                    inputStream.bufferedReader().use { it.readText() }
+                }
+                holder.webView.loadUrl("data:image/svg+xml;base64,$text")
+            }
         }
     }
 
@@ -103,6 +132,7 @@ class ExerciseAdapter(
 
         updateDaysLabel(labelCheckBoxItem, currentExercise)
     }
+
 
     private fun shouldCheckExercise(exerciseDaysCount: Int, exerciseCount: Int, repetitions: Int): Boolean {
         return exerciseDaysCount == 0 && exerciseCount < repetitions
@@ -143,7 +173,12 @@ class ExerciseAdapter(
             countDays == 0 -> "$exerciseCount/$sets"
             else -> ""
         }
-
+        if (exerciseCount == sets) {
+            val nextPosition = exerciseList.indexOf(currentExercise) + 1
+            if (nextPosition < exerciseList.size) {
+                recyclerView.smoothScrollToPosition(nextPosition)
+            }
+        }
         labelCheckBoxItem.text = daysText
     }
 

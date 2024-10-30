@@ -4,6 +4,9 @@ import com.example.anarcomarombismo.Controller.Adapter.ExerciseAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
@@ -37,6 +40,7 @@ class exercises : AppCompatActivity() {
         descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
         trainingName = findViewById(R.id.dailyCaloriesTitle)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_exercises)
@@ -95,7 +99,7 @@ class exercises : AppCompatActivity() {
         Training().fetchById(this, trainingID).also {
             trainingName.text = it.name
             descriptionTrainingLabel.text = it.description
-            exerciseList.adapter = ExerciseAdapter(this, Exercise.build(trainingID).fetchAll(this), date)
+            exerciseList.adapter = ExerciseAdapter(this, Exercise.build(trainingID).fetchAll(this), date, exerciseList)
         }
     }
 

@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/webView"
+        android:layout_marginTop="10dp"
         android:textColor="@color/title_color"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/titleTextViewItem"
         android:paddingTop="4dp"
-        android:textSize="18sp" />
+        android:textSize="24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
