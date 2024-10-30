@@ -69,7 +69,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
                 println("CACHE HIT for queryHash: $queryHash")
                 return@withContext cache.getCache(context, queryHash, Array<FoodDataFetcher>::class.java).toList()
             }
-            val cachedData: List<FoodDataFetcher>? = fetchFromAPI(queryHash, Array<FoodDataFetcher>::class.java)?.toList()
+            val cachedData = fetchFoodSearchFromAPI(queryHash)
             if (cachedData != null) {
                 println("CACHE HIT from API for queryHash: $queryHash")
                 cache.setCache(context, queryHash, cachedData)
@@ -79,7 +79,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         }
     }
 
-    private fun <T> fetchFromAPI(key: String, type: Class<T>): T? {
+    private fun fetchFoodSearchFromAPI(key: String): List<FoodDataFetcher>? {
         return try {
             val url = URL("${getOwnApiServer()}/getCache.php?key=$key")
             val connection = url.openConnection() as HttpURLConnection
@@ -88,11 +88,30 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
             if (connection.responseCode == HttpURLConnection.HTTP_OK) {
                 val content = connection.inputStream.bufferedReader().readText()
                 if (content.isNotEmpty()) {
-                    if (type.isArray) {
-                        JSON.fromJson(content, type.componentType) as? T
-                    } else {
-                        JSON.fromJson(content, type)
-                    }
+                    // Convert the obtained JSON to a list of objects
+                    JSON.fromJson(content, Array<FoodDataFetcher>::class.java)?.toList()
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        } catch (e: IOException) {
+            println("API fetch error: ${e.message}")
+            null
+        }
+    }
+
+    private fun fetchFoodFromAPI(key: String): Food? {
+        return try {
+            val url = URL("${getOwnApiServer()}/getCache.php?key=$key")
+            val connection = url.openConnection() as HttpURLConnection
+            connection.requestMethod = "GET"
+
+            if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                val content = connection.inputStream.bufferedReader().readText()
+                if (content.isNotEmpty()) {
+                    JSON.fromJson(content, Food::class.java)
                 } else {
                     null
                 }
@@ -199,7 +218,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
             println("CACHE HIT for foodNumber: $foodNumber")
             return cache.getCache(context, foodNumber, Food::class.java)
         }
-        val cachedData: Food? = fetchFromAPI(foodNumber, Food::class.java)
+        val cachedData = fetchFoodFromAPI(foodNumber)
         if (cachedData != null) {
             println("CACHE HIT from API for foodNumber: $foodNumber")
             cache.setCache(context, foodNumber, cachedData)
