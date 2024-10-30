@@ -94,7 +94,7 @@ class dailyCalories : AppCompatActivity() {
         caloriesFoodList.adapter?.notifyDataSetChanged()
     }
 
-    fun clickDailyCalories() : OnItemClickListener {
+    private fun clickDailyCalories() : OnItemClickListener {
         return object : OnItemClickListener {
             override fun onItemClick(dailyCalories: DailyCalories) {
                 val intent = Intent(this@dailyCalories, formDailyCalories::class.java)
