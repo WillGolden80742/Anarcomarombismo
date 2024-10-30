@@ -74,8 +74,14 @@ class ExerciseAdapter(
         holder.checkItem.setOnLongClickListener {
             // Marca ou desmarca o número de sets restantes
             val dailyExercises = DailyExercises(context)
-            repeat(currentExercise.sets - dailyExercises.getExerciseCount(currentExercise)) {
-                handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+            val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+            if (exerciseCount == 0) {
+                repeat(currentExercise.sets - dailyExercises.getExerciseCount(currentExercise)) {
+                    handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+                }
+            } else {
+                unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
+                holder.labelCheckBoxItem.text = ""
             }
             true
         }
