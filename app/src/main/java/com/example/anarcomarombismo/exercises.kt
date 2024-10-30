@@ -30,7 +30,7 @@ class exercises : AppCompatActivity() {
     private fun initializeUIComponents() {
         dateTextView = findViewById(R.id.dateTextView)
         addExerciseButton = findViewById(R.id.addFoodFormButton)
-        exerciseList = findViewById(R.id.caloriesFoodList)
+        exerciseList = findViewById(R.id.exercisesList)
         editTraining = findViewById(R.id.removeFoodFormButton)
         descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
         trainingName = findViewById(R.id.dailyCaloriesTitle)

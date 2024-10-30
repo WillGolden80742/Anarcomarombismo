@@ -68,7 +68,7 @@
         app:layout_constraintTop_toBottomOf="@id/titleAndDate" />
 
     <ListView
-        android:id="@+id/caloriesFoodList"
+        android:id="@+id/exercisesList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
