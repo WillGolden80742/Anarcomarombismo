@@ -31,6 +31,8 @@ class ExerciseAdapter(
     private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
 
+    private var isLoadingInterface = true
+
     inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val webView: WebView = itemView.findViewById(R.id.webView)
         val labelCheckBoxItem: TextView = itemView.findViewById(R.id.labelCheckBoxItem)
@@ -71,6 +73,7 @@ class ExerciseAdapter(
             handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
         }
 
+        isLoadingInterface = true
         holder.checkItem.setOnLongClickListener {
             val dailyExercises = DailyExercises(context)
             var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
@@ -83,9 +86,11 @@ class ExerciseAdapter(
             } else {
                 unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
                 countDays(holder.labelCheckBoxItem, currentExercise)
+
             }
             true
         }
+        isLoadingInterface = false
 
         holder.itemView.setOnClickListener {
             callFormExercise("play", currentExercise)
@@ -180,7 +185,7 @@ class ExerciseAdapter(
             else -> ""
         }
         labelCheckBoxItem.text = daysText
-        if (exerciseCount == sets) {
+        if (exerciseCount == sets && countDays == 0 && !isLoadingInterface) {
             scrollToNextExercise(currentExercise)
         }
     }
