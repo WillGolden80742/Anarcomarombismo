@@ -111,6 +111,7 @@ id exportTrainings
 id fatsProgressBar
 id floatingActionButton
 id floatingEditExerciseActionButton
+id floatingLayout
 id foodFloatingAddActionButton
 id foodFloatingEditActionButton
 id foodTextViewItem
