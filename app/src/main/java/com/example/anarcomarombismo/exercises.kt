@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.Util.Calendars
 import com.example.anarcomarombismo.Controller.Exercise
@@ -57,8 +58,10 @@ class exercises : AppCompatActivity() {
             selectDate()
         }
 
-        // Configura o RecyclerView
+        // Configura o RecyclerView e aplica o LinearSnapHelper
         exerciseList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(exerciseList) // anexa o SnapHelper ao RecyclerView
     }
     override fun onResume() {
         super.onResume()
