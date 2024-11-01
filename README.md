@@ -58,16 +58,6 @@ To get started with the Anarcomarombismo app, follow these steps:
 4. **Import/Export Data**: Utilize the import/export feature to load and save both training sessions and daily calorie logs. This helps when transferring data between devices or creating backups.
 5. **Nutritional Information**: Browse the food database to access detailed nutritional information for various foods, helping you make informed dietary choices.
 
-## Contributing
-
-Contributions to this project are welcomed! To contribute, follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/YourFeature`).
-3. Make your changes and commit them (`git commit -m 'Add some feature'`).
-4. Push to your branch (`git push origin feature/YourFeature`).
-5. Submit a pull request for review.
-
 ## License
 
 This project is licensed under the MIT License. For more details, refer to the [LICENSE](LICENSE) file.
