@@ -2,7 +2,6 @@ package com.example.anarcomarombismo.Controller.Adapter
 
 import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.view.LayoutInflater
 import android.view.View
@@ -15,13 +14,10 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
+import com.example.anarcomarombismo.Controller.Util.WebHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.Forms.formExercise
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -73,7 +69,7 @@ class ExerciseAdapter(
         val webSettings: WebSettings = holder.webView.settings
         webSettings.javaScriptEnabled = true
         holder.webView.webViewClient = WebViewClient()
-        embedVideo(holder,Exercise().generateYouTubeEmbedLink(currentExercise.linkVideo))
+        WebHandler.embedVideo(context,holder.webView,WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo))
         holder.webView.setBackgroundColor(0x00000000)
 
         // Atualiza o estado do checkItem com base no exercício
@@ -112,28 +108,6 @@ class ExerciseAdapter(
         holder.itemView.setOnClickListener {
             callFormExercise("play", currentExercise)
         }
-    }
-
-    private fun embedVideo(holder: ExerciseViewHolder, formattedLink: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            if (formattedLink.isNotEmpty() && isNetworkAvailable()) {
-                holder.webView.loadUrl(formattedLink)
-            } else {
-                val text = withContext(Dispatchers.IO) {
-                    val inputStream = context.resources.openRawResource(R.raw.vector_banner)
-                    inputStream.bufferedReader().use { it.readText() }
-                }
-                holder.webView.loadUrl("data:image/svg+xml;base64,$text")
-            }
-        }
-    }
-    private fun isNetworkAvailable(): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-
-        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
     }
 
 

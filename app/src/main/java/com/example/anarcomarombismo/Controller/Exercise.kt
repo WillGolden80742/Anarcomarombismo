@@ -142,52 +142,6 @@ class Exercise(
         Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show()
     }
 
-
-    fun generateYouTubeEmbedLink(text: String): String {
-        val trimmedText = text.trim()
-
-        if (trimmedText.contains("youtube.com/embed/")) {
-            return trimmedText
-        }
-
-        if (!isValidYouTubeLink(trimmedText)) {
-            return ""
-        }
-
-        val sanitizedText = removeUnnecessaryParameters(trimmedText)
-        val videoId = extractVideoId(sanitizedText) ?: return ""
-
-        return buildEmbedLink(videoId, sanitizedText)
-    }
-
-    private fun isValidYouTubeLink(text: String): Boolean {
-        return text.contains("youtu.be") || text.contains("youtube")
-    }
-
-    private fun removeUnnecessaryParameters(text: String): String {
-        return text.replace(Regex("[&?](feature=youtu\\.be|si=.*)"), "")
-    }
-
-    private fun extractVideoId(text: String): String? {
-        return when {
-            text.contains("/live/") -> text.substringAfter("/live/").substringBefore("?")
-            text.contains("/shorts/") -> text.substringAfter("/shorts/").substringBefore("?")
-            text.contains("watch?v=") -> text.substringAfter("watch?v=").substringBefore("&")
-            text.contains("youtu.be/") -> text.substringAfter("youtu.be/").substringBefore("?")
-            else -> null
-        }
-    }
-
-    private fun buildEmbedLink(videoId: String, text: String): String {
-        val timeParameter = extractTimeParameter(text)
-        return "https://www.youtube.com/embed/$videoId$timeParameter"
-    }
-
-    private fun extractTimeParameter(text: String): String {
-        val time = text.substringAfter("&t=", "").takeIf { it.isNotEmpty() }
-        return time?.let { "?t=$it" } ?: ""
-    }
-
     fun toString(context: Context): SpannableStringBuilder {
         val builder = SpannableStringBuilder()
         appendBoldText(builder, context.getString(R.string.muscle), muscle)

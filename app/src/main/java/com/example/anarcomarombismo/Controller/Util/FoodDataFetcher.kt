@@ -162,7 +162,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
         for (i in 0..1) {
             val url = "${getExternalApiServer()}/calorias-nutri%C3%A7%C3%A3o/search?q=$encodedQuery&pg=$i"
             try {
-                val document = HtmlHandler.fetchDocument(url)
+                val document = WebHandler.fetchDocument(url)
                 val links = document.select("a.prominent")
                 val smallTextDivs = document.select("div.smallText")
 
@@ -225,7 +225,7 @@ class FoodDataFetcher(var name: String = "", var href: String = "", var grams: S
             return cachedData
         }
         return try {
-            val html = HtmlHandler.fetchHtmlContent(url)
+            val html = WebHandler.fetchHtmlContent(url)
             val doc: Document = Jsoup.parse(html)
 
             val foodDescription = extractFoodDescription(doc)

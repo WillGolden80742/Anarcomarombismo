@@ -18,12 +18,12 @@ import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Tree
 import com.example.anarcomarombismo.Controller.Util.ExerciseHandler
+import com.example.anarcomarombismo.Controller.Util.WebHandler
 import com.example.anarcomarombismo.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class formExercise : AppCompatActivity() {
     // Views
@@ -59,7 +59,7 @@ class formExercise : AppCompatActivity() {
         val webSettings: WebSettings = webView.settings
         webSettings.javaScriptEnabled = true
         webView.webViewClient = WebViewClient()
-        embedVideo("")
+        WebHandler.embedVideo(this,webView,"")
         webView.setBackgroundColor(0x00000000)
         textViewVideoLink = findViewById(R.id.textViewVideoLink)
         editTextVideoLink = findViewById(R.id.editTextVideoLink)
@@ -116,9 +116,9 @@ class formExercise : AppCompatActivity() {
         editTextVideoLink.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 try {
-                    val formattedLink = Exercise().generateYouTubeEmbedLink(editTextVideoLink.text.toString())
+                    val formattedLink = WebHandler.generateYouTubeEmbedLink(editTextVideoLink.text.toString())
                     editTextVideoLink.setText(formattedLink)
-                    embedVideo(formattedLink)
+                    WebHandler.embedVideo(this,webView,formattedLink)
                 } catch (e: Exception) {
                     editTextVideoLink.setText("")
                     println("Erro ao formatar o link do vídeo: " + e.message)
@@ -188,10 +188,10 @@ class formExercise : AppCompatActivity() {
     }
 
     private fun setUIFromExercise(exercise: Exercise) {
-        val formattedLink = Exercise().generateYouTubeEmbedLink(exercise.linkVideo)
+        val formattedLink = WebHandler.generateYouTubeEmbedLink(exercise.linkVideo)
         textVideoLink = formattedLink
         editTextVideoLink.setText(formattedLink)
-        embedVideo(formattedLink)
+        WebHandler.embedVideo(this,webView,formattedLink)
         editTextExerciseName.setText(exercise.name)
 
         val value = leafsNames.size
@@ -233,19 +233,6 @@ class formExercise : AppCompatActivity() {
         }
     }
 
-    private fun embedVideo(formattedLink: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            if (formattedLink.isNotEmpty()) {
-                webView.loadUrl(formattedLink)
-            } else {
-                val text = withContext(Dispatchers.IO) {
-                    val inputStream = resources.openRawResource(R.raw.vector_banner)
-                    inputStream.bufferedReader().use { it.readText() }
-                }
-                webView.loadUrl("data:image/svg+xml;base64,$text")
-            }
-        }
-    }
 
     private fun saveExercise() {
         if (!areFieldsValid()) {
