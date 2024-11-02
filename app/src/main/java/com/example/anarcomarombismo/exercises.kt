@@ -4,11 +4,7 @@ import com.example.anarcomarombismo.Controller.Adapter.ExerciseAdapter
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Button
-import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -58,14 +54,27 @@ class exercises : AppCompatActivity() {
             selectDate()
         }
 
-        // Configura o RecyclerView e aplica o LinearSnapHelper
         exerciseList.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(exerciseList) // anexa o SnapHelper ao RecyclerView
+
+        exerciseList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val centerPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
+                    if (centerPosition != RecyclerView.NO_POSITION) {
+                        ExerciseAdapter.setItemPositionIndex(trainingID, centerPosition)
+                    }
+                }
+            }
+        })
     }
     override fun onResume() {
         super.onResume()
         loadExercises(trainingID,dateTextView.text.toString())
+        exerciseList.scrollToPosition(ExerciseAdapter.getItemPositionIndex(trainingID))
     }
     private fun selectDate() {
         val calendar = Calendar.getInstance()
@@ -103,6 +112,7 @@ class exercises : AppCompatActivity() {
             trainingName.text = it.name
             descriptionTrainingLabel.text = it.description
             exerciseList.adapter = ExerciseAdapter(this, Exercise.build(trainingID).fetchAll(this), date, exerciseList)
+
         }
     }
 

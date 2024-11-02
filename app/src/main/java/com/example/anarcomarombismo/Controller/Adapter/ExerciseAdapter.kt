@@ -2,6 +2,8 @@ package com.example.anarcomarombismo.Controller.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +34,21 @@ class ExerciseAdapter(
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
 
     private var isLoadingInterface = true
+
+    companion object {
+
+        private val itemPositionMap = mutableMapOf<Long, Int>()
+
+        fun getItemPositionIndex(trainingId: Long): Int {
+            return itemPositionMap[trainingId] ?: 0
+        }
+
+        fun setItemPositionIndex(trainingId: Long, index: Int) {
+            itemPositionMap[trainingId] = index
+        }
+
+    }
+
 
     inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val webView: WebView = itemView.findViewById(R.id.webView)
@@ -99,7 +116,7 @@ class ExerciseAdapter(
 
     private fun embedVideo(holder: ExerciseViewHolder, formattedLink: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            if (formattedLink.isNotEmpty()) {
+            if (formattedLink.isNotEmpty() && isNetworkAvailable()) {
                 holder.webView.loadUrl(formattedLink)
             } else {
                 val text = withContext(Dispatchers.IO) {
@@ -110,6 +127,15 @@ class ExerciseAdapter(
             }
         }
     }
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+    }
+
 
     override fun getItemCount() = exerciseList.size
 
