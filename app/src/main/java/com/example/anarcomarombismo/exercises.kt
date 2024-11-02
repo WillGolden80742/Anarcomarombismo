@@ -112,7 +112,6 @@ class exercises : AppCompatActivity() {
             trainingName.text = it.name
             descriptionTrainingLabel.text = it.description
             exerciseList.adapter = ExerciseAdapter(this, Exercise.build(trainingID).fetchAll(this), date, exerciseList)
-
         }
     }
 
