@@ -59,7 +59,7 @@ class formExercise : AppCompatActivity() {
         val webSettings: WebSettings = webView.settings
         webSettings.javaScriptEnabled = true
         webView.webViewClient = WebViewClient()
-        WebHandler.embedVideo(this,webView,"")
+        WebHandler.embedVideoForm(this,webView,"")
         webView.setBackgroundColor(0x00000000)
         textViewVideoLink = findViewById(R.id.textViewVideoLink)
         editTextVideoLink = findViewById(R.id.editTextVideoLink)
@@ -118,7 +118,7 @@ class formExercise : AppCompatActivity() {
                 try {
                     val formattedLink = WebHandler.generateYouTubeEmbedLink(editTextVideoLink.text.toString())
                     editTextVideoLink.setText(formattedLink)
-                    WebHandler.embedVideo(this,webView,formattedLink)
+                    WebHandler.embedVideoForm(this,webView,formattedLink)
                 } catch (e: Exception) {
                     editTextVideoLink.setText("")
                     println("Erro ao formatar o link do vídeo: " + e.message)
@@ -191,7 +191,7 @@ class formExercise : AppCompatActivity() {
         val formattedLink = WebHandler.generateYouTubeEmbedLink(exercise.linkVideo)
         textVideoLink = formattedLink
         editTextVideoLink.setText(formattedLink)
-        WebHandler.embedVideo(this,webView,formattedLink)
+        WebHandler.embedVideoForm(this,webView,formattedLink)
         editTextExerciseName.setText(exercise.name)
 
         val value = leafsNames.size
