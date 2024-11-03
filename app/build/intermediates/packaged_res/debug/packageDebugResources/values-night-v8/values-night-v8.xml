@@ -10,7 +10,7 @@
     <color name="purple">#FF800080</color>
     <color name="red">#FFD32F2F</color>
     <color name="text_primary">#FFF</color>
-    <color name="title_color">#fbfa07</color>
+    <color name="title_color">#FFD700</color>
     <style name="Base.Theme.Anarcomarombismo" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">@color/black</item>
         <item name="android:windowBackground">@color/black</item>

@@ -244,10 +244,6 @@
         "source": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-main-37:\\raw\\nutritional_table.json"
     },
     {
-        "merged": "com.example.anarcomarombismo.app-debug-35:/layout_exercise_list_item.xml.flat",
-        "source": "com.example.anarcomarombismo.app-main-37:/layout/exercise_list_item.xml"
-    },
-    {
         "merged": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-debug-35:\\drawable_progress_exceed_bar_green.xml.flat",
         "source": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-main-37:\\drawable\\progress_exceed_bar_green.xml"
     },
@@ -266,6 +262,10 @@
     {
         "merged": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-debug-35:\\layout_activity_daily_calories.xml.flat",
         "source": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-main-37:\\layout\\activity_daily_calories.xml"
+    },
+    {
+        "merged": "com.example.anarcomarombismo.app-debug-35:/raw_vector_banner.txt.flat",
+        "source": "com.example.anarcomarombismo.app-main-37:/raw/vector_banner.txt"
     },
     {
         "merged": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-debug-35:\\layout_activity_body_statistics.xml.flat",
