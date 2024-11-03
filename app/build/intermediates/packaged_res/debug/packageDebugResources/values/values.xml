@@ -28,7 +28,7 @@
     <color name="text_primary">#000</color>
     <color name="title_color">#000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="yellow">#FFD700</color>
+    <color name="yellow">#fbfa07</color>
     <dimen name="corner_radius">6dp</dimen>
     <string name="abs">Abdominais</string>
     <string name="activity_level">Fator de Atividade</string>
