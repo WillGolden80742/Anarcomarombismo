@@ -3968,6 +3968,7 @@ layout training_list_item
 mipmap ic_launcher
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
+raw no_ethernet
 raw nutritional_table
 raw vector_banner
 string abc_action_bar_home_description

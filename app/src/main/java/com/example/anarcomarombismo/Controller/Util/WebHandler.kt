@@ -49,33 +49,38 @@ class WebHandler {
                     val cache = Cache()
                     try {
                         if (!cache.hasCache(context, videoId!!)) {
-                            // Baixa a miniatura e armazena no cache
                             val thumbnail = downloadThumbnail(videoId)
                             thumbnail?.let { base64Image ->
-                                cache.setCache(context, videoId!!, base64Image)
+                                cache.setCache(context, videoId, base64Image)
                             }
                         }
                     } catch (e: Exception) {
                         println("Erro ao baixar a miniatura com URL: ${e.message}")
                     }
-                    // Carrega o vídeo diretamente quando há conexão
                     webView.loadUrl(formattedLink)
                 } else {
-                    // Caso sem conexão, tenta carregar a miniatura em cache
                     videoId?.let {
                         val cache = Cache()
                         if (cache.hasCache(context, it)) {
                             try {
-                                // Recupera a miniatura do cache e carrega no WebView
                                 val cachedThumbnail: String = cache.getCache(context, it, String::class.java)
-                                val html = """<img src="data:image/jpeg;base64,$cachedThumbnail" style="width:100%; height:100%; object-fit:cover;" />""".trimIndent()
+                                val noInternetIcon = withContext(Dispatchers.IO) {
+                                    val inputStream = context.resources.openRawResource(R.raw.no_ethernet)
+                                    inputStream.bufferedReader().use { it -> it.readText() }
+                                }
+                                val html = """
+                            <div style="position:relative; width:100%; height:100%; background-color:#000;">
+                                <img src="data:image/jpeg;base64,$cachedThumbnail" style="width:100%; height:100%; object-fit:cover;" />
+                                <img src="data:image/svg+xml;base64,$noInternetIcon" 
+                                     style="position:absolute; top:50%; left:50%; width:40%; height:40%; transform:translate(-50%, -50%);" />
+                            </div>
+                        """.trimIndent()
                                 webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
                             } catch (e: Exception) {
                                 println("Erro ao carregar miniatura do cache: ${e.message}")
                                 loadFallbackBanner(context, webView)
                             }
                         } else {
-                            // Carrega o banner de fallback se não houver miniatura no cache
                             loadFallbackBanner(context, webView)
                         }
                     }

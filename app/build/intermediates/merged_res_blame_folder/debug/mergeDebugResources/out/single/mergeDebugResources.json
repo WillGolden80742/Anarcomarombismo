@@ -60,6 +60,10 @@
         "source": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-main-37:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     },
     {
+        "merged": "com.example.anarcomarombismo.app-debug-35:/raw_no_ethernet.txt.flat",
+        "source": "com.example.anarcomarombismo.app-main-37:/raw/no_ethernet.txt"
+    },
+    {
         "merged": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-debug-35:\\drawable_ic_fluent_calendar_rtl_24_regular.xml.flat",
         "source": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-main-37:\\drawable\\ic_fluent_calendar_rtl_24_regular.xml"
     },
@@ -262,10 +266,6 @@
     {
         "merged": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-debug-35:\\layout_activity_daily_calories.xml.flat",
         "source": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-main-37:\\layout\\activity_daily_calories.xml"
-    },
-    {
-        "merged": "com.example.anarcomarombismo.app-debug-35:/raw_vector_banner.txt.flat",
-        "source": "com.example.anarcomarombismo.app-main-37:/raw/vector_banner.txt"
     },
     {
         "merged": "C:\\Users\\willi\\.gradle\\daemon\\8.6\\com.example.anarcomarombismo.app-debug-35:\\layout_activity_body_statistics.xml.flat",
