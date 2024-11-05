@@ -69,12 +69,33 @@ class WebHandler {
                                     inputStream.bufferedReader().use { it -> it.readText() }
                                 }
                                 val html = """
-                            <div style="position:relative; width:100%; height:100%; background-color:#000;">
-                                <img src="data:image/jpeg;base64,$cachedThumbnail" style="width:100%; height:100%; object-fit:cover;" />
-                                <img src="data:image/svg+xml;base64,$noInternetIcon" 
-                                     style="position:absolute; top:50%; left:50%; width:40%; height:40%; transform:translate(-50%, -50%);" />
-                            </div>
-                        """.trimIndent()
+                                <html>
+                                <head>
+                                    <style>
+                                        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
+                                        .cachedThumbnail { 
+                                            width: 100%; height: 100%; 
+                                            background-size: cover; 
+                                            background-position: center; 
+                                            position: absolute; 
+                                        }
+                                        .noInternetIcon { 
+                                            position: absolute; 
+                                            top: 50%; left: 50%; 
+                                            width: 25%; height: 25%; 
+                                            background-size: contain; 
+                                            background-repeat: no-repeat; 
+                                            transform: translate(-50%, -50%); 
+                                        }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class="cachedThumbnail" style="background-image:url('data:image/jpeg;base64,$cachedThumbnail');"></div>
+                                    <div class="noInternetIcon" style="background-image:url('data:image/svg+xml;base64,$noInternetIcon');"></div>
+                                </body>
+                                </html>
+                            """.trimIndent()
+
                                 webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
                             } catch (e: Exception) {
                                 println("Erro ao carregar miniatura do cache: ${e.message}")
