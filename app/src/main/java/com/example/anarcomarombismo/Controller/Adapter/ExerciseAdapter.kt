@@ -2,7 +2,6 @@ package com.example.anarcomarombismo.Controller.Adapter
 
 import android.content.Context
 import android.content.Intent
-import android.net.NetworkCapabilities
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
