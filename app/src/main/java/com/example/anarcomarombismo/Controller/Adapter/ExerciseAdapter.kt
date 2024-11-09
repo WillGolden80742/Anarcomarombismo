@@ -152,11 +152,15 @@ class ExerciseAdapter(
     private fun markExerciseAsDone(dailyExercises: DailyExercises, currentExercise: Exercise, checkItem: FloatingActionButton) {
         checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
         dailyExercises.markExerciseAsDone(date, currentExercise)
-        val position = exerciseList.indexOf(currentExercise)
-        if (position == exerciseList.size - 1) {
+        val currentPosition = exerciseList.indexOf(currentExercise)
+        val exerciseListSize = exerciseList.size
+        val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+        val sets = currentExercise.sets
+        if (currentPosition == exerciseListSize - 1 && exerciseCount == sets) {
             setItemPositionIndex(currentExercise.trainingID, 0)
         }
     }
+
 
 
     private fun toggleExerciseState(dailyExercises: DailyExercises, exerciseDone: Boolean, currentExercise: Exercise, checkItem: FloatingActionButton) {
