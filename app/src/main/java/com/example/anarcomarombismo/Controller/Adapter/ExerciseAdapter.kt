@@ -98,7 +98,6 @@ class ExerciseAdapter(
             } else {
                 unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
                 countDays(holder.labelCheckBoxItem, currentExercise)
-
             }
             true
         }
@@ -156,8 +155,13 @@ class ExerciseAdapter(
         val exerciseListSize = exerciseList.size
         val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
         val sets = currentExercise.sets
-        if (currentPosition == exerciseListSize - 1 && exerciseCount == sets) {
+        val isLastExercise= currentPosition == exerciseListSize - 1
+        val isLastSet = exerciseCount == sets
+        if (isLastExercise && isLastSet) {
             setItemPositionIndex(currentExercise.trainingID, 0)
+        }
+        if (isLastSet) {
+            scrollToNextExercise(currentExercise)
         }
     }
 
@@ -193,18 +197,33 @@ class ExerciseAdapter(
             else -> ""
         }
         labelCheckBoxItem.text = daysText
-        if (exerciseCount == sets && countDays == 0 && !isLoadingInterface) {
-            scrollToNextExercise(currentExercise)
-        }
     }
 
 
-    private fun scrollToNextExercise (currentExercise: Exercise) {
-        val nextPosition = exerciseList.indexOf(currentExercise) + 1
-        if (nextPosition < exerciseList.size) {
-            recyclerView.smoothScrollToPosition(nextPosition)
+    private fun scrollToNextExercise(currentExercise: Exercise) {
+        val dailyExercises = DailyExercises(context)
+        val exerciseListSize = exerciseList.size
+        var nextPosition = (exerciseList.indexOf(currentExercise) + 1) % exerciseListSize
+
+        while (true) {
+            val nextExercise = exerciseList[nextPosition]
+            val countDays = dailyExercises.getDaysSinceLastExercise(nextExercise)
+            val isExerciseDone = dailyExercises.isExerciseDone(date, nextExercise)
+
+            // Se o próximo exercício ainda não foi completado, ou não foi realizado há algum tempo, rola para ele
+            if (countDays > 0 || !isExerciseDone) {
+                recyclerView.smoothScrollToPosition(nextPosition)
+                break
+            }
+
+            // Move para o próximo exercício usando índice circular
+            nextPosition = (nextPosition + 1) % exerciseListSize
+
+            // Se voltamos ao exercício atual, significa que todos os exercícios foram completados
+            if (nextPosition == exerciseList.indexOf(currentExercise)) break
         }
     }
+
 
     private fun updateCheckItem(holder: ExerciseViewHolder, currentExercise: Exercise) {
         val checked = DailyExercises(context).isExerciseDone(date, currentExercise)
