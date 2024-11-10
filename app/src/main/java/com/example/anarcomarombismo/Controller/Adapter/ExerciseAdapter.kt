@@ -208,10 +208,12 @@ class ExerciseAdapter(
         while (true) {
             val nextExercise = exerciseList[nextPosition]
             val countDays = dailyExercises.getDaysSinceLastExercise(nextExercise)
+            val exerciseCount = dailyExercises.getExerciseCount(nextExercise)
+            val sets = nextExercise.sets
             val isExerciseDone = dailyExercises.isExerciseDone(date, nextExercise)
 
             // Se o próximo exercício ainda não foi completado, ou não foi realizado há algum tempo, rola para ele
-            if (countDays > 0 || !isExerciseDone) {
+            if (exerciseCount < sets || countDays > 0 || !isExerciseDone) {
                 recyclerView.smoothScrollToPosition(nextPosition)
                 break
             }
