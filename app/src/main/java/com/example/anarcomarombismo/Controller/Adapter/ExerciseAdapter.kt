@@ -32,6 +32,9 @@ class ExerciseAdapter(
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
 
     private var isLoadingInterface = true
+    init {
+        date = getCurrentDate()
+    }
 
     companion object {
 
