@@ -43,6 +43,7 @@
     <string name="carbohydrates">Carbohydrates (g)</string>
     <string name="carbohydrates_b">Carbohydrates</string>
     <string name="chest_and_triceps">Chest and Triceps</string>
+    <string name="completed_exercise">Completed Exercise</string>
     <string name="daily_calories">Daily Calories</string>
     <string name="daily_calories_imported_successfully">Calories imported successfully</string>
     <string name="daily_calories_removed_successfully">Daily calories removed successfully</string>

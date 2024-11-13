@@ -83,23 +83,46 @@ class ExerciseAdapter(
 
         holder.checkItem.setOnClickListener {
             handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+            val dailyExercises = DailyExercises(context)
+            val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+            val sets = currentExercise.sets
+            if (exerciseCount == sets) {
+                Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
+            }
         }
 
         isLoadingInterface = true
+        var isLongPressActive = false
         holder.checkItem.setOnLongClickListener {
-            val dailyExercises = DailyExercises(context)
-            var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
-            var exerciseCount = dailyExercises.getExerciseCount(currentExercise)
-            var sets = currentExercise.sets
-            if (exerciseCount == 0 || countDays > 0) {
-                repeat(sets) {
-                    handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
-                }
-            } else {
-                unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
-                countDays(holder.labelCheckBoxItem, currentExercise)
-            }
+            isLongPressActive = true
+            Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
             true
+        }
+
+        holder.checkItem.setOnTouchListener { _, event ->
+            when (event.action) {
+                android.view.MotionEvent.ACTION_UP -> {
+                    if (isLongPressActive) {
+                        val dailyExercises = DailyExercises(context)
+                        var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
+                        var exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+                        var sets = currentExercise.sets
+                        if (exerciseCount == 0 || countDays > 0) {
+                            repeat(sets) {
+                                handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+                            }
+                        } else {
+                            unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
+                            countDays(holder.labelCheckBoxItem, currentExercise)
+                        }
+                        isLongPressActive = false
+                    }
+                }
+                android.view.MotionEvent.ACTION_CANCEL -> {
+                    isLongPressActive = false
+                }
+            }
+            false
         }
         isLoadingInterface = false
 
@@ -139,7 +162,6 @@ class ExerciseAdapter(
         } else {
             toggleExerciseState(dailyExercises, exerciseDone, currentExercise, checkItem)
         }
-
         updateDaysLabel(labelCheckBoxItem, currentExercise)
     }
 
@@ -172,7 +194,6 @@ class ExerciseAdapter(
             unmarkExerciseAsDone(dailyExercises, currentExercise, checkItem)
         } else {
             markExerciseAsDone(dailyExercises, currentExercise, checkItem)
-            Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }
 

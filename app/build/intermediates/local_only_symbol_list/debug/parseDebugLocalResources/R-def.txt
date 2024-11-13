@@ -237,6 +237,7 @@ string calves
 string carbohydrates
 string carbohydrates_b
 string chest_and_triceps
+string completed_exercise
 string daily_calories
 string daily_calories_imported_successfully
 string daily_calories_removed_successfully
