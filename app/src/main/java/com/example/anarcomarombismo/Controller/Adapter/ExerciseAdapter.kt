@@ -30,12 +30,6 @@ class ExerciseAdapter(
     private var date: String,
     private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
-
-    private var isLoadingInterface = true
-    init {
-        date = getCurrentDate()
-    }
-
     companion object {
 
         private val itemPositionMap = mutableMapOf<Long, Int>()
@@ -98,7 +92,6 @@ class ExerciseAdapter(
             }
         }
 
-        isLoadingInterface = true
         var isLongPressActive = false
         holder.checkItem.setOnLongClickListener {
             isLongPressActive = true
@@ -110,18 +103,7 @@ class ExerciseAdapter(
             when (event.action) {
                 ACTION_UP -> {
                     if (isLongPressActive) {
-                        val dailyExercises = DailyExercises(context)
-                        var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
-                        var exerciseCount = dailyExercises.getExerciseCount(currentExercise)
-                        var sets = currentExercise.sets
-                        if (exerciseCount == 0 || countDays > 0) {
-                            repeat(sets) {
-                                handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
-                            }
-                        } else {
-                            unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
-                            countDays(holder.labelCheckBoxItem, currentExercise)
-                        }
+                        checkExercise(holder, currentExercise)
                         isLongPressActive = false
                     }
                 }
@@ -132,13 +114,25 @@ class ExerciseAdapter(
             false
         }
 
-        isLoadingInterface = false
-
         holder.itemView.setOnClickListener {
             callFormExercise("play", currentExercise)
         }
     }
 
+    private fun checkExercise(holder: ExerciseViewHolder, currentExercise: Exercise) {
+        val dailyExercises = DailyExercises(context)
+        var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
+        var exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+        var sets = currentExercise.sets
+        if (exerciseCount == 0 || countDays > 0) {
+            repeat(sets) {
+                handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+            }
+        } else {
+            unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
+            countDays(holder.labelCheckBoxItem, currentExercise)
+        }
+    }
 
     override fun getItemCount() = exerciseList.size
 
