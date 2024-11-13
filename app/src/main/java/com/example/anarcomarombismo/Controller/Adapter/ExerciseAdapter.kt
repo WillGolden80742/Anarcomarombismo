@@ -44,7 +44,6 @@ class ExerciseAdapter(
 
     }
 
-
     inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val webView: WebView = itemView.findViewById(R.id.webView)
         val labelCheckBoxItem: TextView = itemView.findViewById(R.id.labelCheckBoxItem)
@@ -83,7 +82,7 @@ class ExerciseAdapter(
         }
 
         holder.checkItem.setOnClickListener {
-            handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+            handleSetsCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
             val dailyExercises = DailyExercises(context)
             val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
             val sets = currentExercise.sets
@@ -103,7 +102,7 @@ class ExerciseAdapter(
             when (event.action) {
                 ACTION_UP -> {
                     if (isLongPressActive) {
-                        checkExercise(holder, currentExercise)
+                        checkSets(holder, currentExercise)
                         isLongPressActive = false
                     }
                 }
@@ -119,14 +118,14 @@ class ExerciseAdapter(
         }
     }
 
-    private fun checkExercise(holder: ExerciseViewHolder, currentExercise: Exercise) {
+    private fun checkSets(holder: ExerciseViewHolder, currentExercise: Exercise) {
         val dailyExercises = DailyExercises(context)
         var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
         var exerciseCount = dailyExercises.getExerciseCount(currentExercise)
         var sets = currentExercise.sets
         if (exerciseCount == 0 || countDays > 0) {
             repeat(sets) {
-                handleExerciseCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+                handleSetsCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
             }
         } else {
             unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
@@ -152,7 +151,7 @@ class ExerciseAdapter(
         return dateFormat.format(currentDate)
     }
 
-    private fun handleExerciseCheck(currentExercise: Exercise, labelCheckBoxItem: TextView, checkItem: FloatingActionButton) {
+    private fun handleSetsCheck(currentExercise: Exercise, labelCheckBoxItem: TextView, checkItem: FloatingActionButton) {
         val dailyExercises = DailyExercises(context)
         val exerciseDone = dailyExercises.isExerciseDone(date, currentExercise)
         val exerciseDaysCount = dailyExercises.getDaysSinceLastExercise(currentExercise)
@@ -160,7 +159,7 @@ class ExerciseAdapter(
         val sets = currentExercise.sets
 
         if (shouldCheckExercise(exerciseDaysCount, exerciseCount, sets)) {
-            markExerciseAsDone(dailyExercises, currentExercise, checkItem)
+            markSetsAsDone(dailyExercises, currentExercise, checkItem)
         } else {
             toggleExerciseState(dailyExercises, exerciseDone, currentExercise, checkItem)
         }
@@ -168,13 +167,13 @@ class ExerciseAdapter(
     }
 
 
-    private fun shouldCheckExercise(exerciseDaysCount: Int, exerciseCount: Int, repetitions: Int): Boolean {
-        return exerciseDaysCount == 0 && exerciseCount < repetitions
+    private fun shouldCheckExercise(exerciseDaysCount: Int, setsCount: Int, repetitions: Int): Boolean {
+        return exerciseDaysCount == 0 && setsCount < repetitions
     }
 
-    private fun markExerciseAsDone(dailyExercises: DailyExercises, currentExercise: Exercise, checkItem: FloatingActionButton) {
+    private fun markSetsAsDone(dailyExercises: DailyExercises, currentExercise: Exercise, checkItem: FloatingActionButton) {
         checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-        dailyExercises.markExerciseAsDone(date, currentExercise)
+        dailyExercises.markSetsAsDone(date, currentExercise)
         val currentPosition = exerciseList.indexOf(currentExercise)
         val exerciseListSize = exerciseList.size
         val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
@@ -195,7 +194,7 @@ class ExerciseAdapter(
         if (exerciseDone) {
             unmarkExerciseAsDone(dailyExercises, currentExercise, checkItem)
         } else {
-            markExerciseAsDone(dailyExercises, currentExercise, checkItem)
+            markSetsAsDone(dailyExercises, currentExercise, checkItem)
         }
     }
 

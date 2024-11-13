@@ -17,7 +17,7 @@ class DailyExercises(context: Context) {
 
     private fun getCurrentFormattedDate(): String = dateStorageFormat.format(Date())
 
-    fun markExerciseAsDone(date: String = getCurrentFormattedDate(), exercise: Exercise, count: Int = 1) {
+    fun markSetsAsDone(date: String = getCurrentFormattedDate(), exercise: Exercise, count: Int = 1) {
         val parsedDate = dateInputFormat.parse(date)
         val formattedDate = dateStorageFormat.format(parsedDate)
         val exerciseHistory = getExerciseHistory(exercise).toMutableSet()

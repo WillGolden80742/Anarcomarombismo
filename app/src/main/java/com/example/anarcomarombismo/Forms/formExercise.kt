@@ -150,7 +150,7 @@ class formExercise : AppCompatActivity() {
             dailyExercices.unmarkExercise(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
         } else {
             checkExerciseFormButton.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
-            dailyExercices.markExerciseAsDone(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
+            dailyExercices.markSetsAsDone(exerciseDate,currentExercise!!,editTextSets.text.toString().toInt())
             Toast.makeText(this, "${editTextExerciseName.text} ${this.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
         }
     }
