@@ -1,8 +1,11 @@
 package com.example.anarcomarombismo.Controller.Adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.MotionEvent.ACTION_CANCEL
+import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
@@ -59,6 +62,7 @@ class ExerciseAdapter(
         return ExerciseViewHolder(view)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val currentExercise = exerciseList[position]
 
@@ -101,7 +105,7 @@ class ExerciseAdapter(
 
         holder.checkItem.setOnTouchListener { _, event ->
             when (event.action) {
-                android.view.MotionEvent.ACTION_UP -> {
+                ACTION_UP -> {
                     if (isLongPressActive) {
                         val dailyExercises = DailyExercises(context)
                         var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
@@ -118,12 +122,13 @@ class ExerciseAdapter(
                         isLongPressActive = false
                     }
                 }
-                android.view.MotionEvent.ACTION_CANCEL -> {
+                ACTION_CANCEL -> {
                     isLongPressActive = false
                 }
             }
             false
         }
+
         isLoadingInterface = false
 
         holder.itemView.setOnClickListener {
