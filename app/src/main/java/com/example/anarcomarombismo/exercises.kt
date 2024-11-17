@@ -65,7 +65,7 @@ class exercises : AppCompatActivity() {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val centerPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
                     if (centerPosition != RecyclerView.NO_POSITION) {
-                        ExerciseAdapter.setItemPositionIndex(this@exercises,trainingID, centerPosition)
+                        ExerciseAdapter.setItemPositionIndex(trainingID, centerPosition)
                     }
                 }
             }
@@ -73,13 +73,9 @@ class exercises : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        exerciseList.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            loadExercises(trainingID, dateTextView.text.toString())
-            scrollToPosition(ExerciseAdapter.getItemPositionIndex(context,trainingID))
-        }
+        loadExercises(trainingID,dateTextView.text.toString())
+        exerciseList.scrollToPosition(ExerciseAdapter.getItemPositionIndex(trainingID))
     }
-
     private fun selectDate() {
         val calendar = Calendar.getInstance()
         val maxDate = calendar.timeInMillis

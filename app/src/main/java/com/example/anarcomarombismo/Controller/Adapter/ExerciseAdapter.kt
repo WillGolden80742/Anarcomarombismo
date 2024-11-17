@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
-import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.WebHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.Forms.formExercise
@@ -33,20 +32,14 @@ class ExerciseAdapter(
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
     companion object {
 
-        private val cache: Cache = Cache()
-        fun getItemPositionIndex(context: Context,trainingId: Long): Int {
-            val positionKey = "exercise_position_$trainingId"
-            if (cache.hasCache(context,positionKey)) {
-                return cache.getCache(context,positionKey,Int::class.java)
-            } else {
-                cache.setCache(context,positionKey,0)
-                return 0
-            }
+        private val itemPositionMap = mutableMapOf<Long, Int>()
+
+        fun getItemPositionIndex(trainingId: Long): Int {
+            return itemPositionMap[trainingId] ?: 0
         }
 
-        fun setItemPositionIndex(context: Context,trainingId: Long, index: Int) {
-            val positionKey = "exercise_position_$trainingId"
-            cache.setCache(context,positionKey,index)
+        fun setItemPositionIndex(trainingId: Long, index: Int) {
+            itemPositionMap[trainingId] = index
         }
 
     }
@@ -67,9 +60,7 @@ class ExerciseAdapter(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
-        // Calcula o índice real do item a partir da posição
-        val realPosition = position % exerciseList.size
-        val currentExercise = exerciseList[realPosition]
+        val currentExercise = exerciseList[position]
 
         holder.nameTextView.text = currentExercise.name
         holder.descriptionTextView.text = currentExercise.toString(context)
@@ -77,16 +68,15 @@ class ExerciseAdapter(
         val webSettings: WebSettings = holder.webView.settings
         webSettings.javaScriptEnabled = true
         holder.webView.webViewClient = WebViewClient()
-        WebHandler.embedVideo(context, holder.webView, WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo))
+        WebHandler.embedVideo(context,holder.webView,WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo))
         holder.webView.setBackgroundColor(0x00000000)
 
         // Atualiza o estado do checkItem com base no exercício
         updateCheckItem(holder, currentExercise)
 
-        // Atualiza o rótulo com os dias
+        // Contabiliza os dias desde o último exercício
         updateDaysLabel(holder.labelCheckBoxItem, currentExercise)
 
-        // Configurações de cliques
         holder.floatingEditExerciseActionButton.setOnClickListener {
             callFormExercise("edit", currentExercise)
         }
@@ -123,12 +113,10 @@ class ExerciseAdapter(
             false
         }
 
-        // Clique no item para abrir detalhes
         holder.itemView.setOnClickListener {
             callFormExercise("play", currentExercise)
         }
     }
-
 
     private fun checkSets(holder: ExerciseViewHolder, currentExercise: Exercise) {
         val dailyExercises = DailyExercises(context)
@@ -145,9 +133,7 @@ class ExerciseAdapter(
         }
     }
 
-    override fun getItemCount(): Int {
-        return Int.MAX_VALUE
-    }
+    override fun getItemCount() = exerciseList.size
 
     private fun callFormExercise(action: String, exercise: Exercise) {
         val intent = Intent(context, formExercise::class.java).apply {
@@ -159,6 +145,11 @@ class ExerciseAdapter(
         context.startActivity(intent)
     }
 
+    private fun getCurrentDate(): String {
+        val currentDate = Date().time
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        return dateFormat.format(currentDate)
+    }
 
     private fun handleSetsCheck(currentExercise: Exercise, labelCheckBoxItem: TextView, checkItem: FloatingActionButton) {
         val dailyExercises = DailyExercises(context)
@@ -190,7 +181,7 @@ class ExerciseAdapter(
         val isLastExercise= currentPosition == exerciseListSize - 1
         val isLastSet = exerciseCount == sets
         if (isLastExercise && isLastSet) {
-            setItemPositionIndex(context,currentExercise.trainingID, 0)
+            setItemPositionIndex(currentExercise.trainingID, 0)
         }
         if (isLastSet) {
             scrollToNextExercise(currentExercise)
@@ -233,33 +224,27 @@ class ExerciseAdapter(
 
     private fun scrollToNextExercise(currentExercise: Exercise) {
         val dailyExercises = DailyExercises(context)
-        val currentPosition = exerciseList.indexOf(currentExercise)
         val exerciseListSize = exerciseList.size
-
-        // Determina o próximo índice virtual
-        var nextPosition = currentPosition + 1
+        var nextPosition = (exerciseList.indexOf(currentExercise) + 1) % exerciseListSize
 
         while (true) {
-            // Calcula a posição real na lista
-            val realPosition = nextPosition % exerciseListSize
-            val nextExercise = exerciseList[realPosition]
-
+            val nextExercise = exerciseList[nextPosition]
             val countDays = dailyExercises.getDaysSinceLastExercise(nextExercise)
             val exerciseCount = dailyExercises.getExerciseCount(nextExercise)
             val sets = nextExercise.sets
             val isExerciseDone = dailyExercises.isExerciseDone(date, nextExercise)
 
-            // Se o próximo exercício ainda não foi completado ou não foi realizado há algum tempo, rola para ele
+            // Se o próximo exercício ainda não foi completado, ou não foi realizado há algum tempo, rola para ele
             if (exerciseCount < sets || countDays > 0 || !isExerciseDone) {
                 recyclerView.smoothScrollToPosition(nextPosition)
                 break
             }
 
-            // Incrementa o índice virtual para verificar o próximo exercício
-            nextPosition++
+            // Move para o próximo exercício usando índice circular
+            nextPosition = (nextPosition + 1) % exerciseListSize
 
-            // Evita loops infinitos ao verificar todos os exercícios e voltar ao início
-            if (realPosition == currentPosition) break
+            // Se voltamos ao exercício atual, significa que todos os exercícios foram completados
+            if (nextPosition == exerciseList.indexOf(currentExercise)) break
         }
     }
 
