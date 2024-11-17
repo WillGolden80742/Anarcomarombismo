@@ -1,4 +1,4 @@
-#Wed Nov 13 13:33:51 BRT 2024
+#Sat Nov 16 22:48:04 BRT 2024
 base.0=C\:\\Users\\willi\\AndroidStudioProjects\\Anarcomarombismo\\app\\build\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=C\:\\Users\\willi\\AndroidStudioProjects\\Anarcomarombismo\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
 base.2=C\:\\Users\\willi\\AndroidStudioProjects\\Anarcomarombismo\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\14\\classes.dex

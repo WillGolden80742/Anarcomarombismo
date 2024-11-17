@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Exercise
+import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.WebHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.Forms.formExercise
@@ -32,14 +33,20 @@ class ExerciseAdapter(
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
     companion object {
 
-        private val itemPositionMap = mutableMapOf<Long, Int>()
-
-        fun getItemPositionIndex(trainingId: Long): Int {
-            return itemPositionMap[trainingId] ?: 0
+        private val cache = Cache()
+        fun getItemPositionIndex(context: Context,trainingId: Long): Int {
+            val positionKey = "exercise_position_$trainingId"
+            if (cache.hasCache(context,positionKey)) {
+                return cache.getCache(context,positionKey,Int::class.java)
+            } else {
+                cache.setCache(context,positionKey,0)
+                return 0
+            }
         }
 
-        fun setItemPositionIndex(trainingId: Long, index: Int) {
-            itemPositionMap[trainingId] = index
+        fun setItemPositionIndex(context: Context,trainingId: Long, index: Int) {
+            val positionKey = "exercise_position_$trainingId"
+            cache.setCache(context,positionKey,index)
         }
 
     }
@@ -181,7 +188,7 @@ class ExerciseAdapter(
         val isLastExercise= currentPosition == exerciseListSize - 1
         val isLastSet = exerciseCount == sets
         if (isLastExercise && isLastSet) {
-            setItemPositionIndex(currentExercise.trainingID, 0)
+            setItemPositionIndex(context,currentExercise.trainingID, 0)
         }
         if (isLastSet) {
             scrollToNextExercise(currentExercise)
