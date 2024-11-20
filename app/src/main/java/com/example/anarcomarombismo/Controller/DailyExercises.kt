@@ -14,7 +14,6 @@ class DailyExercises(context: Context) {
     private val dateStorageFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
     data class ExerciseByDate(val date: String, val exercise: Exercise, val count: Int = 0)
-
     private fun getCurrentFormattedDate(): String = dateStorageFormat.format(Date())
 
     fun markSetsAsDone(date: String = getCurrentFormattedDate(), exercise: Exercise, count: Int = 1) {
@@ -111,7 +110,7 @@ class DailyExercises(context: Context) {
         }
     }
 
-     fun updateExerciseCache(exercise: Exercise, exerciseHistory: List<ExerciseByDate>) {
+    private fun updateExerciseCache(exercise: Exercise, exerciseHistory: List<ExerciseByDate>) {
         val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
         cacheManager.setCache(context, cacheKey, exerciseHistory)
     }

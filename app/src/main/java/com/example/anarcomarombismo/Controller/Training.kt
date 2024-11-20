@@ -17,11 +17,13 @@ class Training(
     var description: String = ""
 ) : DataHandler<Training> {
     private var randomTrainingID = 0L
+
     data class WorkoutPlanWithExerciseHistory(
         val trainings: List<Training>,
         val exercises: List<Exercise>,
         val dailyExercises: Map<String, Set<DailyExercises.ExerciseByDate>>
     )
+
     companion object {
         private val cache = Cache()
 
@@ -68,7 +70,8 @@ class Training(
             }
 
             val workoutPlanWithHistory = WorkoutPlanWithExerciseHistory(trainings, exercises, dailyExercises)
-            val jsonWorkoutPlan = JSON.toCompressedJson(workoutPlanWithHistory)
+            val jsonWorkoutPlan = JSON.toJson(workoutPlanWithHistory)
+
             return ShareFiles.exportToFile(
                 context = context,
                 fileName = "WorkoutPlanWithHistory.anarchy3",
