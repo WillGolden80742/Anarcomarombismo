@@ -17,8 +17,11 @@ class Training(
     var description: String = ""
 ) : DataHandler<Training> {
     private var randomTrainingID = 0L
-    data class WorkoutPlan(val trainings: List<Training>,val exercises: List<Exercise>)
-
+    data class WorkoutPlanWithExerciseHistory(
+        val trainings: List<Training>,
+        val exercises: List<Exercise>,
+        val dailyExercises: Map<String, Set<DailyExercises.ExerciseByDate>>
+    )
     companion object {
         private val cache = Cache()
 
@@ -44,9 +47,18 @@ class Training(
             }
 
             val exercises = mutableListOf<Exercise>()
+            val dailyExercises = mutableMapOf<String, Set<DailyExercises.ExerciseByDate>>()
+
             trainings.forEach { training ->
                 val exercisesList = Exercise.build(trainingID = training.trainingID).fetchAll(context)
                 exercises.addAll(exercisesList)
+
+                // Collect daily exercise history for each exercise
+                exercisesList.forEach { exercise ->
+                    val exerciseKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
+                    val dailyExerciseHistory = DailyExercises(context).getExerciseHistory(exercise)
+                    dailyExercises[exerciseKey] = dailyExerciseHistory
+                }
             }
 
             if (exercises.isEmpty()) {
@@ -55,19 +67,14 @@ class Training(
                 return false
             }
 
-            val workoutPlan = WorkoutPlan(trainings, exercises)
-            val jsonWorkoutPlan = JSON.toJson(workoutPlan)
-
+            val workoutPlanWithHistory = WorkoutPlanWithExerciseHistory(trainings, exercises, dailyExercises)
+            val jsonWorkoutPlan = JSON.toCompressedJson(workoutPlanWithHistory)
             return ShareFiles.exportToFile(
                 context = context,
-                fileName = "WorkoutPlan.anarchy3",
+                fileName = "WorkoutPlanWithHistory.anarchy3",
                 content = jsonWorkoutPlan,
-                onSuccess = {
-                    // No additional action needed as Toast is handled in ShareFiles
-                },
-                onError = {
-                    // Error handling is done in ShareFiles
-                }
+                onSuccess = {},
+                onError = {}
             )
         }
 
@@ -77,12 +84,13 @@ class Training(
                 uri = uri,
                 onSuccess = { content ->
                     try {
-                        val workoutPlan = parseWorkoutPlan(content)
-                        saveWorkoutPlan(context, workoutPlan)
+                        val workoutPlan = parseWorkoutPlanWithHistory(content)
+                        saveWorkoutPlanWithHistory(context, workoutPlan)
                         showToastMessage(context, true,
                             R.string.successful_imported_training,
                             R.string.successful_imported_training)
                     } catch (e: Exception) {
+                        // Fallback to other import methods if this fails
                         DailyCalories.import(context, uri)
                     }
                 },
@@ -94,19 +102,27 @@ class Training(
             )
         }
 
-        private fun parseWorkoutPlan(content: String): WorkoutPlan {
-            return JSON.fromJson(content, WorkoutPlan::class.java)
+        private fun parseWorkoutPlanWithHistory(content: String): WorkoutPlanWithExerciseHistory {
+            return JSON.fromJson(content, WorkoutPlanWithExerciseHistory::class.java)
         }
 
-        private fun saveWorkoutPlan(context: Context, workoutPlan: WorkoutPlan) {
+        private fun saveWorkoutPlanWithHistory(context: Context, workoutPlan: WorkoutPlanWithExerciseHistory) {
+            // Save trainings and exercises like before
             val trainingKey = context.getString(R.string.trainings)
             cache.setCache(context, trainingKey, workoutPlan.trainings)
+
             workoutPlan.trainings.forEach { training ->
                 val trainingID = training.trainingID
                 val associatedExercises = workoutPlan.exercises.filter { it.trainingID == trainingID }
                 val contextualKey = context.getString(R.string.exercises)
                 val cacheKey = "${contextualKey}_$trainingID"
                 cache.setCache(context, cacheKey, associatedExercises)
+            }
+
+            // Save daily exercise history
+            val dailyExercises = DailyExercises(context)
+            workoutPlan.dailyExercises.forEach { (key, exerciseHistory) ->
+                cache.setCache(context, key, exerciseHistory.toList())
             }
         }
 

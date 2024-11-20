@@ -102,7 +102,7 @@ class DailyExercises(context: Context) {
         return lastExercise?.count ?: 0
     }
 
-    private fun getExerciseHistory(exercise: Exercise): Set<ExerciseByDate> {
+    fun getExerciseHistory(exercise: Exercise): Set<ExerciseByDate> {
         val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
         return if (cacheManager.hasCache(context, cacheKey)) {
             cacheManager.getCache(context, cacheKey, Array<ExerciseByDate>::class.java).toSet()
@@ -111,7 +111,7 @@ class DailyExercises(context: Context) {
         }
     }
 
-    private fun updateExerciseCache(exercise: Exercise, exerciseHistory: List<ExerciseByDate>) {
+     fun updateExerciseCache(exercise: Exercise, exerciseHistory: List<ExerciseByDate>) {
         val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
         cacheManager.setCache(context, cacheKey, exerciseHistory)
     }
