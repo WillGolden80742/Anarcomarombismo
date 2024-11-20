@@ -1,3 +1,0 @@
-com.example.anarcomarombismo.test
-style WhiteBackgroundDialogTheme
-style WhiteBackgroundTheme
