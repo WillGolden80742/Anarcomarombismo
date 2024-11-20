@@ -8,7 +8,6 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.Controller.Util.ShareFiles
 import com.example.anarcomarombismo.R
-import com.example.anarcomarombismo.mainActivity
 import java.util.Random
 
 class Training(
@@ -17,7 +16,7 @@ class Training(
     var description: String = ""
 ) : DataHandler<Training> {
     private var randomTrainingID = 0L
-
+    data class WorkoutPlan(val trainings: List<Training>,val exercises: List<Exercise>)
     data class WorkoutPlanWithExerciseHistory(
         val trainings: List<Training>,
         val exercises: List<Exercise>,
@@ -106,8 +105,19 @@ class Training(
         }
 
         private fun parseWorkoutPlanWithHistory(content: String): WorkoutPlanWithExerciseHistory {
-            return JSON.fromJson(content, WorkoutPlanWithExerciseHistory::class.java)
+            return if (JSON.hasAttribute(content, "dailyExercises")) {
+                JSON.fromJson(content, WorkoutPlanWithExerciseHistory::class.java)
+            } else {
+                val workoutPlan = JSON.fromJson(content, WorkoutPlan::class.java)
+                WorkoutPlanWithExerciseHistory(
+                    trainings = workoutPlan.trainings,
+                    exercises = workoutPlan.exercises,
+                    dailyExercises = emptyMap()
+                )
+            }
         }
+
+
 
         private fun saveWorkoutPlanWithHistory(context: Context, workoutPlan: WorkoutPlanWithExerciseHistory) {
             // Save trainings and exercises like before
@@ -123,7 +133,6 @@ class Training(
             }
 
             // Save daily exercise history
-            val dailyExercises = DailyExercises(context)
             workoutPlan.dailyExercises.forEach { (key, exerciseHistory) ->
                 cache.setCache(context, key, exerciseHistory.toList())
             }

@@ -13,5 +13,11 @@ class JSON {
             val gson = Gson()
             return gson.toJson(obj)
         }
+
+        fun hasAttribute(json: String, attribute: String): Boolean {
+            val jsonObject = com.google.gson.JsonParser.parseString(json).asJsonObject
+            return jsonObject.has(attribute)
+        }
+
     }
 }
