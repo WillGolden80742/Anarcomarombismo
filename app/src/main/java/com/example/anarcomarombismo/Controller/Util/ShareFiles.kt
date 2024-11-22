@@ -1,19 +1,28 @@
 package com.example.anarcomarombismo.Controller.Util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import com.example.anarcomarombismo.R
 import java.io.BufferedReader
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
+import java.util.Base64
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
 
 class ShareFiles {
     companion object {
+        @RequiresApi(Build.VERSION_CODES.O)
         fun exportToFile(
             context: Context,
             fileName: String,
@@ -23,7 +32,7 @@ class ShareFiles {
         ): Boolean {
             return try {
                 val file = createFile(context, fileName)
-                writeToFile(file, content)
+                writeToFile(file, compressText(content))
                 shareFile(context, file)
                 onSuccess()
                 true
@@ -34,6 +43,7 @@ class ShareFiles {
             }
         }
 
+        @SuppressLint("NewApi")
         fun importFromFile(
             context: Context,
             uri: Uri,
@@ -47,7 +57,7 @@ class ShareFiles {
                     val content = StringBuilder()
                     reader.forEachLine { content.append(it).append("\n") }
                     reader.close()
-                    onSuccess(content.toString())
+                    onSuccess(decompressText(content.toString()))
                 } else {
                     Toast.makeText(context, context.getString(R.string.error_file_empty), Toast.LENGTH_SHORT).show()
                     onError()
@@ -57,6 +67,46 @@ class ShareFiles {
                 onError()
             }
         }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun compressText (text: String): String {
+            return try {
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                val gzipOutputStream = GZIPOutputStream(byteArrayOutputStream)
+                gzipOutputStream.write(text.toByteArray(Charsets.UTF_8))
+                gzipOutputStream.close()
+                Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray())
+            } catch (e: Exception) {
+                throw CompressionException("Erro ao comprimir o texto: ${e.message}")
+            }
+        }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun decompressText(compressedBase64: String): String {
+             return try {
+                if (!compressedBase64.contains("{")) {
+                    // Limpar caracteres desnecessários
+                    val sanitizedBase64 = compressedBase64.replace("\\s".toRegex(), "")
+
+                    // Decodificar Base64
+                    val decodedBytes = Base64.getDecoder().decode(sanitizedBase64)
+
+                    // Descomprimir usando GZIP
+                    val gzipInputStream = GZIPInputStream(ByteArrayInputStream(decodedBytes))
+                    val decompressedBytes = gzipInputStream.readBytes()
+                    // Retornar conteúdo descompactado como String
+                    String(decompressedBytes, Charsets.UTF_8)
+                } else {
+                    compressedBase64
+                }
+            } catch (e: IllegalArgumentException) {
+                throw IllegalArgumentException("Erro ao processar Base64: ${e.message}")
+            } catch (e: Exception) {
+                throw Exception("Erro ao descomprimir o texto: ${e.message}")
+            }
+        }
+
+        class CompressionException(message: String, cause: Throwable? = null) : Exception(message, cause)
+
 
         private fun createFile(context: Context, fileName: String): File {
             return File(context.filesDir, fileName).apply {
