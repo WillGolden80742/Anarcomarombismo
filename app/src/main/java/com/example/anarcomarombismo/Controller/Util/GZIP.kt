@@ -26,14 +26,10 @@ class GZIP {
             return try {
                 val base64Regex = Regex("^[A-Za-z0-9+/]+={0,2}\$").containsMatchIn(compressedBase64) && compressedBase64.length > 2
                 if (base64Regex) {
-                    // Limpar espaços em branco e outras inconsistências
                     val sanitizedBase64 = compressedBase64.replace("\\s".toRegex(), "")
-                    // Decodificar Base64
                     val decodedBytes = Base64.getDecoder().decode(sanitizedBase64)
-                    // Descomprimir usando GZIP
                     val gzipInputStream = GZIPInputStream(ByteArrayInputStream(decodedBytes))
                     val decompressedBytes = gzipInputStream.readBytes()
-                    // Retornar conteúdo descompactado como String
                     String(decompressedBytes, Charsets.UTF_8)
                 } else {
                     compressedBase64
