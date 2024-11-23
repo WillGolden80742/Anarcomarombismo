@@ -1,24 +1,18 @@
 package com.example.anarcomarombismo.Controller.Util
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
+import com.example.anarcomarombismo.Controller.Util.GZIP.Companion.compressText
+import com.example.anarcomarombismo.Controller.Util.GZIP.Companion.decompressText
 import com.example.anarcomarombismo.R
 import java.io.BufferedReader
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStreamReader
-import java.util.Base64
-import java.util.zip.GZIPInputStream
-import java.util.zip.GZIPOutputStream
 
 class ShareFiles {
     companion object {
@@ -32,7 +26,7 @@ class ShareFiles {
         ): Boolean {
             return try {
                 val file = createFile(context, fileName)
-                writeToFile(file,GZIP.compressText(content))
+                writeToFile(file,compressText(content))
                 shareFile(context, file)
                 onSuccess()
                 true
@@ -56,7 +50,7 @@ class ShareFiles {
                     val content = StringBuilder()
                     reader.forEachLine { content.append(it).append("\n") }
                     reader.close()
-                    onSuccess(GZIP.decompressText(content.toString()))
+                    onSuccess(decompressText(content.toString()))
                 } else {
                     Toast.makeText(context, context.getString(R.string.error_file_empty), Toast.LENGTH_SHORT).show()
                     onError()

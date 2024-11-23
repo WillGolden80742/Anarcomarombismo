@@ -1,6 +1,8 @@
 package com.example.anarcomarombismo.Controller.Util
 
 import android.content.Context
+import com.example.anarcomarombismo.Controller.Util.GZIP.Companion.compressText
+import com.example.anarcomarombismo.Controller.Util.GZIP.Companion.decompressText
 import java.io.File
 import java.io.IOException
 import java.security.MessageDigest
@@ -18,7 +20,7 @@ class Cache {
 
     private fun setCacheText(context: Context, fileName: String, text: String) {
         val hashedFileName = hashFileName(fileName, SHA1_ALGORITHM)
-        val compressText = GZIP.compressText(text)
+        val compressText = compressText(text)
         writeToFile(context, hashedFileName, compressText)
     }
 
@@ -29,7 +31,7 @@ class Cache {
         val compressText = getCacheContent(context, sha1HashedFileName)
             ?: getCacheContent(context, md5HashedFileName)
             ?: NOT_FOUND
-        return GZIP.decompressText(compressText)
+        return decompressText(compressText)
     }
 
 
