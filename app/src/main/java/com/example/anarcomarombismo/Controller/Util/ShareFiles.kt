@@ -26,7 +26,8 @@ class ShareFiles {
         ): Boolean {
             return try {
                 val file = createFile(context, fileName)
-                writeToFile(file,compressText(content))
+                val compressedContent = compressText(content)
+                writeToFile(file,compressedContent)
                 shareFile(context, file)
                 onSuccess()
                 true
@@ -50,7 +51,8 @@ class ShareFiles {
                     val content = StringBuilder()
                     reader.forEachLine { content.append(it).append("\n") }
                     reader.close()
-                    onSuccess(decompressText(content.toString()))
+                    val decompressedContent = decompressText(content.toString())
+                    onSuccess(decompressedContent)
                 } else {
                     Toast.makeText(context, context.getString(R.string.error_file_empty), Toast.LENGTH_SHORT).show()
                     onError()
