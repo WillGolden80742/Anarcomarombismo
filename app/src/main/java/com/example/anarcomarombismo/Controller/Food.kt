@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
 import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.Controller.Util.GZIP
 import com.example.anarcomarombismo.Controller.Util.NumberFormatter
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.R
@@ -94,7 +95,7 @@ class Food(
             cache.getCache(context, contextualKey, Array<Food>::class.java).toList()
         } else {
             val rawFoodData = context.resources.openRawResource(R.raw.nutritional_table).bufferedReader().use { it.readText() }
-            val foodList = JSON.fromJson(rawFoodData, Array<Food>::class.java).toList()
+            val foodList = JSON.fromJson(GZIP.decompressText(rawFoodData), Array<Food>::class.java).toList()
             cache.setCache(context, contextualKey, foodList)
             foodList
         }

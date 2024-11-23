@@ -18,17 +18,21 @@ class Cache {
 
     private fun setCacheText(context: Context, fileName: String, text: String) {
         val hashedFileName = hashFileName(fileName, SHA1_ALGORITHM)
-        writeToFile(context, hashedFileName, text)
+        val compressText = GZIP.compressText(text)
+        writeToFile(context, hashedFileName, compressText)
     }
 
     private fun getCacheText(context: Context, fileName: String): String {
         val sha1HashedFileName = hashFileName(fileName, SHA1_ALGORITHM)
         val md5HashedFileName = hashFileName(fileName, MD5_ALGORITHM)
 
-        return getCacheContent(context, sha1HashedFileName)
+        val compressText = getCacheContent(context, sha1HashedFileName)
             ?: getCacheContent(context, md5HashedFileName)
             ?: NOT_FOUND
+        println("compressText: $compressText")
+        return GZIP.decompressText(compressText)
     }
+
 
     fun setCache(context: Context, fileName: String, obj: Any) {
         setCacheText(context, fileName,JSON.toJson(obj))
