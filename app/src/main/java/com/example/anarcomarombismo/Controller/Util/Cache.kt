@@ -29,7 +29,6 @@ class Cache {
         val compressText = getCacheContent(context, sha1HashedFileName)
             ?: getCacheContent(context, md5HashedFileName)
             ?: NOT_FOUND
-        println("compressText: $compressText")
         return GZIP.decompressText(compressText)
     }
 
