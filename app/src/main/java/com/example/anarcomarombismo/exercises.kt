@@ -5,23 +5,29 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.anarcomarombismo.Controller.DailyExercises
 import com.example.anarcomarombismo.Controller.Util.Calendars
 import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formExercise
 import com.example.anarcomarombismo.Forms.formTraining
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class exercises : AppCompatActivity() {
+class exercises : AppCompatActivity(), ExerciseAdapter.OnExerciseCheckListener  {
 
     private lateinit var dateTextView: TextView
+    private lateinit var trainingLabel: TextView
+    private lateinit var trainingProgressBar: ProgressBar
     private lateinit var addExerciseButton: Button
     private lateinit var editTraining: Button
     private lateinit var exerciseList: RecyclerView
@@ -31,6 +37,8 @@ class exercises : AppCompatActivity() {
     private val dateFormatStored = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private fun initializeUIComponents() {
         dateTextView = findViewById(R.id.dateTextView)
+        trainingLabel = findViewById(R.id.trainingLabel)
+        trainingProgressBar = findViewById(R.id.trainingProgressBar)
         addExerciseButton = findViewById(R.id.addFoodFormButton)
         exerciseList = findViewById(R.id.exercisesList)
         editTraining = findViewById(R.id.removeFoodFormButton)
@@ -70,11 +78,19 @@ class exercises : AppCompatActivity() {
                 }
             }
         })
+
     }
     override fun onResume() {
         super.onResume()
         loadExercises(trainingID,dateTextView.text.toString())
         exerciseList.scrollToPosition(ExerciseAdapter.getItemPositionIndex(this,trainingID))
+        updateProgressTraining()
+    }
+    private fun updateProgressTraining() {
+        val percentageLabel = DailyExercises(this).getTrainingCompletionPercentage(trainingID)
+        trainingLabel.text = "$percentageLabel%"
+        val percentage = percentageLabel.toInt()
+        trainingProgressBar.progress = percentage
     }
     private fun selectDate() {
         val calendar = Calendar.getInstance()
@@ -113,6 +129,10 @@ class exercises : AppCompatActivity() {
             descriptionTrainingLabel.text = it.description
             exerciseList.adapter = ExerciseAdapter(this, Exercise.build(trainingID).fetchAll(this), date, exerciseList)
         }
+    }
+
+    override fun onExerciseCheckChanged() {
+        updateProgressTraining()
     }
 
 

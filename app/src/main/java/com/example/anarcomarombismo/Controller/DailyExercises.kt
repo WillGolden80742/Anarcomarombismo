@@ -2,6 +2,7 @@ package com.example.anarcomarombismo.Controller
 
 import android.content.Context
 import com.example.anarcomarombismo.Controller.Util.Cache
+import com.example.anarcomarombismo.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -73,6 +74,42 @@ class DailyExercises(context: Context) {
         }
 
         return false
+    }
+
+    fun getTrainingCompletionPercentage(trainingID: Long): String {
+        // Get all exercises for the training
+        val exercises = Exercise.build(trainingID).fetchAll(context)
+        if (exercises.isEmpty()) return "0"
+
+        // Get current date
+        val currentDate = getCurrentFormattedDate()
+
+        // Count completed exercises
+        var completedSets = 0
+        var totalSets = 0
+
+        exercises.forEach { exercise ->
+            val exerciseHistory = getExerciseHistory(exercise)
+            val todaysExercise = exerciseHistory.find {
+                it.date == currentDate &&
+                        it.exercise.exerciseID == exercise.exerciseID &&
+                        it.exercise.trainingID == exercise.trainingID
+            }
+
+            // Add the completed sets for this exercise
+            completedSets += todaysExercise?.count ?: 0
+            // Add the total sets required for this exercise
+            totalSets += exercise.sets
+        }
+
+        // Calculate percentage
+        val percentage = if (totalSets > 0) {
+            ((completedSets.toDouble() / totalSets.toDouble()) * 100).toInt()
+        } else {
+            0
+        }
+
+        return percentage.toString()
     }
 
     fun getDaysSinceLastExercise(exercise: Exercise): Int {

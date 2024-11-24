@@ -54,6 +54,12 @@ class ExerciseAdapter(
 
     }
 
+    interface OnExerciseCheckListener {
+        fun onExerciseCheckChanged()
+    }
+
+    private val checkListener = context as? OnExerciseCheckListener
+
     inner class ExerciseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val webView: WebView = itemView.findViewById(R.id.webView)
         val labelCheckBoxItem: TextView = itemView.findViewById(R.id.labelCheckBoxItem)
@@ -96,6 +102,7 @@ class ExerciseAdapter(
 
         holder.checkItem.setOnClickListener {
             handleSetsCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
+            checkListener?.onExerciseCheckChanged()
             val dailyExercises = DailyExercises(context)
             val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
             val sets = currentExercise.sets
