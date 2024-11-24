@@ -113,7 +113,6 @@ class ExerciseAdapter(
 
         var isLongPressActive = false
         holder.checkItem.setOnLongClickListener {
-            checkListener?.onExerciseCheckChanged()
             isLongPressActive = true
             Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
             true
@@ -131,6 +130,7 @@ class ExerciseAdapter(
                     isLongPressActive = false
                 }
             }
+            checkListener?.onExerciseCheckChanged()
             false
         }
 
