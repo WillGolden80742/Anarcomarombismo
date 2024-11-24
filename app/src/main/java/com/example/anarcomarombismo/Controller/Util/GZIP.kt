@@ -11,14 +11,18 @@ class GZIP {
     companion object {
         @SuppressLint("NewApi")
         fun compressText (text: String): String {
-            return try {
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                val gzipOutputStream = GZIPOutputStream(byteArrayOutputStream)
-                gzipOutputStream.write(text.toByteArray(Charsets.UTF_8))
-                gzipOutputStream.close()
-                Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray())
-            } catch (e: Exception) {
-                throw CompressionException("Erro ao comprimir o texto: ${e.message}")
+            return if (text.length < 250) {
+                text
+            } else {
+                try {
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    val gzipOutputStream = GZIPOutputStream(byteArrayOutputStream)
+                    gzipOutputStream.write(text.toByteArray(Charsets.UTF_8))
+                    gzipOutputStream.close()
+                    Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray())
+                } catch (e: Exception) {
+                    throw CompressionException("Erro ao comprimir o texto: ${e.message}")
+                }
             }
         }
         @SuppressLint("NewApi")

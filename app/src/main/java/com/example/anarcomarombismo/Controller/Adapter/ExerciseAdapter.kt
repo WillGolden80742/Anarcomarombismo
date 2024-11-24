@@ -21,6 +21,9 @@ import com.example.anarcomarombismo.Controller.Util.WebHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.Forms.formExercise
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -75,7 +78,10 @@ class ExerciseAdapter(
         val webSettings: WebSettings = holder.webView.settings
         webSettings.javaScriptEnabled = true
         holder.webView.webViewClient = WebViewClient()
-        WebHandler.embedVideo(context,holder.webView,WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo))
+        CoroutineScope(Dispatchers.Main).launch {
+            val embedLink = WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo)
+            WebHandler.embedVideo(context, holder.webView, embedLink)
+        }
         holder.webView.setBackgroundColor(0x00000000)
 
         // Atualiza o estado do checkItem com base no exercício
