@@ -27,7 +27,6 @@ class Cache {
     private fun getCacheText(context: Context, fileName: String): String {
         val sha1HashedFileName = hashFileName(fileName, SHA1_ALGORITHM)
         val md5HashedFileName = hashFileName(fileName, MD5_ALGORITHM)
-
         val compressText = getCacheContent(context, sha1HashedFileName)
             ?: getCacheContent(context, md5HashedFileName)
             ?: NOT_FOUND
