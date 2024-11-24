@@ -25,14 +25,11 @@ class GZIP {
                 }
             }
         }
-        private fun isValidBase64(base64: String): Boolean {
-            val base64Regex = Regex("^[A-Za-z0-9+/]+={0,2}$")
-            return base64Regex.matches(base64) && base64.length % 4 == 0
-        }
         @SuppressLint("NewApi")
         fun decompressText(compressedBase64: String): String {
             return try {
-                if (isValidBase64(compressedBase64)) {
+                val base64Regex = Regex("^[A-Za-z0-9+/]+={0,2}\$").containsMatchIn(compressedBase64) && compressedBase64.length > 2
+                if (base64Regex) {
                     val sanitizedBase64 = compressedBase64.replace("\\s".toRegex(), "")
                     val decodedBytes = Base64.getDecoder().decode(sanitizedBase64)
                     val gzipInputStream = GZIPInputStream(ByteArrayInputStream(decodedBytes))
