@@ -41,10 +41,9 @@ class GZIP {
                 } else {
                     compressedBase64
                 }
-            } catch (e: IllegalArgumentException) {
-                throw IllegalArgumentException("Erro ao processar Base64: ${e.message}")
             } catch (e: Exception) {
                 throw Exception("Erro ao descomprimir o texto: ${e.message}")
+                compressedBase64
             }
         }
 
