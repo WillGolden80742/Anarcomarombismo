@@ -20,6 +20,7 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.WebHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.Forms.formExercise
+import com.example.anarcomarombismo.stopWatch
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +36,7 @@ class ExerciseAdapter(
     private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>() {
     companion object {
-
+        private var isLongPressActive = false
         private val cache = Cache()
         fun getItemPositionIndex(context: Context,trainingId: Long): Int {
             val positionKey = "exercise_position_$trainingId"
@@ -111,7 +112,6 @@ class ExerciseAdapter(
             }
         }
 
-        var isLongPressActive = false
         holder.checkItem.setOnLongClickListener {
             isLongPressActive = true
             Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
@@ -137,6 +137,12 @@ class ExerciseAdapter(
         holder.itemView.setOnClickListener {
             callFormExercise("play", currentExercise)
         }
+    }
+
+    private fun openStopWatchActivity() {
+        println("Abrindo a tela de cronômetro")
+        val intent = Intent(context, stopWatch::class.java)
+        context.startActivity(intent)
     }
 
     private fun checkSets(holder: ExerciseViewHolder, currentExercise: Exercise) {
@@ -207,6 +213,9 @@ class ExerciseAdapter(
         if (isLastSet) {
             scrollToNextExercise(currentExercise)
         }
+        if (!isLongPressActive) {
+            openStopWatchActivity()
+        }
     }
 
 
@@ -241,7 +250,6 @@ class ExerciseAdapter(
         }
         labelCheckBoxItem.text = daysText
     }
-
 
     private fun scrollToNextExercise(currentExercise: Exercise) {
         val dailyExercises = DailyExercises(context)

@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Anarcomarombismo"
         tools:targetApi="31">
-
+        <activity
+            android:name=".stopWatch"
+            android:exported="false" />
         <activity
             android:name=".Forms.formBMR"
             android:exported="false" />
@@ -50,21 +52,23 @@
             android:name=".Forms.formTraining"
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo" />
-
         <activity
             android:name=".mainActivity"
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <!-- Intent filter para arquivos .anarchy3 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="file" />
                 <data android:scheme="content" />
                 <data android:mimeType="*/*" />
@@ -73,8 +77,6 @@
                 <data android:pathPattern=".*\\..*\\..*\\.anarchy3" />
             </intent-filter>
         </activity>
-
-
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -85,7 +87,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
     </application>
 
 </manifest>
