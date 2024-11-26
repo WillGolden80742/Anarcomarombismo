@@ -88,6 +88,15 @@ class ExerciseAdapter(
         CoroutineScope(Dispatchers.Main).launch {
             val embedLink = WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo)
             WebHandler.embedVideo(context, holder.webView, embedLink)
+            holder.webView.setOnTouchListener { _, event ->
+                if (event.action == ACTION_UP) {
+                    holder.webView.performClick()
+                    holder.webView.loadUrl(embedLink)
+                    // remove .setOnTouchListener apos clique
+                    holder.webView.setOnTouchListener(null)
+                }
+                false
+            }
         }
         holder.webView.setBackgroundColor(0x00000000)
 

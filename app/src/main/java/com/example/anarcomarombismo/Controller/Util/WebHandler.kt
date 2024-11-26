@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.webkit.WebView
+import android.widget.Toast
 import com.example.anarcomarombismo.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -47,17 +48,18 @@ class WebHandler {
 
                 if (formattedLink.isNotEmpty() && isNetworkAvailable(context)) {
                     val cache = Cache()
-                    try {
-                        if (!cache.hasCache(context, videoId!!)) {
-                            val thumbnail = downloadThumbnail(videoId)
-                            thumbnail?.let { base64Image ->
-                                cache.setCache(context, videoId, base64Image)
-                            }
-                        }
-                    } catch (e: Exception) {
-                        println("Erro ao baixar a miniatura com URL: ${e.message}")
+                    val cachedThumbnail = if (cache.hasCache(context, videoId!!)) {
+                        cache.getCache(context, videoId, String::class.java)
+                    } else {
+                        val thumbnail = downloadThumbnail(videoId)
+                        thumbnail?.also { cache.setCache(context, videoId, it) }
                     }
-                    webView.loadUrl(formattedLink)
+                    val playIcon = withContext(Dispatchers.IO) {
+                        val inputStream = context.resources.openRawResource(R.raw.play_icon)
+                        inputStream.bufferedReader().use { it.readText() }
+                    }
+                    val html = generateCachedThumbnailHtml(cachedThumbnail ?: "", playIcon)
+                    webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
                 } else {
                     videoId?.let {
                         val cache = Cache()
@@ -68,34 +70,7 @@ class WebHandler {
                                     val inputStream = context.resources.openRawResource(R.raw.no_ethernet)
                                     inputStream.bufferedReader().use { it -> it.readText() }
                                 }
-                                val html = """
-                                <html>
-                                <head>
-                                    <style>
-                                        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
-                                        .cachedThumbnail { 
-                                            width: 100%; height: 100%; 
-                                            background-size: cover; 
-                                            background-position: center; 
-                                            position: absolute; 
-                                        }
-                                        .noInternetIcon { 
-                                            position: absolute; 
-                                            top: 50%; left: 50%; 
-                                            width: 25%; height: 25%; 
-                                            background-size: contain; 
-                                            background-repeat: no-repeat; 
-                                            transform: translate(-50%, -50%); 
-                                        }
-                                    </style>
-                                </head>
-                                <body>
-                                    <div class="cachedThumbnail" style="background-image:url('data:image/jpeg;base64,$cachedThumbnail');"></div>
-                                    <div class="noInternetIcon" style="background-image:url('data:image/svg+xml;base64,$noInternetIcon');"></div>
-                                </body>
-                                </html>
-                            """.trimIndent()
-
+                                val html = generateCachedThumbnailHtml(cachedThumbnail, noInternetIcon)
                                 webView.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null)
                             } catch (e: Exception) {
                                 println("Erro ao carregar miniatura do cache: ${e.message}")
@@ -107,6 +82,40 @@ class WebHandler {
                     }
                 }
             }
+        }
+
+        private fun generateCachedThumbnailHtml(cachedThumbnail: String, centerIcon: String): String {
+            return """
+                <html>
+                <head>
+                    <style>
+                        body, html { 
+                            margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; 
+                            display: flex; align-items: center; justify-content: center;
+                        }
+                        .cachedThumbnail { 
+                            width: 100%; height: 100%; 
+                            background-size: cover; 
+                            background-position: center; 
+                            position: absolute; 
+                        }
+                        .centerIcon { 
+                            z-index: 1000;
+                            width: 75px; height: 75px; 
+                            background-size: contain; 
+                            background-repeat: no-repeat; 
+                            background-position: center; 
+                            border-radius: 100%;
+                            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75);
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="cachedThumbnail" style="background-image:url('data:image/jpeg;base64,$cachedThumbnail');"></div>
+                    <div class="centerIcon" style="background-image:url('data:image/svg+xml;base64,$centerIcon');"></div>
+                </body>
+                </html>
+            """.trimIndent()
         }
 
         fun embedVideoForm(context: Context, webView: WebView, formattedLink: String) {
