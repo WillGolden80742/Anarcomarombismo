@@ -240,12 +240,24 @@
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:divider="@drawable/list_divider_daily_calories"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addNewFoodButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressContainer" />
+
+    <!-- Botão flutuante para adicionar novo alimento -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addNewFoodButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:backgroundTint="@color/button_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_fluent_add_food_24_regular_svg"
+        app:tint="@color/title_color" />
 
     <!-- Botão flutuante para adicionar nova entrada de calorias -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -259,17 +271,6 @@
         app:srcCompat="@drawable/ic_fluent_text_bullet_list_add_24_filled"
         app:tint="@color/title_color" />
 
-    <!-- Botão flutuante para adicionar novo alimento -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNewFoodButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:backgroundTint="@color/button_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_fluent_add_food_24_regular_svg"
-        app:tint="@color/title_color" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
