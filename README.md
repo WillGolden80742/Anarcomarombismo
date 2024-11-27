@@ -35,6 +35,39 @@ Anarcomarombismo is an Android application designed to help users track their da
 - **Coroutines**: Handle asynchronous tasks, ensuring smooth UI interactions by preventing the main thread from blocking.
 - **Android Architecture Components**: Tools like ViewModel and LiveData are used to manage UI-related data in a lifecycle-aware manner, ensuring data persistence even during configuration changes.
 
+## Application Screens
+
+### Main Screen
+![main](https://github.com/user-attachments/assets/ce7a1e8b-b096-4330-b773-f8d98e131c7b)
+A comprehensive workout selection screen featuring four distinct training routines:
+- Workouts organized by muscle groups (Chest and Triceps, Back and Biceps, Shoulders and Trapezius, Legs and Calves)
+- Play buttons for quick workout initiation
+- Navigation icons for adding workouts and accessing nutrition features
+
+### Exercises Screen
+![exercises](https://github.com/user-attachments/assets/966bac35-6cd6-4562-841b-6af4b12a5e34)
+Detailed exercise view with:
+- Demonstration video showing correct exercise technique
+- Comprehensive exercise details including muscle groups, sets, repetitions, and rest periods
+- Progress tracking
+- Options to edit exercise parameters
+
+### Daily Calories Screen
+![daily calories](https://github.com/user-attachments/assets/3127a658-709d-42c3-8d10-b764ea6fb2d6)
+Nutrition tracking interface featuring:
+- Calorie intake tracking
+- Breakdown of nutritional components (carbohydrates, proteins, etc.)
+- Nutritional history
+- Easy navigation for meal entry
+
+### Daily Calories Edit Screen
+![dailycalories edit screen](https://github.com/user-attachments/assets/c792e1d7-fbd3-40cd-ab0e-d2161028c5fc)
+Meal logging interface with:
+- Food search functionality
+- Detailed nutritional information for each food item
+- Ability to adjust food quantities
+- Comprehensive nutritional breakdown
+
 ## Installation
 
 To get started with the Anarcomarombismo app, follow these steps:
