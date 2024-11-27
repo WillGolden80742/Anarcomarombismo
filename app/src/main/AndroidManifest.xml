@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Anarcomarombismo"
         tools:targetApi="31">
         <activity
+            android:name=".trainings"
+            android:exported="false" />
+        <activity
             android:name=".stopWatch"
             android:exported="false" />
         <activity
@@ -50,7 +53,7 @@
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo" />
         <activity
-            android:name=".mainActivity"
+            android:name="MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Anarcomarombismo">
             <intent-filter>

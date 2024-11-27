@@ -53,7 +53,7 @@
     <string name="dumbbell_press">Dumbbell Press</string>
     <string name="dumbbell_press_30">Dumbbell Press 30º</string>
     <string name="dumbbell_press_less30">Dumbbell Press -30º</string>
-    <string name="edit_exercise">Editar Exercício</string>
+    <string name="edit_training">Editar Treino</string>
     <string name="energy_kcal">Calorias (kcal)</string>
     <string name="energy_kj">Calorias (kj)</string>
     <string name="enter_calories_kcal">Insira as calorias (kcal)</string>

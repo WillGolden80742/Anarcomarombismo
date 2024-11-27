@@ -1,6 +1,7 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import com.example.anarcomarombismo.Controller.Interface.DataHandler
@@ -8,6 +9,7 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.Controller.Util.ShareFiles
 import com.example.anarcomarombismo.R
+import com.example.anarcomarombismo.trainings
 import java.util.Random
 
 class Training(
@@ -91,6 +93,8 @@ class Training(
                         showToastMessage(context, true,
                             R.string.successful_imported_training,
                             R.string.successful_imported_training)
+                        val intent = Intent(context,trainings::class.java)
+                        context.startActivity(intent)
                     } catch (e: Exception) {
                         // Fallback to other import methods if this fails
                         DailyCalories.import(context, uri)

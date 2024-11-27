@@ -53,7 +53,7 @@
     <string name="dumbbell_press">Press con Mancuernas</string>
     <string name="dumbbell_press_30">Press con Mancuernas 30º</string>
     <string name="dumbbell_press_less30">Press con Mancuernas -30º</string>
-    <string name="edit_exercise">Editar Ejercicio</string>
+    <string name="edit_training">Editar Entrenamiento</string>
     <string name="energy_kcal">Calorías (kcal)</string>
     <string name="energy_kj">Calorías (kj)</string>
     <string name="enter_calories_kcal">Ingrese las calorías (kcal)</string>
