@@ -283,7 +283,7 @@
             android:backgroundTint="@color/button_color"
             android:textColor="#FFFFFF"
             app:cornerRadius="@dimen/corner_radius"
-            app:icon="@drawable/ic_fluent_food_24_regular"
+            app:icon="@drawable/ic_fluent_add_food_24_regular_svg"
             app:iconGravity="textStart"
             app:iconSize="42dp"
             app:iconTint="@color/title_color" />
