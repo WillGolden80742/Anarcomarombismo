@@ -203,7 +203,6 @@
     <string name="video_link_hint">Enter the video link (Youtube only)</string>
     <string name="weight">Weight</string>
     <string name="weight_hint">Enter your weight</string>
-    <string name="completed_exercise">Completed Exercise</string>
     <string name="no_internet">Check your internet connection</string>
     <string name="add_training">Add Training</string>
     <string name="edit_exercise">Edit Exercise</string>
