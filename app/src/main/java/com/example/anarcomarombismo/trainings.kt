@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class trainings : AppCompatActivity(), TrainingAdapter.OnTrainingItemClickListener {
 
-    private lateinit var addTrainingButton: Button
+    private lateinit var addTrainingButton: FloatingActionButton
     private lateinit var trainingList: ListView
     private lateinit var exportTrainings: FloatingActionButton
     private val listView: ListView by lazy { findViewById(R.id.trainingList) }

@@ -21,8 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class dailyCalories : AppCompatActivity() {
     private lateinit var exportDailyCalories: FloatingActionButton
     private lateinit var caloriesFoodList: RecyclerView
-    private lateinit var addCaloriesButton: Button
-    private lateinit var addNewFoodButton: Button
+    private lateinit var addCaloriesButton: FloatingActionButton
+    private lateinit var addNewFoodButton: FloatingActionButton
     private lateinit var progressBarContainer: LinearLayout
     private lateinit var editStatisticsButton: Button
     private lateinit var caloriesProgressBar: ProgressBar

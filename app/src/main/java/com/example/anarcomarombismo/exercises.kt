@@ -16,6 +16,7 @@ import com.example.anarcomarombismo.Controller.Exercise
 import com.example.anarcomarombismo.Controller.Training
 import com.example.anarcomarombismo.Forms.formExercise
 import com.example.anarcomarombismo.Forms.formTraining
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -26,8 +27,8 @@ class exercises : AppCompatActivity(), ExerciseAdapter.OnExerciseCheckListener  
     private lateinit var dateTextView: TextView
     private lateinit var trainingLabel: TextView
     private lateinit var trainingProgressBar: ProgressBar
-    private lateinit var addExerciseButton: Button
-    private lateinit var editTraining: Button
+    private lateinit var addExerciseButton: FloatingActionButton
+    private lateinit var editTraining: FloatingActionButton
     private lateinit var exerciseList: RecyclerView
     private lateinit var trainingName: TextView
     private lateinit var descriptionTrainingLabel: TextView
@@ -37,9 +38,9 @@ class exercises : AppCompatActivity(), ExerciseAdapter.OnExerciseCheckListener  
         dateTextView = findViewById(R.id.dateTextView)
         trainingLabel = findViewById(R.id.trainingLabel)
         trainingProgressBar = findViewById(R.id.trainingProgressBar)
-        addExerciseButton = findViewById(R.id.addFoodFormButton)
+        addExerciseButton = findViewById(R.id.addExerciseButton)
         exerciseList = findViewById(R.id.exercisesList)
-        editTraining = findViewById(R.id.removeFoodFormButton)
+        editTraining = findViewById(R.id.editTrainingButton)
         descriptionTrainingLabel = findViewById(R.id.descriptionTrainingLabel)
         trainingName = findViewById(R.id.dailyCaloriesTitle)
     }

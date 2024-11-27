@@ -142,57 +142,40 @@
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:divider="@drawable/list_divider"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/addExerciseButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descriptionContainer" />
 
-    <!-- LinearLayout to hold the buttons -->
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+    <!-- Contêiner invisível para manter a estrutura do layout -->
+
+    <!-- Botão flutuante para adicionar exercícios -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addExerciseButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/button_color"
-        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        app:backgroundTint="@color/button_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_fluent_text_bullet_list_add_24_filled"
+        app:tint="@color/title_color" />
+
+    <!-- Botão flutuante para adicionar calorias -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editTrainingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:backgroundTint="@color/button_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exercisesList"
-        app:layout_constraintVertical_bias="1.0">
+        app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
+        app:tint="@color/title_color" />
 
-        <Button
-            android:id="@+id/addFoodFormButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="20dp"
-            android:backgroundTint="@color/button_color"
-            android:text="@string/add_exercise"
-            android:textColor="@color/title_color"
-            app:cornerRadius="@dimen/corner_radius"
-            app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-            app:iconGravity="top"
-            app:iconSize="42dp"
-            app:iconTint="@color/title_color"
-            />
 
-        <Button
-            android:id="@+id/removeFoodFormButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/button_color"
-            android:text="@string/edit_training"
-            android:textColor="@color/title_color"
-            app:cornerRadius="@dimen/corner_radius"
-            app:icon="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
-            app:iconGravity="top"
-            app:iconSize="42dp"
-            app:iconTint="@color/title_color" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
