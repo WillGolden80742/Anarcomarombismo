@@ -27,9 +27,6 @@
             android:name=".Forms.formMacro"
             android:exported="false" />
         <activity
-            android:name=".bodyStatistics"
-            android:exported="false" />
-        <activity
             android:name=".Forms.formFood"
             android:exported="false" />
         <activity
