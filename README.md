@@ -41,14 +41,9 @@ Anarcomarombismo is an Android application designed to help users track their da
 
 ![exercises](https://github.com/user-attachments/assets/966bac35-6cd6-4562-841b-6af4b12a5e34)
 
-![dailycalories](https://github.com/user-attachments/assets/e92acce9-1a59-4696-8411-38c8a6e0e5e5)
+![daily calories](https://github.com/user-attachments/assets/d3a925af-9510-46c6-8d0a-fcd9deb8a987)
 
 ![dailycalories edit screen](https://github.com/user-attachments/assets/c792e1d7-fbd3-40cd-ab0e-d2161028c5fc)
-
-
-
-
-
 
 
 ## Installation
