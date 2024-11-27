@@ -35,6 +35,22 @@ Anarcomarombismo is an Android application designed to help users track their da
 - **Coroutines**: Handle asynchronous tasks, ensuring smooth UI interactions by preventing the main thread from blocking.
 - **Android Architecture Components**: Tools like ViewModel and LiveData are used to manage UI-related data in a lifecycle-aware manner, ensuring data persistence even during configuration changes.
 
+#Application Screens
+
+![main](https://github.com/user-attachments/assets/ce7a1e8b-b096-4330-b773-f8d98e131c7b)
+
+![exercises](https://github.com/user-attachments/assets/966bac35-6cd6-4562-841b-6af4b12a5e34)
+
+![dailycalories](https://github.com/user-attachments/assets/e92acce9-1a59-4696-8411-38c8a6e0e5e5)
+
+![dailycalories edit screen](https://github.com/user-attachments/assets/c792e1d7-fbd3-40cd-ab0e-d2161028c5fc)
+
+
+
+
+
+
+
 ## Installation
 
 To get started with the Anarcomarombismo app, follow these steps:
