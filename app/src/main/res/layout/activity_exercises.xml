@@ -158,11 +158,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
-        app:backgroundTint="@color/black"
+        app:backgroundTint="@color/button_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-        app:tint="@color/yellow" />
+        app:tint="@color/title_color" />
 
     <!-- Botão flutuante para adicionar calorias -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -170,11 +170,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:backgroundTint="@color/black"
+        app:backgroundTint="@color/button_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_fluent_text_bullet_list_square_edit_24_regular"
-        app:tint="@color/yellow" />
+        app:tint="@color/title_color" />
 
 
 

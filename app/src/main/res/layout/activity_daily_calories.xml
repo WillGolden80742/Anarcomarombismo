@@ -51,9 +51,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            app:backgroundTint="@color/black"
+            app:backgroundTint="@color/button_color"
             app:srcCompat="@drawable/shared_fluent_icon"
-            app:tint="@color/yellow" />
+            app:tint="@color/title_color" />
 
     </LinearLayout>
 
@@ -253,11 +253,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:backgroundTint="@color/black"
+        app:backgroundTint="@color/button_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-        app:tint="@color/yellow" />
+        app:tint="@color/title_color" />
 
     <!-- Botão flutuante para adicionar novo alimento -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -265,11 +265,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:backgroundTint="@color/black"
+        app:backgroundTint="@color/button_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/ic_fluent_add_food_24_regular_svg"
-        app:tint="@color/yellow" />
+        app:tint="@color/title_color" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
