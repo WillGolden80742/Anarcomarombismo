@@ -4,6 +4,7 @@
     <string name="add_exercise">Agregar Ejercicio</string>
     <string name="add_food_error">Error al agregar alimento</string>
     <string name="add_nutrition_info">Agregar Información Nutricional</string>
+    <string name="add_training">Agregar Entrenamiento</string>
     <string name="adduction_leg_on_machine">Aducción de Piernas en Máquina</string>
     <string name="adductors">Aductores</string>
     <string name="age">Idade</string>
@@ -28,6 +29,7 @@
     <string name="carbohydrates">Carbohidratos (g)</string>
     <string name="carbohydrates_b">Carbohidratos</string>
     <string name="chest_and_triceps">Pecho y Tríceps</string>
+    <string name="completed_exercise">Ejercicio Completado</string>
     <string name="daily_calories">Calorías Diarias</string>
     <string name="daily_calories_imported_successfully">Calorías diarias importadas con éxito</string>
     <string name="daily_calories_removed_successfully">Calorías diarias eliminadas con éxito</string>
@@ -52,6 +54,7 @@
     <string name="dumbbell_press">Press con Mancuernas</string>
     <string name="dumbbell_press_30">Press con Mancuernas 30º</string>
     <string name="dumbbell_press_less30">Press con Mancuernas -30º</string>
+    <string name="edit_exercise">Editar Ejercicio</string>
     <string name="energy_kcal">Calorías (kcal)</string>
     <string name="energy_kj">Calorías (kj)</string>
     <string name="enter_calories_kcal">Ingrese las calorías (kcal)</string>
@@ -114,8 +117,11 @@
     <string name="mg">mg</string>
     <string name="muscle">Músculo</string>
     <string name="muscles">Músculos</string>
+    <string name="new_calorie">Nueva Calorías</string>
+    <string name="new_food">Nuevo Alimento</string>
     <string name="no_calories_added_yet">Aún no se han agregado calorías</string>
     <string name="no_daily_calories_to_export">Sin calorías diarias para exportar</string>
+    <string name="no_internet">Verifique su conexión a Internet</string>
     <string name="nutritional_information">Información Nutricional</string>
     <string name="objective_saved">Objetivo guardado con éxito</string>
     <string name="oblique_external">Oblicuos Externos</string>
@@ -203,8 +209,6 @@
     <string name="video_link_hint">Ingrese el enlace del video (Solo Youtube)</string>
     <string name="weight">Peso</string>
     <string name="weight_hint">Ingrese su peso</string>
-    <string name="completed_exercise">Ejercicio Completado</string>
-    <string name="no_internet">Verifique su conexión a Internet</string>
     <string-array name="gender_array">
         <item>Seleccionar género</item>
         <item>Masculino</item>

@@ -4,6 +4,7 @@
     <string name="add_exercise">Adicionar Exercício</string>
     <string name="add_food_error">Erro ao adicionar alimento</string>
     <string name="add_nutrition_info">Adicionar Informações Nutricionais</string>
+    <string name="add_training">Adicionar Treino</string>
     <string name="adduction_leg_on_machine">Adução de Perna na Máquina</string>
     <string name="adductors">Adutores</string>
     <string name="age">Idade</string>
@@ -28,6 +29,7 @@
     <string name="carbohydrates">Carboidratos (g)</string>
     <string name="carbohydrates_b">Carboidratos</string>
     <string name="chest_and_triceps">Peito e Tríceps</string>
+    <string name="completed_exercise">Exercício concluído</string>
     <string name="daily_calories">Calorias Diárias</string>
     <string name="daily_calories_imported_successfully">Calorias diárias importadas com sucesso</string>
     <string name="daily_calories_removed_successfully">Calorias Diárias removidas com sucesso</string>
@@ -52,6 +54,7 @@
     <string name="dumbbell_press">Dumbbell Press</string>
     <string name="dumbbell_press_30">Dumbbell Press 30º</string>
     <string name="dumbbell_press_less30">Dumbbell Press -30º</string>
+    <string name="edit_exercise">Editar Exercício</string>
     <string name="energy_kcal">Calorias (kcal)</string>
     <string name="energy_kj">Calorias (kj)</string>
     <string name="enter_calories_kcal">Insira as calorias (kcal)</string>
@@ -114,8 +117,11 @@
     <string name="mg">mg</string>
     <string name="muscle">Músculo</string>
     <string name="muscles">Músculos</string>
+    <string name="new_calorie">Nova Caloria</string>
+    <string name="new_food">Novo Alimento</string>
     <string name="no_calories_added_yet">Nenhuma caloria adicionada ainda</string>
     <string name="no_daily_calories_to_export">Nenhuma caloria diaria exportada</string>
+    <string name="no_internet">Verifique sua conexão com a internet</string>
     <string name="nutritional_information">Informações Nutricionais</string>
     <string name="objective_saved">Objetivo salvo com sucesso</string>
     <string name="oblique_external">Oblíquos Externos</string>
@@ -203,8 +209,6 @@
     <string name="video_link_hint">Insira o link de video (Youtube apenas)</string>
     <string name="weight">Peso</string>
     <string name="weight_hint">Digite seu peso</string>
-    <string name="completed_exercise">Exercício concluído</string>
-    <string name="no_internet">Verifique sua conexão com a internet</string>
     <string-array name="gender_array">
         <item>Selecione Gênero</item>
         <item>Masculino</item>

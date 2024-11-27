@@ -263,28 +263,29 @@
             android:id="@+id/addFoodFormButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:backgroundTint="@color/button_color"
-            android:textColor="#FFFFFF"
+            android:text="@string/new_calorie"
+            android:textColor="@color/title_color"
             app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/ic_fluent_text_bullet_list_add_24_filled"
-            app:iconGravity="textStart"
+            app:iconGravity="top"
             app:iconSize="42dp"
-            app:iconTint="@color/title_color"
-            tools:iconGravity="textStart" />
+            app:iconTint="@color/title_color" />
 
         <Button
             android:id="@+id/addNewFoodButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_weight="1"
             android:backgroundTint="@color/button_color"
-            android:textColor="#FFFFFF"
+            android:text="@string/new_food"
+            android:textColor="@color/title_color"
             app:cornerRadius="@dimen/corner_radius"
             app:icon="@drawable/ic_fluent_add_food_24_regular_svg"
-            app:iconGravity="textStart"
+            app:iconGravity="top"
             app:iconSize="42dp"
             app:iconTint="@color/title_color" />
 
