@@ -11,7 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainAdapter(
     context: Context,
-    private val items: List<MainActivity.MainAdapterItem>,
+    items: List<MainActivity.MainAdapterItem>,
     private val onItemClickListener: ((MainActivity.MainAdapterItem) -> Unit)? = null
 ) : ArrayAdapter<MainActivity.MainAdapterItem>(context, R.layout.main_list_item, items) {
 
