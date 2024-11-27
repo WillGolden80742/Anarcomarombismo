@@ -91,9 +91,13 @@ class ExerciseAdapter(
             holder.webView.setOnTouchListener { _, event ->
                 if (event.action == ACTION_UP) {
                     holder.webView.performClick()
-                    holder.webView.loadUrl(embedLink)
-                    // remove .setOnTouchListener apos clique
-                    holder.webView.setOnTouchListener(null)
+                    if(WebHandler.isNetworkAvailable(context)) {
+                        holder.webView.loadUrl(embedLink)
+                        // remove .setOnTouchListener apos clique
+                        holder.webView.setOnTouchListener(null)
+                    } else {
+                        Toast.makeText(context, context.getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                    }
                 }
                 false
             }
