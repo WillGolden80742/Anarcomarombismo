@@ -35,7 +35,7 @@ Anarcomarombismo is an Android application designed to help users track their da
 - **Coroutines**: Handle asynchronous tasks, ensuring smooth UI interactions by preventing the main thread from blocking.
 - **Android Architecture Components**: Tools like ViewModel and LiveData are used to manage UI-related data in a lifecycle-aware manner, ensuring data persistence even during configuration changes.
 
-#Application Screens
+## Application Screens
 
 ![main](https://github.com/user-attachments/assets/ce7a1e8b-b096-4330-b773-f8d98e131c7b)
 
