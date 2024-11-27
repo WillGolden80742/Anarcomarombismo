@@ -17,6 +17,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var launcher: ActivityResultLauncher<Array<String>>
     private lateinit var importTrainings: FloatingActionButton
     private lateinit var mainListView: ListView
+    data class MainAdapterItem(
+        val title: String,
+        val subtitle: String,
+        val iconResourceId: Int,
+        val destinationActivity: Class<*>? = null
+    )
 
     private fun initializeUIComponents() {
         importTrainings = findViewById(R.id.importTrainings)
@@ -28,9 +34,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initializeUIComponents()
 
-        // Setup MainAdapter
-        val mainItems = listOf("Treinos", "Calorias Diárias")
-        val adapter = MainAdapter(this, mainItems)
+        val adapter = MainAdapter(this, buildMainItems())
         mainListView.adapter = adapter
 
         // Import/Export setup remains the same
@@ -42,6 +46,23 @@ class MainActivity : AppCompatActivity() {
         importTrainings.setOnClickListener {
             launcher.launch(arrayOf("application/octet-stream"))
         }
+    }
+
+    private fun buildMainItems(): List<MainAdapterItem> {
+        return listOf(
+            MainAdapterItem(
+                title = getString(R.string.trainings_label),
+                subtitle = getString(R.string.manage_your_workouts),
+                iconResourceId = R.drawable.muscle_icon,
+                destinationActivity = trainings::class.java
+            ),
+            MainAdapterItem(
+                title = getString(R.string.daily_calories),
+                subtitle = getString(R.string.track_your_diet),
+                iconResourceId = R.drawable.ic_fluent_food_24_regular,
+                destinationActivity = dailyCalories::class.java
+            )
+        )
     }
 
     override fun onResume() {
