@@ -51,9 +51,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            app:backgroundTint="@color/button_color"
+            app:backgroundTint="@color/black"
             app:srcCompat="@drawable/shared_fluent_icon"
-            app:tint="@color/title_color" />
+            app:tint="@color/yellow" />
 
     </LinearLayout>
 

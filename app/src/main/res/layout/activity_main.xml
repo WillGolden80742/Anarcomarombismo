@@ -36,9 +36,9 @@
             android:id="@+id/importTrainings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/button_color"
+            app:backgroundTint="@color/black"
             app:srcCompat="@drawable/select_folder"
-            app:tint="@color/title_color" />
+            app:tint="@color/yellow" />
 
     </LinearLayout>
 

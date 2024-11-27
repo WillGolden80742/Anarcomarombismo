@@ -36,9 +36,9 @@
             android:id="@+id/exportTrainings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/button_color"
+            app:backgroundTint="@color/black"
             app:srcCompat="@drawable/shared_fluent_icon"
-            app:tint="@color/title_color" />
+            app:tint="@color/yellow" />
 
     </LinearLayout>
 
