@@ -33,10 +33,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initializeUIComponents()
-
-        val adapter = MainAdapter(this, buildMainItems())
-        mainListView.adapter = adapter
-
         // Import/Export setup remains the same
         launcher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
             uri?.let {
@@ -46,6 +42,14 @@ class MainActivity : AppCompatActivity() {
         importTrainings.setOnClickListener {
             launcher.launch(arrayOf("application/octet-stream"))
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        handleIncomingFile(intent)
+        val adapter = MainAdapter(this, buildMainItems())
+        mainListView.adapter = adapter
     }
 
     private fun buildMainItems(): List<MainAdapterItem> {
@@ -64,12 +68,6 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
-
-    override fun onResume() {
-        super.onResume()
-        handleIncomingFile(intent)
-    }
-
     private fun handleIncomingFile(intent: Intent?) {
         intent?.let { safeIntent ->
             when (safeIntent.action) {
