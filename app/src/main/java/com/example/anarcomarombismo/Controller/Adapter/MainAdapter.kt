@@ -67,17 +67,14 @@ class MainAdapter(
             val carbsProgressBar: ProgressBar = view.findViewById(R.id.carbsProgressBar)
             val fatsProgressBar: ProgressBar = view.findViewById(R.id.fatsProgressBar)
             val proteinsProgressBar: ProgressBar = view.findViewById(R.id.proteinsProgressBar)
-            val dietaryFiberProgressBar: ProgressBar =
-                view.findViewById(R.id.dietaryFiberProgressBar)
+            val dietaryFiberProgressBar: ProgressBar = view.findViewById(R.id.dietaryFiberProgressBar)
             val caloriesLabel: TextView = view.findViewById(R.id.caloriesLabel)
             val carbsLabel: TextView = view.findViewById(R.id.carbsLabel)
             val lipidsLabel: TextView = view.findViewById(R.id.lipidsLabel)
             val proteinsLabel: TextView = view.findViewById(R.id.proteinsLabel)
             val dietaryFiberLabel: TextView = view.findViewById(R.id.dietaryFiberLabel)
 
-            // Usando uma corrotina para carregar e atualizar os dados
             withContext(Dispatchers.Main) {
-                // Chamando a função que pode ser de longo tempo (exemplo de rede, banco de dados, etc.)
                 Macro().loadAndUpdateMacroUI(
                     context = context,
                     caloriesProgressBar = caloriesProgressBar,
