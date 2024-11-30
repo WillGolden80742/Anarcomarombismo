@@ -230,7 +230,7 @@ class ExerciseAdapter(
         }
         if (!isLongPressActive) {
             val newExerciseCount = dailyExercises.getExerciseCount(currentExercise)
-            val newSets = exercise.sets
+            val newSets = currentExercise.sets
             val labelSets = if (newExerciseCount == newSets) {
                 ""
             } else {
