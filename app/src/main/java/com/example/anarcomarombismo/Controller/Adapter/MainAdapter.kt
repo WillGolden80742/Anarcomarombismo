@@ -7,9 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
-import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Macro
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.MainActivity
@@ -51,9 +49,8 @@ class MainAdapter(
                 }
                 onItemClickListener?.invoke(mainItem)
             }
-            val dailyCaloriesList = cache.getCache(context, contextualKey, Array<DailyCalories>::class.java)
             progressBarContainer.isVisible = false
-            if (mainItem.destinationActivity == dailyCalories::class.java && dailyCaloriesList.isNotEmpty()) {
+            if (mainItem.destinationActivity == dailyCalories::class.java && cache.hasCache(context, contextualKey)) {
                 updateMacroUI(view)
             }
         }
