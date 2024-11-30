@@ -152,9 +152,10 @@ class ExerciseAdapter(
         }
     }
 
-    private fun openStopWatchActivity() {
-        println("Abrindo a tela de cronômetro")
+    private fun openStopWatchActivity(currentExerciseName: String, setsInfo: String) {
         val intent = Intent(context, stopWatch::class.java)
+        intent.putExtra("exerciseName", currentExerciseName)
+        intent.putExtra("setsInfo", setsInfo)
         context.startActivity(intent)
     }
 
@@ -223,11 +224,19 @@ class ExerciseAdapter(
         if (isLastExercise && isLastSet) {
             setItemPositionIndex(context,currentExercise.trainingID, 0)
         }
+        var exercise = currentExercise
         if (isLastSet) {
-            scrollToNextExercise(currentExercise)
+            exercise = scrollToNextExercise(currentExercise)
         }
         if (!isLongPressActive) {
-            openStopWatchActivity()
+            val newExerciseCount = dailyExercises.getExerciseCount(currentExercise)
+            val newSets = exercise.sets
+            val labelSets = if (newExerciseCount == newSets) {
+                ""
+            } else {
+                "$newExerciseCount/$newSets"
+            }
+            openStopWatchActivity(exercise.name,labelSets)
         }
     }
 
@@ -264,7 +273,7 @@ class ExerciseAdapter(
         labelCheckBoxItem.text = daysText
     }
 
-    private fun scrollToNextExercise(currentExercise: Exercise) {
+    private fun scrollToNextExercise(currentExercise: Exercise):Exercise {
         val dailyExercises = DailyExercises(context)
         val exerciseListSize = exerciseList.size
         var nextPosition = (exerciseList.indexOf(currentExercise) + 1) % exerciseListSize
@@ -288,6 +297,7 @@ class ExerciseAdapter(
             // Se voltamos ao exercício atual, significa que todos os exercícios foram completados
             if (nextPosition == exerciseList.indexOf(currentExercise)) break
         }
+        return exerciseList[nextPosition]
     }
 
 

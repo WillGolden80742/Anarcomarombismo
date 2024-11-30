@@ -10,6 +10,8 @@ import kotlinx.coroutines.*
 class stopWatch : AppCompatActivity() {
 
     private lateinit var timerTextView: TextView
+    private lateinit var trainingName: TextView
+    private lateinit var setsInfo: TextView
     private lateinit var closeButton: FloatingActionButton
     private var isRunning = false
     private var elapsedTime = 0L
@@ -18,11 +20,16 @@ class stopWatch : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_stop_watch)
-
-
         timerTextView = findViewById(R.id.label_timer)
+        setsInfo = findViewById(R.id.setsInfo)
+        trainingName = findViewById(R.id.trainingName)
         closeButton = findViewById(R.id.closeFloatingButton)
-
+        if (intent.hasExtra("exerciseName")) {
+            trainingName.text = intent.getStringExtra("exerciseName")
+        }
+        if (intent.hasExtra("setsInfo")) {
+            setsInfo.text = intent.getStringExtra("setsInfo")
+        }
         closeButton.setOnClickListener {
             finish() // Fecha a Activity
         }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".stopWatch">
 
-    <!-- Icone do cronômetro -->
+    <!-- Ícone do cronômetro -->
     <TextView
         android:id="@+id/clock_icon"
         android:layout_width="100dp"
@@ -18,26 +18,58 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/stop_watch_icon"
         android:backgroundTint="@color/title_color"
-        app:layout_constraintBottom_toTopOf="@+id/label_timer"
+        app:layout_constraintBottom_toTopOf="@+id/trainingName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nome do treino -->
+    <TextView
+        android:id="@+id/trainingName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Nome de treino"
+        android:textColor="@color/title_color"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/setsInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clock_icon" />
+
+    <!-- Informação de Sets -->
+    <TextView
+        android:id="@+id/setsInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="0/4"
+        android:textColor="@color/title_color"
+        android:textSize="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/label_timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/trainingName"
+        tools:textStyle="bold" />
 
     <!-- Exibição do cronômetro -->
     <TextView
         android:id="@+id/label_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="00:00:00:00"
-        android:textSize="40sp"
-        android:textStyle="bold"
+        android:layout_marginTop="20dp"
         android:gravity="center"
+        android:text="00:00:00:00"
         android:textColor="@color/title_color"
-        app:layout_constraintTop_toBottomOf="@id/clock_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="40dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/closeFloatingButton"
-        android:layout_marginTop="20dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setsInfo" />
 
     <!-- Botão de ação (Floating Action Button) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
