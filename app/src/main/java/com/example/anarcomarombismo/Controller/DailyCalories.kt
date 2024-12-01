@@ -116,7 +116,7 @@ class DailyCalories(
         return try {
             val dailyCaloriesList = dailyCaloriesList
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
-            val updatedCaloriesListOfLast7Days = updatedCaloriesList.takeLast(7)
+            val updatedCaloriesListOfLast7Days = sortDailyCaloriesByDate(updatedCaloriesList).take(7)
             cache.setCache(context, "${contextualKey}Last7Days", updatedCaloriesListOfLast7Days)
             cache.setCache(context, contextualKey, updatedCaloriesList)
             true
