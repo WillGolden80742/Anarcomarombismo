@@ -212,6 +212,7 @@
     <string name="track_your_diet">Acompanhe sua dieta</string>
     <string name="saving">saving ...</string>
     <string name="removing">removing ...</string>
+    <string name="coming_back">coming back ...</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>

@@ -15,6 +15,7 @@ import android.widget.ListView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Food
@@ -137,6 +138,13 @@ class formDailyCalories : AppCompatActivity() {
             lastClickTime = clickTime
         }
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                nameFoodLabel.text = getString(R.string.coming_back)
+                finish()
+            }
+        })
+
     }
     override fun onResume() {
         super.onResume()
@@ -151,6 +159,7 @@ class formDailyCalories : AppCompatActivity() {
             currentFood = null
         }
     }
+
 
     private fun selectDate () {
         val calendar = Calendar.getInstance()
