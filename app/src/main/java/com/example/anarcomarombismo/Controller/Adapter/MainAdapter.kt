@@ -43,11 +43,10 @@ class MainAdapter(
             floatingActionButton.setImageResource(mainItem.iconResourceId)
 
             view.setOnClickListener {
-                mainItem.destinationActivity?.let { activity ->
-                    val intent = Intent(context, activity)
-                    context.startActivity(intent)
-                }
-                onItemClickListener?.invoke(mainItem)
+                callActivity(mainItem, subtitleTextView)
+            }
+            progressBarContainer.setOnClickListener {
+                callActivity(mainItem, subtitleTextView)
             }
             progressBarContainer.isVisible = false
             if (mainItem.destinationActivity == dailyCalories::class.java && cache.hasCache(context, contextualKey)) {
@@ -58,6 +57,15 @@ class MainAdapter(
         return view
     }
 
+    private fun callActivity (mainItem: MainActivity.MainAdapterItem, subtitleTextView: TextView) {
+        mainItem.destinationActivity?.let { activity ->
+            // subtitleTextView to "Loading"
+            subtitleTextView.text = context.getString(R.string.loading)
+            val intent = Intent(context, activity)
+            context.startActivity(intent)
+        }
+        onItemClickListener?.invoke(mainItem)
+    }
     private fun updateMacroUI(view: View) {
         CoroutineScope(Dispatchers.Main).launch {
             val caloriesProgressBar: ProgressBar = view.findViewById(R.id.caloriesProgressBar)

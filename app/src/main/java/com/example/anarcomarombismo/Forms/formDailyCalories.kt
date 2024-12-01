@@ -91,11 +91,16 @@ class formDailyCalories : AppCompatActivity() {
         saveFoodButton.setOnClickListener {
             try {
                 addFoodToDailyList()
-                if(dailyCalories.save(this)) {
-                    saveFoodButton.isEnabled = false
-                    nameFoodLabel.text = getString(R.string.select_food)
-                    gramsEditText.isEnabled = false
-                    searchFood(searchView.query.toString())
+                dailyCalories.save(this, nameFoodLabel) { success ->
+                    if (success) {
+                        saveFoodButton.isEnabled = false
+                        nameFoodLabel.text = getString(R.string.select_food_above)
+                        gramsEditText.isEnabled = false
+                        searchFood(searchView.query.toString())
+                    } else {
+                        // Handle save failure if needed
+                        Toast.makeText(this, "Failed to save", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } catch (e: Exception) {
                 Toast.makeText(this, "Error adding food to daily list", Toast.LENGTH_SHORT).show()
@@ -120,8 +125,10 @@ class formDailyCalories : AppCompatActivity() {
         removeDailyCaloriesButton.setOnClickListener {
             val clickTime = System.currentTimeMillis()
             if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-                if(dailyCalories.remove(this)) {
-                    finish()
+                dailyCalories.remove(this,nameFoodLabel) { success ->
+                    if (success) {
+                        finish()
+                    }
                 }
             } else {
                 Toast.makeText(this,
@@ -172,16 +179,26 @@ class formDailyCalories : AppCompatActivity() {
         seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
     }
 
+    private fun getDailyCaloriesByObject(dailyCalories: DailyCalories) {
+        this.dailyCalories = dailyCalories
+        dailyCaloriesFoods.setFoodList(dailyCalories.foodsList)
+        totalCaloriesLabel.text = formatTotalCalories(dailyCalories.calorieskcal)
+        seeFoodsButton.isEnabled = dailyCalories.foodsList.isNotEmpty()
+    }
+
     private fun formatTotalCalories(value: Double): String {
         return "Total: ${NumberFormatter.formatDoubleNumber(value)} kcal"
     }
 
 
     private fun getDailyCalories() {
-        if (intent.hasExtra("dailyCaloriesDate")) {
-            val selectedDate = intent.getStringExtra("dailyCaloriesDate")
+        if (intent.hasExtra("dailyCaloriesObject")) {
+            val dailyCaloriesObject =
+                intent.getStringExtra("dailyCaloriesObject")
+                    ?.let { JSON.fromJson(it, DailyCalories::class.java) }
+            val selectedDate = dailyCaloriesObject?.date
             editTextDate.text = selectedDate
-            getDailyCaloriesByDate(selectedDate.toString())
+            dailyCaloriesObject?.let { getDailyCaloriesByObject(it) }
         } else {
             val currentDate = Date().time
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

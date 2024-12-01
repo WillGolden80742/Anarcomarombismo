@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.anarcomarombismo.Controller.Adapter.DailyCaloriesAdapter
 import com.example.anarcomarombismo.Controller.DailyCalories
 import com.example.anarcomarombismo.Controller.Macro
+import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.Forms.formDailyCalories
 import com.example.anarcomarombismo.Forms.formFood
 import com.example.anarcomarombismo.Forms.formMacro
@@ -57,9 +58,11 @@ class dailyCalories : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_calories)
         initializeUIComponents()
+
         exportDailyCalories.setOnClickListener {
             DailyCalories.export(this)
         }
+
         addCaloriesButton.setOnClickListener {
             callFormDailyCalories()
         }
@@ -74,30 +77,51 @@ class dailyCalories : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val adapter = DailyCaloriesAdapter(this, DailyCalories().fetchAll(this).ifEmpty { listOf(DailyCalories()) }, clickDailyCalories())
+        // Initialize the new paginated adapter
+        val dailyCaloriesAdapter = DailyCaloriesAdapter(this, clickDailyCalories())
         caloriesFoodList.layoutManager = LinearLayoutManager(this)
-        caloriesFoodList.adapter = adapter
-        caloriesFoodList.adapter?.notifyDataSetChanged()
+        caloriesFoodList.adapter = dailyCaloriesAdapter
+
+        // Add scroll listener for pagination
+        caloriesFoodList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                // Check if we can scroll vertically and if there are more pages
+                if (!recyclerView.canScrollVertically(1) &&
+                    (caloriesFoodList.adapter as DailyCaloriesAdapter).hasMorePages()) {
+                    (caloriesFoodList.adapter as DailyCaloriesAdapter).loadNextPage()
+                }
+            }
+        })
+
+        // Load initial data
+        val dailyCaloriesList = DailyCalories().fetchAll(this).ifEmpty { listOf(DailyCalories()) }
+        dailyCaloriesAdapter.loadData(dailyCaloriesList)
 
         addNewFoodButton.setOnClickListener {
             callFoodForm()
         }
     }
+
     override fun onResume() {
         super.onResume()
         loadAndUpdateMacroUI()
-        caloriesFoodList.adapter = DailyCaloriesAdapter(
-            this,
-            DailyCalories().fetchAll(this).ifEmpty { listOf(DailyCalories()) },
-            clickDailyCalories())
-        caloriesFoodList.adapter?.notifyDataSetChanged()
+
+        // Reinitialize the adapter and reload data
+        val dailyCaloriesAdapter = DailyCaloriesAdapter(this, clickDailyCalories())
+        caloriesFoodList.adapter = dailyCaloriesAdapter
+
+        // Load data
+        val dailyCaloriesList = DailyCalories().fetchAll(this).ifEmpty { listOf(DailyCalories()) }
+        dailyCaloriesAdapter.loadData(dailyCaloriesList)
     }
 
     private fun clickDailyCalories() : OnItemClickListener {
         return object : OnItemClickListener {
             override fun onItemClick(dailyCalories: DailyCalories) {
                 val intent = Intent(this@dailyCalories, formDailyCalories::class.java)
-                intent.putExtra("dailyCaloriesDate", dailyCalories.date)
+                intent.putExtra("dailyCaloriesObject", JSON.toJson(dailyCalories))
                 startActivity(intent)
             }
         }

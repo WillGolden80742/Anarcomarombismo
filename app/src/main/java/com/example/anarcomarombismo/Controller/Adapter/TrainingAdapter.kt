@@ -34,6 +34,7 @@ class TrainingAdapter(context: Context, private val trainingList: List<Training>
         listItemView.setOnClickListener {
             listener.onItemClick(currentTraining)
             val intent = Intent(context, exercises::class.java)
+            descriptionTextView.text = context.getString(R.string.loading)
             intent.putExtra("trainingID", currentTraining.trainingID)
             context.startActivity(intent)
         }

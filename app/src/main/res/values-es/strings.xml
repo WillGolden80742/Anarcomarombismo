@@ -155,7 +155,7 @@
     <string name="search_for_food">Buscar Alimento...</string>
     <string name="seconds_hint">Ingrese el tiempo de descanso en segundos</string>
     <string name="see">Ver</string>
-    <string name="select_food">seleccione alimento</string>
+    <string name="select_food_above">seleccione alimento arriba</string>
     <string name="select_muscle">Seleccione el músculo</string>
     <string name="selected">seleccionado</string>
     <string name="serratus_anterior">Serrato Anterior</string>
@@ -210,6 +210,8 @@
     <string name="weight_hint">Ingrese su peso</string>
     <string name="manage_your_workouts">Gerencie seus treinos</string>
     <string name="track_your_diet">Acompanhe sua dieta</string>
+    <string name="saving">guardando ...</string>
+    <string name="removing">removendo ...</string>
     <string-array name="gender_array">
         <item>Seleccionar género</item>
         <item>Masculino</item>

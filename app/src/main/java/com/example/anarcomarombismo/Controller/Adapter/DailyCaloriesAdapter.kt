@@ -12,9 +12,14 @@ import com.example.anarcomarombismo.dailyCalories
 
 class DailyCaloriesAdapter(
     private val context: Context,
-    private val dailyCaloriesList: List<DailyCalories>,
-    private val listener: dailyCalories.OnItemClickListener // Adicione o listener aqui
+    private val listener: dailyCalories.OnItemClickListener,
+    private val itemsPerPage: Int = 30
 ) : RecyclerView.Adapter<DailyCaloriesAdapter.ViewHolder>() {
+
+    private val fullDailyCaloriesList: MutableList<DailyCalories> = mutableListOf()
+    private val displayedDailyCaloriesList: MutableList<DailyCalories> = mutableListOf()
+    private var isLoading = false
+    private var currentPage = 0
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dateTextView: TextView = itemView.findViewById(R.id.titleTextViewItem)
@@ -24,7 +29,7 @@ class DailyCaloriesAdapter(
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(dailyCaloriesList[position])
+                    listener.onItemClick(displayedDailyCaloriesList[position])
                 }
             }
         }
@@ -36,10 +41,63 @@ class DailyCaloriesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentCalories = dailyCaloriesList[position]
+        val currentCalories = displayedDailyCaloriesList[position]
         holder.dateTextView.text = currentCalories.date
         holder.descriptionTextView.text = currentCalories.toString(context)
     }
 
-    override fun getItemCount() = dailyCaloriesList.size
+    override fun getItemCount() = displayedDailyCaloriesList.size
+
+    // Load initial data and set up pagination
+    fun loadData(dailyCaloriesList: List<DailyCalories>) {
+        fullDailyCaloriesList.clear()
+        fullDailyCaloriesList.addAll(dailyCaloriesList)
+
+        // Reset pagination state
+        currentPage = 0
+        displayedDailyCaloriesList.clear()
+
+        // Load first page
+        loadNextPage()
+    }
+
+    // Load the next page of data
+    fun loadNextPage() {
+        // Prevent multiple simultaneous page loads
+        if (isLoading) return
+        isLoading = true
+
+        val startIndex = currentPage * itemsPerPage
+        val endIndex = minOf(startIndex + itemsPerPage, fullDailyCaloriesList.size)
+
+        if (startIndex < fullDailyCaloriesList.size) {
+            val newItems = fullDailyCaloriesList.subList(startIndex, endIndex)
+
+            // For first page, clear existing items
+            if (currentPage == 0) {
+                displayedDailyCaloriesList.clear()
+            }
+
+            // Add new items
+            val oldSize = displayedDailyCaloriesList.size
+            displayedDailyCaloriesList.addAll(newItems)
+
+            // Notify adapter of changes
+            if (currentPage == 0) {
+                notifyDataSetChanged()
+            } else {
+                notifyItemRangeInserted(oldSize, newItems.size)
+            }
+
+            // Increment page and reset loading flag
+            currentPage++
+            isLoading = false
+        }
+    }
+
+    // Check if more pages are available
+    fun hasMorePages(): Boolean {
+        return (currentPage * itemsPerPage) < fullDailyCaloriesList.size
+    }
+
 }

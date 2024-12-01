@@ -155,7 +155,7 @@
     <string name="search_for_food">Search for food...</string>
     <string name="seconds_hint">Enter the rest time in seconds</string>
     <string name="see">View</string>
-    <string name="select_food">select food</string>
+    <string name="select_food_above">select food above</string>
     <string name="select_muscle">Select Muscle</string>
     <string name="selected">selected</string>
     <string name="serratus_anterior">Serratus Anterior</string>
@@ -210,6 +210,8 @@
     <string name="weight_hint">Enter your weight</string>
     <string name="manage_your_workouts">Gerencie seus treinos</string>
     <string name="track_your_diet">Acompanhe sua dieta</string>
+    <string name="saving">saving ...</string>
+    <string name="removing">removing ...</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>

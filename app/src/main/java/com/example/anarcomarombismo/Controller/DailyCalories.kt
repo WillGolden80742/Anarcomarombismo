@@ -14,14 +14,12 @@ import com.example.anarcomarombismo.Controller.Util.JSON
 import com.example.anarcomarombismo.Controller.Util.ShareFiles
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.dailyCalories
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStreamReader
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -105,16 +103,21 @@ class DailyCalories(
         }
 
         private fun saveDailyCaloriesList(context: Context, dailyCaloriesList: List<DailyCalories>) {
-            val contextualKey = context.getString(R.string.dailycalories)
-            cache.setCache(context, contextualKey, dailyCaloriesList)
+            build(
+                date = dailyCaloriesList.firstOrNull()?.date ?: "",
+                foodsList = dailyCaloriesList.firstOrNull()?.foodsList ?: listOf()
+            ).save(context, dailyCaloriesList)
         }
     }
 
-    override fun save(context: Context): Boolean {
+
+    fun save(context: Context,dailyCaloriesList: List<DailyCalories>): Boolean {
         val contextualKey = context.getString(R.string.dailycalories)
         return try {
-            val dailyCaloriesList = getExistingDailyCaloriesList(context)
+            val dailyCaloriesList = dailyCaloriesList
             val updatedCaloriesList = dailyCaloriesList.filterNot { it.date == this.date } + this
+            val updatedCaloriesListOfLast7Days = updatedCaloriesList.takeLast(7)
+            cache.setCache(context, "${contextualKey}Last7Days", updatedCaloriesListOfLast7Days)
             cache.setCache(context, contextualKey, updatedCaloriesList)
             true
         } catch (e: Exception) {
@@ -123,19 +126,49 @@ class DailyCalories(
         }
     }
 
-    override fun remove(context: Context): Boolean {
-        val contextualKey = context.getString(R.string.dailycalories)
-        val existingList = cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
+    override fun save(context: Context): Boolean {
+        return save (context,fetchAll(context))
+    }
 
+    fun save(context: Context, textView: TextView, onComplete: ((Boolean) -> Unit)? = null) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+            textView.text = context.getString(R.string.saving)
+            withContext(Dispatchers.Main) {
+                save(context)
+            }
+            withContext(Dispatchers.Main) {
+                onComplete?.invoke(true)
+            }
+        }
+    }
+
+    override fun remove(context: Context): Boolean {
+        val existingList = fetchAll(context)
         existingList?.let {
             val updatedCaloriesList = removeCaloriesForDate(it, date)
             if (updatedCaloriesList.size !=  it.size) {
-                cache.setCache(context, contextualKey, updatedCaloriesList)
+                build(
+                    date = updatedCaloriesList.firstOrNull()?.date ?: "",
+                    foodsList = updatedCaloriesList.firstOrNull()?.foodsList ?: listOf()
+                ).save(context, updatedCaloriesList)
                 Toast.makeText(context, context.getString(R.string.daily_calories_removed_successfully), Toast.LENGTH_SHORT).show()
                 resetDailyCalories(date)
             }
         }
         return true
+    }
+
+    fun remove(context: Context, textView: TextView, onComplete: ((Boolean) -> Unit)? = null) {
+        CoroutineScope(Dispatchers.IO).launch {
+            textView.text = context.getString(R.string.removing)
+            withContext(Dispatchers.Main) {
+                remove(context)
+            }
+            withContext(Dispatchers.Main) {
+                onComplete?.invoke(true)
+            }
+        }
     }
 
     override fun fetchById(context: Context, id: Any): DailyCalories {
@@ -157,17 +190,24 @@ class DailyCalories(
         } else {
             emptyList()
         }
-        return dailyCaloriesList.sortedByDescending { it.date.split("/").let { dateParts -> "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt() } }
+        return sortDailyCaloriesByDate(dailyCaloriesList)
     }
 
-    private fun getExistingDailyCaloriesList(context: Context): List<DailyCalories> {
-        val contextualKey = context.getString(R.string.dailycalories)
-        return if (cache.hasCache(context, contextualKey)) {
-                cache.getCache(context, contextualKey, Array<DailyCalories>::class.java).toList()
-        } else {
-            emptyList()
-        }
+    private fun sortDailyCaloriesByDate(dailyCaloriesList: List<DailyCalories>): List<DailyCalories> {
+       return dailyCaloriesList.sortedByDescending { it.date.split("/").let { dateParts -> "${dateParts[2]}${dateParts[1]}${dateParts[0]}".toInt() } }
     }
+
+     fun fetchLast7Days(context: Context): List<DailyCalories> {
+        val contextualKey = context.getString(R.string.dailycalories)
+         val dailyCaloriesList = if (cache.hasCache(context,"${contextualKey}Last7Days")) {
+             println("Fetching last 7 days from cache")
+             cache.getCache(context, "${contextualKey}Last7Days", Array<DailyCalories>::class.java).toList()
+         } else {
+             emptyList()
+         }
+         return dailyCaloriesList
+    }
+
     private fun removeCaloriesForDate(
         dailyCaloriesList: List<DailyCalories>,
         date: String

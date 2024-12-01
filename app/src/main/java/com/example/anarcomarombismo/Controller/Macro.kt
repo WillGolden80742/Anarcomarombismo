@@ -108,7 +108,7 @@ class Macro (
     }
 
     private fun macroNutrients(context: Context,days:Int=7): Map<String, Double> {
-        val dailyCaloriesList = DailyCalories().fetchAll(context)
+        val dailyCaloriesList = DailyCalories().fetchLast7Days(context)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_YEAR, -(days+1)) // Get date 7 days ago
