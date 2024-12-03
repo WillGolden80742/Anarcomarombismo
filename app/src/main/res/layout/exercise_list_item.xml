@@ -73,6 +73,16 @@
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/lookAtExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                app:backgroundTint="@color/black"
+                app:srcCompat="@drawable/ic_fluent_eye_show_24_filled"
+                app:tint="@color/yellow" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/checkBoxItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

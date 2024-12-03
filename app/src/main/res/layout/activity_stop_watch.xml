@@ -5,6 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     tools:context=".stopWatch">
 
     <!-- Ícone do cronômetro -->
@@ -26,7 +28,7 @@
     <!-- Nome do treino -->
     <TextView
         android:id="@+id/trainingName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
@@ -42,23 +44,23 @@
     <!-- Informação de Sets -->
     <TextView
         android:id="@+id/setsInfo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="0/4"
         android:textColor="@color/title_color"
         android:textSize="32dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/label_timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/trainingName"
-        tools:textStyle="bold" />
+        app:layout_constraintTop_toBottomOf="@id/trainingName" />
 
     <!-- Exibição do cronômetro -->
     <TextView
         android:id="@+id/label_timer"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"

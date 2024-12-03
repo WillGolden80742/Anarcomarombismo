@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_CANCEL
 import android.view.MotionEvent.ACTION_UP
 import android.view.View
@@ -67,6 +68,7 @@ class ExerciseAdapter(
         val nameTextView: TextView = itemView.findViewById(R.id.titleTextViewItem)
         val descriptionTextView: TextView = itemView.findViewById(R.id.textViewItem)
         val checkItem: FloatingActionButton = itemView.findViewById(R.id.checkBoxItem)
+        val lookAtExercise: FloatingActionButton = itemView.findViewById(R.id.lookAtExercise)
         val floatingEditExerciseActionButton: FloatingActionButton = itemView.findViewById(R.id.floatingEditExerciseActionButton)
     }
 
@@ -88,12 +90,22 @@ class ExerciseAdapter(
         CoroutineScope(Dispatchers.Main).launch {
             val embedLink = WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo)
             WebHandler.embedVideo(context, holder.webView, embedLink)
+
             holder.webView.setOnTouchListener { _, event ->
                 if (event.action == ACTION_UP) {
                     holder.webView.performClick()
-                    if(WebHandler.isNetworkAvailable(context)) {
+                    if (WebHandler.isNetworkAvailable(context)) {
+                        holder.webView.webViewClient = object : WebViewClient() {
+                            override fun onPageFinished(view: WebView?, url: String?) {
+                                super.onPageFinished(view, url)
+                                val webViewWidth = holder.webView.width
+                                val webViewHeight = holder.webView.height
+                                val x = webViewWidth / 2f
+                                val y = webViewHeight / 2f
+                                simulateTouch(holder.webView, x, y)
+                            }
+                        }
                         holder.webView.loadUrl(embedLink)
-                        // remove .setOnTouchListener apos clique
                         holder.webView.setOnTouchListener(null)
                     } else {
                         Toast.makeText(context, context.getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
@@ -104,10 +116,8 @@ class ExerciseAdapter(
         }
         holder.webView.setBackgroundColor(0x00000000)
 
-        // Atualiza o estado do checkItem com base no exercício
         updateCheckItem(holder, currentExercise)
 
-        // Contabiliza os dias desde o último exercício
         updateDaysLabel(holder.labelCheckBoxItem, currentExercise)
 
         holder.floatingEditExerciseActionButton.setOnClickListener {
@@ -147,9 +157,34 @@ class ExerciseAdapter(
             false
         }
 
-        holder.itemView.setOnClickListener {
+
+        holder.lookAtExercise.setOnClickListener {
             callFormExercise("play", currentExercise)
         }
+
+    }
+
+    private fun simulateTouch(webView: WebView, x: Float, y: Float) {
+        val downEvent = MotionEvent.obtain(
+            System.currentTimeMillis(),
+            System.currentTimeMillis(),
+            MotionEvent.ACTION_DOWN,
+            x,
+            y,
+            0
+        )
+        val upEvent = MotionEvent.obtain(
+            System.currentTimeMillis(),
+            System.currentTimeMillis() + 50,
+            MotionEvent.ACTION_UP,
+            x,
+            y,
+            0
+        )
+        webView.dispatchTouchEvent(downEvent)
+        webView.dispatchTouchEvent(upEvent)
+        downEvent.recycle()
+        upEvent.recycle()
     }
 
     private fun openStopWatchActivity(currentExerciseName: String, setsInfo: String) {
@@ -228,7 +263,8 @@ class ExerciseAdapter(
         if (isLastSet) {
             exercise = scrollToNextExercise(currentExercise)
         }
-        if (!isLongPressActive) {
+        val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
+        if (!isLongPressActive && countDays == 0) {
             val newExerciseCount = dailyExercises.getExerciseCount(currentExercise)
             val newSets = currentExercise.sets
             val labelSets = if (newExerciseCount == newSets) {
