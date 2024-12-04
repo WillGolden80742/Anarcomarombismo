@@ -80,17 +80,14 @@ class ExerciseAdapter(
     @SuppressLint("ClickableViewAccessibility")
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         val currentExercise = exerciseList[position]
-
         holder.nameTextView.text = currentExercise.name
         holder.descriptionTextView.text = currentExercise.toString(context)
-
         val webSettings: WebSettings = holder.webView.settings
         webSettings.javaScriptEnabled = true
         holder.webView.webViewClient = WebViewClient()
         CoroutineScope(Dispatchers.Main).launch {
             val embedLink = WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo)
             WebHandler.embedVideo(context, holder.webView, embedLink)
-
             holder.webView.setOnTouchListener { _, event ->
                 if (event.action == ACTION_UP) {
                     holder.webView.performClick()
@@ -111,15 +108,11 @@ class ExerciseAdapter(
             }
         }
         holder.webView.setBackgroundColor(0x00000000)
-
         updateCheckItem(holder, currentExercise)
-
         updateDaysLabel(holder.labelCheckBoxItem, currentExercise)
-
         holder.floatingEditExerciseActionButton.setOnClickListener {
             callFormExercise("edit", currentExercise)
         }
-
         holder.checkItem.setOnClickListener {
             handleSetsCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
             checkListener?.onExerciseCheckChanged()
@@ -130,13 +123,11 @@ class ExerciseAdapter(
                 Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
             }
         }
-
         holder.checkItem.setOnLongClickListener {
             isLongPressActive = true
             Toast.makeText(context, "${currentExercise.name} ${context.getString(R.string.finished)}", Toast.LENGTH_SHORT).show()
             true
         }
-
         holder.checkItem.setOnTouchListener { _, event ->
             when (event.action) {
                 ACTION_UP -> {
@@ -152,12 +143,9 @@ class ExerciseAdapter(
             checkListener?.onExerciseCheckChanged()
             false
         }
-
-
         holder.lookAtExercise.setOnClickListener {
             callFormExercise("play", currentExercise)
         }
-
     }
 
     private fun simulateTouch(webView: WebView) {
@@ -176,7 +164,7 @@ class ExerciseAdapter(
         val upEvent = MotionEvent.obtain(
             System.currentTimeMillis(),
             System.currentTimeMillis() + 50,
-            MotionEvent.ACTION_UP,
+            ACTION_UP,
             x,
             y,
             0
