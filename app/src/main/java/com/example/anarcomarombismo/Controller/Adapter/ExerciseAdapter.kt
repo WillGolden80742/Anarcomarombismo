@@ -82,32 +82,7 @@ class ExerciseAdapter(
         val currentExercise = exerciseList[position]
         holder.nameTextView.text = currentExercise.name
         holder.descriptionTextView.text = currentExercise.toString(context)
-        val webSettings: WebSettings = holder.webView.settings
-        webSettings.javaScriptEnabled = true
-        holder.webView.webViewClient = WebViewClient()
-        CoroutineScope(Dispatchers.Main).launch {
-            val embedLink = WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo)
-            WebHandler.embedVideo(context, holder.webView, embedLink)
-            holder.webView.setOnTouchListener { _, event ->
-                if (event.action == ACTION_UP) {
-                    holder.webView.performClick()
-                    if (WebHandler.isNetworkAvailable(context)) {
-                        holder.webView.webViewClient = object : WebViewClient() {
-                            override fun onPageFinished(view: WebView?, url: String?) {
-                                super.onPageFinished(view, url)
-                                simulateTouch(holder.webView)
-                            }
-                        }
-                        holder.webView.loadUrl(embedLink)
-                        holder.webView.setOnTouchListener(null)
-                    } else {
-                        Toast.makeText(context, context.getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                false
-            }
-        }
-        holder.webView.setBackgroundColor(0x00000000)
+        setupWebView(holder.webView, currentExercise)
         updateCheckItem(holder, currentExercise)
         updateDaysLabel(holder.labelCheckBoxItem, currentExercise)
         holder.floatingEditExerciseActionButton.setOnClickListener {
@@ -145,6 +120,38 @@ class ExerciseAdapter(
         }
         holder.lookAtExercise.setOnClickListener {
             callFormExercise("play", currentExercise)
+        }
+    }
+
+    private fun setupWebView(webView: WebView, currentExercise: Exercise) {
+        val webSettings: WebSettings = webView.settings
+        webSettings.javaScriptEnabled = true
+        webView.webViewClient = WebViewClient()
+        webView.setBackgroundColor(0x00000000)
+        CoroutineScope(Dispatchers.Main).launch {
+            configureWebView(webView, currentExercise)
+        }
+    }
+
+    private fun configureWebView(webView: WebView, currentExercise: Exercise) {
+        val embedLink = WebHandler.generateYouTubeEmbedLink(currentExercise.linkVideo)
+        WebHandler.embedVideo(context, webView, embedLink)
+        webView.setOnTouchListener { _, event ->
+            if (event.action == ACTION_UP) {
+                webView.webViewClient = object : WebViewClient() {
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+                        simulateTouch(webView)
+                    }
+                }
+                if (WebHandler.isNetworkAvailable(context)) {
+                    webView.loadUrl(embedLink)
+                    webView.setOnTouchListener(null)
+                } else {
+                    Toast.makeText(context, context.getString(R.string.no_internet), Toast.LENGTH_SHORT).show()
+                }
+            }
+            false
         }
     }
 
