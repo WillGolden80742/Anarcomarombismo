@@ -5,7 +5,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.anarcomarombismo.Controller.Adapter.ExerciseAdapter
 import com.example.anarcomarombismo.Controller.DailyExercises
-import com.example.anarcomarombismo.Controller.Exercise
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class completeWorkoutActivity : AppCompatActivity() {
@@ -39,7 +38,6 @@ class completeWorkoutActivity : AppCompatActivity() {
         val trainingDuration = ExerciseAdapter.getTimeStamp(this, trainingId)
         val formattedDuration = formatDuration(trainingDuration)
         val totalSets = DailyExercises(this).getTotalSets(trainingId)
-        println("Total sets: $totalSets")
         val averageTime = calculateAverageExerciseTime(trainingDuration, totalSets)
         trainingDurationTextView.text = "${getString(R.string.training_duration)} $formattedDuration"
         averageTimeTextView.text = "${getString(R.string.average_time_per_exercise)} $averageTime"
