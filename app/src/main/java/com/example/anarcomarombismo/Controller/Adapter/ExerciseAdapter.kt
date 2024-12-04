@@ -48,7 +48,6 @@ class ExerciseAdapter(
                 return 0
             }
         }
-
         fun setItemPositionIndex(context: Context,trainingId: Long, index: Int) {
             val positionKey = "exercise_position_$trainingId"
             cache.setCache(context,positionKey,index)
@@ -228,7 +227,6 @@ class ExerciseAdapter(
         val exerciseDaysCount = dailyExercises.getDaysSinceLastExercise(currentExercise)
         val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
         val sets = currentExercise.sets
-
         if (shouldCheckExercise(exerciseDaysCount, exerciseCount, sets)) {
             markSetsAsDone(dailyExercises, currentExercise, checkItem)
         } else {
@@ -291,23 +289,17 @@ class ExerciseAdapter(
         val dailyExercises = DailyExercises(context)
         val exerciseListSize = exerciseList.size
         var nextPosition = (exerciseList.indexOf(currentExercise) + 1) % exerciseListSize
-
         while (true) {
             val nextExercise = exerciseList[nextPosition]
             val countDays = dailyExercises.getDaysSinceLastExercise(nextExercise)
             val exerciseCount = dailyExercises.getExerciseCount(nextExercise)
             val sets = nextExercise.sets
             val isExerciseDone = dailyExercises.isExerciseDone(date, nextExercise)
-            // Se o próximo exercício ainda não foi completado, ou não foi realizado há algum tempo, rola para ele
             if (exerciseCount < sets || countDays > 0 || !isExerciseDone) {
                 recyclerView.smoothScrollToPosition(nextPosition)
                 break
             }
-
-            // Move para o próximo exercício usando índice circular
             nextPosition = (nextPosition + 1) % exerciseListSize
-
-            // Se voltamos ao exercício atual, significa que todos os exercícios foram completados
             if (nextPosition == exerciseList.indexOf(currentExercise)) break
         }
     }
