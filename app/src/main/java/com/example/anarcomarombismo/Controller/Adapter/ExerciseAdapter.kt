@@ -98,11 +98,7 @@ class ExerciseAdapter(
                         holder.webView.webViewClient = object : WebViewClient() {
                             override fun onPageFinished(view: WebView?, url: String?) {
                                 super.onPageFinished(view, url)
-                                val webViewWidth = holder.webView.width
-                                val webViewHeight = holder.webView.height
-                                val x = webViewWidth / 2f
-                                val y = webViewHeight / 2f
-                                simulateTouch(holder.webView, x, y)
+                                simulateTouch(holder.webView)
                             }
                         }
                         holder.webView.loadUrl(embedLink)
@@ -164,7 +160,11 @@ class ExerciseAdapter(
 
     }
 
-    private fun simulateTouch(webView: WebView, x: Float, y: Float) {
+    private fun simulateTouch(webView: WebView) {
+        val webViewWidth = webView.width
+        val webViewHeight = webView.height
+        val x = webViewWidth / 2f
+        val y = webViewHeight / 2f
         val downEvent = MotionEvent.obtain(
             System.currentTimeMillis(),
             System.currentTimeMillis(),
@@ -196,16 +196,16 @@ class ExerciseAdapter(
 
     private fun checkSets(holder: ExerciseViewHolder, currentExercise: Exercise) {
         val dailyExercises = DailyExercises(context)
-        var countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
-        var exerciseCount = dailyExercises.getExerciseCount(currentExercise)
-        var sets = currentExercise.sets
+        val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
+        val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+        val sets = currentExercise.sets
         if (exerciseCount == 0 || countDays > 0) {
             repeat(sets) {
                 handleSetsCheck(currentExercise, holder.labelCheckBoxItem, holder.checkItem)
             }
         } else {
             unmarkExerciseAsDone(dailyExercises, currentExercise, holder.checkItem)
-            countDays(holder.labelCheckBoxItem, currentExercise)
+            getExerciseStatusText(holder.labelCheckBoxItem, currentExercise)
         }
     }
 
@@ -259,20 +259,13 @@ class ExerciseAdapter(
         if (isLastExercise && isLastSet) {
             setItemPositionIndex(context,currentExercise.trainingID, 0)
         }
-        var exercise = currentExercise
         if (isLastSet) {
-            exercise = scrollToNextExercise(currentExercise)
+           scrollToNextExercise(currentExercise)
         }
-        val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
-        if (!isLongPressActive && countDays == 0) {
-            val newExerciseCount = dailyExercises.getExerciseCount(currentExercise)
-            val newSets = currentExercise.sets
-            val labelSets = if (newExerciseCount == newSets) {
-                ""
-            } else {
-                "$newExerciseCount/$newSets"
-            }
-            openStopWatchActivity(exercise.name,labelSets)
+        val daysSinceLastExercise = dailyExercises.getDaysSinceLastExercise(currentExercise)
+        if (!isLongPressActive && daysSinceLastExercise == 0) {
+            val labelSets = DailyExercises(context).getExerciseStatusText(currentExercise)
+            openStopWatchActivity(currentExercise.name,labelSets)
         }
     }
 
@@ -292,24 +285,14 @@ class ExerciseAdapter(
     }
 
     private fun updateDaysLabel(labelCheckBoxItem: TextView, currentExercise: Exercise) {
-        countDays(labelCheckBoxItem, currentExercise)
+        getExerciseStatusText(labelCheckBoxItem, currentExercise)
     }
 
-    private fun countDays(labelCheckBoxItem: TextView, currentExercise: Exercise) {
-        val dailyExercises = DailyExercises(context)
-        val countDays = dailyExercises.getDaysSinceLastExercise(currentExercise)
-        val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
-        val sets = currentExercise.sets
-        val daysText = when {
-            countDays > 1 -> "$countDays ${context.getString(R.string.days)}"
-            countDays == 1 -> "$countDays ${context.getString(R.string.day)}"
-            countDays == 0 -> "$exerciseCount/$sets"
-            else -> ""
-        }
-        labelCheckBoxItem.text = daysText
+    private fun getExerciseStatusText(labelCheckBoxItem: TextView, currentExercise: Exercise) {
+        labelCheckBoxItem.text =  DailyExercises(context).getExerciseStatusText(currentExercise)
     }
 
-    private fun scrollToNextExercise(currentExercise: Exercise):Exercise {
+    private fun scrollToNextExercise(currentExercise: Exercise) {
         val dailyExercises = DailyExercises(context)
         val exerciseListSize = exerciseList.size
         var nextPosition = (exerciseList.indexOf(currentExercise) + 1) % exerciseListSize
@@ -320,7 +303,6 @@ class ExerciseAdapter(
             val exerciseCount = dailyExercises.getExerciseCount(nextExercise)
             val sets = nextExercise.sets
             val isExerciseDone = dailyExercises.isExerciseDone(date, nextExercise)
-
             // Se o próximo exercício ainda não foi completado, ou não foi realizado há algum tempo, rola para ele
             if (exerciseCount < sets || countDays > 0 || !isExerciseDone) {
                 recyclerView.smoothScrollToPosition(nextPosition)
@@ -333,7 +315,6 @@ class ExerciseAdapter(
             // Se voltamos ao exercício atual, significa que todos os exercícios foram completados
             if (nextPosition == exerciseList.indexOf(currentExercise)) break
         }
-        return exerciseList[nextPosition]
     }
 
 

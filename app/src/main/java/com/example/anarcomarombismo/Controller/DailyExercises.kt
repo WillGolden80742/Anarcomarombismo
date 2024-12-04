@@ -1,6 +1,7 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
+import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.R
 import java.text.SimpleDateFormat
@@ -137,6 +138,20 @@ class DailyExercises(context: Context) {
 
         return lastExercise?.count ?: 0
     }
+
+    fun getExerciseStatusText(currentExercise: Exercise):String {
+        val countDays = getDaysSinceLastExercise(currentExercise)
+        val exerciseCount = getExerciseCount(currentExercise)
+        val sets = currentExercise.sets
+        val daysText = when {
+            countDays > 1 -> "$countDays ${context.getString(R.string.days)}"
+            countDays == 1 -> "$countDays ${context.getString(R.string.day)}"
+            countDays == 0 -> "$exerciseCount/$sets"
+            else -> ""
+        }
+        return daysText
+    }
+
 
     fun getExerciseHistory(exercise: Exercise): Set<ExerciseByDate> {
         val cacheKey = "${exercise.exerciseID}-${exercise.trainingID}-exerciseHistory"
