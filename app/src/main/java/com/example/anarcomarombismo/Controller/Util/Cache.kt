@@ -20,17 +20,29 @@ class Cache {
 
     private fun setCacheText(context: Context, fileName: String, text: String) {
         val hashedFileName = hashFileName(fileName, SHA1_ALGORITHM)
-        val compressText = compressText(text)
-        writeToFile(context, hashedFileName, compressText)
+        val content = when {
+            text.isNumericOrBoolean() -> text
+            else -> compressText(text)
+        }
+        writeToFile(context, hashedFileName, content)
     }
 
     private fun getCacheText(context: Context, fileName: String): String {
         val sha1HashedFileName = hashFileName(fileName, SHA1_ALGORITHM)
         val md5HashedFileName = hashFileName(fileName, MD5_ALGORITHM)
-        val compressText = getCacheContent(context, sha1HashedFileName)
+        val cachedContent = getCacheContent(context, sha1HashedFileName)
             ?: getCacheContent(context, md5HashedFileName)
             ?: NOT_FOUND
-        return decompressText(compressText)
+
+        return if (cachedContent.isNumericOrBoolean()) {
+            cachedContent
+        } else {
+            decompressText(cachedContent)
+        }
+    }
+
+    private fun String.isNumericOrBoolean(): Boolean {
+        return this.toLongOrNull() != null || this.toBooleanStrictOrNull() != null
     }
 
 

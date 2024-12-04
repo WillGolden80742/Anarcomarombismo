@@ -213,6 +213,9 @@
     <string name="saving">saving ...</string>
     <string name="removing">removing ...</string>
     <string name="coming_back">coming back ...</string>
+    <string name="training_duration">Training duration</string>
+    <string name="average_time_per_exercise">Average time per exercise</string>
+    <string name="training_completed">Training completed!</string>
     <string-array name="gender_array">
         <item>Select Gender</item>
         <item>Male</item>

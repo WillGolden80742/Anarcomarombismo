@@ -1,7 +1,6 @@
 package com.example.anarcomarombismo.Controller
 
 import android.content.Context
-import android.widget.TextView
 import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.R
 import java.text.SimpleDateFormat
@@ -78,14 +77,16 @@ class DailyExercises(context: Context) {
     }
 
     fun getTrainingCompletionPercentage(trainingID: Long): String {
-        // Get all exercises for the training
-        val exercises = Exercise.build(trainingID).fetchAll(context)
+        val exercises =  Exercise.build(trainingID).fetchAll(context)
         if (exercises.isEmpty()) return "0"
 
-        // Get current date
         val currentDate = getCurrentFormattedDate()
+        val (completedSets, totalSets) = calculateSetsCompletion(exercises, currentDate)
 
-        // Count completed exercises
+        return calculateCompletionPercentage(completedSets, totalSets).toString()
+    }
+
+    private fun calculateSetsCompletion(exercises: List<Exercise>, currentDate: String): Pair<Int, Int> {
         var completedSets = 0
         var totalSets = 0
 
@@ -97,20 +98,43 @@ class DailyExercises(context: Context) {
                         it.exercise.trainingID == exercise.trainingID
             }
 
-            // Add the completed sets for this exercise
             completedSets += todaysExercise?.count ?: 0
-            // Add the total sets required for this exercise
             totalSets += exercise.sets
         }
+        return Pair(completedSets, totalSets)
+    }
 
-        // Calculate percentage
-        val percentage = if (totalSets > 0) {
+    fun getTotalSets(trainingID: Long): Int {
+        val exercises = Exercise.build(trainingID).fetchAll(context)
+        var totalSets = 0
+        exercises.forEach { exercise ->
+            totalSets += exercise.sets
+        }
+        return totalSets
+    }
+    fun getCompletedSets(trainingID: Long): Int {
+        val exercises = Exercise.build(trainingID).fetchAll(context)
+        val currentDate = getCurrentFormattedDate()
+        var completedSets = 0
+        exercises.forEach { exercise ->
+            val exerciseHistory = getExerciseHistory(exercise)
+            val todaysExercise = exerciseHistory.find {
+                it.date == currentDate &&
+                        it.exercise.exerciseID == exercise.exerciseID &&
+                        it.exercise.trainingID == exercise.trainingID
+            }
+
+            completedSets += todaysExercise?.count ?: 0
+        }
+        return completedSets
+    }
+
+    private fun calculateCompletionPercentage(completedSets: Int, totalSets: Int): Int {
+        return if (totalSets > 0) {
             ((completedSets.toDouble() / totalSets.toDouble()) * 100).toInt()
         } else {
             0
         }
-
-        return percentage.toString()
     }
 
     fun getDaysSinceLastExercise(exercise: Exercise): Int {

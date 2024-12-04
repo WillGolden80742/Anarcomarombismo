@@ -213,6 +213,9 @@
     <string name="saving">salvando...</string>
     <string name="removing">removendo...</string>
     <string name="coming_back">voltando ...</string>
+    <string name="training_duration">Duração do Treino</string>
+    <string name="average_time_per_exercise">Tempo médio por exercício</string>
+    <string name="training_completed">Treino concluído!</string>
     <string-array name="gender_array">
         <item>Selecione Gênero</item>
         <item>Masculino</item>

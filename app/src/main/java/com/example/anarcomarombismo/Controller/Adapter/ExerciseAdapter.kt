@@ -21,6 +21,7 @@ import com.example.anarcomarombismo.Controller.Util.Cache
 import com.example.anarcomarombismo.Controller.Util.WebHandler
 import com.example.anarcomarombismo.R
 import com.example.anarcomarombismo.Forms.formExercise
+import com.example.anarcomarombismo.completeWorkoutActivity
 import com.example.anarcomarombismo.stopWatch
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
@@ -39,8 +40,52 @@ class ExerciseAdapter(
     companion object {
         private var isLongPressActive = false
         private val cache = Cache()
+        private const val positionKey = "exercise_position"
+        fun setBeginTime(context: Context, trainingId: Long) {
+            val cache = Cache()
+            val fileName = "training_begin_time_$trainingId"
+            cache.setCache(context, fileName, System.currentTimeMillis())
+        }
+
+        private fun getBeginTime(context: Context, trainingId: Long): Long {
+            val cache = Cache()
+            val fileName = "training_begin_time_$trainingId"
+            return if (cache.hasCache(context, fileName)) {
+                cache.getCache(context, fileName, Long::class.java)
+            } else {
+                0L
+            }
+        }
+
+        fun setEndTime(context: Context, trainingId: Long) {
+            val cache = Cache()
+            val fileName = "training_end_time_$trainingId"
+            cache.setCache(context, fileName, System.currentTimeMillis())
+        }
+
+        private fun getEndTime(context: Context, trainingId: Long): Long {
+            val cache = Cache()
+            val fileName = "training_end_time_$trainingId"
+            return if (cache.hasCache(context, fileName)) {
+                cache.getCache(context, fileName, Long::class.java)
+            } else {
+                0L
+            }
+        }
+
+        fun getTimeStamp(context: Context, trainingId: Long): Long {
+            val beginTime = getBeginTime(context, trainingId)
+            val endTime = getEndTime(context, trainingId)
+
+            return if (beginTime > 0 && endTime > 0) {
+                endTime - beginTime
+            } else {
+                0L
+            }
+        }
+
         fun getItemPositionIndex(context: Context,trainingId: Long): Int {
-            val positionKey = "exercise_position_$trainingId"
+            val positionKey = "${positionKey}_$trainingId"
             if (cache.hasCache(context,positionKey)) {
                 return cache.getCache(context,positionKey,Int::class.java)
             } else {
@@ -49,7 +94,7 @@ class ExerciseAdapter(
             }
         }
         fun setItemPositionIndex(context: Context,trainingId: Long, index: Int) {
-            val positionKey = "exercise_position_$trainingId"
+            val positionKey = "${positionKey}_$trainingId"
             cache.setCache(context,positionKey,index)
         }
 
@@ -243,11 +288,21 @@ class ExerciseAdapter(
     private fun markSetsAsDone(dailyExercises: DailyExercises, currentExercise: Exercise, checkItem: FloatingActionButton) {
         checkItem.setImageResource(R.drawable.ic_fluent_select_all_on_24_filled)
         dailyExercises.markSetsAsDone(date, currentExercise)
-        val currentPosition = exerciseList.indexOf(currentExercise)
-        val exerciseListSize = exerciseList.size
+        val trainingCompletionPercentage = dailyExercises.getTrainingCompletionPercentage(currentExercise.trainingID)
+        val trainingId = currentExercise.trainingID
+        if (dailyExercises.getCompletedSets(trainingId) == 1) {
+            setBeginTime(context, trainingId)
+        }
+        if (trainingCompletionPercentage.toInt() == 100) {
+            setEndTime(context, trainingId)
+            val intent = Intent(context, completeWorkoutActivity::class.java)
+            intent.putExtra("trainingId", trainingId)
+            context.startActivity(intent)
+        }
+        val isLastExercise = trainingCompletionPercentage.toInt() == 100
         val exerciseCount = dailyExercises.getExerciseCount(currentExercise)
+        val daysSinceLastExercise = dailyExercises.getDaysSinceLastExercise(currentExercise)
         val sets = currentExercise.sets
-        val isLastExercise= currentPosition == exerciseListSize - 1
         val isLastSet = exerciseCount == sets
         if (isLastExercise && isLastSet) {
             setItemPositionIndex(context,currentExercise.trainingID, 0)
@@ -255,14 +310,20 @@ class ExerciseAdapter(
         if (isLastSet) {
            scrollToNextExercise(currentExercise)
         }
-        val daysSinceLastExercise = dailyExercises.getDaysSinceLastExercise(currentExercise)
-        if (!isLongPressActive && daysSinceLastExercise == 0) {
+        if (!isLongPressActive && daysSinceLastExercise == 0 && !isLastExercise) {
             val labelSets = DailyExercises(context).getExerciseStatusText(currentExercise)
             openStopWatchActivity(currentExercise.name,labelSets)
         }
     }
 
-
+    private fun getFormattedDuration(context: Context, trainingId: Long): String {
+        val elapsedMillis = getTimeStamp(context, trainingId)
+        val hours = elapsedMillis / 3600000
+        val minutes = (elapsedMillis % 3600000) / 60000
+        val seconds = (elapsedMillis % 60000) / 1000
+        val millis = (elapsedMillis % 1000) / 10 // Exibe os centésimos de segundo
+        return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, millis)
+    }
 
     private fun toggleExerciseState(dailyExercises: DailyExercises, exerciseDone: Boolean, currentExercise: Exercise, checkItem: FloatingActionButton) {
         if (exerciseDone) {
